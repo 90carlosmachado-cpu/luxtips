@@ -1,0 +1,3247 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LuxTIPS</title>
+<style>
+/* ================= THEME SYSTEM ================= */
+:root{
+  --bg:#070b16;
+  --panel:rgba(20,28,56,0.75);
+  --ink:#e5e7eb;
+  --brand:#22d3ee;
+  --green:#10b981;
+  --yellow:#f59e0b;
+  --red:#ef4444;
+  --muted:#9ca3af;
+  --glow:0 0 20px rgba(34,211,238,.25);
+}
+
+[data-theme="dark"]{
+  --bg:#070b16;
+  --panel:rgba(20,28,56,0.75);
+  --ink:#e5e7eb;
+  --brand:#22d3ee;
+  --glow:0 0 20px rgba(34,211,238,.25);
+}
+
+[data-theme="neon"]{
+  --bg:#050008;
+  --panel:rgba(24,0,60,0.75);
+  --ink:#f8fafc;
+  --brand:#f0abfc;
+  --glow:0 0 24px rgba(236,72,153,.45);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(34,211,238,.15), transparent 40%),
+    radial-gradient(1200px 600px at 80% 110%, rgba(99,102,241,.18), transparent 40%),
+    linear-gradient(180deg,#050713,#070b16 40%, #070b16);
+  color:var(--ink);
+  font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
+  min-height:100vh;
+}
+
+[data-theme="neon"] body{
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(236,72,153,.25), transparent 40%),
+    radial-gradient(1200px 600px at 80% 110%, rgba(124,58,237,.25), transparent 40%),
+    linear-gradient(180deg,#020003,#050008 40%, #050008);
+}
+
+header{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter: blur(12px);
+  background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(7,11,22,.85));
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:18px 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+[data-theme="neon"] header{
+  background: linear-gradient(180deg, rgba(40,0,80,.85), rgba(5,0,20,.85));
+}
+
+h1{
+  margin:0;
+  font-size:24px;
+  letter-spacing:.5px;
+  background:linear-gradient(90deg,var(--brand),#60a5fa,var(--brand));
+  background-size:200% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:shift 6s linear infinite;
+}
+.sub{font-size:13px;color:var(--muted)}
+@keyframes shift{0%{background-position:0%}100%{background-position:200%}}
+
+main{
+  width:100%;
+  max-width:1320px;
+  margin:0 auto;
+  padding:16px 10px 40px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(24,34,70,.85), rgba(12,18,38,.85));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:18px 20px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.02) inset,
+    0 20px 40px rgba(0,0,0,.45),
+    var(--glow);
+  position:relative;
+  overflow:hidden;
+}
+
+[data-theme="neon"] .card{
+  background: linear-gradient(180deg, rgba(64,0,128,.85), rgba(20,0,60,.85));
+}
+
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+label{font-size:12px;color:#c7d2fe;letter-spacing:.2px}
+input,select,button{
+  background:rgba(10,16,36,.9);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  border-radius:12px;
+  padding:9px 12px;
+}
+[data-theme="neon"] input,
+[data-theme="neon"] select{
+  background:rgba(8,0,24,.9);
+}
+
+input[type=file]{padding:7px 10px}
+
+button{
+  cursor:pointer;
+  background: linear-gradient(135deg,#06b6d4,#3b82f6);
+  border:none;
+  font-weight:600;
+  box-shadow:0 10px 25px rgba(59,130,246,.35), 0 0 0 1px rgba(255,255,255,.15) inset;
+}
+button:hover{filter:brightness(1.06)}
+[data-theme="neon"] button{
+  background: linear-gradient(135deg,#ec4899,#8b5cf6);
+  box-shadow:0 10px 30px rgba(236,72,153,.5);
+}
+
+.btn-s{font-size:12px;padding:7px 12px;background:linear-gradient(135deg,#334155,#1e293b)}
+[data-theme="neon"] .btn-s{
+  background:linear-gradient(135deg,#581c87,#312e81);
+}
+
+table{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:13px}
+th,td{padding:9px 10px;text-align:left}
+th{color:#7dd3fc;font-weight:600;border-bottom:1px solid rgba(255,255,255,.15)}
+[data-theme="neon"] th{color:#f0abfc}
+
+tbody tr{background:rgba(12,18,38,.9);box-shadow:0 8px 18px rgba(0,0,0,.35)}
+[data-theme="neon"] tbody tr{background:rgba(30,0,70,.9)}
+
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.25);margin-right:6px;font-size:11px}
+.badge.good{border-color:var(--green);color:var(--green)}
+.badge.warn{border-color:var(--yellow);color:#facc15}
+.badge.bad{border-color:var(--red);color:#f87171}
+
+.mot-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-left:6px;
+  padding:2px 6px;
+  border-radius:999px;
+  border:1px solid rgba(248,250,252,0.18);
+  font-size:10px;
+  opacity:0.9;
+}
+.mot-hot{ color:#f97316; }
+.mot-danger{ color:#f97316; border-color:rgba(248,113,113,.7); }
+
+
+.conf{height:8px;background:#0b122a;border-radius:999px;overflow:hidden;width:80px;margin:4px auto 0 auto}
+.fill{height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b,#10b981);width:0%}
+
+.explain{white-space:pre-wrap;font-size:12px;color:#e5e7eb;background:rgba(7,11,22,.85);border:1px dashed rgba(125,211,252,.35);border-radius:10px;padding:10px}
+
+.mini-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.mini-table{flex:1 1 240px;background:rgba(7,11,22,.8);border-radius:10px;padding:8px;border:1px dashed rgba(148,163,184,.5)}
+.mini-title{font-size:11px;font-weight:600;color:#a5b4fc;margin-bottom:4px}
+.mini-table table{width:100%;border-collapse:collapse;font-size:11px}
+.mini-table th,.mini-table td{padding:2px 4px;text-align:left;white-space:nowrap}
+.mini-table th{font-weight:600;color:#e5e7eb;border-bottom:1px solid rgba(55,65,81,.7)}
+.mini-row{cursor:pointer}
+.mini-row:hover{background:rgba(31,41,55,.6)}
+.mini-res{font-weight:600}
+.res-V{color:#22c55e;}
+.res-E{color:#eab308;}
+.res-D{color:#f97373;}
+.mini-stats-panel{margin-top:10px;padding:10px;border-radius:10px;border:1px dashed rgba(148,163,184,.5);background:rgba(7,11,22,.85);font-size:11px}
+.standings-block{
+  margin-top:10px;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px dashed rgba(148,163,184,.5);
+  background:rgba(7,11,22,.9);
+  font-size:11px;
+}
+.standings-title{
+  font-weight:600;
+  color:#e5e7eb;
+  margin-bottom:2px;
+}
+.standings-sub{
+  font-size:10px;
+  color:#9ca3af;
+  margin-bottom:6px;
+}
+.standings-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+.standings-table th,
+.standings-table td{
+  padding:3px 4px;
+  text-align:center;
+  white-space:nowrap;
+}
+.standings-table th{
+  color:#cbd5f5;
+  border-bottom:1px solid rgba(55,65,81,.9);
+  font-weight:600;
+}
+.standings-table td:first-child{
+  text-align:right;
+}
+.standings-table td:nth-child(2){
+  text-align:left;
+}
+.standings-highlight{
+  background:rgba(37,99,235,.25);
+}
+.standings-form{
+  display:flex;
+  gap:2px;
+  justify-content:flex-end;
+}
+.form-badge{
+  width:16px;
+  height:16px;
+  border-radius:3px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  font-weight:600;
+  color:#0b1120;
+}
+.form-W{background:#22c55e;}
+.form-D{background:#eab308;}
+.form-L{background:#ef4444;}
+
+.mini-stats-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:4px;
+}
+
+.mini-stats-match{
+  font-size:11px;
+  color:#cbd5f5;
+  margin-bottom:4px;
+}
+
+.btn-close-stats{
+  padding:3px 8px;
+  font-size:10px;
+}
+
+.mini-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mini-stat-label{flex:0 0 150px;color:#cbd5f5}
+.mini-stat-bars{flex:1;display:flex;height:8px;border-radius:999px;overflow:hidden;background:rgba(15,23,42,.9)}
+.mini-stat-bar-home{background:rgba(34,197,94,.9)}
+.mini-stat-bar-away{background:rgba(248,113,113,.9)}
+.mini-stat-values{flex:0 0 70px;text-align:right;color:#e5e7eb}
+[data-theme="neon"] .explain{
+  background:rgba(20,0,60,.85);
+  border-color:rgba(236,72,153,.5);
+}
+
+details{border:1px dashed rgba(125,211,252,.35);border-radius:12px;padding:10px;margin-top:10px}
+details[open]{background:rgba(7,11,22,.6)}
+[data-theme="neon"] details[open]{background:rgba(20,0,60,.6)}
+
+.tiny{font-size:11px;color:#9ca3af}
+
+/* THEME TOGGLE */
+.theme-toggle{
+  position:absolute; right:20px; top:18px;
+  display:flex; gap:8px;
+}
+.theme-toggle button{
+  padding:6px 10px;
+  font-size:11px;
+}
+
+/* LOADING OVERLAY */
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at top, rgba(15,23,42,.85), rgba(15,23,42,.96));
+  backdrop-filter:blur(18px);
+  z-index:80;
+}
+.loading-card{
+  min-width:260px;
+  padding:18px 20px 16px;
+  border-radius:18px;
+  background:linear-gradient(145deg, rgba(15,23,42,.96), rgba(15,23,42,.9));
+  box-shadow:0 24px 60px rgba(0,0,0,.75), 0 0 0 1px rgba(148,163,184,.35);
+  text-align:center;
+}
+.loading-spinner{
+  width:32px;height:32px;
+  border-radius:999px;
+  border:3px solid rgba(148,163,184,.35);
+  border-top-color:var(--brand);
+  margin:0 auto 10px;
+  animation:spin 0.9s linear infinite;
+}
+.loading-text{
+  font-size:13px;
+  margin-bottom:8px;
+  color:var(--muted);
+}
+.loading-bar{
+  width:100%;
+  height:8px;
+  border-radius:999px;
+  background:rgba(15,23,42,1);
+  overflow:hidden;
+  margin-bottom:4px;
+}
+.loading-bar-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#22d3ee,#38bdf8,#a855f7);
+  transition:width .18s ease-out;
+}
+.loading-percent{
+  font-size:11px;
+  color:#9ca3af;
+}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+
+@media (max-width: 768px){
+  body{
+    font-size:14px;
+  }
+  header{
+    padding:14px 16px;
+  }
+  header h1{
+    font-size:20px;
+  }
+  .card{
+    padding:14px 12px;
+  }
+  .row{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  input,
+  select,
+  button{
+    width:100%;
+    max-width:100%;
+  }
+  .results-tabs{
+    top:8px;
+    font-size:11px;
+    padding:3px 4px;
+    gap:4px;
+    max-width:100%;
+    overflow-x:auto;
+  }
+  .tab-btn{
+    min-width:80px;
+    padding:4px 8px;
+  }
+  #picks, #best1x2, #summary, #calib{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  table{
+    font-size:12px;
+  }
+}
+}
+
+<style>
+    /* … aqui está todo o teu CSS atual … */
+
+
+    /* === TORNAR O "VER EXPLICAÇÃO" CLICÁVEL EM TODA A LARGURA === */
+
+    details summary{
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px 12px;
+      margin:-4px -6px;
+      border-radius:10px;
+      width:100%;
+    }
+
+    details summary::-webkit-details-marker{
+      display:none;
+    }
+
+    details summary::marker{
+      content:'';
+    }
+
+    details summary::after{
+      content:'▼';
+      font-size:10px;
+      opacity:0.7;
+      margin-left:8px;
+    }
+
+    details[open] summary::after{
+      content:'▲';
+    }
+
+    details summary:hover{
+      background:rgba(15,23,42,0.75);
+    }
+
+    details[open] summary{
+      background:rgba(15,23,42,0.9);
+    }
+
+
+/* === Tabs de resultados (Picks / 1X2 / Múltipla / Diag. calibração) === */
+.results-tabs{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%);
+  /* fica logo abaixo do header */
+  top:76px;
+  /* acima do header para nunca ficar escondido */
+  z-index:120;
+  display:flex;
+  flex-wrap:nowrap;
+  gap:6px;
+  font-size:13px;
+  padding:4px 6px;
+  background:linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.9));
+  border-radius:999px;
+  box-shadow:0 8px 20px rgba(0,0,0,.6);
+}
+
+
+
+.tab-btn{
+  flex:1 1 auto;
+  min-width:90px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.6);
+  background:rgba(15,23,42,.7);
+  color:var(--muted);
+  font-weight:500;
+  cursor:pointer;
+  transition:background .18s ease, color .18s ease, border-color .18s ease, transform .08s ease;
+}
+
+.tab-btn:hover{
+  background:rgba(15,23,42,.9);
+  transform:translateY(-1px);
+}
+
+.tab-btn.tab-active{
+  background:rgba(34,211,238,.15);
+  border-color:var(--brand);
+  color:#e5e7eb;
+  font-weight:600;
+}
+
+/* === Estilo da Múltipla moderna === */
+
+.parlay-header{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-bottom:10px;
+}
+
+.parlay-pill{
+  display:inline-flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px;
+  padding:3px 9px;
+  border-radius:999px;
+  background:rgba(15,23,42,.9);
+  border:1px solid rgba(148,163,184,.6);
+  font-size:11px;
+  color:#e5e7eb;
+}
+
+.parlay-odd-main{
+  font-size:14px;
+  font-weight:600;
+  color:#facc15;
+}
+
+.parlay-note{
+  font-size:11px;
+  color:#9ca3af;
+}
+
+.parlay-items{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px;
+  margin-top:8px;
+}
+
+.parlay-item{
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(7,11,22,.9);
+  border:1px solid rgba(148,163,184,.35);
+  font-size:12px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.parlay-line{
+  font-size:11px;
+  color:#9ca3af;
+}
+
+.parlay-match{
+  font-weight:600;
+}
+
+.parlay-market{
+  font-size:12px;
+  color:#e5e7eb;
+}
+
+.parlay-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:2px;
+  font-size:11px;
+}
+
+.parlay-odd-pill{
+  padding:2px 8px;
+  border-radius:999px;
+  background:rgba(15,23,42,1);
+  border:1px solid rgba(250,204,21,.6);
+  color:#facc15;
+}
+
+.parlay-conf{
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,.6);
+  color:#e5e7eb;
+}
+
+/* Mobile: tabs mais pequenos e com scroll horizontal se necessário */
+@media (max-width: 768px){
+  .results-tabs{
+    font-size:11px;
+    padding:4px 0;
+    gap:4px;
+    /* também abaixo do header em mobile */
+    top:76px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .results-tabs::-webkit-scrollbar{
+    display:none;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    min-width:80px;
+    padding:4px 8px;
+  }
+}
+
+
+
+/* Botão desactivado (usado enquanto está a carregar dados automaticamente) */
+button[disabled],
+button.btn-disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+</style>
+
+
+</style>
+</head>
+<body>
+<header>
+  <h1>LuxTIPS</h1>
+  <div class="sub">Prognósticos Futebol · High Accuracy Engine</div>
+</header>
+
+<main>
+  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">A calcular picks...</div>
+      <div class="loading-bar">
+        <div class="loading-bar-fill"></div>
+      </div>
+      <div class="loading-percent" id="loadingPercent">0%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <div>
+        <label>Fixtures (XLSX/CSV)</label><br/>
+        <input type="file" id="fixturesFile" accept=".xlsx,.xls,.csv" multiple/>
+      </div>
+      <div>
+        <label>Histórico (XLSX/CSV — múltiplos)</label><br/>
+        <input type="file" id="historyFiles" accept=".xlsx,.xls,.csv" multiple/>
+      </div>
+
+      <!-- CONTROLOS FIXOS (ocultos, valores predefinidos) -->
+      <div style="display:none">
+        <label>Banca (€)</label><br/>
+        <input id="bankroll" type="number" value="1000" step="0.01" style="width:120px"/>
+      </div>
+      <div style="display:none">
+        <label>Odd alvo da múltipla</label><br/>
+        <input id="targetParlay" type="number" value="5.0" step="0.1" style="width:100px"/>
+      </div>
+      <div style="display:none">
+        <label>Top-5 (E0, SP1, I1, D1, F1): nº épocas</label><br/>
+        <input id="nTop5" type="number" value="5" min="1" max="15" style="width:80px"/>
+      </div>
+      <div style="display:none">
+        <label>Médias (P1, NL1, BR, SE,…): nº épocas</label><br/>
+        <input id="nMed" type="number" value="3" min="1" max="15" style="width:80px"/>
+      </div>
+      <div style="display:none">
+        <label>Segundas divisões (I2, F2, D2, E1,…): nº épocas</label><br/>
+        <input id="nSeg" type="number" value="2" min="1" max="15" style="width:80px"/>
+      </div>
+      <div style="display:none">
+        <label>Decaimento temporal</label><br/>
+        <select id="decayPreset" style="width:160px">
+          <option value="none">Sem decaimento (1.00)</option>
+          <option value="soft">Suave (×0.80)</option>
+          <option value="medium">Médio (×0.70)</option>
+          <option value="strong" selected>Forte (×0.60)</option>
+        </select>
+      </div>
+      <div style="display:none">
+        <label>Bayes α (suavização)</label><br/>
+        <input id="bayesAlpha" type="number" value="120" min="0" step="1" style="width:90px"/>
+      </div>
+      <div style="display:none;flex:1">
+        <label>Overrides por liga (ex.: E0:6, I2:3)</label><br/>
+        <input id="overrides" type="text" value="" placeholder="Códigos Div:épocas, separados por vírgula" style="width:100%"/>
+      </div>
+    </div>
+
+    <!-- FAMÍLIAS e OPCIONAIS (ocultos mas mantidos) -->
+    <div style="display:none;margin-top:8px">
+      <span class="tog"><input id="famRESULTADO" type="checkbox" checked/> <label for="famRESULTADO">Resultado (DNB/DC)</label></span>
+      <span class="tog"><input id="famTOTAL" type="checkbox" checked/> <label for="famTOTAL">Totais (Over/Under)</label></span>
+      <span class="tog"><input id="famBTTS" type="checkbox" checked/> <label for="famBTTS">BTTS</label></span>
+      <span class="tog"><input id="famAH" type="checkbox" checked/> <label for="famAH">Asian Handicap</label></span>
+      <span class="tog"><label>Máx por família:</label> <input id="maxPorFam" type="number" value="3" min="1" max="6" style="width:60px"/></span>
+      <span class="tog"><input id="onlyHigh" type="checkbox" checked/> <label for="onlyHigh">Só confianças altas (≥ 72%)</label></span>
+      <span class="tog"><input id="useKelly" type="checkbox"/> <label for="useKelly">Usar Kelly (teto do stake)</label></span>
+      <span class="tog"><input id="corrFLB" type="checkbox" checked/> <label for="corrFLB">Corrigir Favourite-Longshot Bias</label></span>
+      <span class="tog"><label>1X2 — modo:</label>
+        <select id="mode1x2">
+          <option value="prob" selected>Mais provável</option>
+          <option value="ev">Valor esperado (EV+)</option>
+        </select>
+      </span>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <span class="tog"><button id="runBtn">Gerar Picks</button></span>
+      <span class="tog"><button id="expAll" class="btn-s">Exportar picks (CSV)</button></span>
+      <span class="tog"><button id="exp1x2" class="btn-s">Exportar 1X2 (CSV)</button></span>
+      <span class="tog"><button id="copyExcel" class="btn-s">Copiar p/ Excel</button></span>
+    </div>
+
+    <div id="warn" style="margin-top:8px;color:#fbbf24;font-size:12px;display:none"></div>
+
+    <!-- Tabs fixas para navegar entre as secções de resultados -->
+    <div id="resultsTabs" class="results-tabs" style="display:none">
+      <button type="button" class="tab-btn tab-active" data-target="picksWrap">Picks</button>
+      <button type="button" class="tab-btn" data-target="best1x2Wrap">1X2</button>
+      <button type="button" class="tab-btn" data-target="parlayWrap">Múltipla</button>
+      <button type="button" class="tab-btn" data-target="calib">Diag. calibração</button>
+    </div>
+  </div>
+
+  <div id="summary" class="card" style="display:none"></div>
+  <div id="calib" class="card" style="display:none"></div>
+
+  <div id="picksWrap" class="card" style="display:none">
+    <h3>🔝 Picks sugeridas</h3>
+    <div id="picks"></div>
+  </div>
+
+  <div id="best1x2Wrap" class="card" style="display:none">
+    <h3>💠 Melhores picks de 1X2</h3>
+    <div id="best1x2"></div>
+  </div>
+
+  <div id="parlayWrap" class="card" style="display:none">
+    <h3>🎯 Proposta de Múltipla</h3>
+    <div id="parlay"></div>
+  </div>
+</main>
+
+<script>
+// ===== Helpers =====
+const clamp01=x=>Math.max(0,Math.min(1,x));
+const pct=x=>(100*x).toFixed(1)+"%";
+const capEV = ev => ev; // sem truncar
+const MIN_ODD = 1.35;
+
+const MIN_PROB_1X2 = 0.70;   // prob. mínima para 1X2 focado em alta taxa de acerto
+const MIN_EV_1X2   = -0.50;  // permite algum EV negativo, foco na probabilidade
+
+const SAFE_1X2_DIV = new Set([
+  'E0', // Premier League
+  'SP1',// La Liga
+  'D1', // Bundesliga
+  'I1', // Serie A
+  'F1', // Ligue 1
+  'P1',
+'BRA','ARG','USA','DNK','ROU','NOR','SWE','AUT','CHN','FIN','IRL','JPN','MEX','POL','RUS','SWZ'
+]);
+
+
+// price a partir de probabilidade com margem do book (vig)
+function priceFromProb(prob, margin=0.05){
+  return 1 / Math.max(0.01, prob * (1 - margin));
+}
+
+// === odds REAIS (mapeamento de colunas) ===
+const COLS = {
+  OVER25:  ['Over25','Over 2.5','O25','Over2_5','B365>2.5','Avg>2.5'],
+  OVER15:  ['Over15','Over 1.5','O15','Over1_5','B365>1.5','Avg>1.5'],
+  UNDER25: ['Under25','Under 2.5','U25','Under2_5','B365<2.5','Avg<2.5'],
+  BTTS_Y:  ['BTTS_Y','BTTS Yes','BTSY','GG','BothTeamsToScore_Yes'],
+  BTTS_N:  ['BTTS_N','BTTS No','BTSN','NG','BothTeamsToScore_No'],
+  AHm1_H:  ['AH-1_H','AH(-1) Home','AHm1H','AH_-1_H','B365AH-1_H'],
+  AHm1_A:  ['AH-1_A','AH(-1) Away','AHm1A','AH_-1_A','B365AH-1_A'],
+  AHm15_H: ['AH-1.5_H','AH(-1.5) Home','AHm15H','B365AH-1.5_H'],
+  AHm15_A: ['AH-1.5_A','AH(-1.5) Away','AHm15A','B365AH-1.5_A'],
+  AHp05_H: ['AH+0.5_H','AH(+0.5) Home','AHp05H','B365AH+0.5_H'],
+  AHp05_A: ['AH+0.5_A','AH(+0.5) Away','AHp05A','B365AH+0.5_A']
+};
+function readOdd(row, keys){
+  for(const k of keys){
+    const v = parseFloat(row[k]);
+    if(!isNaN(v) && v > 1.01) return v;
+  }
+  return null;
+}
+
+async function loadXLSX(){ if(window.XLSX) return window.XLSX; const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'; const p=new Promise((res,rej)=>{ s.onload=()=>res(); s.onerror=()=>rej(new Error('Falha a carregar XLSX (precisa internet).')); }); document.head.appendChild(s); await p; return window.XLSX; }
+function parseCSV(text){ const noCR=text.split('\r').join(''); const lines=noCR.split('\n').filter(x=>x.trim().length); if(!lines.length) return []; const headRaw=lines[0]; const sep=headRaw.indexOf(';')>-1?';':','; const header=headRaw.split(sep).map(s=>s.trim()); const rows=[]; for(let i=1;i<lines.length;i++){ const parts=lines[i].split(sep); if(parts.length<2) continue; const o={}; header.forEach((h,idx)=>o[h]=parts[idx]!==undefined?parts[idx].trim():""); rows.push(o);} return rows; }
+async function readAny(file){ const name=file.name.toLowerCase(); if(name.endsWith('.csv')){ const txt=await file.text(); return parseCSV(txt);} else { const XLSX=await loadXLSX(); const buf=await file.arrayBuffer(); const wb=XLSX.read(buf,{type:'array'}); const out=[]; wb.SheetNames.forEach(n=>{ const arr=XLSX.utils.sheet_to_json(wb.Sheets[n],{defval:''}); out.push(...arr);}); return out; } }
+function excelSerialToDate(v){ const ms=(v - 25569) * 86400 * 1000; return new Date(ms); }
+function isDigits(s){ for(let i=0;i<s.length;i++){ const c=s.charCodeAt(i); if(c<48||c>57) return false;} return true; }
+function isIsoDate(str){ return (str.length>=10 && str[4]=='-' && str[7]=='-' && isDigits(str.slice(0,4)) && isDigits(str.slice(5,7)) && isDigits(str.slice(8,10))); }
+function isDMYDate(str){ return (str.length>=10 && str[2]=='/' && str[5]=='/' && isDigits(str.slice(0,2)) && isDigits(str.slice(3,5)) && isDigits(str.slice(6,10))); }
+function parseDateStr(s){ if(s===undefined||s===null) return ''; if(s instanceof Date) return s; if(typeof s==='number'&&!isNaN(s)) return excelSerialToDate(s); if(typeof s==='object'&&s.w){ return parseDateStr(String(s.w)); } const t=String(s).trim(); let d=null; if(isIsoDate(t)){ const parts=t.split(' '); const date=parts[0], time=parts[1]||''; d=time?new Date(date+'T'+time):new Date(date+'T12:00'); } else if(isDMYDate(t)){ const parts=t.split(' '); const date=parts[0], time=parts[1]||''; const dd=date.slice(0,2), mm=date.slice(3,5), yy=date.slice(6,10); d=time?new Date(yy+'-'+mm+'-'+dd+'T'+time):new Date(yy+'-'+mm+'-'+dd+'T12:00'); } return (d&&!isNaN(d))?d:''; }
+const CALENDAR_DIVS = new Set([
+  'ARG','BRA','CHN','FIN','IRL','JPN','NOR','SWE','USA'
+]);
+
+const COUNTRY_TO_DIV = {
+  'Argentina':'ARG',
+  'Austria':'AUT',
+  'Brazil':'BRA',
+  'China':'CHN',
+  'Denmark':'DNK',
+  'Denmark ':'DNK',
+  'Finland':'FIN',
+  'Finland ':'FIN',
+  'Ireland':'IRL',
+  'Ireland ':'IRL',
+  'Japan':'JPN',
+  'Mexico':'MEX',
+  'Norway':'NOR',
+  'Poland':'POL',
+  'Romania':'ROU',
+  'Russia':'RUS',
+  'Sweden':'SWE',
+  'Sweden ':'SWE',
+  'Switzerland':'SWZ',
+  'USA':'USA'
+};
+
+function seasonKeyFromDate(d, div){
+  if(!(d instanceof Date) || isNaN(d)) return '';
+  const y=d.getFullYear(), m=d.getMonth()+1;
+  if (div && CALENDAR_DIVS.has(String(div).toUpperCase())){
+    return String(y);
+  }
+  return (m>=7)? (y+'/'+(y+1)) : ((y-1)+'/'+y);
+}
+function parseHistDate(row){
+  const raw=row.Date||row.Data||row.MatchDate||row.FDate||'';
+  if(raw instanceof Date) return raw;
+  if(typeof raw==='number'&&!isNaN(raw)) return excelSerialToDate(raw);
+  if(typeof raw==='string' && raw.trim()){ const d=parseDateStr(raw); if(d) return d; }
+  if(row.Year && row.Month && row.Day){ return new Date(+row.Year, +row.Month-1, +row.Day); }
+  return '';
+}
+function dtLabelFromRow(row){
+  const dateRaw = row.Date || row.Data || row.MatchDate || '';
+  const timeRaw = row.Time || row.Kickoff || row.Hour || row.Hora || '';
+  const d=parseDateStr(dateRaw);
+  const hasTime = typeof timeRaw==='string' && timeRaw.trim().length>=4;
+  const pad=n=>String(n).padStart(2,'0');
+  if(!d) return (dateRaw?String(dateRaw):'-') + (hasTime?(' '+String(timeRaw)):''); 
+  if(!hasTime){ return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`; }
+  let hh=0, mm=0; const t=String(timeRaw).trim(); if(t.indexOf(':')>-1){ const a=t.split(':'); hh=parseInt(a[0]||'0',10); mm=parseInt(a[1]||'0',10); }
+  d.setHours(hh,mm,0,0); return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(hh)}:${pad(mm)}`;
+}
+function tsFromRow(row){
+  const dateRaw = row.Date || row.Data || row.MatchDate || '';
+  const timeRaw = row.Time || row.Kickoff || row.Hour || row.Hora || '';
+  let d=parseDateStr(dateRaw);
+  if(!d) return 0;
+  if(typeof timeRaw==='string' && timeRaw.trim().length>=4){
+    const t=timeRaw.trim(); let hh=0, mm=0;
+    if(t.indexOf(':')>-1){ const a=t.split(':'); hh=parseInt(a[0]||'0',10); mm=parseInt(a[1]||'0',10); }
+    d.setHours(hh,mm,0,0);
+  } else { d.setHours(12,0,0,0); }
+  return d.getTime();
+}
+
+function estimateStatsFromGoals(row){
+  // Se já houver estatísticas reais, não mexemos
+  const hasReal =
+    (row.HS || row.AS || row.HST || row.AST ||
+     row.HC || row.AC || row.HF || row.AF ||
+     row.HY || row.AY || row.HR || row.AR);
+
+  if (hasReal) return row;
+
+  // Golos (full-time) – usar também HG/AG se for esse o nome
+  const hg = Number(row.FTHG || row.HG || 0);
+  const ag = Number(row.FTAG || row.AG || 0);
+
+  // Parâmetros médios
+  const shotsPerGoal  = 7;     // remates por golo
+  const sotRatio      = 0.35;  // % remates enquadrados
+  const cornersRatio  = 0.23;  // % remates que geram cantos
+  const foulsBase     = 10;    // faltas típicas por equipa
+
+  // Remates
+  row.HS  = Math.max(1, Math.round(hg * shotsPerGoal));
+  row.AS  = Math.max(1, Math.round(ag * shotsPerGoal));
+
+  // Remates enquadrados
+  row.HST = Math.max(1, Math.round(row.HS * sotRatio));
+  row.AST = Math.max(1, Math.round(row.AS * sotRatio));
+
+  // Cantos
+  row.HC  = Math.max(1, Math.round(row.HS * cornersRatio));
+  row.AC  = Math.max(1, Math.round(row.AS * cornersRatio));
+
+  // Faltas
+  row.HF  = foulsBase + Math.round(Math.random()*3);
+  row.AF  = foulsBase + Math.round(Math.random()*3);
+
+  // Cartões amarelos (1 por cada ~7 faltas)
+  row.HY  = Math.round(row.HF / 7);
+  row.AY  = Math.round(row.AF / 7);
+
+  // Vermelhos – raros
+  row.HR  = Math.random() < 0.05 ? 1 : 0;
+  row.AR  = Math.random() < 0.05 ? 1 : 0;
+
+  return row;
+}
+
+
+// ===== Ligas e tiers =====
+const TIER_TOP5 = new Set(['E0','SP1','I1','D1','F1']);
+const TIER_SECOND = new Set(['I2','F2','D2','E1','SP2','NL2','P2','B2','G2']); 
+const LIGA_REGRAS={
+  'E0':{nome:'Premier League', prefer:['OVER','BTTS'], evitar:['UNDER']},
+  'SP1':{nome:'La Liga', prefer:['UNDER'], evitar:['OVER']},
+  'D1':{nome:'Bundesliga', prefer:['OVER','BTTS'], evitar:['UNDER']},
+  'I1':{nome:'Serie A', prefer:['MISTO'], evitar:[]},
+  'I2':{nome:'Serie B', prefer:['UNDER'], evitar:['OVER']},
+  'NL1':{nome:'Eredivisie', prefer:['OVER','BTTS'], evitar:['UNDER']},
+  'F1':{nome:'Ligue 1', prefer:['UNDER'], evitar:[]},
+  'F2':{nome:'Ligue 2', prefer:['UNDER'], evitar:['OVER']},
+  'P1':{nome:'Primeira Liga', prefer:['UNDER'], evitar:['OVER']},
+  'SE':{nome:'Escandinávia', prefer:['OVER','BTTS'], evitar:['UNDER']},
+  'BR':{nome:'Brasileirão', prefer:['UNDER'], evitar:['OVER']}
+};
+
+const MIN_PROB_FAM = {
+  RESULTADO: 0.66,
+  AH:        0.64,
+  TOTAL:     0.55,
+  BTTS:      0.55
+};
+
+const MIN_EV_FAM = {
+  RESULTADO: -0.15,
+  AH:        -0.15,
+  TOTAL:     -0.20,
+  BTTS:      -0.20
+};
+
+// Nome de liga baseado em País + divisão (regra geral)
+const DIV_TO_NAME = {
+  // England
+  'E0': 'Premier League',
+  'E1': 'EFL Championship',
+  'E2': 'EFL League One',
+  'E3': 'EFL League Two',
+  'EC': 'National League',
+  // Scotland
+  'SC0': 'Scottish Premiership',
+  'SC1': 'Scottish Championship',
+  'SC2': 'Scottish League One',
+  'SC3': 'Scottish League Two',
+  // Germany
+  'D1': 'Bundesliga',
+  'D2': '2. Bundesliga',
+  // Spain
+  'SP1': 'La Liga',
+  'SP2': 'La Liga 2',
+  // Italy
+  'I1': 'Serie A',
+  'I2': 'Serie B',
+  // France
+  'F1': 'Ligue 1',
+  'F2': 'Ligue 2',
+  // Portugal
+  'P1': 'Primeira Liga',
+  // Netherlands
+  'NL1':'Eredivisie',
+  // Belgium
+  'B1': 'Jupiler Pro League',
+  // Greece
+  'G1': 'Super League Greece',
+  // Norway
+  'N1': 'Eliteserien',
+  // Turkey
+  'T1': 'Süper Lig',
+  // Brazil (Europa file)
+  'BR': 'Campeonato Brasileiro Série A',
+  // Sweden (Europa file)
+  'SE': 'Allsvenskan',
+
+  // World extra leagues (new_leagues_data)
+  'ARG': 'Primera División Argentina',
+  'AUT': 'Austrian Bundesliga',
+  'BRA': 'Campeonato Brasileiro Série A',
+  'CHN': 'Chinese Super League',
+  'DNK': 'Danish Superliga',
+  'FIN': 'Veikkausliiga',
+  'IRL': 'League of Ireland Premier Division',
+  'JPN': 'J1 League',
+  'MEX': 'Liga MX',
+  'NOR': 'Eliteserien',
+  'POL': 'Ekstraklasa',
+  'ROU': 'Liga I',
+  'RUS': 'Russian Premier League',
+  'SWE': 'Allsvenskan',
+  'SWZ': 'Swiss Super League',
+  'USA': 'Major League Soccer'
+};
+const COUNTRY_PREFIX = [
+  ['SC', 'Escócia'],
+  ['SP', 'Espanha'],
+  ['E',  'Inglaterra'],
+  ['D',  'Alemanha'],
+  ['I',  'Itália'],
+  ['F',  'França'],
+  ['B',  'Bélgica'],
+  ['G',  'Grécia'],
+  ['N',  'Noruega'],
+  ['T',  'Turquia'],
+  ['P',  'Portugal'],
+  ['NL', 'Países Baixos'],
+  ['SE', 'Suécia'],
+  ['BR', 'Brasil']
+];
+function ligaNameFromDiv(div){
+  if(!div) return '-';
+  const d = String(div).toUpperCase();
+  if(DIV_TO_NAME[d]) return DIV_TO_NAME[d];
+  if(LIGA_REGRAS[d] && LIGA_REGRAS[d].nome) return LIGA_REGRAS[d].nome;
+  return d;
+}
+
+// Nome da liga para mostrar no UI (usa mapeamento fixo; senão infere por prefixo)
+function ligaNome(div){
+  return ligaNameFromDiv(div);
+}
+
+
+// ===== Model bits =====
+function implied1x2(row){
+  const sets=[['B365H','B365D','B365A'],['AvgH','AvgD','AvgA']];
+  for(const [h,d,a] of sets){
+    const oh=+row[h], od=+row[d], oa=+row[a];
+    if(oh>0&&od>0&&oa>0){
+      const invH=1/oh, invD=1/od, invA=1/oa;
+      const s=invH+invD+invA;
+      return {H:invH/s, D:invD/s, A:invA/s, src:[h,d,a].join('/'), odds:{H:oh,D:od,A:oa}};
+    }
+  }
+  return null;
+}
+function parseOverrides(text){
+  const map={};
+  const t=(text||'').trim(); if(!t) return map;
+  t.split(',').forEach(pair=>{
+    const p=pair.trim(); if(!p) return;
+    const [div,nv]=p.split(':');
+    const n=parseInt((nv||'').trim(),10);
+    if(div && !isNaN(n) && n>0) map[div.trim()]=n;
+  });
+  return map;
+}
+function decayWeight(rank, preset){
+  if(preset==='none') return 1.0;
+  const base = (preset==='strong')?0.60:(preset==='medium')?0.70:0.80;
+  return Math.pow(base, rank);
+}
+async function computeLeagueCalib(histRows, opts){
+  const out={}; if(!histRows.length) return out;
+  const overrides=parseOverrides(opts.overrides||'');
+  const nTop5=opts.nTop5||5, nMed=opts.nMed||4, nSeg=opts.nSeg||3, preset=opts.decayPreset||'soft';
+  const alpha = Math.max(0, +opts.bayesAlpha || 0);
+  const byDivSeason={}; let glob={n:0,homeWins:0,over25:0,btts:0};
+  for(const r of histRows){
+    const div=r.Div; if(!div) continue;
+    const d=parseHistDate(r); if(!d) continue;
+    const sk=seasonKeyFromDate(d, div); if(!sk) continue;
+    if(!byDivSeason[div]) byDivSeason[div]={}; if(!byDivSeason[div][sk]) byDivSeason[div][sk]={n:0,homeWins:0,over25:0,btts:0};
+    const gH=+r.FTHG||0, gA=+r.FTAG||0, tot=gH+gA;
+    byDivSeason[div][sk].n++; if((r.FTR||'').toUpperCase()==='H') byDivSeason[div][sk].homeWins++;
+    if(tot>=3) byDivSeason[div][sk].over25++; if(gH>0&&gA>0) byDivSeason[div][sk].btts++;
+    glob.n++; glob.homeWins += ((r.FTR||'').toUpperCase()==='H')?1:0; if(tot>=3) glob.over25++; if(gH>0&&gA>0) glob.btts++;
+  }
+  const pGlob = {home: (glob.homeWins/Math.max(1,glob.n)), over: (glob.over25/Math.max(1,glob.n)), btts:(glob.btts/Math.max(1,glob.n))};
+  for(const div in byDivSeason){
+    const seasons = Object.keys(byDivSeason[div]).sort((a,b)=>{
+      const parseSeason = (s)=>{
+        if(!s) return 0;
+        if(s.includes('/')){
+          const parts=s.split('/');
+          return parseInt(parts[1],10) || parseInt(parts[0],10) || 0;
+        }
+        return parseInt(s,10) || 0;
+      };
+      return parseSeason(b) - parseSeason(a);
+    });
+    let nUse = overrides[div] || (TIER_TOP5.has(div)?nTop5:(TIER_SECOND.has(div)?nSeg:nMed));
+    nUse = Math.max(1, Math.min(nUse, seasons.length));
+    let N=0, H=0, O=0, B=0;
+    const used=[], weights=[];
+    for(let i=0;i<nUse;i++){
+      const sKey=seasons[i];
+      const w = decayWeight(i, preset);
+      const st=byDivSeason[div][sKey];
+      used.push(sKey); weights.push(w.toFixed(2));
+      N += w * st.n; H += w * st.homeWins; O += w * st.over25; B += w * st.btts;
+    }
+    const n = Math.max(1, N);
+    const pH = (H + alpha*pGlob.home) / (n + alpha);
+    const pO = (O + alpha*pGlob.over) / (n + alpha);
+    const pB = (B + alpha*pGlob.btts) / (n + alpha);
+    out[div] = { homeBias:(pH-0.45), overBias:(pO-0.50), bttsBias:(pB-0.50), usedSeasons:used, weights:weights, totalRows:Math.round(N), preset, bayesAlpha:alpha };
+  }
+  return out;
+}
+
+function computeTeamStats(histRows){
+  const stats = {};
+  if (!histRows || !histRows.length) return stats;
+
+  const rows = histRows.slice().sort((a,b)=>{
+    const da = parseHistDate(a); const db = parseHistDate(b);
+    const ta = da ? da.getTime() : 0;
+    const tb = db ? db.getTime() : 0;
+    return ta - tb;
+  });
+
+  for (const r of rows){
+    const div = r.Div; if (!div) continue;
+    const home = r.HomeTeam, away = r.AwayTeam;
+    if (!home || !away) continue;
+    const d = parseHistDate(r); if (!d) continue;
+    const ts = d.getTime();
+    const gH = +r.FTHG || 0;
+    const gA = +r.FTAG || 0;
+    const ftr = (r.FTR||'').toUpperCase();
+
+    const resHome = (ftr==='H') ? 'W' : (ftr==='D'?'D':(ftr==='A'?'L':null));
+    const resAway = (ftr==='A') ? 'W' : (ftr==='D'?'D':(ftr==='H'?'L':null));
+
+    const kHome = div+'::'+home;
+    const kAway = div+'::'+away;
+
+    if (resHome){
+      if (!stats[kHome]) stats[kHome]={home:[],away:[]};
+      stats[kHome].home.push({ts, r:resHome, gf:gH, ga:gA});
+    }
+    if (resAway){
+      if (!stats[kAway]) stats[kAway]={home:[],away:[]};
+      stats[kAway].away.push({ts, r:resAway, gf:gA, ga:gH});
+    }
+  }
+  return stats;
+}
+
+function recentRecord(div, team, side, limit){
+  const key = div+'::'+team;
+  const s = TEAM_STATS[key];
+  if (!s) return null;
+  const arr = side==='away' ? (s.away||[]) : (s.home||[]);
+  if (!arr.length) return null;
+  const lim = limit || 10;
+  const slice = arr.slice(Math.max(0, arr.length - lim));
+  let w=0,d=0,l=0, gf=0, ga=0;
+  slice.forEach(m=>{
+    if (m.r==='W') w++; else if (m.r==='D') d++; else l++;
+    gf += m.gf||0;
+    ga += m.ga||0;
+  });
+  const n = slice.length;
+  return {n,w,d,l,gf,ga};
+}
+
+
+function sentenceRecord(div, team, side, limit){
+  const rec = recentRecord(div, team, side, limit);
+  if (!rec) return '';
+  const where = side==='away' ? 'fora de casa' : 'em casa';
+  const {n,w,d,l,gf,ga} = rec;
+  const avgGF = (gf/n).toFixed(2);
+  const avgGA = (ga/n).toFixed(2);
+  let base = `Nos últimos ${n} jogos ${where}, o ${team}`;
+  if (l === 0){
+    base += ` não perdeu: ${w} vitórias e ${d} empates, com ${gf} golos marcados (${avgGF}/jogo) e ${ga} sofridos (${avgGA}/jogo).`;
+  } else {
+    base += ` somou ${w} vitórias, ${d} empates e ${l} derrotas, marcando ${gf} golos (${avgGF}/jogo) e sofrendo ${ga} (${avgGA}/jogo).`;
+  }
+  return base;
+}
+
+function formScore(div, team, side, limit){
+  const rec = recentRecord(div, team, side, limit || 8);
+  if (!rec) return 0;
+  const {n,w,d,l,gf,ga} = rec;
+  if (!n) return 0;
+
+  const pts = w*3 + d;
+  const ptsPerGame = pts / n;
+  const gdPerGame  = (gf - ga) / n;
+
+  const normPts = ptsPerGame / 3;
+  const normGD  = 0.5 + (gdPerGame / 4);
+  const rating  = 0.6*normPts + 0.4*Math.max(0, Math.min(1, normGD));
+
+  return Math.max(0, Math.min(1, rating));
+}
+function leagueTableSnapshot(div, upToTs){
+  if (!TEAM_STATS) return null;
+  const seasonKey = seasonKeyFromDate(new Date(upToTs), div);
+  if (!seasonKey) return null;
+  const rows = [];
+  for (const key in TEAM_STATS){
+    const parts = key.split('::');
+    if (parts.length !== 2) continue;
+    const d = parts[0], team = parts[1];
+    if (d !== div) continue;
+    const s = TEAM_STATS[key];
+    let played=0, w=0, dr=0, l=0, gf=0, ga=0;
+    const acc = (arr)=>{
+      (arr||[]).forEach(m=>{
+        const dt = new Date(m.ts||0);
+        if (seasonKeyFromDate(dt, div) !== seasonKey) return;
+        if (m.ts > upToTs) return;
+        played++;
+        if (m.r==='W') w++; else if (m.r==='D') dr++; else l++;
+        gf += m.gf||0;
+        ga += m.ga||0;
+      });
+    };
+    acc(s.home);
+    acc(s.away);
+    if (played>0){
+      const pts = w*3 + dr;
+      rows.push({team,played,w,dr,l,gf,ga,gd:gf-ga,pts});
+    }
+  }
+  if (!rows.length) return null;
+  rows.sort((a,b)=>{
+    if (b.pts!==a.pts) return b.pts-a.pts;
+    if (b.gd!==a.gd) return b.gd-a.gd;
+    if (b.gf!==a.gf) return b.gf-a.gf;
+    return a.team.localeCompare(b.team);
+  });
+  rows.forEach((r,i)=>{ r.pos = i+1; });
+  let matchDay = 0;
+  rows.forEach(r=>{ if (r.played>matchDay) matchDay = r.played; });
+  return {season:seasonKey, rows, matchDay};
+}
+
+function lastResultsAll(div, team, upToTs, limit){
+  const key = div+'::'+team;
+  const s = TEAM_STATS[key];
+  if (!s) return [];
+  const seasonNow = seasonKeyFromDate(new Date(upToTs), div);
+  const arr = [];
+
+  function collect(list){
+    (list||[]).forEach(m=>{
+      const dt = new Date(m.ts||0);
+      if (seasonKeyFromDate(dt, div) !== seasonNow) return;
+      if (m.ts > upToTs) return;
+      arr.push({ts:m.ts, r:m.r});
+    });
+  }
+
+  collect(s.home);
+  collect(s.away);
+  if (!arr.length) return [];
+
+  arr.sort((a,b)=>b.ts - a.ts);
+  const slice = arr.slice(0, limit||5);
+  return slice.map(x=>x.r); // 'W','D','L'
+}
+
+function buildStandingsHTML(div, upToTs, homeTeam, awayTeam){
+  const snap = leagueTableSnapshot(div, upToTs);
+  if (!snap) return '';
+
+  let html = '<div class="standings-block">';
+  html += '<div class="standings-title">Classificação</div>';
+  if (snap.matchDay){
+    html += '<div class="standings-sub">Jornada '+(snap.matchDay+1)+' · antes deste jogo</div>';
+  } else {
+    html += '<div class="standings-sub">Tabela actual antes deste jogo</div>';
+  }
+
+  html += '<table class="standings-table">';
+  html += '<thead><tr>'+
+          '<th>#</th>'+
+          '<th>Equipa</th>'+
+          '<th>PJ</th>'+
+          '<th>V</th>'+
+          '<th>E</th>'+
+          '<th>D</th>'+
+          '<th>G</th>'+
+          '<th>DG</th>'+
+          '<th>P</th>'+
+          '<th>Forma</th>'+
+          '</tr></thead><tbody>';
+
+  snap.rows.forEach(r=>{
+    const isHighlight = (r.team === homeTeam || r.team === awayTeam);
+    html += '<tr'+(isHighlight?' class="standings-highlight"':'')+'>';
+    html += '<td>'+r.pos+'</td>';
+    html += '<td>'+r.team+'</td>';
+    html += '<td>'+r.played+'</td>';
+    html += '<td>'+r.w+'</td>';
+    html += '<td>'+r.dr+'</td>';
+    html += '<td>'+r.l+'</td>';
+    html += '<td>'+r.gf+':'+r.ga+'</td>';
+    html += '<td>'+r.gd+'</td>';
+    html += '<td>'+r.pts+'</td>';
+
+    const form = lastResultsAll(div, r.team, upToTs, 5);
+    html += '<td><div class="standings-form">';
+    form.forEach(code=>{
+      let cls = 'form-L', lbl='D';
+      if (code === 'W'){ cls='form-W'; lbl='V'; }
+      else if (code === 'D'){ cls='form-D'; lbl='E'; }
+      html += '<span class="form-badge '+cls+'">'+lbl+'</span>';
+    });
+    html += '</div></td>';
+
+    html += '</tr>';
+  });
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+
+function teamTableEntry(div, team, upToTs){
+  const snap = leagueTableSnapshot(div, upToTs);
+  if (!snap) return null;
+  return snap.rows.find(r=>r.team===team) || null;
+}
+
+function ordinalPt(n){
+  return `${n}.º`;
+}
+
+function sentenceTable(div, team, upToTs){
+  const e = teamTableEntry(div, team, upToTs);
+  if (!e) return '';
+  const {pos, pts, played, w, dr, l, gf, ga} = e;
+  return `O ${team} chega a esta jornada na ${ordinalPt(pos)} posição, com ${pts} pontos em ${played} jogos (${w} vitórias, ${dr} empates e ${l} derrotas, golos ${gf}-${ga}).`;
+}
+
+function sentenceMotivation(div, team, upToTs){
+  const snap = leagueTableSnapshot(div, upToTs);
+  if (!snap) return '';
+  const e = snap.rows.find(r=>r.team===team);
+  if (!e) return '';
+  const nTeams = snap.rows.length;
+  const matchDay = snap.matchDay || e.played;
+  const maxMatchDays = Math.max(1, (nTeams-1)*2);
+  const phase = matchDay / maxMatchDays;
+  if (phase < 0.55) return '';
+  let msg = '';
+  if (e.pos === 1){
+    msg = `${team} está na luta directa pelo título e entra pressionado a somar pontos para segurar a liderança.`;
+  } else if (e.pos <= 3){
+    msg = `${team} está em zona de topo da tabela e claramente envolvido na corrida pelo título e lugares europeus.`;
+  } else if (e.pos <= 6){
+    msg = `${team} discute o acesso às competições europeias e cada ponto nesta fase pode ser decisivo.`;
+  } else if (e.pos >= nTeams-2){
+    msg = `${team} está mergulhado na luta pela permanência e sente grande pressão para fugir da zona de descida.`;
+  } else if (e.pos >= nTeams-4){
+    msg = `${team} está muito próximo da zona de descida e necessita de pontos para ganhar margem de segurança.`;
+  } else {
+    msg = `${team} ocupa uma posição intermédia, com alguma margem em relação à descida mas ainda distante do topo da classificação.`;
+  }
+  return msg;
+}
+
+
+
+
+function motivationChips(div, home, away, ts){
+  const snap = leagueTableSnapshot(div, ts);
+  if (!snap) return '';
+  const nTeams = snap.rows.length || 0;
+  const eH = teamTableEntry(div, home, ts);
+  const eA = teamTableEntry(div, away, ts);
+  const motH = motivationScore(div, home, ts);
+  const motA = motivationScore(div, away, ts);
+
+  const chips = [];
+  if (motH > 0.7 || motA > 0.7)
+    chips.push('<span class="mot-chip mot-hot">🔥 alta motivação</span>');
+
+  const isReleg = (e)=> e && nTeams>=4 && e.pos >= nTeams-1;
+  if (isReleg(eH) || isReleg(eA))
+    chips.push('<span class="mot-chip mot-danger">🆘 permanência</span>');
+
+  return chips.join('');
+}
+
+function motivationScore(div, team, upToTs){
+
+  const snap = leagueTableSnapshot(div, upToTs);
+  if (!snap) return 0;
+  const e = snap.rows.find(r=>r.team===team);
+  if (!e) return 0;
+  const nTeams = snap.rows.length;
+  const matchDay = snap.matchDay || e.played;
+  const maxMatchDays = Math.max(1, (nTeams-1)*2);
+  const phase = matchDay / maxMatchDays;
+  if (phase < 0.55) return 0;
+
+  const pos = e.pos;
+  const ratio = (pos-1)/Math.max(1,(nTeams-1));
+  let score = 0;
+
+  // Zona de topo / título / Europa
+  if (pos === 1){
+    score = 1.0;
+  } else if (pos <= 3){
+    score = 0.8;
+  } else if (pos <= 6){
+    score = 0.6;
+  }
+  // Fundo da tabela / luta pela permanência
+  else if (ratio > 0.9){
+    score = 0.9;
+  } else if (ratio > 0.75){
+    score = 0.7;
+  } else {
+    // Meia tabela: em fase final da época pode haver menos urgência
+    if (phase >= 0.75){
+      score = -0.3;
+    } else {
+      score = 0.0;
+    }
+  }
+  return score;
+}
+
+
+
+
+const EURO_SPOTS = {
+  'E0': 7,   // Premier League
+  'SP1': 7,  // La Liga
+  'D1': 6,   // Bundesliga
+  'I1': 7,   // Serie A
+  'F1': 6,   // Ligue 1
+  'P1': 6,   // Primeira Liga
+  'NL1': 5,  // Eredivisie
+  'B1': 5,   // Jupiler Pro League
+  'G1': 5,   // Super League Greece
+  'T1': 5    // Süper Lig
+};
+
+function previousSeasonKeyFromSeason(seasonKey){
+  if (!seasonKey) return null;
+  const parts = seasonKey.split('/');
+  if (parts.length !== 2) return null;
+  const y1 = parseInt(parts[0],10);
+  const y2 = parseInt(parts[1],10);
+  if (!y1 || !y2) return null;
+  return (y1-1) + '/' + y1;
+}
+
+function leagueTableSnapshotSeason(div, seasonKey){
+  if (!TEAM_STATS || !seasonKey) return null;
+  const rows = [];
+  for (const key in TEAM_STATS){
+    const parts = key.split('::');
+    if (parts.length !== 2) continue;
+    const d = parts[0], team = parts[1];
+    if (d !== div) continue;
+    const s = TEAM_STATS[key];
+    let played=0, w=0, dr=0, l=0, gf=0, ga=0;
+    const acc = (arr)=>{
+      (arr||[]).forEach(m=>{
+        const dt = new Date(m.ts||0);
+        if (seasonKeyFromDate(dt, div) !== seasonKey) return;
+        played++;
+        if (m.r==='W') w++; else if (m.r==='D') dr++; else l++;
+        gf += m.gf||0;
+        ga += m.ga||0;
+      });
+    };
+    acc(s.home);
+    acc(s.away);
+    if (played>0){
+      const pts = w*3 + dr;
+      rows.push({team,played,w,dr,l,gf,ga,gd:gf-ga,pts});
+    }
+  }
+  if (!rows.length) return null;
+  rows.sort((a,b)=>{
+    if (b.pts!==a.pts) return b.pts-a.pts;
+    if (b.gd!==a.gd) return b.gd-a.gd;
+    if (b.gf!==a.gf) return b.gf-a.gf;
+    return a.team.localeCompare(b.team);
+  });
+  rows.forEach((r,i)=>{ r.pos = i+1; });
+  return {season:seasonKey, rows};
+}
+
+function lastSeasonEntry(div, team, upToTs){
+  const seasonNow = seasonKeyFromDate(new Date(upToTs), div);
+  if (!seasonNow) return null;
+  const prev = previousSeasonKeyFromSeason(seasonNow);
+  if (!prev) return null;
+  const snap = leagueTableSnapshotSeason(div, prev);
+  if (!snap) return null;
+  return snap.rows.find(r=>r.team===team) || null;
+}
+
+function hasEuropeanLoad(div, entry){
+  if (!entry) return false;
+  const max = EURO_SPOTS[div];
+  if (!max) return false;
+  if (!entry.pos) return false;
+  return entry.pos <= max;
+}
+
+function europeMeta(div, home, away, ts){
+  const eH = lastSeasonEntry(div, home, ts);
+  const eA = lastSeasonEntry(div, away, ts);
+  const homeEU = hasEuropeanLoad(div, eH);
+  const awayEU = hasEuropeanLoad(div, eA);
+  return {
+    homeEU,
+    awayEU,
+    posHome: eH ? eH.pos : null,
+    posAway: eA ? eA.pos : null
+  };
+}
+
+function isEuropeHeavy1X2(div, home, away, pickSide, ts){
+  const {homeEU, awayEU, posHome, posAway} = europeMeta(div, home, away, ts);
+  if (pickSide === '1' && homeEU){
+    if (!awayEU || (posHome && posAway && posAway > posHome + 2)) return true;
+  }
+  if (pickSide === '2' && awayEU){
+    if (!homeEU || (posHome && posAway && posHome > posAway + 2)) return true;
+  }
+  return false;
+}
+
+function headToHead(div, home, away, upToTs, limit){
+  if (!HIST_ALL || !HIST_ALL.length) return null;
+  const lim = limit || 5;
+  const matches = [];
+  for (const r of HIST_ALL){
+    if (r.Div !== div) continue;
+    const h = r.HomeTeam, a = r.AwayTeam;
+    if (!h || !a) continue;
+    if (!((h===home && a===away) || (h===away && a===home))) continue;
+    const d = parseHistDate(r); if (!d) continue;
+    const ts = d.getTime();
+    if (upToTs && ts > upToTs) continue;
+    const ftr = (r.FTR||'').toUpperCase();
+    const gH = +r.FTHG||0, gA = +r.FTAG||0;
+    matches.push({ts, home:h, away:a, ftr, gH, gA});
+  }
+  if (!matches.length) return null;
+  matches.sort((a,b)=>a.ts-b.ts);
+  const slice = matches.slice(Math.max(0, matches.length-lim));
+  let wHome=0,d=0,wAway=0,gfHome=0,gfAway=0;
+  slice.forEach(m=>{
+    let gHomePers, gAwayPers, resPers;
+    if (m.home===home && m.away===away){
+      gHomePers = m.gH; gAwayPers = m.gA;
+      if (m.ftr==='H') resPers='W'; else if(m.ftr==='D') resPers='D'; else if(m.ftr==='A') resPers='L';
+    } else {
+      gHomePers = m.gA; gAwayPers = m.gH;
+      if (m.ftr==='A') resPers='W'; else if(m.ftr==='D') resPers='D'; else if(m.ftr==='H') resPers='L';
+    }
+    gfHome += gHomePers;
+    gfAway += gAwayPers;
+    if (resPers==='W') wHome++;
+    else if (resPers==='D') d++;
+    else wAway++;
+  });
+  const n = slice.length;
+  return {n,wHome,d,wAway,gfHome,gfAway};
+}
+
+function sentenceH2H(div, home, away, upToTs, limit){
+  const h = headToHead(div, home, away, upToTs, limit);
+  if (!h || !h.n) return '';
+  const {n,wHome,d,wAway,gfHome,gfAway} = h;
+  return `Nos últimos ${n} confrontos directos entre ${home} e ${away}, o ${home} ganhou ${wHome} vezes, o ${away} venceu ${wAway} e registaram-se ${d} empates (golos ${home} ${gfHome} – ${gfAway} ${away}).`;
+}
+
+
+function lastMatchesTeam(div, team, upToTs, limit){
+  if(!HIST_ALL || !HIST_ALL.length) return [];
+  const lim = limit || 5;
+  const rows = [];
+  for(const r of HIST_ALL){
+    if(r.Div !== div) continue;
+    const h = r.HomeTeam, a = r.AwayTeam;
+    if(!h || !a) continue;
+    if(h!==team && a!==team) continue;
+    const d = parseHistDate(r); if(!d) continue;
+    const ts = d.getTime();
+    if(upToTs && ts >= upToTs) continue;
+    const ftr = (r.FTR||'').toUpperCase();
+    let gf=0, ga=0, res='', opp='', loc='';
+        if(h===team){
+      // Quando a equipa analisada joga em casa, mantemos formato normal casa-fora
+      gf = +r.FTHG||0;
+      ga = +r.FTAG||0;
+      opp = a;
+      loc = 'casa';
+      if(ftr==='H') res='V'; else if(ftr==='D') res='E'; else if(ftr==='A') res='D';
+    }else{
+      // Quando a equipa analisada joga fora, queremos ver o resultado em formato "casa-fora"
+      // Ex.: derrota 3-2 fora aparece como "3-2" (não "2-3")
+      gf = +r.FTHG||0;
+      ga = +r.FTAG||0;
+      opp = h;
+      loc = 'fora';
+      if(ftr==='A') res='V'; else if(ftr==='D') res='E'; else if(ftr==='H') res='D';
+    }
+
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yy = String(d.getFullYear()).slice(-2);
+    const dateStr = `${dd}.${mm}.${yy}`;
+    const score = `${gf}-${ga}`;
+    rows.push({ts,date:dateStr,opp,loc,score,res,home:h,away:a});
+  }
+  if(!rows.length) return [];
+  rows.sort((a,b)=>b.ts-a.ts);
+  return rows.slice(0, lim);
+}
+
+function lastMatchesH2H(div, home, away, upToTs, limit){
+  if(!HIST_ALL || !HIST_ALL.length) return [];
+  const lim = limit || 5;
+  const rows = [];
+  for(const r of HIST_ALL){
+    if(r.Div !== div) continue;
+    const h = r.HomeTeam, a = r.AwayTeam;
+    if(!h || !a) continue;
+    if(!((h===home && a===away) || (h===away && a===home))) continue;
+    const d = parseHistDate(r); if(!d) continue;
+    const ts = d.getTime();
+    if(upToTs && ts >= upToTs) continue;
+    const ftr = (r.FTR||'').toUpperCase();
+    const gH = +r.FTHG||0, gA = +r.FTAG||0;
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = String(d.getMonth()+1).padStart(2,'0');
+    const yy = String(d.getFullYear()).slice(-2);
+    const dateStr = `${dd}.${mm}.${yy}`;
+    let resTag='';
+    if(ftr==='H') resTag=h===home?'V':'D';
+    else if(ftr==='A') resTag=a===home?'D':'V';
+    else if(ftr==='D') resTag='E';
+    rows.push({ts,date:dateStr,home:h,away:a,score:`${gH}-${gA}`,res:resTag});
+  }
+  if(!rows.length) return [];
+  rows.sort((a,b)=>b.ts-a.ts);
+  return rows.slice(0, lim);
+}
+
+function buildStatsPanel(matchRow, homeName, awayName){
+  if(!matchRow) return '<div class="mini-stats-panel">Sem estatísticas detalhadas para este jogo.</div>';
+
+    const metrics = [
+    {keyH:'FTHG', keyA:'FTAG', label:'Golos (total)'},
+    {keyH:'HTHG', keyA:'HTAG', label:'Golos ao intervalo'},
+    {keyH:'HS',   keyA:'AS',   label:'Remates'},
+    {keyH:'HST',  keyA:'AST',  label:'Remates enquadrados'},
+    {keyH:'HC',   keyA:'AC',   label:'Cantos'},
+    {keyH:'HF',   keyA:'AF',   label:'Faltas cometidas'},
+    {keyH:'HY',   keyA:'AY',   label:'Cartões amarelos'},
+    {keyH:'HR',   keyA:'AR',   label:'Cartões vermelhos'}
+  ];
+
+
+let html = '<div class="mini-stats-panel">'+
+           '<div class="mini-stats-header">'+
+             '<strong>Estatísticas do jogo</strong>'+
+             '<button type="button" class="btn-s btn-close-stats">Fechar</button>'+
+           '</div>'+
+           '<div class="mini-stats-match">'+homeName+' vs '+awayName+'</div><br>';
+
+
+
+  for(const m of metrics){
+    const vH = Number(matchRow[m.keyH] || 0);
+    const vA = Number(matchRow[m.keyA] || 0);
+    if(!(vH || vA)) continue;
+    const total = vH + vA || 1;
+    const pctH = Math.round(vH/total*100);
+    const pctA = 100 - pctH;
+
+    html += '<div class="mini-stat-row">';
+    html +=   '<div class="mini-stat-label">'+m.label+'</div>';
+    html +=   '<div class="mini-stat-bars">';
+    html +=     '<div class="mini-stat-bar-home" style="width:'+pctH+'%"></div>';
+    html +=     '<div class="mini-stat-bar-away" style="width:'+pctA+'%"></div>';
+    html +=   '</div>';
+    html +=   '<div class="mini-stat-values">'+vH+' - '+vA+'</div>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+function h2hScore(div, home, away, upToTs, limit){
+  const h = headToHead(div, home, away, upToTs, limit);
+  if (!h || !h.n) return 0;
+  const {n,wHome,d,wAway,gfHome,gfAway} = h;
+  const ptsHome = wHome*3 + d;
+  const ptsAway = wAway*3 + d;
+  const maxPts = 3*n || 1;
+
+  const ratingPts = (ptsHome - ptsAway) / maxPts;
+  const gdPerGame = (gfHome - gfAway) / Math.max(1,n);
+  const ratingGD  = gdPerGame / 3;
+
+  let score = 0.7*ratingPts + 0.3*ratingGD;
+  if (score > 1) score = 1;
+  if (score < -1) score = -1;
+  return score;
+}
+
+function applyFLB(prob, odd){
+  if(!document.getElementById('corrFLB').checked) return prob;
+  if(odd>=4.0) return clamp01(prob*1.05);
+  if(odd<=1.50) return clamp01(prob*0.97);
+  return prob;
+}
+
+function dampProb(prob, odd){
+  // Ajuste conservador: corta extremos muito confiantes,
+  // principalmente em favoritos com odd baixa ou extremos com odd muito alta.
+  let p = prob;
+  if (p > 0.5){
+    const isEdgeOdd = (odd && (odd <= 1.40 || odd >= 4.00));
+    const k = isEdgeOdd ? 0.35 : 0.22; // encolhe mais nos casos "perigosos"
+    // aproxima ligeiramente ao 0.5
+    p = 0.5 + (p - 0.5) * (1 - k);
+    // se ainda for muito alto, corta um pouco mais acima de 0.80
+    if (prob >= 0.80){
+      p = 0.80 + (p - 0.80) * 0.5;
+    }
+  }
+  return clamp01(p);
+}
+
+
+function buildMarkets(row, calib){
+  const base=implied1x2(row)||{H:0.45,D:0.25,A:0.30,src:'default',odds:{H:2.2,D:3.3,A:3.4}};
+  const c=calib[row.Div]||{homeBias:0,overBias:0,bttsBias:0,usedSeasons:[],weights:[],totalRows:0};
+
+  let Hm=base.H + c.homeBias*0.5;
+  let Am=base.A - c.homeBias*0.5;
+  let Dm=base.D;
+  const favGap=Math.abs(base.H-base.A);
+  if(base.H>base.A){ Hm+=0.04*favGap; Am-=0.04*favGap; } else { Am+=0.04*favGap; Hm-=0.04*favGap; }
+
+  
+  // Ajuste motivacional (fase da época / luta por objetivos)
+  const ts = tsFromRow(row);
+  const motH = motivationScore(row.Div, row.HomeTeam, ts);
+  const motA = motivationScore(row.Div, row.AwayTeam, ts);
+  if (motH !== 0 || motA !== 0){
+    const Kmot = 0.06;
+    Hm *= (1 + Kmot*motH);
+    Am *= (1 + Kmot*motA);
+  }
+
+  // Ajuste de forma recente
+  const formH = formScore(row.Div, row.HomeTeam, 'home', 8);
+  const formA = formScore(row.Div, row.AwayTeam, 'away', 8);
+  if (formH || formA){
+    const deltaForm = formH - formA;
+    const Kform = 0.04;
+    Hm *= (1 + Kform*deltaForm);
+    Am *= (1 - Kform*deltaForm);
+  }
+
+  // Ajuste H2H mínimo
+  const h2s = h2hScore(row.Div, row.HomeTeam, row.AwayTeam, ts, 5);
+  if (h2s){
+    const Kh2h = 0.02;
+    Hm *= (1 + Kh2h*h2s);
+    Am *= (1 - Kh2h*h2s);
+  }
+
+  Hm=clamp01(Hm); Am=clamp01(Am); Dm=clamp01(Dm);
+  const s=Hm+Am+Dm; Hm/=s; Am/=s; Dm/=s;
+
+
+  // FLB
+  Hm = applyFLB(Hm, base.odds.H);
+  Am = applyFLB(Am, base.odds.A);
+  const normFLB = Hm+Am+Dm; Hm/=normFLB; Am/=normFLB; Dm/=normFLB;
+
+  const balance=1-Math.abs(base.H-base.A);
+  let Pover25=clamp01(0.50 + 0.20*(balance-0.5) + c.overBias*0.6 - Math.max(0,(base.D-0.30))*0.15);
+  let PBTTS=clamp01(0.50 + 0.30*(balance-0.5) + c.bttsBias*0.7);
+
+  const favH = Hm>=Am; 
+  const pFav = favH? Hm : Am;
+  const favTeam = favH ? row.HomeTeam : row.AwayTeam;
+  const dogTeam = favH ? row.AwayTeam : row.HomeTeam;
+  const europe = europeMeta(row.Div, row.HomeTeam, row.AwayTeam, ts);
+  const favHasEurope = favH ? europe.homeEU : europe.awayEU;
+
+  function coverProbLine(k){
+    const p=Math.pow(pFav,1.6);
+    if(k===-1){ return clamp01(0.55 + (p-0.5)*0.8); }
+    if(k===-1.5){ return clamp01(0.45 + (p-0.5)*0.9); }
+    if(k===+0.5){ return clamp01(0.60 + (0.5-pFav)*0.8); }
+    return 0.5;
+  }
+  const can_m15 = pFav>=0.70;
+  const can_m1  = pFav>=0.62;
+  const can_p05 = pFav<=0.58;
+
+  const pAHm1  = can_m1  ? coverProbLine(-1)  : 0;
+  const pAHm15 = can_m15 ? coverProbLine(-1.5): 0;
+  const pAHp05 = can_p05 ? coverProbLine(+0.5): 0;
+
+  // ===== mercados =====
+  const mk=[];
+  function push(code,label,fam,prob,odd){
+    if(odd < MIN_ODD) return; // filtro silencioso
+    const pAdj = dampProb(prob, odd);
+    const ev = pAdj*odd-1;
+    const conf = (pAdj >= 0.68) ? 'alta'
+               : (pAdj >= 0.60 ? 'média'
+               : (pAdj >= 0.52 ? 'baixa' : 'fraca'));
+    mk.push({code,label,fam,prob:pAdj,odd,ev,conf});
+  }
+
+  // Probabilidades do book para DNB/DC (derivadas de 1X2) com margem
+  const margin=0.04;
+  const oddH=base.odds.H, oddD=base.odds.D, oddA=base.odds.A;
+  const pH_book=1/oddH, pD_book=1/oddD, pA_book=1/oddA;
+  const norm=pH_book+pD_book+pA_book;
+  const bH=pH_book/norm, bD=pD_book/norm, bA=pA_book/norm;
+  const pDNBH_book=bH/(bH+bA), pDNBA_book=bA/(bH+bA);
+  const p1X_book=Math.min(0.999,bH+bD), pX2_book=Math.min(0.999,bA+bD);
+
+  // 1) Resultado (DNB/DC) — odds derivadas do 1X2 do ficheiro
+  push('DNBH','DNB Casa','RESULTADO', Hm/(Hm+Am), 1/Math.max(0.01, pDNBH_book*(1-margin)));
+  push('DNBA','DNB Visitante','RESULTADO', Am/(Hm+Am), 1/Math.max(0.01, pDNBA_book*(1-margin)));
+  push('DC1X','Dupla Chance 1X','RESULTADO', Math.min(0.999, Hm+Dm), 1/Math.max(0.01, p1X_book*(1-margin)));
+  push('DCX2','Dupla Chance X2','RESULTADO', Math.min(0.999, Am+Dm), 1/Math.max(0.01, pX2_book*(1-margin)));
+
+  // 2) Totais & BTTS — usar odd real se houver; senão precificar pela prob + vig 5%
+  const realOver  = readOdd(row, COLS.OVER25);
+  const realUnder = readOdd(row, COLS.UNDER25);
+  const realBYes  = readOdd(row, COLS.BTTS_Y);
+  const realBNo   = readOdd(row, COLS.BTTS_N);
+  const realOver15 = readOdd(row, COLS.OVER15);
+
+  // Opção B: modelo independente para Over 1.5, mais agressivo
+  const Pover15_raw = 0.70
+    + 0.25 * (balance - 0.5)
+    + 0.45 * (c.overBias || 0);
+  const Pover15 = clamp01(Pover15_raw);
+
+  const oddOver   = realOver   || priceFromProb(Pover25,  0.05);
+  const oddUnder  = realUnder  || priceFromProb(1-Pover25, 0.05);
+  const oddOver15 = realOver15 || priceFromProb(Pover15,  0.05);
+  const oddBttsY  = realBYes   || priceFromProb(PBTTS,    0.05);
+  const oddBttsN  = realBNo    || priceFromProb(1-PBTTS,  0.05);
+
+  push('OVER25','Over 2.5','TOTAL', Pover25,  oddOver);
+  push('OVER15','Over 1.5','TOTAL', Pover15,  oddOver15);
+  push('UNDER25','Under 2.5','TOTAL', 1-Pover25, oddUnder);
+  push('BTTS_Y','BTTS — Sim','BTTS', PBTTS,   oddBttsY);
+  push('BTTS_N','BTTS — Não','BTTS', 1-PBTTS,  oddBttsN);
+
+
+  // 2.b) Cantos — modelo simples baseado na abertura do jogo e viés de overs da liga
+  const Pcorn_raw = 0.62
+    + 0.22 * (balance - 0.5)
+    + 0.25 * (c.overBias || 0);
+  const Pcorn = clamp01(Pcorn_raw);
+  const oddCorners = priceFromProb(Pcorn, 0.06);
+  push('CORN_O75','Mais de 7.5 cantos (totais)','TOTAL', Pcorn, oddCorners);
+
+  // 3) Asian Handicap — odd real se existir (depende do lado), caso contrário precificar com vig 4%
+  const realAHm1  = favH ? readOdd(row, COLS.AHm1_H)  : readOdd(row, COLS.AHm1_A);
+  const realAHm15 = favH ? readOdd(row, COLS.AHm15_H) : readOdd(row, COLS.AHm15_A);
+  const realAHp05 = favH ? readOdd(row, COLS.AHp05_A) : readOdd(row, COLS.AHp05_H); // +0.5 no dog
+  const oddAHm1  = realAHm1  || priceFromProb(favH ? pAHm1 : (1-pAHm1), 0.04);
+  const oddAHm15 = realAHm15 || priceFromProb(favH ? pAHm15: (1-pAHm15), 0.04);
+  const oddAHp05 = realAHp05 || priceFromProb(favH ? (1-pAHp05) : pAHp05, 0.04);
+  if(can_m1)  push('AHm1',  `AH -1 (${favH?'Casa':'Visitante'}: ${favTeam})`,'AH',  favH? pAHm1 : (1-pAHm1),  oddAHm1);
+  if(can_m15 && !favHasEurope) push('AHm15', `AH -1.5 (${favH?'Casa':'Visitante'}: ${favTeam})`,'AH', favH? pAHm15: (1-pAHm15), oddAHm15);
+  if(can_p05) push('AHp05', `AH +0.5 (${!favH?'Casa':'Visitante'}: ${dogTeam})`,'AH', favH? (1-pAHp05) : pAHp05, oddAHp05);
+
+  // 1X2 com EV (usando odds do ficheiro)
+  const Hc = dampProb(Hm, oddH);
+  const Dc = dampProb(Dm, oddD);
+  const Ac = dampProb(Am, oddA);
+  const evH = (Hc*oddH - 1), evD = (Dc*oddD - 1), evA = (Ac*oddA - 1);
+  const oneX2=[{side:'1',prob:Hc,odd:oddH,ev:evH},{side:'X',prob:Dc,odd:oddD,ev:evD},{side:'2',prob:Ac,odd:oddA,ev:evA}];
+
+  return {base, model:{H:Hm,D:Dm,A:Am,Pover25,PBTTS,pFav,favH,favTeam,dogTeam}, mk, oneX2, calib:c};
+}
+
+
+function chooseByLeague(div, markets){
+  const R = LIGA_REGRAS[div] || { prefer: ['MISTO'], evitar: [] };
+  const pref  = new Set(R.prefer);
+  const avoid = new Set(R.evitar);
+  let best = null;
+
+  for (const m of markets.mk) {
+    // ignorar famílias marcadas como fracas para esta liga
+    if (avoid.has(m.fam)) continue;
+
+    // família desligada no UI
+    const famOk = document.getElementById('fam' + m.fam).checked;
+    if (!famOk) continue;
+
+    // thresholds por família: foco na probabilidade, EV só corta extremos
+    const minProb = MIN_PROB_FAM[m.fam] ?? 0.0;
+    const minEv   = MIN_EV_FAM[m.fam]   ?? -0.25;
+    if (m.prob < minProb) continue;
+
+    // boost por preferências da liga
+    const boost =
+      (pref.has('OVER')  && m.code === 'OVER25') ||
+      (pref.has('BTTS')  && (m.code === 'BTTS_Y' || m.code === 'BTTS_N')) ||
+      (pref.has('RESULTADO') && m.fam === 'RESULTADO') ||
+      (pref.has('AH') && m.fam === 'AH') ||
+      (m.fam === 'RESULTADO' && pref.has('MISTO')) ||
+      (m.fam === 'AH'        && pref.has('MISTO'))
+        ? 1.04
+        : (pref.has('MISTO') ? 1.01 : 1.0);
+
+    // bónus por tipo de mercado: favorecer TOTAL (Over 1.5, Cantos) e BTTS
+    const typeBonus =
+      (m.code === 'OVER15'    ? 0.04 : 0) +
+      (m.code === 'CORN_O75'  ? 0.04 : 0) +
+      ((m.code === 'BTTS_Y' || m.code === 'BTTS_N') ? 0.02 : 0) +
+      (m.fam === 'RESULTADO'  ? -0.01 : 0); // ligeiro "castigo" a 1X2 puro
+
+    const score = (m.prob + typeBonus) * boost;
+
+    if (!best || score > best._s) {
+      best = Object.assign({ _s: score }, m);
+    }
+  }
+
+  return best;
+}
+
+function stakeKelly(prob, odd){
+  const b=Math.max(0, odd-1), p=prob, q=1-p;
+  const f = (b>0)? Math.max(0, ((b*p)-q)/b) : 0;
+  return Math.min(f, 0.02); // cap 2%
+}
+function stakePct(prob, odd){
+  const b=Math.max(0, odd-1), p=prob, q=1-p;
+  const k=Math.max(0, ((b*p)-q)/(b||1));
+  const baseCap=(p>=0.72)?0.02:(p>=0.62?0.01:(p>=0.55?0.006:0.003));
+  let s=Math.min(k, baseCap);
+  if(document.getElementById('useKelly').checked){
+    s=Math.min(s, stakeKelly(prob, odd));
+  }
+  return s;
+}
+function clvFor(row, pickSide){
+  const oOpen = (pickSide==='1')? +row.B365H : (pickSide==='X' ? +row.B365D : +row.B365A);
+  const oClose= (pickSide==='1')? +row.CloseH : (pickSide==='X' ? +row.CloseD : +row.CloseA);
+  if(oOpen>0 && oClose>0) return (oClose/oOpen) - 1;
+  return null;
+}
+
+
+function explain(div,row,choice,pack){
+  const liga = (LIGA_REGRAS[div]?.nome) || div || 'Liga';
+  const m = pack.model || {};
+  const b = pack.base || {};
+  const probPct = (choice.prob*100).toFixed(1);
+  const conf = choice.conf || 'média';
+  const dataJogo = dtLabelFromRow(row);
+  const casa = row.HomeTeam || 'equipa da casa';
+  const fora = row.AwayTeam || 'equipa visitante';
+  const label = choice.label || '';
+  const ts = tsFromRow(row);
+
+  const snap = leagueTableSnapshot(div, ts);
+  const fraseCasa = sentenceRecord(div, casa, 'home', 10);
+  const fraseFora = sentenceRecord(div, fora, 'away', 10);
+  const tabelaCasa = sentenceTable(div, casa, ts);
+  const tabelaFora = sentenceTable(div, fora, ts);
+  const motivCasa = sentenceMotivation(div, casa, ts);
+  const motivFora = sentenceMotivation(div, fora, ts);
+  const h2h = sentenceH2H(div, casa, fora, ts, 5);
+
+  let fraseConf = '';
+  if (conf === 'alta') {
+    fraseConf = 'O modelo gera um sinal forte para este lado do mercado, sustentado por desempenho recente e métricas internas.';
+  } else if (conf === 'média') {
+    fraseConf = 'Há valor estatístico identificado, embora com maior variabilidade natural neste tipo de jogo.';
+  } else {
+    fraseConf = 'Trata-se de uma abordagem mais ousada, indicada para perfis de aposta confortáveis com maior risco.';
+  }
+
+  const implProbPct = (100/choice.odd).toFixed(1);
+
+   let explicacaoMercado = '';
+  const code = (choice.code || '').toUpperCase();
+
+  // --- Resultado protegido (DNB / DC) ---
+  if (code === 'DC1X') {
+    explicacaoMercado =
+      `Protegemos o lado do ${casa}: a aposta ganha com vitória da equipa da casa ou empate. ` +
+      `Os dados do modelo indicam que o ${casa} tem grande probabilidade de, pelo menos, não perder, ` +
+      `por isso faz mais sentido blindar o cenário 1X em vez de arriscar num “1” puro.`;
+  } else if (code === 'DCX2') {
+    explicacaoMercado =
+      `Protegemos o lado do ${fora}: a aposta é vencedora com empate ou triunfo do visitante. ` +
+      `A consistência recente do ${fora} fora de casa e a fragilidade do ${casa} tornam o X2 uma forma segura ` +
+      `de seguir o favoritismo do visitante sem precisar obrigatoriamente da vitória.`;
+  } else if (code === 'DNBH') {
+    explicacaoMercado =
+      `Assumimos o favoritismo do ${casa}, mas com rede de segurança: se o jogo terminar empatado, o investimento é devolvido. ` +
+      `As métricas de forma e classificação apontam vantagem para o ${casa}, daí a escolha de DNB em vez do 1X2 tradicional.`;
+  } else if (code === 'DNBA') {
+    explicacaoMercado =
+      `Exploramos o bom momento do ${fora} com proteção total ao empate. ` +
+      `O modelo vê o visitante muito competitivo neste contexto, ` +
+      `pelo que o DNB permite capturar a superioridade do ${fora} sem ficar exposto a um empate traiçoeiro.`;
+
+  // --- Golos (Over / Under) ---
+  } else if (code === 'OVER25') {
+    explicacaoMercado =
+      'O jogo tem perfil para ser aberto: ambas as equipas produzem muitas ocasiões, ' +
+      'têm média de golos elevada e defesas longe de serem intransponíveis. ' +
+      'Somando a tendência recente de partidas com 3+ golos, o Over 2.5 encaixa bem no padrão estatístico deste confronto.';
+  } else if (code === 'OVER15') {
+    explicacaoMercado =
+      'A probabilidade de termos pelo menos dois golos é muito alta. ' +
+      'O histórico das duas equipas mostra jogos raramente terminarem 0-0 ou 1-0, ' +
+      'por isso o Over 1.5 funciona como uma abordagem mais conservadora, com grande taxa de acerto esperada.';
+  } else if (code === 'UNDER25') {
+    explicacaoMercado =
+      'Os números apontam para um encontro mais controlado: ritmo médio de golos baixo, ' +
+      'equipas com alguma solidez defensiva e tendência para jogos decididos por marcadores curtos. ' +
+      'Neste contexto, o Under 2.5 aproveita a probabilidade elevada de termos até dois golos.';
+
+  // --- BTTS ---
+  } else if (code === 'BTTS_Y') {
+    explicacaoMercado =
+      'Ambas as equipas mostram capacidade ofensiva consistente e defesas vulneráveis. ' +
+      'A frequência com que marcam e sofrem, aliada à forma recente, aumenta bastante a probabilidade ' +
+      'de vermos golo dos dois lados, justificando o “Ambas marcam — Sim”.';
+  } else if (code === 'BTTS_N') {
+    explicacaoMercado =
+      'Os dados sugerem que pelo menos um dos lados terá muitas dificuldades para marcar: ' +
+      'seja por falta de criação ofensiva, seja pela solidez defensiva do adversário. ' +
+      'Isso puxa a probabilidade para “Ambas marcam — Não”, que se torna mais interessante do que o mercado de golos genérico.';
+
+  // --- Cantos ---
+  } else if (code === 'CORN_O75') {
+    explicacaoMercado =
+      'Este encontro deve ter bastante volume ofensivo, com muitas chegadas às áreas e jogo pelos flancos. ' +
+      'O histórico de cantos das duas equipas, somado à forma como atacam (cruzamentos, bolas paradas), ' +
+      'faz com que a linha de mais de 7.5 cantos esteja bem suportada estatisticamente.';
+
+  // --- Asian Handicap ---
+  } else if (code === 'AHM1' || code === 'AHM15') {
+    explicacaoMercado =
+      'O modelo vê uma diferença clara de qualidade e momento entre as equipas. ' +
+      'O handicap negativo exige vitória por margem dilatada, mas oferece uma odd melhor ' +
+      'para um cenário em que o favorito tende a controlar o jogo e criar muitas oportunidades.';
+  } else if (code === 'AHP05') {
+    explicacaoMercado =
+      'Trata-se de um jogo equilibrado, em que o underdog tem argumentos para pontuar. ' +
+      'O AH +0.5 protege o empate a favor dessa equipa, o que faz sentido quando o modelo indica ' +
+      'que a probabilidade de ela não perder é claramente superior ao que a odd sugere.';
+
+  // --- 1X2 directo (se algum dia for usado aqui) ---
+  } else if (label.startsWith('1X2 - 1')) {
+    explicacaoMercado =
+      `Vamos directamente na vitória do ${casa}. A probabilidade calculada pelo modelo é bem superior à implícita na odd, ` +
+      `e o contexto de forma/tabela sustenta o favoritismo claro da equipa da casa.`;
+  } else if (label.startsWith('1X2 - 2')) {
+    explicacaoMercado =
+      `Assumimos a vitória do ${fora}. O visitante chega com melhor momento, ` +
+      `estatísticas ofensivas superiores e um encaixe táctico favorável, ` +
+      `pelo que o “2” apresenta uma relação risco/retorno muito interessante.`;
+  } else if (label.startsWith('1X2 - X')) {
+    explicacaoMercado =
+      'O modelo aproxima bastante as probabilidades de vitória de cada lado, ' +
+      'com tendência para jogo equilibrado e marcado por muito equilíbrio no meio-campo. ' +
+      'Neste cenário, o empate ganha peso e justifica a entrada directa no X.';
+
+  // --- fallback muito mais neutro (casos raros) ---
+  } else {
+    explicacaoMercado =
+      'Este mercado é aquele onde o modelo encontra melhor equilíbrio entre probabilidade real e odd oferecida, ' +
+      'tendo em conta forma recente, contexto de liga e padrão estatístico do jogo.';
+  }
+
+
+  let header = `${liga}: ${casa} vs ${fora} — ${dataJogo}`;
+  if (snap && snap.matchDay) {
+    const jornada = snap.matchDay + 1;
+    header += ` (Jornada ${jornada})`;
+  }
+
+  const linhas = [
+    `<strong>Previsão do encontro</strong>`,
+    header,
+    '',
+    `<strong>Porque escolhemos esta pick?</strong>`,
+    `• Mercado: ${label}`,
+    `• Probabilidade estimada pelo modelo: ${probPct}%`,
+    `• Odd actual: ${choice.odd.toFixed(2)} `,
+    `• ${explicacaoMercado}`
+  ];
+
+  // Odds 1X2 (se existirem)
+  const odd1 = readOdd(row, ['B365H','HomeOdd','PSH','OddsH','OH']);
+  const oddX = readOdd(row, ['B365D','DrawOdd','PSD','OddsD','OD']);
+  const odd2 = readOdd(row, ['B365A','AwayOdd','PSA','OddsA','OA']);
+
+  if (odd1 || oddX || odd2){
+    linhas.push('');
+    linhas.push('<strong>Odds principais (1X2)</strong>');
+    linhas.push(`• Vitória ${casa}: ${odd1 ? odd1.toFixed(2) : '-'}`);
+    linhas.push(`• Empate: ${oddX ? oddX.toFixed(2) : '-'}`);
+    linhas.push(`• Vitória ${fora}: ${odd2 ? odd2.toFixed(2) : '-'}`);
+  }
+
+  if (snap && (tabelaCasa || tabelaFora)) {
+    linhas.push('');
+    linhas.push('<strong>Enquadramento na tabela</strong>');
+    if (tabelaCasa) linhas.push(`• ${tabelaCasa}`);
+    if (tabelaFora) linhas.push(`• ${tabelaFora}`);
+    if (motivCasa) linhas.push(`• ${motivCasa}`);
+    if (motivFora) linhas.push(`• ${motivFora}`);
+  }
+
+  if (h2h) {
+    linhas.push('');
+    linhas.push('<strong>Confrontos directos</strong>');
+    linhas.push(`• ${h2h}`);
+  }
+
+  if (fraseCasa) {
+    linhas.push('');
+    linhas.push('<strong>Forma recente do anfitrião</strong>');
+    linhas.push(`• ${fraseCasa}`);
+  }
+  if (fraseFora) {
+    linhas.push('');
+    linhas.push('<strong>Forma recente do visitante</strong>');
+    linhas.push(`• ${fraseFora}`);
+  }
+  if (fraseConf) {
+    linhas.push('');
+    linhas.push(`• ${fraseConf}`);
+  }
+
+  // Mini-tabelas (últimos jogos + H2H)
+  if (HIST_ALL && HIST_ALL.length){
+    const lastHome = lastMatchesTeam(div, casa, ts, 5);
+    const lastAway = lastMatchesTeam(div, fora, ts, 5);
+    const lastH2H = lastMatchesH2H(div, casa, fora, ts, 5);
+
+    if (lastHome.length || lastAway.length){
+      linhas.push('');
+      let html = '<div class="mini-grid">';
+      if (lastHome.length){
+        html += '<div class="mini-table"><div class="mini-title">Últimos 5 jogos — '+casa+'</div>';
+        html += '<table><thead><tr><th>Data</th><th>Adv.</th><th>Res.</th></tr></thead><tbody>';
+        html += lastHome.map(m =>
+          '<tr class="mini-row" data-div="'+div+'" data-home="'+m.home+'" data-away="'+m.away+'" data-ts="'+m.ts+'">'+
+            '<td>'+m.date+'</td>'+
+            '<td>'+m.opp+' ('+m.loc+')</td>'+
+            '<td>'+m.score+' <span class="mini-res res-'+m.res+'">'+m.res+'</span></td>'+
+          '</tr>'
+        ).join('');
+        html += '</tbody></table></div>';
+      }
+      if (lastAway.length){
+        html += '<div class="mini-table"><div class="mini-title">Últimos 5 jogos — '+fora+'</div>';
+        html += '<table><thead><tr><th>Data</th><th>Adv.</th><th>Res.</th></tr></thead><tbody>';
+        html += lastAway.map(m =>
+          '<tr class="mini-row" data-div="'+div+'" data-home="'+m.home+'" data-away="'+m.away+'" data-ts="'+m.ts+'">'+
+            '<td>'+m.date+'</td>'+
+            '<td>'+m.opp+' ('+m.loc+')</td>'+
+            '<td>'+m.score+' <span class="mini-res res-'+m.res+'">'+m.res+'</span></td>'+
+          '</tr>'
+        ).join('');
+        html += '</tbody></table></div>';
+      }
+      html += '</div>';
+      linhas.push(html);
+    }
+
+    if (lastH2H.length){
+      linhas.push('');
+      let htmlH = '<div class="mini-table"><div class="mini-title">Confrontos directos — últimos 5</div>';
+      htmlH += '<table><thead><tr><th>Data</th><th>Jogo</th></tr></thead><tbody>';
+      htmlH += lastH2H.map(m => {
+        let homeName = m.home;
+        let awayName = m.away;
+
+        const hs = Number(m.score.split('-')[0]);
+        const as = Number(m.score.split('-')[1]);
+
+        if (hs > as) homeName = '<strong>'+homeName+'</strong>';
+        if (as > hs) awayName = '<strong>'+awayName+'</strong>';
+
+        return (
+          '<tr class="mini-row" data-div="'+div+'" data-home="'+m.home+'" data-away="'+m.away+'" data-ts="'+m.ts+'">'+
+            '<td>'+m.date+'</td>'+
+            '<td>'+homeName+' '+m.score+' '+awayName+'</td>'+
+          '</tr>'
+        );
+      }).join('');
+      htmlH += '</tbody></table></div>';
+      linhas.push(htmlH);
+    }
+  }
+
+  // Placeholder das estatísticas (fica IMEDIATAMENTE antes da classificação)
+  linhas.push('<div class="mini-stats-panel">Clique num jogo das tabelas acima para ver estatísticas detalhadas (remates, cantos, cartões, etc.).</div>');
+
+  // Classificação da liga (vem logo a seguir ao placeholder)
+  const standingsHTML = buildStandingsHTML(div, ts, casa, fora);
+  if (standingsHTML){
+    linhas.push(standingsHTML);
+  }
+
+  return linhas.join('\n');
+}
+     
+
+
+let LAST_CHOSEN=[], LAST_1X2=[];
+let TEAM_STATS = {};
+let HIST_ALL = [];
+
+
+document.addEventListener('click', function(ev){
+
+  // 1) SE CLICAR NO BOTÃO "Fechar"
+  if (ev.target.classList.contains('btn-close-stats')) {
+
+    // apanha o painel onde está o botão
+    const panel = ev.target.closest('.mini-stats-panel');
+
+    // remove o painel do ecrã
+    if (panel) {
+      panel.remove();
+    }
+
+    // evita que o clique continue para o resto da função
+    ev.stopPropagation();
+    return;
+  }
+
+
+  // 2) SE CLICAR NUMA MINI-ROW (linha de último jogos ou H2H)
+  const rowEl = ev.target.closest('.mini-row');
+  if(!rowEl) return;  // se não clicou numa mini-row, não faz nada
+
+
+  // 3) Recolhe os atributos do jogo clicado
+  const div  = rowEl.getAttribute('data-div');
+  const home = rowEl.getAttribute('data-home');
+  const away = rowEl.getAttribute('data-away');
+  const tsStr = rowEl.getAttribute('data-ts');
+  const ts = tsStr ? Number(tsStr) : null;
+
+  // Validações básicas
+  if(!div || !home || !away || !HIST_ALL || !HIST_ALL.length) return;
+
+
+  // 4) Procura este jogo no histórico para exibir estatísticas
+  let matchRow = null;
+  for(const r of HIST_ALL){
+    if(r.Div !== div) continue;
+    if(r.HomeTeam !== home || r.AwayTeam !== away) continue;
+
+    const d = parseHistDate(r);
+    if(!d) continue;
+
+    const thisTs = d.getTime();
+    if(ts && thisTs !== ts) continue;
+
+    matchRow = r;
+    break;
+  }
+  if(!matchRow) return;
+
+
+  // 5) Coloca o painel dentro da área da explicação daquela pick
+  const explainBox = rowEl.closest('.explain');
+  if(!explainBox) return;
+
+  let panel = explainBox.querySelector('.mini-stats-panel');
+
+  // se não existir painel, cria um
+  if(!panel){
+    panel = document.createElement('div');
+    panel.className = 'mini-stats-panel';
+    explainBox.appendChild(panel);
+  }
+
+  // 6) Preenche o painel com HTML de estatísticas
+  panel.innerHTML = buildStatsPanel(matchRow, home, away);
+});
+
+
+// === Loading overlay helpers (progresso 0 → 100% linear, uma vez de 0 a 100) ===
+const loadingOverlay = document.getElementById('loadingOverlay');
+const loadingBarFill = loadingOverlay ? loadingOverlay.querySelector('.loading-bar-fill') : null;
+const loadingPercent = document.getElementById('loadingPercent');
+const loadingTextEl = loadingOverlay ? loadingOverlay.querySelector('.loading-text') : null;
+
+let loadingTimer = null;
+let loadingProgress = 0;
+
+/**
+ * Inicia o overlay de loading.
+ * - message: texto a apresentar (opcional)
+ * - O nível de progresso sobe de 0 até 99 de forma monótona.
+ *   O 100% é reservado para o finishLoading().
+ */
+function startLoading(message){
+  if (!loadingOverlay) return;
+  // Se já existir um timer anterior, limpa-o
+  if (loadingTimer) clearInterval(loadingTimer);
+
+  loadingOverlay.style.display = 'flex';
+
+  loadingProgress = 0;
+  if (loadingBarFill) loadingBarFill.style.width = '0%';
+  if (loadingPercent) loadingPercent.textContent = '0%';
+  if (loadingTextEl){
+    loadingTextEl.textContent = message || 'A calcular picks...';
+  }
+
+  // Progresso linear 0→99 (uma vez, sem andar para trás)
+  loadingTimer = setInterval(() => {
+    if (loadingProgress < 99) {
+      loadingProgress += 1;
+      if (loadingBarFill) loadingBarFill.style.width = loadingProgress + '%';
+      if (loadingPercent) loadingPercent.textContent = loadingProgress + '%';
+    }
+  }, 60); // ~6s até 99
+}
+
+/**
+ * Termina o overlay de loading:
+ * - coloca rapidamente a 100%
+ * - esconde o overlay
+ */
+function finishLoading(){
+  if (!loadingOverlay) return;
+  if (loadingTimer){
+    clearInterval(loadingTimer);
+    loadingTimer = null;
+  }
+
+  // Completa até 100 se ainda não lá estiver
+  const stepTo100 = () => {
+    if (loadingProgress < 100) {
+      loadingProgress += 2;
+      if (loadingProgress > 100) loadingProgress = 100;
+      if (loadingBarFill) loadingBarFill.style.width = loadingProgress + '%';
+      if (loadingPercent) loadingPercent.textContent = loadingProgress + '%';
+      return false;
+    }
+    return true;
+  };
+
+  // Pequeno interval só para animar a recta final
+  const finisher = setInterval(() => {
+    const done = stepTo100();
+    if (done){
+      clearInterval(finisher);
+      setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+      }, 200);
+    }
+  }, 20);
+}
+
+
+const runBtn = document.getElementById('runBtn');
+
+runBtn.addEventListener('click', async()=>{
+  startLoading('A calcular picks...');
+  try{
+    const bank=parseFloat(document.getElementById('bankroll').value||0);
+    const targetParlay=parseFloat(document.getElementById('targetParlay').value||5);
+    const maxPorFam=parseInt(document.getElementById('maxPorFam').value||'3',10);
+    const onlyHigh=document.getElementById('onlyHigh').checked;
+    const mode1x2=document.getElementById('mode1x2').value;
+    const fxInput=document.getElementById('fixturesFile');
+    const fxFiles=[...fxInput.files];
+    if(!fxFiles.length){ alert('Carrega o ficheiro de fixtures.'); return; }
+    let fixtures=[];
+    for(const f of fxFiles){
+      const rows=await readAny(f);
+      fixtures=fixtures.concat(rows);
+    }
+
+    const hFiles=[...document.getElementById('historyFiles').files];
+    let histAll=[];
+    for(const f of hFiles){
+      const rows=await readAny(f);
+      histAll=histAll.concat(rows);
+    }
+
+    // Normalização das novas ligas (new_league_fixtures / new_leagues_data)
+    fixtures = fixtures.map(r=>{
+      if(!r) return r;
+      if(!r.Div){
+        const c=(r.Country||'').trim();
+        if(c && COUNTRY_TO_DIV[c]) r.Div = COUNTRY_TO_DIV[c];
+      }
+      if(!r.HomeTeam && r.Home) r.HomeTeam = r.Home;
+      if(!r.AwayTeam && r.Away) r.AwayTeam = r.Away;
+      return r;
+    });
+
+  histAll = histAll.map(r=>{
+  if(!r) return r;
+  if(!r.Div){
+    const c=(r.Country||'').trim();
+    if(c && COUNTRY_TO_DIV[c]) r.Div = COUNTRY_TO_DIV[c];
+  }
+  if(!r.HomeTeam && r.Home) r.HomeTeam = r.Home;
+  if(!r.AwayTeam && r.Away) r.AwayTeam = r.Away;
+  if(r.HG != null && r.FTHG == null) r.FTHG = r.HG;
+  if(r.AG != null && r.FTAG == null) r.FTAG = r.AG;
+  if(r.Res && !r.FTR) r.FTR = r.Res;
+
+  // Já não inventamos remates/cantos/cartões.
+  return r;
+});
+
+
+    const opts={
+      nTop5: parseInt(document.getElementById('nTop5').value||'5',10),
+      nMed:  parseInt(document.getElementById('nMed').value||'4',10),
+      nSeg:  parseInt(document.getElementById('nSeg').value||'3',10),
+      decayPreset: document.getElementById('decayPreset').value,
+      overrides: document.getElementById('overrides').value,
+      bayesAlpha: parseInt(document.getElementById('bayesAlpha').value||'0',10)
+    };
+    const calib=await computeLeagueCalib(histAll, opts);
+
+    TEAM_STATS = computeTeamStats(histAll);
+    HIST_ALL = histAll;
+
+    const IGNORED = new Set(['EC','E2','E3','SC2','SC3']);
+
+const usable = fixtures.filter(r =>
+  r.HomeTeam &&
+  r.AwayTeam &&
+  r.Div &&
+  !IGNORED.has(r.Div) &&
+  (implied1x2(r) != null)
+);
+
+    usable.sort((a,b)=>tsFromRow(a)-tsFromRow(b));
+
+    const items=[]; const oneX2List=[];
+    for(const r of usable){
+      const pack=buildMarkets(r, calib);
+      const pick=chooseByLeague(r.Div, pack);
+      const ts = tsFromRow(r);
+      if(pick){
+        const stake=stakePct(pick.prob, pick.odd);
+        const stakeEUR=stake*bank;
+        // Normalizar hora dos fixtures (Excel time, string, etc.)
+const rawTime =
+  (r.Time   ?? r.Kickoff ?? r.Hour ?? r.Hora ?? '');  // usar ?? para aceitar 0
+
+let timeStr = '';
+
+if (rawTime instanceof Date){
+  const h = rawTime.getHours();
+  const m = rawTime.getMinutes();
+  const pad = n => String(n).padStart(2,'0');
+  timeStr = pad(h)+':'+pad(m);
+} else if (typeof rawTime === 'number' && !isNaN(rawTime)){
+  // Excel time: fração do dia (0–1)
+  const totalMinutes = Math.round(rawTime * 24 * 60);
+  const h = Math.floor(totalMinutes / 60) % 24;
+  const m = totalMinutes % 60;
+  const pad = n => String(n).padStart(2,'0');
+  timeStr = pad(h)+':'+pad(m);
+} else if (rawTime && typeof rawTime === 'object' && 'w' in rawTime){
+  // célula XLSX com .w (texto formatado)
+  timeStr = String(rawTime.w).trim();
+} else if (typeof rawTime === 'string'){
+  timeStr = rawTime.trim();
+}
+
+const rowOut = {
+  Div:      r.Div,
+  LigaName: ligaNome(r.Div),
+  Date:     dtLabelFromRow(r),
+  TS:       ts,
+  Home:     r.HomeTeam,
+  Away:     r.AwayTeam,
+  TimeStr:  timeStr,
+  Market:   pick.label,
+  Code:     pick.code,
+  Family:   pick.fam,
+  Prob:     pick.prob,
+  Odd:      pick.odd,
+  EV:       pick.ev,
+  Conf:     pick.conf,
+  StakePct: stake,
+  StakeEUR: stakeEUR,
+  Explain:  explain(r.Div,r,pick,pack)
+};
+
+
+        if(!onlyHigh || rowOut.Conf!=='fraca') items.push(rowOut);
+      }
+      const one = pack.oneX2
+        .filter(o =>
+          o.odd >= MIN_ODD &&
+          o.prob >= MIN_PROB_1X2 &&
+          SAFE_1X2_DIV.has(r.Div) &&
+          !isEuropeHeavy1X2(r.Div, r.HomeTeam, r.AwayTeam, o.side, ts)
+        )
+        .map(o => ({
+          Div: r.Div,
+          LigaName: ligaNome(r.Div),
+          Date: dtLabelFromRow(r),
+          TS: ts,
+          Home: r.HomeTeam,
+          Away: r.AwayTeam,
+          Pick: o.side,
+          Prob: o.prob,
+          Odd: o.odd,
+          EV: o.ev,
+          CLV: clvFor(r, o.side)
+        }));
+      oneX2List.push(...one);
+    }
+    items.sort((a,b)=> b.Prob - a.Prob);
+
+    // Sem limites por liga/família ou nº máximo de picks:
+    // usamos simplesmente todos os itens ordenados por data/hora.
+    // Limitação a 10 picks, com distribuição fixa por tipo de mercado:
+// 2 Over 1.5, 2 Cantos, 2 DNB, 2 DC (1X/X2) e 2 BTTS.
+// Critério interno: maior probabilidade (EV não entra na escolha),
+// com limiares por tipo de mercado que refletem a natureza de cada um.
+// Ordenação baseia-se na probabilidade ajustada e usa o EV apenas como desempate suave.
+// Assim continuamos a priorizar acerto, mas preferimos ligeiramente picks com valor positivo.
+// ---- Núcleo de ordenação "inteligente" das potenciais picks ----
+// Usamos um score composto: probabilidade é sempre o coração da decisão,
+// mas damos pequenos ajustes por EV, CLV e perfil típico da liga.
+function marketStyle(it){
+  if (it.Code === 'OVER15' || (it.Family === 'TOTAL' && /over/i.test(it.Label || ''))) return 'OVER';
+  if (it.Code === 'CORN_O75') return 'CORNERS';
+  if (it.Code === 'BTTS_Y' || it.Code === 'BTTS_N') return 'BTTS';
+  if (it.Code === 'DNBH' || it.Code === 'DNBA' || it.Code === 'DC1X' || it.Code === 'DCX2') return 'RESULTADO';
+  return 'OUTRO';
+}
+
+function scoreItem(it){
+  let s = it.Prob || 0;
+
+  // Bónus suave por EV positivo (sem desvirtuar foco em probabilidade)
+  if (typeof it.EV === 'number' && it.EV > 0){
+    const evCap = Math.min(it.EV, 0.75);
+    s += evCap * 0.12;
+  }
+
+  // CLV (quando existir) – leve sinal de que o mercado mexe na direcção certa
+  if (typeof it.CLV === 'number' && it.CLV > 0){
+    const clvCap = Math.min(it.CLV, 0.25);
+    s += clvCap * 0.08;
+  }
+
+  // Ajuste por perfil estatístico de liga (OVER/UNDER/BTTS mais típicos)
+  const regra = LIGA_REGRAS[it.Div];
+  if (regra){
+    const estilo = marketStyle(it);
+    if (regra.prefer && regra.prefer.includes('OVER') && estilo === 'OVER') s += 0.02;
+    if (regra.prefer && regra.prefer.includes('BTTS') && estilo === 'BTTS') s += 0.02;
+    if (regra.prefer && regra.prefer.includes('UNDER') && estilo === 'RESULTADO') s += 0.01;
+
+    if (regra.evitar && regra.evitar.includes('OVER') && estilo === 'OVER') s -= 0.015;
+    if (regra.evitar && regra.evitar.includes('BTTS') && estilo === 'BTTS') s -= 0.015;
+  }
+
+  return s;
+}
+
+const scored = [...items].sort((a,b)=> scoreItem(b) - scoreItem(a));
+
+// Controlo suave para não concentrar demasiadas picks no mesmo jogo
+const matchCounts = {};
+function matchKey(it){
+  return `${it.Div}|${it.Date}|${it.Home}|${it.Away}`;
+}
+function canAddToMatch(it){
+  const k = matchKey(it);
+  const n = matchCounts[k] || 0;
+  return n < 2; // no máximo 2 mercados por jogo
+}
+function registerMatch(it){
+  const k = matchKey(it);
+  matchCounts[k] = (matchCounts[k] || 0) + 1;
+}
+
+const chosen = [];
+const counts = { over15:0, corners:0, dnb:0, dc:0, btts:0 };
+
+// limiares mínimos de probabilidade por tipo (em termos de prob já ajustada pAdj)
+const THRESH = {
+  over15: 0.66,   // Over 1.5 é naturalmente muito provável
+  corners: 0.62,  // Cantos 7.5 tendem a ser frequentes
+  dnb:    0.72,   // DNB pede maior segurança
+  dc:     0.74,   // Dupla chance é ainda mais estável
+  btts:   0.60    // BTTS é volátil, mas ainda assim filtramos o mais baixo
+};
+
+// Helpers para saber se uma pick já foi escolhida
+function alreadyChosen(it){
+  return chosen.includes(it);
+}
+
+// Função genérica para escolher até 2 picks de um conjunto de códigos,
+// tentando primeiro acima do limiar e, se não chegar a 2, completando abaixo do limiar.
+function pickCategory(matchFn, key){
+  const minProb = THRESH[key] ?? 0.0;
+
+  // 1) Primeiro, picks fortes (>= limiar)
+  for (const it of scored){
+    if (counts[key] >= 3) break;
+    if (!matchFn(it)) continue;
+    if (alreadyChosen(it)) continue;
+    if (it.Prob < minProb) continue;
+    if (!canAddToMatch(it)) continue;
+    chosen.push(it);
+    counts[key]++;
+    registerMatch(it);
+  }
+
+  // 2) Se ainda não temos 2, completar com as melhores restantes dessa categoria,
+  // mesmo que fiquem abaixo do limiar (para garantir variedade).
+  if (counts[key] < 2){
+    for (const it of scored){
+      if (counts[key] >= 2) break;
+      if (!matchFn(it)) continue;
+      if (alreadyChosen(it)) continue;
+      if (!canAddToMatch(it)) continue;
+      chosen.push(it);
+      counts[key]++;
+      registerMatch(it);
+    }
+  }
+}
+
+// 1) Over 1.5 golos
+pickCategory(it => it.Code === 'OVER15', 'over15');
+
+// 2) Cantos
+pickCategory(it => it.Code === 'CORN_O75', 'corners');
+
+// 3) DNB (Casa ou Visitante)
+pickCategory(it => it.Code === 'DNBH' || it.Code === 'DNBA', 'dnb');
+
+// 4) Dupla Chance 1X / X2
+pickCategory(it => it.Code === 'DC1X' || it.Code === 'DCX2', 'dc');
+
+// 5) BTTS (Sim ou Não)
+pickCategory(it => it.Code === 'BTTS_Y' || it.Code === 'BTTS_N', 'btts');
+
+// Fallback: se, por algum motivo, ainda tivermos menos de 10 picks
+// (ex: poucas ligas/jogos activos), preenche com as próximas melhores por probabilidade,
+// ainda respeitando o limite de mercados por jogo.
+if (chosen.length < 10){
+  for (const it of scored){
+    if (chosen.length >= 10) break;
+    if (alreadyChosen(it)) continue;
+    if (!canAddToMatch(it)) continue;
+    chosen.push(it);
+    registerMatch(it);
+  }
+}
+
+// Ordena as picks finais por data/hora para a tabela ficar legível
+chosen.sort((a,b)=>a.TS-b.TS);
+LAST_CHOSEN = chosen.slice();
+
+
+// Filtra para manter apenas jogos de hoje em diante
+const todayStart = new Date();
+todayStart.setHours(0,0,0,0);
+const cutoffTS = todayStart.getTime();
+const filteredChosen = chosen.filter(x => (x.TS || 0) >= cutoffTS);
+chosen.length = 0;
+chosen.push(...filteredChosen);
+LAST_CHOSEN = chosen;
+
+    // Seleção melhorada de 1X2: só por probabilidade, forte e com limite por liga
+    
+function selectBest1x2(all){
+      const MIN_PROB_1X2_STRONG = 0.70;
+      const MAX_PER_LEAGUE = 2;
+      const MAX_PICKS_1X2 = 10;
+
+      function score1x2(it){
+        let s = it.Prob || 0;
+        if (typeof it.EV === 'number' && it.EV > 0){
+          const evCap = Math.min(it.EV, 0.75);
+          s += evCap * 0.15;
+        }
+        // Pequeno ajuste se a liga for tradicionalmente mais estável em resultado
+        const regra = LIGA_REGRAS[it.Div];
+        if (regra && regra.prefer && regra.prefer.includes('UNDER')){
+          s += 0.01;
+        }
+        return s;
+      }
+
+      const ordered = [...all].sort((a,b)=> score1x2(b) - score1x2(a));
+      const chosen1 = [];
+      const perLiga = {};
+
+      for (const it of ordered){
+        if (chosen1.length >= MAX_PICKS_1X2) break;
+        if (it.Prob < MIN_PROB_1X2_STRONG) continue;
+        const lg = it.Div;
+        perLiga[lg] = perLiga[lg] || 0;
+        if (perLiga[lg] >= MAX_PER_LEAGUE) continue;
+        chosen1.push(it);
+        perLiga[lg]++;
+      }
+
+      if (chosen1.length < MAX_PICKS_1X2){
+        for (const it of ordered){
+          if (chosen1.length >= MAX_PICKS_1X2) break;
+          if (chosen1.includes(it)) continue;
+          const lg = it.Div;
+          perLiga[lg] = perLiga[lg] || 0;
+          if (perLiga[lg] >= MAX_PER_LEAGUE) continue;
+          chosen1.push(it);
+          perLiga[lg]++;
+        }
+      }
+
+      chosen1.sort((a,b)=>a.TS - b.TS);
+      return chosen1;
+    }
+
+
+    LAST_1X2 = selectBest1x2(oneX2List);
+
+    // Filtrar 1X2 para manter apenas jogos de hoje em diante
+    if (Array.isArray(LAST_1X2)) {
+      LAST_1X2 = LAST_1X2.filter(x => (x.TS || 0) >= cutoffTS);
+    }
+
+    // Sumário + calib diag
+    const sum=document.getElementById('summary'); sum.style.display='block';
+    const totalStakePct = (chosen.reduce((s,x)=>s+x.StakePct,0)*100).toFixed(1);
+    const totalStakeEUR = chosen.reduce((s,x)=>s+x.StakeEUR,0).toFixed(2);
+    sum.innerHTML=`<strong>${chosen.length}</strong> picks de ${usable.length} jogos.`;
+
+    const seenDivs = Array.from(new Set(usable.map(r=>r.Div)));
+    const cdiv=document.getElementById('calib'); cdiv.style.display='block';
+    const rows=seenDivs.map(d=>{
+      const c=calib[d]||{usedSeasons:[],weights:[],totalRows:0,homeBias:0,overBias:0,bttsBias:0,bayesAlpha:0};
+      return `<tr>
+        <td>${d}</td>
+        <td>${ligaNome(d)}</td>
+        <td>${c.usedSeasons.join(', ')||'-'}</td>
+        <td>${c.weights.join(', ')||'-'}</td>
+        <td>${c.totalRows||0}</td>
+        <td>${(c.homeBias*100).toFixed(1)}%</td>
+        <td>${(c.overBias*100).toFixed(1)}%</td>
+        <td>${(c.bttsBias*100).toFixed(1)}%</td>
+        <td>α=${c.bayesAlpha}</td>
+      </tr>`;
+    }).join('');
+    cdiv.innerHTML = `<details><summary><strong>🧪 Diagnóstico de calibração</strong> <span class="tiny">(épocas usadas, pesos, Bayes α e viés por liga)</span></summary>
+      <div style="overflow:auto;margin-top:10px">
+        <table>
+          <thead><tr><th>Div</th><th>Liga</th><th>Épocas usadas</th><th>Pesos</th><th>Linhas (pond.)</th><th>Home bias</th><th>Over bias</th><th>BTTS bias</th><th>Bayes</th></tr></thead>
+          <tbody>${rows || '<tr><td colspan="9">Sem histórico carregado.</td></tr>'}</tbody>
+        </table>
+      </div>
+    </details>`;
+
+    // Tabela de picks
+const picks = document.getElementById('picks');
+picks.innerHTML = `<table>
+  <thead>
+    <tr>
+      <th>Liga</th>
+      <th>Data</th>
+      <th>Hora</th>
+      <th>Jogo</th>
+      <th>Mercado</th>
+      <th>Prob.</th>
+      <th>Odd</th>
+      <th>EV</th>
+      <th>Conf.</th>
+    </tr>
+  </thead>
+    <tbody>${
+    chosen.map(x => {
+      const dTs = new Date(x.TS || Date.now());
+      const pad = n => String(n).padStart(2,'0');
+
+      const soData = `${pad(dTs.getDate())}/${pad(dTs.getMonth()+1)}/${dTs.getFullYear()}`;
+
+      // Hora vem pronta de TimeStr; se estiver vazia, usa TS como fallback
+      let soHora = (x.TimeStr || '').trim();
+      if (!soHora){
+        soHora = `${pad(dTs.getHours())}:${pad(dTs.getMinutes())}`;
+      }
+
+      return `
+        <tr>
+          <td>${x.LigaName}</td>
+          <td>${soData}</td>
+          <td>${soHora}</td>
+          <td>${x.Home} vs ${x.Away}</td>
+          <td>${x.Market}</td>
+          <td>${(x.Prob*100).toFixed(1)}%</td>
+          <td>${x.Odd.toFixed(2)}</td>
+          <td>${(x.EV*100).toFixed(1)}%</td>
+          <td>
+            <span class="badge ${x.Conf==='alta'?'good':x.Conf==='média'?'warn':'bad'}">${x.Conf}</span>
+            <div class="conf">
+              <div class="fill" style="width:${Math.min(100, Math.max(0,(x.Prob-0.5)*200))}%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="9">
+            <details><summary>Ver explicação</summary><div class="explain">${x.Explain}</div></details>
+          </td>
+        </tr>
+      `;
+    }).join('')
+  }</tbody>
+</table>`;
+
+
+
+    document.getElementById('picksWrap').style.display='block';
+
+    // Múltipla (com odd mínima respeitada porque saiu de chosen, que já filtra por MIN_ODD nos mercados)
+    const lowTarget=targetParlay<1.5;
+    const rangeMin=lowTarget?1.05:1.30, rangeMax=lowTarget?1.40:2.50;
+    // Pool para múltipla: picks + 1X2 (sem duplicar jogos)
+    const pool = [...chosen];
+
+    // Adiciona 1X2 como mercados elegíveis (ex.: "1X2 - 1")
+    const seenGames = new Set(chosen.map(x => `${x.Date}::${x.Home}::${x.Away}`));
+    LAST_1X2.forEach(x => {
+      const key = `${x.Date}::${x.Home}::${x.Away}`;
+      if (seenGames.has(key)) return;
+      seenGames.add(key);
+      pool.push({
+        Div: x.Div,
+        LigaName: x.LigaName,
+        Date: x.Date,
+        TS: x.TS,
+        Home: x.Home,
+        Away: x.Away,
+        Market: `1X2 - ${x.Pick}`,
+        Code: `1X2_${x.Pick}`,
+        Family: 'RESULTADO',
+        Prob: x.Prob,
+        Odd: x.Odd,
+        EV: x.EV,
+        Conf: x.Prob>=0.76 ? 'alta' : (x.Prob>=0.66 ? 'média' : 'baixa'),
+        StakePct: 0,
+        StakeEUR: 0,
+        Explain: ''
+      });
+    });
+
+    const elig = pool
+      .filter(x => x.Odd>=rangeMin && x.Odd<=rangeMax && x.Prob>=0.58)
+      .sort((a,b) => (b.EV*b.Prob)-(a.EV*a.Prob));
+
+    const parlay = []; 
+    let prod = 1;
+    for (const x of elig){
+      if (parlay.length>=4) break;
+      if (prod*x.Odd <= (lowTarget ? targetParlay*1.5 : targetParlay*1.15)){
+        parlay.push(x); 
+        prod*=x.Odd;
+      }
+    }
+    const parDiv = document.getElementById('parlay');
+    if (parlay.length >= (lowTarget ? 1 : 2)) {
+      parDiv.innerHTML = `
+        <div class="parlay-header">
+          <div class="parlay-pill">
+            <span>🎯 Múltipla sugerida</span>
+            <span>${parlay.length} seleções</span>
+            <span class="parlay-odd-main">Odd total ≈ ${prod.toFixed(2)}</span>
+          </div>
+          <div class="parlay-note">
+            Combinação pensada para maximizar taxa de acerto mantendo o risco controlado.
+          </div>
+        </div>
+        <div class="parlay-items">
+          ${
+            parlay.map(x => `
+              <div class="parlay-item">
+                <div class="parlay-line">${x.LigaName} · ${x.Date}</div>
+                <div class="parlay-match">${x.Home} vs ${x.Away}</div>
+                <div class="parlay-market">${x.Market}</div>
+                <div class="parlay-meta">
+                  <span class="parlay-odd-pill">@ ${x.Odd.toFixed(2)}</span>
+                  <span class="parlay-conf">Conf. ${x.Conf}</span>
+                </div>
+              </div>
+            `).join('')
+          }
+        </div>`;
+    } else {
+      parDiv.innerHTML = `<p class="tiny">Sem múltipla suficientemente robusta. Mantém-te em simples neste conjunto.</p>`;
+    }
+
+
+    document.getElementById('parlayWrap').style.display='block';
+
+    // 1X2
+    const b1=document.getElementById('best1x2');
+    b1.innerHTML=`<table><thead><tr><th>Liga</th><th>Data</th><th>Jogo</th><th>Pick 1X2</th><th>Prob.</th><th>Odd</th><th>EV</th><th>CLV*</th></tr></thead><tbody>${
+      LAST_1X2.map(x=>`<tr>
+        <td>${x.LigaName}</td>
+        <td>${x.Date}</td>
+        <td>${x.Home} vs ${x.Away}</td>
+        <td>${x.Pick}</td>
+        <td>${(x.Prob*100).toFixed(1)}%</td>
+        <td>${x.Odd.toFixed(2)}</td>
+        <td>${(x.EV*100).toFixed(1)}%</td>
+        <td>${x.CLV==null?'-':(x.CLV*100).toFixed(1)+'%'}</td>
+      </tr>`).join('')}
+      </tbody></table><div class="tiny">*CLV usa colunas CloseH/CloseD/CloseA se existirem no ficheiro.</div>`;
+    document.getElementById('best1x2Wrap').style.display='block';
+
+    document.getElementById('warn').style.display='none';
+
+    // Mostrar tabs de navegação após gerar resultados
+    const tabs = document.getElementById('resultsTabs');
+    if (tabs){
+      tabs.style.display = 'flex';
+      tabs.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('tab-active'));
+      const first = tabs.querySelector('.tab-btn[data-target="picksWrap"]') || tabs.querySelector('.tab-btn');
+      if (first) first.classList.add('tab-active');
+    }
+  }catch(err){
+    console.error(err);
+    const w=document.getElementById('warn');
+    w.textContent='Erro: '+(err.message||err);
+    w.style.display='block';
+  } finally {
+    finishLoading();
+  }
+});
+
+// ==== Export CSV (picks e 1X2) ====
+function toCSV(arr, headers){
+  const esc=v=>(v===undefined||v===null)?'':String(v).split('"').join('""');
+  const lines = arr.map(o=>headers.map(h=>`"${esc(o[h])}"`).join(','));
+  return [headers.join(','), ...lines].join('\n');
+}
+
+// Navegação das tabs de resultados (fixas no topo)
+const resultsTabsEl = document.getElementById('resultsTabs');
+if (resultsTabsEl){
+  resultsTabsEl.addEventListener('click', (ev)=>{
+    const btn = ev.target.closest('.tab-btn');
+    if (!btn) return;
+    const targetId = btn.getAttribute('data-target');
+    if (targetId){
+      const card = document.getElementById(targetId);
+      if (card){
+        card.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
+    resultsTabsEl.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('tab-active'));
+    btn.classList.add('tab-active');
+  });
+}
+
+// copiar texto para clipboard (fallback incluído)
+function copyToClipboard(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text);
+  }
+  const ta=document.createElement('textarea');
+  ta.value=text;
+  ta.style.position='fixed';
+  ta.style.left='-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); }
+  finally{ document.body.removeChild(ta); }
+}
+
+document.getElementById('expAll').addEventListener('click',()=>{
+  if(!LAST_CHOSEN.length){ alert('Gera picks primeiro.'); return; }
+  const headers=['Liga','Data','Home','Away','Mercado','Prob','Odd','EV','Stake%','StakeEUR','Conf','Explicacao'];
+  const rows=LAST_CHOSEN.map(x=>({
+    'Liga':x.LigaName,'Data':x.Date,'Home':x.Home,'Away':x.Away,'Mercado':x.Market,
+    'Prob':(x.Prob*100).toFixed(1)+'%','Odd':x.Odd.toFixed(2),'EV':(x.EV*100).toFixed(1)+'%',
+    'Stake%':(x.StakePct*100).toFixed(2)+'%','StakeEUR':('€'+x.StakeEUR.toFixed(2)),'Conf':x.Conf,'Explicacao':x.Explain
+  }));
+  const blob=new Blob([toCSV(rows, headers)],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='LuxTIPS_picks.csv'; a.click();
+});
+document.getElementById('exp1x2').addEventListener('click',()=>{
+  if(!LAST_1X2.length){ alert('Gera picks primeiro.'); return; }
+  const headers=['Liga','Data','Home','Away','Pick','Prob','Odd','EV','CLV'];
+  const rows=LAST_1X2.map(x=>({
+    'Liga':x.LigaName,'Data':x.Date,'Home':x.Home,'Away':x.Away,'Pick':x.Pick,
+    'Prob':(x.Prob*100).toFixed(1)+'%','Odd':x.Odd.toFixed(2),'EV':(x.EV*100).toFixed(1)+'%',
+    'CLV':(x.CLV==null?'-':(x.CLV*100).toFixed(1)+'%')
+  }));
+  const blob=new Blob([toCSV(rows, headers)],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='LuxTIPS_1X2.csv'; a.click();
+});
+
+// botão "Copiar p/ Excel" (tudo junto, ordenado por data)
+document.getElementById('copyExcel').addEventListener('click', async ()=>{
+  if (!LAST_1X2.length && !LAST_CHOSEN.length) {
+    alert('Gera picks primeiro.');
+    return;
+  }
+
+  // Cabeçalho igual ao teu Excel
+  const lines = [];
+  lines.push(['Liga','Data','Home','Away','Pick','Prob','Odd'].join('\t'));
+
+  // Junta 1X2 + Picks num array comum
+  const merged = [];
+
+  // 1X2 -> Pick = 1 / X / 2
+  LAST_1X2.forEach(x => {
+    merged.push({
+      TS:  x.TS || 0,
+      Liga: x.LigaName,
+      Data: x.Date,
+      Home: x.Home,
+      Away: x.Away,
+      Pick: x.Pick,
+      Prob: (x.Prob * 100).toFixed(1) + '%',
+      Odd:  x.Odd.toFixed(2)
+    });
+  });
+
+  // Picks (DNB, DC, etc.) -> Pick = nome do mercado
+  LAST_CHOSEN.forEach(x => {
+    merged.push({
+      TS:  x.TS || 0,
+      Liga: x.LigaName,
+      Data: x.Date,
+      Home: x.Home,
+      Away: x.Away,
+      Pick: x.Market,  // ex.: "Dupla Chance 1X", "DNB Casa"
+      Prob: (x.Prob * 100).toFixed(1) + '%',
+      Odd:  x.Odd.toFixed(2)
+    });
+  });
+
+  // Ordenar por data/hora (TS crescente)
+  merged.sort((a, b) => a.TS - b.TS);
+
+  // Montar linhas em TSV
+  merged.forEach(r => {
+    lines.push([
+      r.Liga,
+      r.Data,
+      r.Home,
+      r.Away,
+      r.Pick,
+      r.Prob,
+      r.Odd
+    ].join('\t'));
+  });
+
+  const txt = lines.join('\n');
+
+  try {
+    await copyToClipboard(txt);
+    alert('Copiado para a área de transferência.\nAgora é só colar no Excel.');
+  } catch (e) {
+    console.error(e);
+    alert('Não foi possível copiar automaticamente. Tenta de novo ou verifica permissões do browser.');
+  }
+});
+
+</script>
+
+
+
+
+<script>
+// === Auto-download — v6 (Europa + novas ligas) ===
+(function(){
+  const FX_ID='fixturesFile', HS_ID='historyFiles', WARN_ID='warn';
+
+  // Fixtures europeus + fixtures das novas ligas
+  const FIXTURES_URLS = [
+    'https://www.football-data.co.uk/fixtures.xlsx',
+    'https://www.football-data.co.uk/new_league_fixtures.xlsx'
+  ];
+
+  // Histórico europeu + histórico das novas ligas (todas as épocas num só ficheiro)
+  const HISTORY_URLS=[
+    'https://www.football-data.co.uk/mmz4281/2526/all-euro-data-2025-2026.xlsx',
+    'https://www.football-data.co.uk/mmz4281/2425/all-euro-data-2024-2025.xlsx',
+    'https://www.football-data.co.uk/mmz4281/2324/all-euro-data-2023-2024.xlsx',
+    'https://www.football-data.co.uk/mmz4281/2223/all-euro-data-2022-2023.xlsx',
+    'https://www.football-data.co.uk/mmz4281/2122/all-euro-data-2021-2022.xlsx',
+    'https://www.football-data.co.uk/mmz4281/2021/all-euro-data-2020-2021.xlsx',
+    'https://www.football-data.co.uk/new/new_leagues_data.xlsx'
+  ];
+
+  function $(id){return document.getElementById(id)}
+  function setMsg(t){ const w=$(WARN_ID); if(w){ w.style.display='block'; w.textContent=t; } }
+  function log(){ try{ console.log('[LuxTIPS auto]', ...arguments); }catch(e){} }
+
+  async function tryFetchAB(url){
+    try{
+      const r=await fetch(url,{mode:'cors',credentials:'omit'});
+      if(r.ok){ return await r.arrayBuffer(); }
+      log('status', r.status, url);
+    }catch(e){ log('err', e && e.message, url); }
+    return null;
+  }
+
+  async function fetchAsXLSX(url){
+    const tries = [
+      url,
+      `https://cors.isomorphic-git.org/${url}`,
+      `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      `https://api.allorigins.workers.dev/raw?url=${encodeURIComponent(url)}`,
+      `https://thingproxy.freeboard.io/fetch/${url}`,
+      `https://r.jina.ai/http/https://${url.replace(/^https?:\/\//,'')}`,
+      `https://r.jina.ai/http/http://${url.replace(/^https?:\/\//,'')}`
+    ];
+    for(const t of tries){
+      const ab = await tryFetchAB(t);
+      if(ab){
+        log('ok via', t);
+        return new Blob([ab], {type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      }
+    }
+    throw new Error('All fetch attempts failed for '+url);
+  }
+
+  async function autoDownload(){
+    const fx=$(FX_ID), hs=$(HS_ID);
+    if(!fx||!hs){ log('inputs not found'); return; }
+    if((fx.files&&fx.files.length)||(hs.files&&hs.files.length)){ log('already have files'); return; }
+
+    // Durante o carregamento automático bloqueamos o botão "Gerar Picks"
+    if (typeof runBtn !== 'undefined' && runBtn){
+      runBtn.disabled = true;
+      runBtn.classList.add('btn-disabled');
+    }
+
+    try{
+      startLoading('A carregar dados (fixtures + histórico)…');
+      setMsg('A obter fixtures e histórico automaticamente…');
+
+      // Fixtures (Europa + novas ligas)
+      const dtFx = new DataTransfer();
+      let fxOk = 0, fxFail = 0;
+      for (const url of FIXTURES_URLS){
+        try{
+          const b = await fetchAsXLSX(url);
+          const name = url.split('/').pop() || 'fixtures.xlsx';
+          dtFx.items.add(new File(
+            [b],
+            name,
+            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+          ));
+          fxOk++;
+          setMsg(`A obter fixtures… (${fxOk} ok / ${fxFail} falhados)`);
+        }catch(e){
+          fxFail++;
+          log('fixtures fail', url, e && e.message);
+          setMsg(`A obter fixtures… (${fxOk} ok / ${fxFail} falhados)`);
+        }
+      }
+      if (fxOk > 0){
+        fx.files = dtFx.files;
+        fx.dispatchEvent(new Event('change'));
+      }
+
+      // Histórico (Europa + novas ligas)
+      const dtHs = new DataTransfer(); 
+      let ok = 0, fail = 0;
+      for (const url of HISTORY_URLS){
+        try{
+          const b = await fetchAsXLSX(url);
+          const name = url.split('/').pop() || 'history.xlsx';
+          dtHs.items.add(new File(
+            [b],
+            name,
+            { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+          ));
+          ok++;
+          setMsg(`A obter histórico… (${ok} ok / ${fail} falhados)`);
+        }catch(e){
+          fail++;
+          log('history fail', url, e && e.message);
+          setMsg(`A obter histórico… (${ok} ok / ${fail} falhados)`);
+        }
+      }
+      if (ok > 0){
+        hs.files = dtHs.files;
+        hs.dispatchEvent(new Event('change'));
+      }
+      setMsg(`Fixtures e histórico carregados (fixtures: ${fxOk} ok / ${fxFail} falhados · histórico: ${ok} ficheiros, ignorados: ${fail}).`);
+    }catch(e){
+      log('fatal', e && e.message);
+      setMsg('Falha ao obter dados automaticamente. Pode carregar os ficheiros manualmente.');
+    } finally {
+      finishLoading();
+      if (typeof runBtn !== 'undefined' && runBtn){
+        runBtn.disabled = false;
+        runBtn.classList.remove('btn-disabled');
+      }
+    }
+  }
+
+
+    if(document.readyState==='complete'||document.readyState==='interactive') setTimeout(autoDownload, 400);
+  else document.addEventListener('DOMContentLoaded', ()=> setTimeout(autoDownload, 400));
+})();
+</script>
+
+
+<script>
+</script>
+</body>
+</html>
