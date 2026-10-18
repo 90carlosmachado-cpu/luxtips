@@ -197,3 +197,65 @@ reserva e regista os mercados; a interface lê apenas os registos. O histórico 
 inclui também jogos fora dos três destaques e não deve ser comparado diretamente com
 os 459 jogos da investigação. A fiabilidade da dupla hipótese não reutiliza a calibração
 do vencedor e não é apresentada como uma confiança garantida de 80%.
+
+## Investigação de mercados e seleção com preço mínimo (daily-market-v3-priced)
+
+**Regra atual:** apenas preços reais de pelo menos **1,25**, com atualização da casa
+há menos de seis horas. Sem preço verificado, a seleção não é publicada. O filtro
+vale também para vencedores; podem existir menos de três seleções. O limite de uma
+alternativa diária permanece. As reservas antigas ficam intactas, mas um mercado que
+já não cumpre o preço é retirado da apresentação; não abre uma segunda reserva diária.
+O modelo de probabilidades não mudou. O filtro de preço altera a população de jogos:
+**não há backtest válido desta regra**, por falta de odds históricas adequadas. Os 85,2%
+abaixo pertencem exclusivamente à pesquisa anterior SEM o filtro. A interface mostra
+esta distinção e o preço/casa de cada seleção, em vez de apresentar a taxa antiga como
+expectativa atual. Os testes de paridade Python/JS usam preços sintéticos identificados
+como tal apenas para testar código; não são dados históricos nem prova de rentabilidade.
+
+A escolha alternativa diária compara dupla hipótese, totais de golos, ambas marcam,
+golos por equipa e handicap asiático +1,5 sem devolução. Continua a existir no máximo
+uma alternativa por dia; as outras seleções mantêm o vencedor. Os mercados adicionais
+vêm da mesma mistura de Poisson já congelada (média ponderada das distribuições,
+nunca Poisson da média). Não foram acrescentados cantos ou cartões sem dados adequados.
+
+`python scripts/market-expansion.py` reproduz a avaliação usando os dados anteriores.
+Protocolo em `scripts/market-expansion-protocol.json`: 28 combinações de quatro famílias
+de mercados e listas de três, quatro ou cinco jogos, com limiares de 65%, 70% ou 75%
+para os jogos adicionais. Os três favoritos anteriores são sempre mantidos. A pesquisa
+foi alargada após autorização para testar outros mercados; continua a ser desenvolvimento
+retrospetivo. A escolha usa a época anterior; avaliação exterior em 2025 e 2026. O
+script exporta `src/market-expansion-research.json` e exemplos sem resultados finais
+em `tests/market-expansion-golden.json` para comparar JS com a matriz conjunta em Python.
+
+Nos mesmos 459 jogos, a nova regra teve **391 acertos (85,2%)**, contra 368 (80,2%)
+da regra de uma dupla hipótese. Em 2025: 325/388 (83,8%); em 2026: 66/71 (93,0%).
+Bootstrap emparelhado por dia, 2 000 repetições: diferença de taxa com intervalo de
+95% de +2,46 a +7,41 pontos percentuais; intervalo da nova taxa de 82,1 a 88,2%.
+Estas épocas já tinham sido observadas em investigação anterior. A pesquisa repetida
+limita a evidência; o intervalo não incorpora toda essa seleção e não é prova de um
+mínimo futuro de 80%. A melhoria inclui eventos mais abrangentes que vencer o jogo.
+Não há odds históricas adequadas nem ROI demonstrado. Exige confirmação prospetiva.
+
+Dos 199 mercados alternativos históricos: 97 eram mais de 0,5 golos (91 acertos),
+59 uma das equipas marcar menos de três golos (57) e 43 handicap +1,5 do favorito (42).
+São contagens descritivas da política completa; não justificam percentagens garantidas.
+Os dados por competição constam do relatório. A expansão do número de jogos não
+passou o seu critério separado: a seleção cronológica não acrescentou jogos no período
+exterior avaliado. Mantém-se o limite de **três**, sem concluir que quatro ou cinco
+seriam necessariamente piores.
+
+**Taxa de acerto não equivale a qualidade da aposta.** Foi observada, por exemplo,
+odd de 1,04 para mais de 0,5 golos em dados reais em cache. Este preço exige cerca de
+96,2% de acerto para equilíbrio sem custos; 85,2% agregados entre vários mercados não
+comprovam valor nesse mercado. A investigação sem preço otimiza a taxa pedida pelo utilizador e não
+é uma estratégia com lucro validado. O preço de 1,04 fica excluído na regra atual. Odds reais e valor esperado estimado ficam
+separados da probabilidade; `recommendation` continua vazio sem validação de valor.
+
+Aplicar a migração `0003_market_choices.sql` uma vez antes da publicação. Alarga os
+mercados admissíveis, preservando todos os campos das reservas existentes e a tabela
+original como arquivo imutável. As reservas já feitas (incluindo hoje/amanhã) não são
+recalculadas para trocar de mercado: a nova política atua em datas ainda não reservadas.
+As odds usam apenas os nomes completos observados na API, com uma única casa de
+apostas escolhida pela maior cobertura de mercados válidos. Não mistura preços de
+casas ou partes do jogo. Ausência de preço não é convertida numa odd inventada. Não
+muda o plano, a quota, o cron nem cria chamadas externas adicionais.

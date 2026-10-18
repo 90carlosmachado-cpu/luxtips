@@ -111,7 +111,10 @@ export function parseOdds(data, fixtureId, at = Date.now()) {
       "Draw/Away": "XA",
       "Home/Away": "HA",
     },
+    "Asian Handicap": { "Home +1.5": "HAP15", "Away +1.5": "AAP15" },
     "Goals Over/Under": {
+      "Over 0.5": "O05",
+      "Under 4.5": "U45",
       "Over 1.5": "O15",
       "Under 1.5": "U15",
       "Over 2.5": "O25",
@@ -120,6 +123,21 @@ export function parseOdds(data, fixtureId, at = Date.now()) {
       "Under 3.5": "U35",
     },
     "Both Teams Score": { Yes: "BY", No: "BN" },
+    // Exact full-match names observed in the existing API-Football responses.
+    "Total - Home": {
+      "Over 0.5": "HO05",
+      "Over 1.5": "HO15",
+      "Under 1.5": "HU15",
+      "Under 2.5": "HU25",
+    },
+    "Total - Away": {
+      "Over 0.5": "AO05",
+      "Over 1.5": "AO15",
+      "Under 1.5": "AU15",
+      "Under 2.5": "AU25",
+    },
+    "Home Team Score a Goal": { Yes: "HO05" },
+    "Away Team Score a Goal": { Yes: "AO05" },
   };
   const f = data.find((x) => x.fixture?.id === fixtureId);
   if (!f) return out;
@@ -127,7 +145,18 @@ export function parseOdds(data, fixtureId, at = Date.now()) {
   if (!Number.isFinite(stamp) || stamp > at || at - stamp > 6 * 3600000)
     return out;
   // One bookmaker; never invent or mix prices into an alleged margin-free probability.
-  const book = f.bookmakers?.[0];
+  const book = [...(f.bookmakers || [])].sort((a, b) => {
+    const coverage = (book) =>
+      new Set(
+        (book.bets || []).flatMap((m) =>
+          (m.values || [])
+            .filter((v) => Number.isFinite(Number(v.odd)) && Number(v.odd) > 1)
+            .map((v) => maps[m.name]?.[v.value])
+            .filter(Boolean),
+        ),
+      ).size;
+    return coverage(b) - coverage(a);
+  })[0];
   for (const b of book?.bets || [])
     for (const v of b.values || []) {
       const k = maps[b.name]?.[v.value],

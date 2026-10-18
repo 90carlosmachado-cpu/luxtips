@@ -1,5 +1,9 @@
 import { forecastWindow, lisbonDay, publicGames } from "./window.js";
-export const POLICY_VERSION = "daily-market-v1";
+import { marketProbabilities, marketLabel } from "./market-probabilities.js";
+import { MIN_ODD, quoteFor, applyPricing } from "./pricing-policy.js";
+import { parseOdds } from "./provider.js";
+export const POLICY_VERSION = "daily-market-v3-priced";
+export const MAX_DAILY_GAMES = 3;
 const HOUR = 3600000;
 export function eligible(g, now) {
   const f = g.fixture,
@@ -22,7 +26,7 @@ export function eligible(g, now) {
 export function chooseDailyMarkets(games, now) {
   const days = new Map();
   for (const g of games
-    .filter((g) => eligible(g, now))
+    .filter((g) => eligible(g, now) && quoteFor(g, g.winnerTip.market, now))
     .sort(
       (a, b) =>
         b.winnerTip.probability - a.winnerTip.probability ||
@@ -31,46 +35,79 @@ export function chooseDailyMarkets(games, now) {
     )) {
     const day = lisbonDay(g.fixture.ts);
     if (!days.has(day)) days.set(day, []);
-    if (days.get(day).length < 3) days.get(day).push(g);
+    if (days.get(day).length < MAX_DAILY_GAMES) days.get(day).push(g);
   }
   return [...days].flatMap(([day, selected]) => {
     let best = null;
     for (const g of selected) {
-      const market = g.winnerTip.market === "H" ? "HX" : "XA";
-      const p = g.prediction.probabilities,
-        gain = p[market] - p[g.winnerTip.market];
-      if (
-        !Number.isFinite(gain) ||
-        gain <= 0 ||
-        p[market] > 1 ||
-        Math.abs(gain - p.D) > 1e-6
-      )
-        continue;
-      if (!best || gain > best.gain)
-        best = {
-          day,
-          fixture_id: g.fixture.id,
-          kickoff: g.fixture.ts,
-          market,
-          policy_version: POLICY_VERSION,
-          gain,
-          game: g,
-        };
+      const home = g.winnerTip.market === "H";
+      const p = marketProbabilities(g.prediction);
+      const allowed = [
+        home ? "HX" : "XA",
+        "O15",
+        "U15",
+        "O25",
+        "U25",
+        "O35",
+        "U35",
+        "BY",
+        "BN",
+        home ? "HO05" : "AO05",
+        home ? "HO15" : "AO15",
+        "O05",
+        "U45",
+        "HU15",
+        "AU15",
+        "HU25",
+        "AU25",
+        home ? "HAP15" : "AAP15",
+      ];
+      for (const market of allowed) {
+        const gain = p[market] - p[g.winnerTip.market];
+        if (
+          !Number.isFinite(gain) ||
+          gain <= 0 ||
+          p[market] > 1 ||
+          !quoteFor(g, market, now)
+        )
+          continue;
+        if (!best || gain > best.gain)
+          best = {
+            day,
+            fixture_id: g.fixture.id,
+            kickoff: g.fixture.ts,
+            market,
+            policy_version: POLICY_VERSION,
+            gain,
+            game: g,
+          };
+      }
     }
     return best ? [best] : [];
   });
 }
 export function decorateDailyMarket(g, plan, now) {
+  g = applyPricing(g, now);
   if (
     !plan ||
     !eligible(g, now) ||
     plan.fixture_id !== g.fixture.id ||
     plan.kickoff !== g.fixture.ts ||
     plan.day !== lisbonDay(g.fixture.ts) ||
-    plan.market !== (g.winnerTip.market === "H" ? "HX" : "XA")
+    !marketLabel(plan.market, g.fixture) ||
+    !quoteFor(g, plan.market, now)
   )
     return g;
-  const probability = g.prediction.probabilities[plan.market];
+  // Team-specific choices keep the reserved side; never reinterpret the market.
+  const homeMarkets = ["HX", "HO05", "HO15", "HAP15"],
+    awayMarkets = ["XA", "AO05", "AO15", "AAP15"];
+  if (
+    (homeMarkets.includes(plan.market) && g.winnerTip.market !== "H") ||
+    (awayMarkets.includes(plan.market) && g.winnerTip.market !== "A")
+  )
+    return g;
+  const probabilities = marketProbabilities(g.prediction);
+  const probability = probabilities[plan.market];
   if (
     !Number.isFinite(probability) ||
     probability < g.winnerTip.probability ||
@@ -85,20 +122,25 @@ export function decorateDailyMarket(g, plan, now) {
     Number.isFinite(o.at) &&
     o.at <= now &&
     now - o.at < 6 * HOUR;
-  const team = plan.market === "HX" ? g.fixture.homeName : g.fixture.awayName;
   return {
     ...g,
+    prediction: { ...g.prediction, probabilities },
     displayTip: {
+      minimumMarketOdd: MIN_ODD,
+      priceEligible: true,
       market: plan.market,
-      label: `${team} ou empate`,
+      label: marketLabel(plan.market, g.fixture),
       probability,
-      selectionType: "daily-draw-protection",
+      selectionType:
+        plan.policy_version === "daily-market-v1"
+          ? "daily-draw-protection"
+          : "daily-alternative",
       policyVersion: plan.policy_version,
       provisional: g.winnerTip.provisional,
       sourceUpdatedAt: g.winnerTip.sourceUpdatedAt,
       reliability: null,
       calibrationStatus:
-        "Política retrospetiva; confirmação prospetiva pendente",
+        "Regra com odd mínima de 1,25 ainda sem validação histórica adequada",
       fairOdd: 1 / probability,
       minimumOdd: Math.ceil((1.03 / probability) * 100) / 100,
       odd: valid ? o.odd : null,
@@ -106,13 +148,15 @@ export function decorateDailyMarket(g, plan, now) {
       oddsAt: valid ? o.at : null,
       expectedValue: valid ? probability * o.odd - 1 : null,
       valueStatus: valid
-        ? "Valor estimado; rentabilidade não demonstrada."
+        ? probability * o.odd > 1
+          ? "Valor esperado positivo estimado; rentabilidade não demonstrada."
+          : "A odd não oferece valor esperado positivo segundo o modelo."
         : "Valor por confirmar: sem odds reais recentes.",
       reason:
-        "Proteção do empate reservada a um único jogo por dia, escolhida pelo maior aumento de probabilidade entre os três favoritos.",
+        "Um mercado alternativo por dia, escolhido pelo maior aumento de probabilidade entre os três favoritos. A seleção original fica registada.",
       risks: [
         ...(g.winnerTip.risks || []),
-        "A dupla hipótese cobre dois resultados; uma maior taxa de acerto não demonstra lucro.",
+        "Este mercado pode cobrir mais resultados do que a vitória; uma maior taxa de acerto não demonstra lucro.",
       ],
     },
   };
@@ -134,7 +178,40 @@ export async function finalizeDailyMarkets(db, now = Date.now()) {
     )
     .bind(now, forecastWindow(now).end)
     .all();
-  const { games } = publicGames(rows.results, now);
+  const { games: storedGames } = publicGames(rows.results, now);
+  const games = [];
+  for (const original of storedGames) {
+    let odds = { ...original.odds };
+    // Reuse already downloaded prices; no extra provider requests or quota.
+    const cached = await db
+      .prepare("SELECT data FROM cache WHERE key=?")
+      .bind("api:odds?fixture=" + original.fixture.id)
+      .first();
+    if (cached) {
+      try {
+        const payload = JSON.parse(cached.data),
+          fresh = parseOdds(
+            Array.isArray(payload) ? payload : payload.items || [],
+            original.fixture.id,
+            now,
+          );
+        if (
+          Object.keys(fresh).length &&
+          Math.max(...Object.values(fresh).map((q) => q.at)) >=
+            Math.max(
+              0,
+              ...Object.values(odds).map((q) =>
+                Number.isFinite(q.at) ? q.at : 0,
+              ),
+            )
+        )
+          odds = fresh;
+      } catch {
+        /* Missing or invalid prices never qualify. */
+      }
+    }
+    games.push(applyPricing({ ...original, odds }, now));
+  }
   let plans = await readDailyMarkets(db, now);
   for (const choice of chooseDailyMarkets(games, now)) {
     if (plans.some((p) => p.day === choice.day)) continue;
@@ -162,11 +239,10 @@ export async function finalizeDailyMarkets(db, now = Date.now()) {
       plans.find((p) => p.fixture_id === g.fixture.id),
       now,
     );
-    if (
-      !decorated.displayTip ||
-      JSON.stringify(decorated) === JSON.stringify(g)
-    )
-      continue;
+    const old = rows.results.find(
+      (r) => JSON.parse(r.data).fixture.id === g.fixture.id,
+    ).data;
+    if (JSON.stringify(decorated) === old) continue;
     const data = JSON.stringify(decorated),
       phase = g.phase === "final" ? "final" : "preliminary";
     const version = `${g.prediction.version || "forecast"}@${g.fixture.ts}:${POLICY_VERSION}:${now}`;

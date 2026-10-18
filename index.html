@@ -494,7 +494,7 @@
     <main>
       <section class="intro">
         <h1>Os prognósticos.</h1>
-        <p>Até três escolhas por dia.</p>
+        <p>Até três escolhas por dia · odds ≥ 1,25.</p>
       </section>
       <nav class="tabs" aria-label="Secções">
         <button data-tab="games" aria-selected="true">Prognósticos</button
@@ -559,6 +559,18 @@
             minute: "2-digit",
           });
       const labels = {
+        O05: "Mais de 0,5",
+        U45: "Menos de 4,5",
+        HU15: "Casa menos de 2",
+        AU15: "Fora menos de 2",
+        HU25: "Casa menos de 3",
+        AU25: "Fora menos de 3",
+        HAP15: "Casa handicap +1,5",
+        AAP15: "Fora handicap +1,5",
+        HO05: "Casa marca 1+",
+        AO05: "Fora marca 1+",
+        HO15: "Casa marca 2+",
+        AO15: "Fora marca 2+",
         H: "Casa",
         D: "Empate",
         A: "Fora",
@@ -595,6 +607,7 @@
         return `<article class="card pick" data-fixture="${f.id}">
           <div class="fixture-meta"><span>${esc(f.competition)}</span><time>${hour}</time></div>
           <h3 class="selection">${esc(pickLabel(g))}</h3>
+          <p class="small">Odd ${Number(r.odd).toFixed(2).replace(".", ",")} · ${esc(r.bookmaker || "")}</p>
           <p class="teams">${esc(f.homeName)} · ${esc(f.awayName)}</p>
           ${r.provisional || g.stale ? '<span class="small pending">Provisório · fonte em atraso</span>' : ""}
         </article>`;
@@ -643,7 +656,17 @@
               g.winnerTip &&
               Number.isFinite(g.winnerTip.sourceUpdatedAt) &&
               g.winnerTip.sourceUpdatedAt <= now &&
-              now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000,
+              now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000 &&
+              (() => {
+                const tip = g.displayTip || g.winnerTip;
+                return (
+                  Number.isFinite(tip.odd) &&
+                  tip.odd >= 1.25 &&
+                  Number.isFinite(tip.oddsAt) &&
+                  tip.oddsAt <= now &&
+                  now - tip.oddsAt < 6 * 3600000
+                );
+              })(),
           )
           .sort(
             (a, b) =>
@@ -657,7 +680,7 @@
         $("#best").innerHTML = "";
         $("#cards").innerHTML =
           favorites.map(card).join("") ||
-          '<div class="empty wide"><h3>Sem prognósticos para este dia</h3><p>Consulta os outros dias.</p></div>';
+          '<div class="empty wide"><h3>Sem prognósticos elegíveis</h3><p>Não há seleções com odds verificadas de pelo menos 1,25 para este dia.</p></div>';
       }
       async function loadGames() {
         try {
@@ -747,11 +770,11 @@
         const v = await get("/api/validation"),
           m = v.winnerModel,
           p = m.pooled,
-          d = v.dailyMarket.pooled;
+          d = v.marketExpansion.cap3MarketImpact;
         $("#validationBody").innerHTML =
-          `<h3>Mesmos jogos · uma proteção do empate por dia</h3>
-          <p>${d.candidate.wins} acertos em ${d.candidate.n} seleções históricas (${pct(d.candidate.hitRate)}). Só vencedores nos mesmos jogos: ${d.baseline.wins}/${d.baseline.n} (${pct(d.baseline.hitRate)}).</p>
-          <p class="small">Resultado retrospetivo em dados já analisados. A melhoria resulta de cobrir também o empate num jogo por dia; não melhora a previsão do vencedor. Intervalo bootstrap de 95%: ${d.hitRateDayBootstrap95.map(pct).join(" a ")}. Não garante 80% nem demonstra lucro. Atrasos da API e alterações da lista ao longo do dia não foram simulados.</p>
+          `<h3>Odds mínimas de 1,25</h3><p>A seleção exige um preço real, atualizado há menos de seis horas, de pelo menos 1,25. No máximo um mercado alternativo por dia.</p><p class="small">A taxa de acerto desta regra ainda não está validada: faltam odds históricas adequadas. Os resultados abaixo não aplicam este filtro e não representam o desempenho esperado da seleção atual.</p><details><summary>Investigação anterior sem filtro de odds</summary><h3>Mesmos jogos · um mercado alternativo por dia</h3>
+          <p>${d.candidate.wins} acertos em ${d.candidate.n} seleções históricas (${pct(d.candidate.hitRate)}). Regra anterior, com uma dupla hipótese diária: ${d.baseline.wins}/${d.baseline.n} (${pct(d.baseline.hitRate)}).</p>
+          <p class="small">Resultado retrospetivo em dados já analisados. A regra compara dupla hipótese, golos, ambas marcam e handicap +1,5 para a única alternativa diária. Os mercados mais abrangentes aumentam o acerto e podem ter odds muito baixas; não são melhorias na previsão do vencedor. Intervalo bootstrap de 95%: ${d.hitRateDayBootstrap95.map(pct).join(" a ")}. Não garante 80% nem demonstra lucro. Aumentar para quatro ou cinco jogos não demonstrou uma melhoria adicional, pelo que se mantêm três. Atrasos da API e alterações da lista ao longo do dia não foram simulados.</p>
           <details><summary>Cálculo dos favoritos</summary><h3>Força recente e de longo prazo</h3>
           <p>${p.candidateTips.wins} acertos em ${p.candidateTips.n} seleções históricas (${pct(p.candidateTips.hitRate)}). Modelo anterior: ${p.baselineTips.wins} em ${p.baselineTips.n} (${pct(p.baselineTips.hitRate)}).</p>
           <p class="small">Melhoria pequena em avaliação retrospetiva. Os dados já tinham sido analisados em investigação anterior; não é um novo teste independente nem uma promessa de acerto. As seleções dos dois modelos não são exatamente as mesmas.</p>
@@ -760,7 +783,7 @@
           <tr><td>Brier</td><td>${p.baseline.brier.toFixed(4)}</td><td>${p.candidate.brier.toFixed(4)}</td></tr>
           <tr><td>Log Loss</td><td>${p.baseline.logLoss.toFixed(4)}</td><td>${p.candidate.logLoss.toFixed(4)}</td></tr>
           <tr><td>Desvio de calibração</td><td>${pct(p.baseline.ece)}</td><td>${pct(p.candidate.ece)}</td></tr></tbody></table></div>
-          <p>Valores menores são melhores. Diferença de Log Loss: ${p.logLossImprovement.toFixed(4)}; intervalo bootstrap semanal de 95%: ${p.weekBootstrap95.map((x) => x.toFixed(4)).join(" a ")}. A pesquisa de vários modelos limita esta evidência.</p><p>Sem odds históricas adequadas, não há rentabilidade demonstrada. A comparação com o cálculo anterior continua nos novos prognósticos guardados.</p></details></details>`;
+          <p>Valores menores são melhores. Diferença de Log Loss: ${p.logLossImprovement.toFixed(4)}; intervalo bootstrap semanal de 95%: ${p.weekBootstrap95.map((x) => x.toFixed(4)).join(" a ")}. A pesquisa de vários modelos limita esta evidência.</p><p>Sem odds históricas adequadas, não há rentabilidade demonstrada. A comparação com o cálculo anterior continua nos novos prognósticos guardados.</p></details></details></details>`;
       }
       $("#league").addEventListener("change", render);
       $("#dayNav").addEventListener("click", (e) => {

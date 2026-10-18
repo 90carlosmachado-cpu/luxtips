@@ -1,0 +1,4770 @@
+{
+  "version": "market-expansion-v1",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "protocol": {
+    "version": "market-expansion-v1",
+    "status": "Retrospective development on previously inspected seasons; no independent new holdout",
+    "baseline": "Current daily-market-v1: top three outright favorites, replace at most one winner with its same-side double chance at maximum draw gain",
+    "marketSets": [
+      "draw",
+      "standard",
+      "team-goals",
+      "broad-goals"
+    ],
+    "draw": "Same-side double chance",
+    "standard": "Same-side double chance plus over/under 1.5, 2.5, 3.5 total goals and both teams to score yes/no",
+    "team-goals": "standard plus favorite team over 0.5 and over 1.5 goals; no arbitrary extreme goal lines",
+    "listPolicies": [
+      {
+        "cap": 3,
+        "extraMinProbability": 0.5
+      },
+      {
+        "cap": 4,
+        "extraMinProbability": 0.65
+      },
+      {
+        "cap": 4,
+        "extraMinProbability": 0.7
+      },
+      {
+        "cap": 4,
+        "extraMinProbability": 0.75
+      },
+      {
+        "cap": 5,
+        "extraMinProbability": 0.65
+      },
+      {
+        "cap": 5,
+        "extraMinProbability": 0.7
+      },
+      {
+        "cap": 5,
+        "extraMinProbability": 0.75
+      }
+    ],
+    "selection": "28 fixed policies. Select by preceding-season hit rate only; ties prefer fewer games then fewer market families. Original top three always retained. Extra fixtures require the fixed winner-probability threshold. At most one alternative market across the entire Lisbon calendar day, chosen by maximum probability gain. Use the existing frozen chronological mixture weights, trained before each development/test season.",
+    "evaluation": "Nested previous-season selection, outer 2025 and 2026. Compare rates on shared calendar days, preserving all baseline fixtures. Cluster paired bootstrap by day, 2000 draws, seed 20261021. Also report added games separately, per market and league, Brier and Log Loss for the selected event.",
+    "promotion": "Positive lower 95% paired day-bootstrap bound for hit-rate change, no deterioration in either outer fold, and at least as many games in each fold. Runtime policy is the policy selected using 2025 before 2026. Count increase must have separate positive evidence versus cap=3 using the same new market family, otherwise retain cap=3.",
+    "limitations": "Different markets cover different events and have different odds. Higher hit rate alone is not better winner prediction or profitability. No adequate historical odds, no ROI. Live API delays, intraday ranking changes and frozen reservations not simulated. Repeated research on already inspected seasons limits statistical evidence. Corners/cards/handicaps with pushes excluded: no validated event data or comparable settlement metrics. No 80% minimum guarantee.",
+    "broad-goals": "team-goals plus over 0.5 / under 4.5 total goals, either team under 1.5 / under 2.5 goals, and favorite Asian handicap +1.5 (no push). Broader events can have very low odds; do not equate accuracy with value."
+  },
+  "folds": [
+    {
+      "season": 2025,
+      "selected": {
+        "id": "broad-goals-4-0.75",
+        "markets": "broad-goals",
+        "cap": 4,
+        "extraMinProbability": 0.75
+      },
+      "development": [
+        {
+          "policy": {
+            "id": "draw-3-0.5",
+            "markets": "draw",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 387,
+            "wins": 312,
+            "hitRate": 0.8062015503875969,
+            "meanProbability": 0.7602817448775832,
+            "brier": 0.15096994409744055,
+            "logLoss": 0.4740875369570365,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 174,
+                "wins": 135
+              },
+              "A": {
+                "n": 46,
+                "wins": 35
+              },
+              "HX": {
+                "n": 119,
+                "wins": 103
+              },
+              "XA": {
+                "n": 48,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 54,
+                "wins": 42
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 51
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-3-0.5",
+            "markets": "standard",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 387,
+            "wins": 310,
+            "hitRate": 0.8010335917312662,
+            "meanProbability": 0.7670275083811924,
+            "brier": 0.1495302990715368,
+            "logLoss": 0.47006841664369475,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 176,
+                "wins": 136
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "HX": {
+                "n": 75,
+                "wins": 66
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 54,
+                "wins": 45
+              },
+              "94": {
+                "n": 72,
+                "wins": 57
+              },
+              "135": {
+                "n": 68,
+                "wins": 49
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-3-0.5",
+            "markets": "team-goals",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 387,
+            "wins": 317,
+            "hitRate": 0.8191214470284238,
+            "meanProbability": 0.7774612756459857,
+            "brier": 0.13481894031309527,
+            "logLoss": 0.4313066462000799,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 174,
+                "wins": 131
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "HX": {
+                "n": 14,
+                "wins": 13
+              },
+              "XA": {
+                "n": 4,
+                "wins": 4
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 101,
+                "wins": 93
+              },
+              "AO05": {
+                "n": 41,
+                "wins": 36
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 59
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 54,
+                "wins": 46
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 52
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-3-0.5",
+            "markets": "broad-goals",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 387,
+            "wins": 329,
+            "hitRate": 0.8501291989664083,
+            "meanProbability": 0.8161023632784135,
+            "brier": 0.10957413779232214,
+            "logLoss": 0.35142231539878466,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 176,
+                "wins": 135
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "O05": {
+                "n": 86,
+                "wins": 84
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 21,
+                "wins": 20
+              },
+              "HAP15": {
+                "n": 36,
+                "wins": 36
+              },
+              "AAP15": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 63
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 54,
+                "wins": 43
+              },
+              "94": {
+                "n": 72,
+                "wins": 63
+              },
+              "135": {
+                "n": 68,
+                "wins": 57
+              },
+              "140": {
+                "n": 72,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.65",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 411,
+            "wins": 327,
+            "hitRate": 0.7956204379562044,
+            "meanProbability": 0.7566911061465772,
+            "brier": 0.1573872188759385,
+            "logLoss": 0.4900342596660047,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 189,
+                "wins": 143
+              },
+              "A": {
+                "n": 55,
+                "wins": 43
+              },
+              "HX": {
+                "n": 121,
+                "wins": 104
+              },
+              "XA": {
+                "n": 46,
+                "wins": 37
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 80,
+                "wins": 61
+              },
+              "61": {
+                "n": 52,
+                "wins": 42
+              },
+              "78": {
+                "n": 58,
+                "wins": 44
+              },
+              "94": {
+                "n": 74,
+                "wins": 62
+              },
+              "135": {
+                "n": 74,
+                "wins": 56
+              },
+              "140": {
+                "n": 73,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.65",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 411,
+            "wins": 328,
+            "hitRate": 0.7980535279805353,
+            "meanProbability": 0.7629611316221545,
+            "brier": 0.1520486973831123,
+            "logLoss": 0.4770073691809083,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 191,
+                "wins": 146
+              },
+              "A": {
+                "n": 53,
+                "wins": 38
+              },
+              "HX": {
+                "n": 76,
+                "wins": 66
+              },
+              "XA": {
+                "n": 27,
+                "wins": 23
+              },
+              "O15": {
+                "n": 55,
+                "wins": 46
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 80,
+                "wins": 62
+              },
+              "61": {
+                "n": 52,
+                "wins": 42
+              },
+              "78": {
+                "n": 58,
+                "wins": 48
+              },
+              "94": {
+                "n": 74,
+                "wins": 59
+              },
+              "135": {
+                "n": 74,
+                "wins": 54
+              },
+              "140": {
+                "n": 73,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.65",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 411,
+            "wins": 334,
+            "hitRate": 0.8126520681265207,
+            "meanProbability": 0.7730401028308661,
+            "brier": 0.1420828361869713,
+            "logLoss": 0.4528987599406311,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 193,
+                "wins": 147
+              },
+              "A": {
+                "n": 51,
+                "wins": 37
+              },
+              "HX": {
+                "n": 12,
+                "wins": 11
+              },
+              "XA": {
+                "n": 5,
+                "wins": 5
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 101,
+                "wins": 91
+              },
+              "AO05": {
+                "n": 42,
+                "wins": 36
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 80,
+                "wins": 64
+              },
+              "61": {
+                "n": 52,
+                "wins": 42
+              },
+              "78": {
+                "n": 58,
+                "wins": 49
+              },
+              "94": {
+                "n": 74,
+                "wins": 62
+              },
+              "135": {
+                "n": 74,
+                "wins": 55
+              },
+              "140": {
+                "n": 73,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.65",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 411,
+            "wins": 346,
+            "hitRate": 0.8418491484184915,
+            "meanProbability": 0.8095098971134638,
+            "brier": 0.11626437031161267,
+            "logLoss": 0.37201683261719537,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 188,
+                "wins": 143
+              },
+              "A": {
+                "n": 56,
+                "wins": 40
+              },
+              "O05": {
+                "n": 88,
+                "wins": 85
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 22,
+                "wins": 21
+              },
+              "HAP15": {
+                "n": 34,
+                "wins": 34
+              },
+              "AAP15": {
+                "n": 8,
+                "wins": 8
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 80,
+                "wins": 67
+              },
+              "61": {
+                "n": 52,
+                "wins": 42
+              },
+              "78": {
+                "n": 58,
+                "wins": 47
+              },
+              "94": {
+                "n": 74,
+                "wins": 65
+              },
+              "135": {
+                "n": 74,
+                "wins": 60
+              },
+              "140": {
+                "n": 73,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.7",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 395,
+            "wins": 316,
+            "hitRate": 0.8,
+            "meanProbability": 0.7597127774481215,
+            "brier": 0.15457752758860735,
+            "logLoss": 0.48335624590797693,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 179,
+                "wins": 137
+              },
+              "A": {
+                "n": 49,
+                "wins": 38
+              },
+              "HX": {
+                "n": 120,
+                "wins": 103
+              },
+              "XA": {
+                "n": 47,
+                "wins": 38
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 74,
+                "wins": 58
+              },
+              "61": {
+                "n": 49,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 43
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 71,
+                "wins": 54
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.7",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 395,
+            "wins": 316,
+            "hitRate": 0.8,
+            "meanProbability": 0.7662811731142949,
+            "brier": 0.15108416664226818,
+            "logLoss": 0.47501125076647926,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 140
+              },
+              "A": {
+                "n": 47,
+                "wins": 33
+              },
+              "HX": {
+                "n": 76,
+                "wins": 66
+              },
+              "XA": {
+                "n": 27,
+                "wins": 23
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 74,
+                "wins": 59
+              },
+              "61": {
+                "n": 49,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 47
+              },
+              "94": {
+                "n": 72,
+                "wins": 57
+              },
+              "135": {
+                "n": 71,
+                "wins": 52
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.7",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 395,
+            "wins": 322,
+            "hitRate": 0.8151898734177215,
+            "meanProbability": 0.776649592178705,
+            "brier": 0.13893547429966036,
+            "logLoss": 0.4442684705939078,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 179,
+                "wins": 136
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 13,
+                "wins": 12
+              },
+              "XA": {
+                "n": 4,
+                "wins": 4
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 103,
+                "wins": 93
+              },
+              "AO05": {
+                "n": 40,
+                "wins": 35
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 74,
+                "wins": 60
+              },
+              "61": {
+                "n": 49,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 48
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 71,
+                "wins": 53
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.7",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 395,
+            "wins": 335,
+            "hitRate": 0.8481012658227848,
+            "meanProbability": 0.814461101977306,
+            "brier": 0.11219622071667505,
+            "logLoss": 0.3615570938178209,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 179,
+                "wins": 138
+              },
+              "A": {
+                "n": 49,
+                "wins": 34
+              },
+              "O05": {
+                "n": 88,
+                "wins": 85
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 21,
+                "wins": 20
+              },
+              "HAP15": {
+                "n": 36,
+                "wins": 36
+              },
+              "AAP15": {
+                "n": 7,
+                "wins": 7
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 74,
+                "wins": 64
+              },
+              "61": {
+                "n": 49,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 46
+              },
+              "94": {
+                "n": 72,
+                "wins": 63
+              },
+              "135": {
+                "n": 71,
+                "wins": 58
+              },
+              "140": {
+                "n": 72,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.75",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 312,
+            "hitRate": 0.8041237113402062,
+            "meanProbability": 0.760337790358059,
+            "brier": 0.15280249694072726,
+            "logLoss": 0.47947866661212857,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 136
+              },
+              "A": {
+                "n": 46,
+                "wins": 35
+              },
+              "HX": {
+                "n": 119,
+                "wins": 102
+              },
+              "XA": {
+                "n": 48,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 42
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 51
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.75",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "meanProbability": 0.7670661678732567,
+            "brier": 0.151366562340148,
+            "logLoss": 0.4754699048562955,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 137
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "HX": {
+                "n": 75,
+                "wins": 65
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 45
+              },
+              "94": {
+                "n": 72,
+                "wins": 57
+              },
+              "135": {
+                "n": 68,
+                "wins": 49
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.75",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 317,
+            "hitRate": 0.8170103092783505,
+            "meanProbability": 0.7775488484360442,
+            "brier": 0.13683345330723254,
+            "logLoss": 0.43784093980448924,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 132
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "HX": {
+                "n": 13,
+                "wins": 12
+              },
+              "XA": {
+                "n": 4,
+                "wins": 4
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 102,
+                "wins": 93
+              },
+              "AO05": {
+                "n": 41,
+                "wins": 36
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 59
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 46
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 52
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.75",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 330,
+            "hitRate": 0.8505154639175257,
+            "meanProbability": 0.8160594481085536,
+            "brier": 0.10938530621102345,
+            "logLoss": 0.3510870826779878,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 136
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "O05": {
+                "n": 87,
+                "wins": 85
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 21,
+                "wins": 20
+              },
+              "HAP15": {
+                "n": 35,
+                "wins": 35
+              },
+              "AAP15": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 63
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 44
+              },
+              "94": {
+                "n": 72,
+                "wins": 63
+              },
+              "135": {
+                "n": 68,
+                "wins": 57
+              },
+              "140": {
+                "n": 72,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.65",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 424,
+            "wins": 336,
+            "hitRate": 0.7924528301886793,
+            "meanProbability": 0.754678392378378,
+            "brier": 0.15874987562849663,
+            "logLoss": 0.49215903476821465,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 199,
+                "wins": 149
+              },
+              "A": {
+                "n": 58,
+                "wins": 45
+              },
+              "HX": {
+                "n": 121,
+                "wins": 105
+              },
+              "XA": {
+                "n": 46,
+                "wins": 37
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 82,
+                "wins": 63
+              },
+              "61": {
+                "n": 53,
+                "wins": 42
+              },
+              "78": {
+                "n": 61,
+                "wins": 46
+              },
+              "94": {
+                "n": 76,
+                "wins": 64
+              },
+              "135": {
+                "n": 76,
+                "wins": 56
+              },
+              "140": {
+                "n": 76,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.65",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 424,
+            "wins": 335,
+            "hitRate": 0.7900943396226415,
+            "meanProbability": 0.7607929369880916,
+            "brier": 0.1551975124503969,
+            "logLoss": 0.4829227410200799,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 202,
+                "wins": 151
+              },
+              "A": {
+                "n": 55,
+                "wins": 39
+              },
+              "HX": {
+                "n": 73,
+                "wins": 64
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 57,
+                "wins": 48
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 82,
+                "wins": 63
+              },
+              "61": {
+                "n": 53,
+                "wins": 42
+              },
+              "78": {
+                "n": 61,
+                "wins": 49
+              },
+              "94": {
+                "n": 76,
+                "wins": 61
+              },
+              "135": {
+                "n": 76,
+                "wins": 54
+              },
+              "140": {
+                "n": 76,
+                "wins": 66
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.65",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 424,
+            "wins": 344,
+            "hitRate": 0.8113207547169812,
+            "meanProbability": 0.7704993923929435,
+            "brier": 0.14145154120558098,
+            "logLoss": 0.4486273913952879,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 202,
+                "wins": 151
+              },
+              "A": {
+                "n": 55,
+                "wins": 41
+              },
+              "HX": {
+                "n": 14,
+                "wins": 13
+              },
+              "XA": {
+                "n": 5,
+                "wins": 5
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 100,
+                "wins": 92
+              },
+              "AO05": {
+                "n": 41,
+                "wins": 35
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 82,
+                "wins": 65
+              },
+              "61": {
+                "n": 53,
+                "wins": 43
+              },
+              "78": {
+                "n": 61,
+                "wins": 51
+              },
+              "94": {
+                "n": 76,
+                "wins": 64
+              },
+              "135": {
+                "n": 76,
+                "wins": 57
+              },
+              "140": {
+                "n": 76,
+                "wins": 64
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.65",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 424,
+            "wins": 353,
+            "hitRate": 0.8325471698113207,
+            "meanProbability": 0.8061671898969651,
+            "brier": 0.12013502800916291,
+            "logLoss": 0.3781136039131193,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 201,
+                "wins": 149
+              },
+              "A": {
+                "n": 56,
+                "wins": 40
+              },
+              "O05": {
+                "n": 89,
+                "wins": 87
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 24,
+                "wins": 23
+              },
+              "HAP15": {
+                "n": 30,
+                "wins": 30
+              },
+              "AAP15": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 82,
+                "wins": 67
+              },
+              "61": {
+                "n": 53,
+                "wins": 42
+              },
+              "78": {
+                "n": 61,
+                "wins": 48
+              },
+              "94": {
+                "n": 76,
+                "wins": 67
+              },
+              "135": {
+                "n": 76,
+                "wins": 62
+              },
+              "140": {
+                "n": 76,
+                "wins": 67
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.7",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 398,
+            "wins": 318,
+            "hitRate": 0.7989949748743719,
+            "meanProbability": 0.7595595937162366,
+            "brier": 0.1544230686712919,
+            "logLoss": 0.4818133860407282,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 137
+              },
+              "A": {
+                "n": 50,
+                "wins": 39
+              },
+              "HX": {
+                "n": 120,
+                "wins": 104
+              },
+              "XA": {
+                "n": 47,
+                "wins": 38
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 75,
+                "wins": 59
+              },
+              "61": {
+                "n": 50,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 43
+              },
+              "94": {
+                "n": 73,
+                "wins": 61
+              },
+              "135": {
+                "n": 71,
+                "wins": 54
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.7",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 398,
+            "wins": 318,
+            "hitRate": 0.7989949748743719,
+            "meanProbability": 0.7660475185290352,
+            "brier": 0.15096465362305686,
+            "logLoss": 0.47356737153333384,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 184,
+                "wins": 141
+              },
+              "A": {
+                "n": 47,
+                "wins": 33
+              },
+              "HX": {
+                "n": 75,
+                "wins": 66
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 75,
+                "wins": 60
+              },
+              "61": {
+                "n": 50,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 47
+              },
+              "94": {
+                "n": 73,
+                "wins": 58
+              },
+              "135": {
+                "n": 71,
+                "wins": 52
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.7",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 398,
+            "wins": 325,
+            "hitRate": 0.8165829145728644,
+            "meanProbability": 0.7762594802007747,
+            "brier": 0.13759217734498128,
+            "logLoss": 0.43949307167650703,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 137
+              },
+              "A": {
+                "n": 50,
+                "wins": 36
+              },
+              "HX": {
+                "n": 14,
+                "wins": 13
+              },
+              "XA": {
+                "n": 4,
+                "wins": 4
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 102,
+                "wins": 93
+              },
+              "AO05": {
+                "n": 40,
+                "wins": 35
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 75,
+                "wins": 61
+              },
+              "61": {
+                "n": 50,
+                "wins": 40
+              },
+              "78": {
+                "n": 57,
+                "wins": 48
+              },
+              "94": {
+                "n": 73,
+                "wins": 61
+              },
+              "135": {
+                "n": 71,
+                "wins": 53
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.7",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 398,
+            "wins": 336,
+            "hitRate": 0.8442211055276382,
+            "meanProbability": 0.8138899184352506,
+            "brier": 0.11442956616274563,
+            "logLoss": 0.3667815279973827,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 182,
+                "wins": 139
+              },
+              "A": {
+                "n": 49,
+                "wins": 34
+              },
+              "O05": {
+                "n": 87,
+                "wins": 84
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 21,
+                "wins": 20
+              },
+              "HAP15": {
+                "n": 36,
+                "wins": 36
+              },
+              "AAP15": {
+                "n": 8,
+                "wins": 8
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 75,
+                "wins": 65
+              },
+              "61": {
+                "n": 50,
+                "wins": 39
+              },
+              "78": {
+                "n": 57,
+                "wins": 45
+              },
+              "94": {
+                "n": 73,
+                "wins": 64
+              },
+              "135": {
+                "n": 71,
+                "wins": 58
+              },
+              "140": {
+                "n": 72,
+                "wins": 65
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.75",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 312,
+            "hitRate": 0.8041237113402062,
+            "meanProbability": 0.760337790358059,
+            "brier": 0.15280249694072726,
+            "logLoss": 0.47947866661212857,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 136
+              },
+              "A": {
+                "n": 46,
+                "wins": 35
+              },
+              "HX": {
+                "n": 119,
+                "wins": 102
+              },
+              "XA": {
+                "n": 48,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 42
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 51
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.75",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "meanProbability": 0.7670661678732567,
+            "brier": 0.151366562340148,
+            "logLoss": 0.4754699048562955,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 137
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "HX": {
+                "n": 75,
+                "wins": 65
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 58
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 45
+              },
+              "94": {
+                "n": 72,
+                "wins": 57
+              },
+              "135": {
+                "n": 68,
+                "wins": 49
+              },
+              "140": {
+                "n": 72,
+                "wins": 63
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.75",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 317,
+            "hitRate": 0.8170103092783505,
+            "meanProbability": 0.7775488484360442,
+            "brier": 0.13683345330723254,
+            "logLoss": 0.43784093980448924,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 132
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "HX": {
+                "n": 13,
+                "wins": 12
+              },
+              "XA": {
+                "n": 4,
+                "wins": 4
+              },
+              "U35": {
+                "n": 7,
+                "wins": 7
+              },
+              "HO05": {
+                "n": 102,
+                "wins": 93
+              },
+              "AO05": {
+                "n": 41,
+                "wins": 36
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 59
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 46
+              },
+              "94": {
+                "n": 72,
+                "wins": 60
+              },
+              "135": {
+                "n": 68,
+                "wins": 52
+              },
+              "140": {
+                "n": 72,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.75",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 330,
+            "hitRate": 0.8505154639175257,
+            "meanProbability": 0.8160594481085536,
+            "brier": 0.10938530621102345,
+            "logLoss": 0.3510870826779878,
+            "alternatives": 167,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 136
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "O05": {
+                "n": 87,
+                "wins": 85
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 15
+              },
+              "AU25": {
+                "n": 21,
+                "wins": 20
+              },
+              "HAP15": {
+                "n": 35,
+                "wins": 35
+              },
+              "AAP15": {
+                "n": 9,
+                "wins": 9
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 73,
+                "wins": 63
+              },
+              "61": {
+                "n": 48,
+                "wins": 38
+              },
+              "78": {
+                "n": 55,
+                "wins": 44
+              },
+              "94": {
+                "n": 72,
+                "wins": 63
+              },
+              "135": {
+                "n": 68,
+                "wins": 57
+              },
+              "140": {
+                "n": 72,
+                "wins": 65
+              }
+            }
+          }
+        }
+      ],
+      "baseline": {
+        "n": 388,
+        "wins": 310,
+        "hitRate": 0.7989690721649485,
+        "meanProbability": 0.7520598111489063,
+        "brier": 0.1520741894129634,
+        "logLoss": 0.47564182778111375,
+        "alternatives": 164,
+        "byMarket": {
+          "H": {
+            "n": 177,
+            "wins": 132
+          },
+          "A": {
+            "n": 47,
+            "wins": 30
+          },
+          "HX": {
+            "n": 114,
+            "wins": 104
+          },
+          "XA": {
+            "n": 50,
+            "wins": 44
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 62,
+            "wins": 46
+          },
+          "61": {
+            "n": 42,
+            "wins": 34
+          },
+          "78": {
+            "n": 59,
+            "wins": 47
+          },
+          "94": {
+            "n": 91,
+            "wins": 73
+          },
+          "135": {
+            "n": 71,
+            "wins": 58
+          },
+          "140": {
+            "n": 63,
+            "wins": 52
+          }
+        }
+      },
+      "candidate": {
+        "n": 388,
+        "wins": 325,
+        "hitRate": 0.8376288659793815,
+        "meanProbability": 0.8080040835307383,
+        "brier": 0.12579084073361482,
+        "logLoss": 0.39770550157710094,
+        "alternatives": 164,
+        "byMarket": {
+          "H": {
+            "n": 178,
+            "wins": 135
+          },
+          "A": {
+            "n": 46,
+            "wins": 33
+          },
+          "O05": {
+            "n": 80,
+            "wins": 75
+          },
+          "HU25": {
+            "n": 15,
+            "wins": 14
+          },
+          "AU25": {
+            "n": 33,
+            "wins": 33
+          },
+          "HAP15": {
+            "n": 26,
+            "wins": 25
+          },
+          "AAP15": {
+            "n": 10,
+            "wins": 10
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 62,
+            "wins": 49
+          },
+          "61": {
+            "n": 42,
+            "wins": 36
+          },
+          "78": {
+            "n": 59,
+            "wins": 50
+          },
+          "94": {
+            "n": 91,
+            "wins": 74
+          },
+          "135": {
+            "n": 71,
+            "wins": 59
+          },
+          "140": {
+            "n": 63,
+            "wins": 57
+          }
+        }
+      },
+      "pairedDayBootstrap95": [
+        0.012950046499269344,
+        0.06521881030763997
+      ],
+      "hitRateDayBootstrap95": [
+        0.803030303030303,
+        0.8703291701874789
+      ],
+      "days": 164,
+      "sameMarketCap3": {
+        "n": 388,
+        "wins": 325,
+        "hitRate": 0.8376288659793815,
+        "meanProbability": 0.8080040835307383,
+        "brier": 0.12579084073361482,
+        "logLoss": 0.39770550157710094,
+        "alternatives": 164,
+        "byMarket": {
+          "H": {
+            "n": 178,
+            "wins": 135
+          },
+          "A": {
+            "n": 46,
+            "wins": 33
+          },
+          "O05": {
+            "n": 80,
+            "wins": 75
+          },
+          "HU25": {
+            "n": 15,
+            "wins": 14
+          },
+          "AU25": {
+            "n": 33,
+            "wins": 33
+          },
+          "HAP15": {
+            "n": 26,
+            "wins": 25
+          },
+          "AAP15": {
+            "n": 10,
+            "wins": 10
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 62,
+            "wins": 49
+          },
+          "61": {
+            "n": 42,
+            "wins": 36
+          },
+          "78": {
+            "n": 59,
+            "wins": 50
+          },
+          "94": {
+            "n": 91,
+            "wins": 74
+          },
+          "135": {
+            "n": 71,
+            "wins": 59
+          },
+          "140": {
+            "n": 63,
+            "wins": 57
+          }
+        }
+      },
+      "extraGames": {
+        "n": 0,
+        "wins": 0,
+        "hitRate": null
+      }
+    },
+    {
+      "season": 2026,
+      "selected": {
+        "id": "broad-goals-3-0.5",
+        "markets": "broad-goals",
+        "cap": 3,
+        "extraMinProbability": 0.5
+      },
+      "development": [
+        {
+          "policy": {
+            "id": "draw-3-0.5",
+            "markets": "draw",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "meanProbability": 0.7520598111489063,
+            "brier": 0.1520741894129634,
+            "logLoss": 0.47564182778111375,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 132
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 114,
+                "wins": 104
+              },
+              "XA": {
+                "n": 50,
+                "wins": 44
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 46
+              },
+              "61": {
+                "n": 42,
+                "wins": 34
+              },
+              "78": {
+                "n": 59,
+                "wins": 47
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 58
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-3-0.5",
+            "markets": "standard",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 306,
+            "hitRate": 0.788659793814433,
+            "meanProbability": 0.7579879454625159,
+            "brier": 0.15929863011792833,
+            "logLoss": 0.49141007792674996,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 133
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 77,
+                "wins": 72
+              },
+              "XA": {
+                "n": 31,
+                "wins": 28
+              },
+              "O15": {
+                "n": 49,
+                "wins": 38
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 33
+              },
+              "78": {
+                "n": 59,
+                "wins": 48
+              },
+              "94": {
+                "n": 91,
+                "wins": 72
+              },
+              "135": {
+                "n": 71,
+                "wins": 56
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-3-0.5",
+            "markets": "team-goals",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 318,
+            "hitRate": 0.8195876288659794,
+            "meanProbability": 0.7680040809442735,
+            "brier": 0.14355474832130685,
+            "logLoss": 0.4545359031738353,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 134
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 24,
+                "wins": 23
+              },
+              "XA": {
+                "n": 3,
+                "wins": 2
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 81
+              },
+              "AO05": {
+                "n": 44,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 38
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 57
+              },
+              "140": {
+                "n": 63,
+                "wins": 55
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-3-0.5",
+            "markets": "broad-goals",
+            "cap": 3,
+            "extraMinProbability": 0.5
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 325,
+            "hitRate": 0.8376288659793815,
+            "meanProbability": 0.8080040835307383,
+            "brier": 0.12579084073361482,
+            "logLoss": 0.39770550157710094,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 178,
+                "wins": 135
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "O05": {
+                "n": 80,
+                "wins": 75
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 26,
+                "wins": 25
+              },
+              "AAP15": {
+                "n": 10,
+                "wins": 10
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 49
+              },
+              "61": {
+                "n": 42,
+                "wins": 36
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 74
+              },
+              "135": {
+                "n": 71,
+                "wins": 59
+              },
+              "140": {
+                "n": 63,
+                "wins": 57
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.65",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 400,
+            "wins": 318,
+            "hitRate": 0.795,
+            "meanProbability": 0.7505291806682635,
+            "brier": 0.1547900697525196,
+            "logLoss": 0.4826846297261625,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 187,
+                "wins": 139
+              },
+              "A": {
+                "n": 49,
+                "wins": 32
+              },
+              "HX": {
+                "n": 112,
+                "wins": 101
+              },
+              "XA": {
+                "n": 52,
+                "wins": 46
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 64,
+                "wins": 46
+              },
+              "61": {
+                "n": 44,
+                "wins": 35
+              },
+              "78": {
+                "n": 63,
+                "wins": 51
+              },
+              "94": {
+                "n": 92,
+                "wins": 73
+              },
+              "135": {
+                "n": 73,
+                "wins": 60
+              },
+              "140": {
+                "n": 64,
+                "wins": 53
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.65",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 400,
+            "wins": 312,
+            "hitRate": 0.78,
+            "meanProbability": 0.7563720270197217,
+            "brier": 0.16536407685763393,
+            "logLoss": 0.5071298917834492,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 186,
+                "wins": 139
+              },
+              "A": {
+                "n": 50,
+                "wins": 34
+              },
+              "HX": {
+                "n": 75,
+                "wins": 69
+              },
+              "XA": {
+                "n": 32,
+                "wins": 29
+              },
+              "O15": {
+                "n": 50,
+                "wins": 37
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 64,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 34
+              },
+              "78": {
+                "n": 63,
+                "wins": 50
+              },
+              "94": {
+                "n": 92,
+                "wins": 72
+              },
+              "135": {
+                "n": 73,
+                "wins": 58
+              },
+              "140": {
+                "n": 64,
+                "wins": 53
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.65",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 400,
+            "wins": 327,
+            "hitRate": 0.8175,
+            "meanProbability": 0.766371577391779,
+            "brier": 0.14558869428558996,
+            "logLoss": 0.46102242796658294,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 185,
+                "wins": 142
+              },
+              "A": {
+                "n": 51,
+                "wins": 37
+              },
+              "HX": {
+                "n": 22,
+                "wins": 21
+              },
+              "XA": {
+                "n": 4,
+                "wins": 3
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 80
+              },
+              "AO05": {
+                "n": 45,
+                "wins": 40
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 64,
+                "wins": 46
+              },
+              "61": {
+                "n": 44,
+                "wins": 39
+              },
+              "78": {
+                "n": 63,
+                "wins": 54
+              },
+              "94": {
+                "n": 92,
+                "wins": 73
+              },
+              "135": {
+                "n": 73,
+                "wins": 59
+              },
+              "140": {
+                "n": 64,
+                "wins": 56
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.65",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 400,
+            "wins": 334,
+            "hitRate": 0.835,
+            "meanProbability": 0.8052906566386472,
+            "brier": 0.12862155258432204,
+            "logLoss": 0.4083946309166288,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 188,
+                "wins": 143
+              },
+              "A": {
+                "n": 48,
+                "wins": 35
+              },
+              "O05": {
+                "n": 82,
+                "wins": 76
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 23,
+                "wins": 22
+              },
+              "AAP15": {
+                "n": 11,
+                "wins": 11
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 64,
+                "wins": 50
+              },
+              "61": {
+                "n": 44,
+                "wins": 37
+              },
+              "78": {
+                "n": 63,
+                "wins": 54
+              },
+              "94": {
+                "n": 92,
+                "wins": 74
+              },
+              "135": {
+                "n": 73,
+                "wins": 61
+              },
+              "140": {
+                "n": 64,
+                "wins": 58
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.7",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 313,
+            "hitRate": 0.798469387755102,
+            "meanProbability": 0.7520291798393245,
+            "brier": 0.15223099685819563,
+            "logLoss": 0.4760065563851564,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 135
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 112,
+                "wins": 102
+              },
+              "XA": {
+                "n": 52,
+                "wins": 46
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 46
+              },
+              "61": {
+                "n": 44,
+                "wins": 35
+              },
+              "78": {
+                "n": 60,
+                "wins": 48
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 72,
+                "wins": 59
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.7",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 309,
+            "hitRate": 0.7882653061224489,
+            "meanProbability": 0.7578048329180366,
+            "brier": 0.15939384612075194,
+            "logLoss": 0.4917123998934784,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 136
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 76,
+                "wins": 71
+              },
+              "XA": {
+                "n": 33,
+                "wins": 30
+              },
+              "O15": {
+                "n": 48,
+                "wins": 37
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 34
+              },
+              "78": {
+                "n": 60,
+                "wins": 49
+              },
+              "94": {
+                "n": 91,
+                "wins": 72
+              },
+              "135": {
+                "n": 72,
+                "wins": 57
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.7",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 321,
+            "hitRate": 0.8188775510204082,
+            "meanProbability": 0.7677643145129877,
+            "brier": 0.14486048854982866,
+            "logLoss": 0.4591295528801716,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 179,
+                "wins": 138
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 22,
+                "wins": 21
+              },
+              "XA": {
+                "n": 4,
+                "wins": 3
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 80
+              },
+              "AO05": {
+                "n": 45,
+                "wins": 40
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 39
+              },
+              "78": {
+                "n": 60,
+                "wins": 51
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 72,
+                "wins": 58
+              },
+              "140": {
+                "n": 63,
+                "wins": 55
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.7",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 328,
+            "hitRate": 0.8367346938775511,
+            "meanProbability": 0.8074203061160815,
+            "brier": 0.12752442027060515,
+            "logLoss": 0.40546545024008507,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 182,
+                "wins": 139
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "O05": {
+                "n": 80,
+                "wins": 74
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 25,
+                "wins": 24
+              },
+              "AAP15": {
+                "n": 11,
+                "wins": 11
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 49
+              },
+              "61": {
+                "n": 44,
+                "wins": 37
+              },
+              "78": {
+                "n": 60,
+                "wins": 51
+              },
+              "94": {
+                "n": 91,
+                "wins": 74
+              },
+              "135": {
+                "n": 72,
+                "wins": 60
+              },
+              "140": {
+                "n": 63,
+                "wins": 57
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-4-0.75",
+            "markets": "draw",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "meanProbability": 0.7520598111489063,
+            "brier": 0.1520741894129634,
+            "logLoss": 0.47564182778111375,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 132
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 114,
+                "wins": 104
+              },
+              "XA": {
+                "n": 50,
+                "wins": 44
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 46
+              },
+              "61": {
+                "n": 42,
+                "wins": 34
+              },
+              "78": {
+                "n": 59,
+                "wins": 47
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 58
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-4-0.75",
+            "markets": "standard",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 306,
+            "hitRate": 0.788659793814433,
+            "meanProbability": 0.7579879454625159,
+            "brier": 0.15929863011792833,
+            "logLoss": 0.49141007792674996,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 133
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 77,
+                "wins": 72
+              },
+              "XA": {
+                "n": 31,
+                "wins": 28
+              },
+              "O15": {
+                "n": 49,
+                "wins": 38
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 33
+              },
+              "78": {
+                "n": 59,
+                "wins": 48
+              },
+              "94": {
+                "n": 91,
+                "wins": 72
+              },
+              "135": {
+                "n": 71,
+                "wins": 56
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-4-0.75",
+            "markets": "team-goals",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 318,
+            "hitRate": 0.8195876288659794,
+            "meanProbability": 0.7680040809442735,
+            "brier": 0.14355474832130685,
+            "logLoss": 0.4545359031738353,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 134
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 24,
+                "wins": 23
+              },
+              "XA": {
+                "n": 3,
+                "wins": 2
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 81
+              },
+              "AO05": {
+                "n": 44,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 38
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 57
+              },
+              "140": {
+                "n": 63,
+                "wins": 55
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-4-0.75",
+            "markets": "broad-goals",
+            "cap": 4,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 325,
+            "hitRate": 0.8376288659793815,
+            "meanProbability": 0.8080040835307383,
+            "brier": 0.12579084073361482,
+            "logLoss": 0.39770550157710094,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 178,
+                "wins": 135
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "O05": {
+                "n": 80,
+                "wins": 75
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 26,
+                "wins": 25
+              },
+              "AAP15": {
+                "n": 10,
+                "wins": 10
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 49
+              },
+              "61": {
+                "n": 42,
+                "wins": 36
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 74
+              },
+              "135": {
+                "n": 71,
+                "wins": 59
+              },
+              "140": {
+                "n": 63,
+                "wins": 57
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.65",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 406,
+            "wins": 322,
+            "hitRate": 0.7931034482758621,
+            "meanProbability": 0.7497733004755289,
+            "brier": 0.15555949283316578,
+            "logLoss": 0.4844851798643378,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 191,
+                "wins": 141
+              },
+              "A": {
+                "n": 51,
+                "wins": 34
+              },
+              "HX": {
+                "n": 113,
+                "wins": 102
+              },
+              "XA": {
+                "n": 51,
+                "wins": 45
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 65,
+                "wins": 46
+              },
+              "61": {
+                "n": 44,
+                "wins": 35
+              },
+              "78": {
+                "n": 64,
+                "wins": 51
+              },
+              "94": {
+                "n": 93,
+                "wins": 74
+              },
+              "135": {
+                "n": 75,
+                "wins": 62
+              },
+              "140": {
+                "n": 65,
+                "wins": 54
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.65",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 406,
+            "wins": 316,
+            "hitRate": 0.7783251231527094,
+            "meanProbability": 0.7555297993439607,
+            "brier": 0.1659772338234262,
+            "logLoss": 0.5085691818912215,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 190,
+                "wins": 141
+              },
+              "A": {
+                "n": 52,
+                "wins": 36
+              },
+              "HX": {
+                "n": 76,
+                "wins": 70
+              },
+              "XA": {
+                "n": 31,
+                "wins": 28
+              },
+              "O15": {
+                "n": 50,
+                "wins": 37
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 65,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 34
+              },
+              "78": {
+                "n": 64,
+                "wins": 50
+              },
+              "94": {
+                "n": 93,
+                "wins": 73
+              },
+              "135": {
+                "n": 75,
+                "wins": 60
+              },
+              "140": {
+                "n": 65,
+                "wins": 54
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.65",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 406,
+            "wins": 333,
+            "hitRate": 0.8201970443349754,
+            "meanProbability": 0.7651335334198082,
+            "brier": 0.1448351497858366,
+            "logLoss": 0.4597833317454307,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 189,
+                "wins": 146
+              },
+              "A": {
+                "n": 53,
+                "wins": 39
+              },
+              "HX": {
+                "n": 23,
+                "wins": 22
+              },
+              "XA": {
+                "n": 4,
+                "wins": 3
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 80
+              },
+              "AO05": {
+                "n": 44,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 65,
+                "wins": 47
+              },
+              "61": {
+                "n": 44,
+                "wins": 39
+              },
+              "78": {
+                "n": 64,
+                "wins": 55
+              },
+              "94": {
+                "n": 93,
+                "wins": 74
+              },
+              "135": {
+                "n": 75,
+                "wins": 61
+              },
+              "140": {
+                "n": 65,
+                "wins": 57
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.65",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.65
+          },
+          "metrics": {
+            "n": 406,
+            "wins": 339,
+            "hitRate": 0.8349753694581281,
+            "meanProbability": 0.80382537973733,
+            "brier": 0.12748583935223687,
+            "logLoss": 0.4027115149823776,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 191,
+                "wins": 144
+              },
+              "A": {
+                "n": 51,
+                "wins": 38
+              },
+              "O05": {
+                "n": 80,
+                "wins": 75
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 35,
+                "wins": 35
+              },
+              "HAP15": {
+                "n": 24,
+                "wins": 23
+              },
+              "AAP15": {
+                "n": 10,
+                "wins": 10
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 65,
+                "wins": 51
+              },
+              "61": {
+                "n": 44,
+                "wins": 37
+              },
+              "78": {
+                "n": 64,
+                "wins": 54
+              },
+              "94": {
+                "n": 93,
+                "wins": 75
+              },
+              "135": {
+                "n": 75,
+                "wins": 63
+              },
+              "140": {
+                "n": 65,
+                "wins": 59
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.7",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 313,
+            "hitRate": 0.798469387755102,
+            "meanProbability": 0.7520291798393245,
+            "brier": 0.15223099685819563,
+            "logLoss": 0.4760065563851564,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 135
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 112,
+                "wins": 102
+              },
+              "XA": {
+                "n": 52,
+                "wins": 46
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 46
+              },
+              "61": {
+                "n": 44,
+                "wins": 35
+              },
+              "78": {
+                "n": 60,
+                "wins": 48
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 72,
+                "wins": 59
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.7",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 309,
+            "hitRate": 0.7882653061224489,
+            "meanProbability": 0.7578048329180366,
+            "brier": 0.15939384612075194,
+            "logLoss": 0.4917123998934784,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 181,
+                "wins": 136
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 76,
+                "wins": 71
+              },
+              "XA": {
+                "n": 33,
+                "wins": 30
+              },
+              "O15": {
+                "n": 48,
+                "wins": 37
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 34
+              },
+              "78": {
+                "n": 60,
+                "wins": 49
+              },
+              "94": {
+                "n": 91,
+                "wins": 72
+              },
+              "135": {
+                "n": 72,
+                "wins": 57
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.7",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 321,
+            "hitRate": 0.8188775510204082,
+            "meanProbability": 0.7677643145129877,
+            "brier": 0.14486048854982866,
+            "logLoss": 0.4591295528801716,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 179,
+                "wins": 138
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 22,
+                "wins": 21
+              },
+              "XA": {
+                "n": 4,
+                "wins": 3
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 80
+              },
+              "AO05": {
+                "n": 45,
+                "wins": 40
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 44,
+                "wins": 39
+              },
+              "78": {
+                "n": 60,
+                "wins": 51
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 72,
+                "wins": 58
+              },
+              "140": {
+                "n": 63,
+                "wins": 55
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.7",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.7
+          },
+          "metrics": {
+            "n": 392,
+            "wins": 328,
+            "hitRate": 0.8367346938775511,
+            "meanProbability": 0.8074203061160815,
+            "brier": 0.12752442027060515,
+            "logLoss": 0.40546545024008507,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 182,
+                "wins": 139
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "O05": {
+                "n": 80,
+                "wins": 74
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 25,
+                "wins": 24
+              },
+              "AAP15": {
+                "n": 11,
+                "wins": 11
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 49
+              },
+              "61": {
+                "n": 44,
+                "wins": 37
+              },
+              "78": {
+                "n": 60,
+                "wins": 51
+              },
+              "94": {
+                "n": 91,
+                "wins": 74
+              },
+              "135": {
+                "n": 72,
+                "wins": 60
+              },
+              "140": {
+                "n": 63,
+                "wins": 57
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "draw-5-0.75",
+            "markets": "draw",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "meanProbability": 0.7520598111489063,
+            "brier": 0.1520741894129634,
+            "logLoss": 0.47564182778111375,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 132
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 114,
+                "wins": 104
+              },
+              "XA": {
+                "n": 50,
+                "wins": 44
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 46
+              },
+              "61": {
+                "n": 42,
+                "wins": 34
+              },
+              "78": {
+                "n": 59,
+                "wins": 47
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 58
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "standard-5-0.75",
+            "markets": "standard",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 306,
+            "hitRate": 0.788659793814433,
+            "meanProbability": 0.7579879454625159,
+            "brier": 0.15929863011792833,
+            "logLoss": 0.49141007792674996,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 133
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 77,
+                "wins": 72
+              },
+              "XA": {
+                "n": 31,
+                "wins": 28
+              },
+              "O15": {
+                "n": 49,
+                "wins": 38
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 33
+              },
+              "78": {
+                "n": 59,
+                "wins": 48
+              },
+              "94": {
+                "n": 91,
+                "wins": 72
+              },
+              "135": {
+                "n": 71,
+                "wins": 56
+              },
+              "140": {
+                "n": 63,
+                "wins": 52
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "team-goals-5-0.75",
+            "markets": "team-goals",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 318,
+            "hitRate": 0.8195876288659794,
+            "meanProbability": 0.7680040809442735,
+            "brier": 0.14355474832130685,
+            "logLoss": 0.4545359031738353,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 175,
+                "wins": 134
+              },
+              "A": {
+                "n": 49,
+                "wins": 35
+              },
+              "HX": {
+                "n": 24,
+                "wins": 23
+              },
+              "XA": {
+                "n": 3,
+                "wins": 2
+              },
+              "O15": {
+                "n": 1,
+                "wins": 1
+              },
+              "U35": {
+                "n": 4,
+                "wins": 3
+              },
+              "HO05": {
+                "n": 88,
+                "wins": 81
+              },
+              "AO05": {
+                "n": 44,
+                "wins": 39
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 45
+              },
+              "61": {
+                "n": 42,
+                "wins": 38
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 73
+              },
+              "135": {
+                "n": 71,
+                "wins": 57
+              },
+              "140": {
+                "n": 63,
+                "wins": 55
+              }
+            }
+          }
+        },
+        {
+          "policy": {
+            "id": "broad-goals-5-0.75",
+            "markets": "broad-goals",
+            "cap": 5,
+            "extraMinProbability": 0.75
+          },
+          "metrics": {
+            "n": 388,
+            "wins": 325,
+            "hitRate": 0.8376288659793815,
+            "meanProbability": 0.8080040835307383,
+            "brier": 0.12579084073361482,
+            "logLoss": 0.39770550157710094,
+            "alternatives": 164,
+            "byMarket": {
+              "H": {
+                "n": 178,
+                "wins": 135
+              },
+              "A": {
+                "n": 46,
+                "wins": 33
+              },
+              "O05": {
+                "n": 80,
+                "wins": 75
+              },
+              "HU25": {
+                "n": 15,
+                "wins": 14
+              },
+              "AU25": {
+                "n": 33,
+                "wins": 33
+              },
+              "HAP15": {
+                "n": 26,
+                "wins": 25
+              },
+              "AAP15": {
+                "n": 10,
+                "wins": 10
+              }
+            },
+            "byLeague": {
+              "39": {
+                "n": 62,
+                "wins": 49
+              },
+              "61": {
+                "n": 42,
+                "wins": 36
+              },
+              "78": {
+                "n": 59,
+                "wins": 50
+              },
+              "94": {
+                "n": 91,
+                "wins": 74
+              },
+              "135": {
+                "n": 71,
+                "wins": 59
+              },
+              "140": {
+                "n": 63,
+                "wins": 57
+              }
+            }
+          }
+        }
+      ],
+      "baseline": {
+        "n": 71,
+        "wins": 58,
+        "hitRate": 0.8169014084507042,
+        "meanProbability": 0.7514357948268858,
+        "brier": 0.15132532571265922,
+        "logLoss": 0.4744101486264443,
+        "alternatives": 35,
+        "byMarket": {
+          "H": {
+            "n": 29,
+            "wins": 24
+          },
+          "A": {
+            "n": 7,
+            "wins": 6
+          },
+          "HX": {
+            "n": 25,
+            "wins": 20
+          },
+          "XA": {
+            "n": 10,
+            "wins": 8
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 5,
+            "wins": 4
+          },
+          "61": {
+            "n": 5,
+            "wins": 2
+          },
+          "78": {
+            "n": 10,
+            "wins": 9
+          },
+          "94": {
+            "n": 23,
+            "wins": 19
+          },
+          "135": {
+            "n": 10,
+            "wins": 9
+          },
+          "140": {
+            "n": 18,
+            "wins": 15
+          }
+        }
+      },
+      "candidate": {
+        "n": 71,
+        "wins": 66,
+        "hitRate": 0.9295774647887324,
+        "meanProbability": 0.816579191598726,
+        "brier": 0.09569558465244168,
+        "logLoss": 0.33187957265276696,
+        "alternatives": 35,
+        "byMarket": {
+          "H": {
+            "n": 32,
+            "wins": 29
+          },
+          "A": {
+            "n": 4,
+            "wins": 4
+          },
+          "O05": {
+            "n": 17,
+            "wins": 16
+          },
+          "HU25": {
+            "n": 2,
+            "wins": 2
+          },
+          "AU25": {
+            "n": 9,
+            "wins": 8
+          },
+          "HAP15": {
+            "n": 4,
+            "wins": 4
+          },
+          "AAP15": {
+            "n": 3,
+            "wins": 3
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 5,
+            "wins": 5
+          },
+          "61": {
+            "n": 5,
+            "wins": 4
+          },
+          "78": {
+            "n": 10,
+            "wins": 10
+          },
+          "94": {
+            "n": 23,
+            "wins": 21
+          },
+          "135": {
+            "n": 10,
+            "wins": 10
+          },
+          "140": {
+            "n": 18,
+            "wins": 16
+          }
+        }
+      },
+      "pairedDayBootstrap95": [
+        0.0491803278688524,
+        0.18055555555555547
+      ],
+      "hitRateDayBootstrap95": [
+        0.8701298701298701,
+        0.976331168831168
+      ],
+      "days": 35,
+      "sameMarketCap3": {
+        "n": 71,
+        "wins": 66,
+        "hitRate": 0.9295774647887324,
+        "meanProbability": 0.816579191598726,
+        "brier": 0.09569558465244168,
+        "logLoss": 0.33187957265276696,
+        "alternatives": 35,
+        "byMarket": {
+          "H": {
+            "n": 32,
+            "wins": 29
+          },
+          "A": {
+            "n": 4,
+            "wins": 4
+          },
+          "O05": {
+            "n": 17,
+            "wins": 16
+          },
+          "HU25": {
+            "n": 2,
+            "wins": 2
+          },
+          "AU25": {
+            "n": 9,
+            "wins": 8
+          },
+          "HAP15": {
+            "n": 4,
+            "wins": 4
+          },
+          "AAP15": {
+            "n": 3,
+            "wins": 3
+          }
+        },
+        "byLeague": {
+          "39": {
+            "n": 5,
+            "wins": 5
+          },
+          "61": {
+            "n": 5,
+            "wins": 4
+          },
+          "78": {
+            "n": 10,
+            "wins": 10
+          },
+          "94": {
+            "n": 23,
+            "wins": 21
+          },
+          "135": {
+            "n": 10,
+            "wins": 10
+          },
+          "140": {
+            "n": 18,
+            "wins": 16
+          }
+        }
+      },
+      "extraGames": {
+        "n": 0,
+        "wins": 0,
+        "hitRate": null
+      }
+    }
+  ],
+  "pooled": {
+    "baseline": {
+      "n": 459,
+      "wins": 368,
+      "hitRate": 0.8017429193899782,
+      "meanProbability": 0.7519632857483324,
+      "brier": 0.15195835210855907,
+      "logLoss": 0.4754513066046834,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 206,
+          "wins": 156
+        },
+        "A": {
+          "n": 54,
+          "wins": 36
+        },
+        "HX": {
+          "n": 139,
+          "wins": 124
+        },
+        "XA": {
+          "n": 60,
+          "wins": 52
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 50
+        },
+        "61": {
+          "n": 47,
+          "wins": 36
+        },
+        "78": {
+          "n": 69,
+          "wins": 56
+        },
+        "94": {
+          "n": 114,
+          "wins": 92
+        },
+        "135": {
+          "n": 81,
+          "wins": 67
+        },
+        "140": {
+          "n": 81,
+          "wins": 67
+        }
+      }
+    },
+    "candidate": {
+      "n": 459,
+      "wins": 391,
+      "hitRate": 0.8518518518518519,
+      "meanProbability": 0.8093305163691416,
+      "brier": 0.12113558325700634,
+      "logLoss": 0.38752327727725844,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 210,
+          "wins": 164
+        },
+        "A": {
+          "n": 50,
+          "wins": 37
+        },
+        "O05": {
+          "n": 97,
+          "wins": 91
+        },
+        "HU25": {
+          "n": 17,
+          "wins": 16
+        },
+        "AU25": {
+          "n": 42,
+          "wins": 41
+        },
+        "HAP15": {
+          "n": 30,
+          "wins": 29
+        },
+        "AAP15": {
+          "n": 13,
+          "wins": 13
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 54
+        },
+        "61": {
+          "n": 47,
+          "wins": 40
+        },
+        "78": {
+          "n": 69,
+          "wins": 60
+        },
+        "94": {
+          "n": 114,
+          "wins": 95
+        },
+        "135": {
+          "n": 81,
+          "wins": 69
+        },
+        "140": {
+          "n": 81,
+          "wins": 73
+        }
+      }
+    },
+    "pairedDayBootstrap95": [
+      0.024605760750960413,
+      0.07407603578154424
+    ],
+    "hitRateDayBootstrap95": [
+      0.8210273731719469,
+      0.8823529411764706
+    ],
+    "days": 199
+  },
+  "volumeImpact": {
+    "baseline": {
+      "n": 459,
+      "wins": 391,
+      "hitRate": 0.8518518518518519,
+      "meanProbability": 0.8093305163691416,
+      "brier": 0.12113558325700634,
+      "logLoss": 0.38752327727725844,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 210,
+          "wins": 164
+        },
+        "A": {
+          "n": 50,
+          "wins": 37
+        },
+        "O05": {
+          "n": 97,
+          "wins": 91
+        },
+        "HU25": {
+          "n": 17,
+          "wins": 16
+        },
+        "AU25": {
+          "n": 42,
+          "wins": 41
+        },
+        "HAP15": {
+          "n": 30,
+          "wins": 29
+        },
+        "AAP15": {
+          "n": 13,
+          "wins": 13
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 54
+        },
+        "61": {
+          "n": 47,
+          "wins": 40
+        },
+        "78": {
+          "n": 69,
+          "wins": 60
+        },
+        "94": {
+          "n": 114,
+          "wins": 95
+        },
+        "135": {
+          "n": 81,
+          "wins": 69
+        },
+        "140": {
+          "n": 81,
+          "wins": 73
+        }
+      }
+    },
+    "candidate": {
+      "n": 459,
+      "wins": 391,
+      "hitRate": 0.8518518518518519,
+      "meanProbability": 0.8093305163691416,
+      "brier": 0.12113558325700634,
+      "logLoss": 0.38752327727725844,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 210,
+          "wins": 164
+        },
+        "A": {
+          "n": 50,
+          "wins": 37
+        },
+        "O05": {
+          "n": 97,
+          "wins": 91
+        },
+        "HU25": {
+          "n": 17,
+          "wins": 16
+        },
+        "AU25": {
+          "n": 42,
+          "wins": 41
+        },
+        "HAP15": {
+          "n": 30,
+          "wins": 29
+        },
+        "AAP15": {
+          "n": 13,
+          "wins": 13
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 54
+        },
+        "61": {
+          "n": 47,
+          "wins": 40
+        },
+        "78": {
+          "n": 69,
+          "wins": 60
+        },
+        "94": {
+          "n": 114,
+          "wins": 95
+        },
+        "135": {
+          "n": 81,
+          "wins": 69
+        },
+        "140": {
+          "n": 81,
+          "wins": 73
+        }
+      }
+    },
+    "pairedDayBootstrap95": [
+      0.0,
+      0.0
+    ],
+    "hitRateDayBootstrap95": [
+      0.8210273731719469,
+      0.8823529411764706
+    ],
+    "days": 199
+  },
+  "cap3MarketImpact": {
+    "baseline": {
+      "n": 459,
+      "wins": 368,
+      "hitRate": 0.8017429193899782,
+      "meanProbability": 0.7519632857483324,
+      "brier": 0.15195835210855907,
+      "logLoss": 0.4754513066046834,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 206,
+          "wins": 156
+        },
+        "A": {
+          "n": 54,
+          "wins": 36
+        },
+        "HX": {
+          "n": 139,
+          "wins": 124
+        },
+        "XA": {
+          "n": 60,
+          "wins": 52
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 50
+        },
+        "61": {
+          "n": 47,
+          "wins": 36
+        },
+        "78": {
+          "n": 69,
+          "wins": 56
+        },
+        "94": {
+          "n": 114,
+          "wins": 92
+        },
+        "135": {
+          "n": 81,
+          "wins": 67
+        },
+        "140": {
+          "n": 81,
+          "wins": 67
+        }
+      }
+    },
+    "candidate": {
+      "n": 459,
+      "wins": 391,
+      "hitRate": 0.8518518518518519,
+      "meanProbability": 0.8093305163691416,
+      "brier": 0.12113558325700634,
+      "logLoss": 0.38752327727725844,
+      "alternatives": 199,
+      "byMarket": {
+        "H": {
+          "n": 210,
+          "wins": 164
+        },
+        "A": {
+          "n": 50,
+          "wins": 37
+        },
+        "O05": {
+          "n": 97,
+          "wins": 91
+        },
+        "HU25": {
+          "n": 17,
+          "wins": 16
+        },
+        "AU25": {
+          "n": 42,
+          "wins": 41
+        },
+        "HAP15": {
+          "n": 30,
+          "wins": 29
+        },
+        "AAP15": {
+          "n": 13,
+          "wins": 13
+        }
+      },
+      "byLeague": {
+        "39": {
+          "n": 67,
+          "wins": 54
+        },
+        "61": {
+          "n": 47,
+          "wins": 40
+        },
+        "78": {
+          "n": 69,
+          "wins": 60
+        },
+        "94": {
+          "n": 114,
+          "wins": 95
+        },
+        "135": {
+          "n": 81,
+          "wins": 69
+        },
+        "140": {
+          "n": 81,
+          "wins": 73
+        }
+      }
+    },
+    "pairedDayBootstrap95": [
+      0.024605760750960413,
+      0.07407603578154424
+    ],
+    "hitRateDayBootstrap95": [
+      0.8210273731719469,
+      0.8823529411764706
+    ],
+    "days": 199
+  },
+  "promoted": true,
+  "expanded": false,
+  "activePolicy": {
+    "id": "broad-goals-3-0.5",
+    "markets": "broad-goals",
+    "cap": 3,
+    "extraMinProbability": 0.5
+  }
+}

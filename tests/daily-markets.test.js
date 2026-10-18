@@ -37,7 +37,12 @@ function game(id, H = 0.6, D = 0.25, ts = now + 3600000) {
     sourceUpdatedAt: now,
     updatedAt: now,
     phase: "preliminary",
-    odds: {},
+    odds: Object.fromEntries(
+      ["H", "A", "HX", "XA"].map((k) => [
+        k,
+        { odd: 1.5, at: now, bookmaker: "Test" },
+      ]),
+    ),
   };
 }
 async function seed(db, g) {
@@ -73,9 +78,10 @@ test("same top-three fixtures, one alternative chosen by draw gain, not absolute
   );
   assert.equal(JSON.stringify(gs), before);
   assert.ok(Math.abs(decorated[2].displayTip.probability - 0.85) < 1e-12);
-  assert.equal(decorated[2].displayTip.odd, null);
+  assert.equal(decorated[2].displayTip.odd, 1.5);
   assert.equal(decorated[2].displayTip.reliability, null);
-  assert.deepEqual(decorated[2].winnerTip, gs[2].winnerTip);
+  assert.equal(decorated[2].winnerTip.market, gs[2].winnerTip.market);
+  assert.equal(decorated[2].winnerTip.probability, gs[2].winnerTip.probability);
 });
 test("separate Lisbon days, deterministic ties, invalid source and started fixtures excluded", () => {
   const gs = [
@@ -111,7 +117,7 @@ test("reservation persists after kickoff; no second protection, no historical sn
   await seed(db, b);
   assert.deepEqual(await finalizeDailyMarkets(db, now), {
     reserved: 1,
-    annotated: 1,
+    annotated: 2,
   });
   const original = await db.prepare("SELECT * FROM forecasts").all();
   const cache = JSON.parse(
@@ -162,7 +168,8 @@ test("a locked side and kickoff cannot silently switch, alternative odds are sep
   const g = game(1),
     plan = chooseDailyMarkets([g], now)[0];
   g.odds.H = { odd: 2, at: now, bookmaker: "x" };
-  assert.equal(decorateDailyMarket(g, plan, now).displayTip.odd, null);
+  delete g.odds.HX;
+  assert.equal(decorateDailyMarket(g, plan, now).displayTip, undefined);
   g.odds.HX = { odd: 1.3, at: now, bookmaker: "x" };
   const d = decorateDailyMarket(g, plan, now);
   assert.equal(d.displayTip.odd, 1.3);

@@ -282,6 +282,18 @@ export function outcome(k, h, a) {
     U35: h + a < 3.5,
     BY: h > 0 && a > 0,
     BN: h === 0 || a === 0,
+    O05: h + a >= 1,
+    U45: h + a <= 4,
+    HU15: h <= 1,
+    AU15: a <= 1,
+    HU25: h <= 2,
+    AU25: a <= 2,
+    HAP15: h + 1.5 > a,
+    AAP15: a + 1.5 > h,
+    HO05: h >= 1,
+    AO05: a >= 1,
+    HO15: h >= 2,
+    AO15: a >= 2,
   }[k]
     ? 1
     : 0;

@@ -15,6 +15,8 @@ import {
   finalizeDailyMarkets,
 } from "./daily-markets.js";
 import dailyMarketResearch from "./daily-market-research.json";
+import marketExpansionResearch from "./market-expansion-research.json";
+import { MIN_ODD, PRICING_VERSION, applyPricing } from "./pricing-policy.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -439,7 +441,15 @@ export default {
           .all();
         const { games, window } = publicGames(r.results);
         res = json({
-          games,
+          games: games.map((g) => applyPricing(g, Date.now())),
+          selectionPolicy: {
+            version: PRICING_VERSION,
+            minimumOdd: MIN_ODD,
+            oddsMaxAgeHours: 6,
+            maxAlternativePerDay: 1,
+            maxGamesPerDay: 3,
+            historicalValidation: "pending-adequate-historical-odds",
+          },
           window,
           updatedAt: games.reduce((n, g) => Math.max(n, g.updatedAt), 0),
           validation: {
@@ -457,6 +467,14 @@ export default {
           luxg: luxgValidation,
           winnerModel: winnerResearch,
           dailyMarket: dailyMarketResearch,
+          marketExpansion: marketExpansionResearch,
+          pricePolicy: {
+            version: PRICING_VERSION,
+            minimumOdd: MIN_ODD,
+            historicalValidation: null,
+            reason:
+              "Os estudos anteriores não aplicam o mínimo de 1,25: faltam odds históricas adequadas.",
+          },
         });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(

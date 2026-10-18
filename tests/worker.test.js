@@ -160,7 +160,7 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     assert.equal(
       (
         await DB.prepare(
-          "SELECT COUNT(*) n FROM forecasts WHERE fixture_id=99999999 AND phase='final' AND version NOT LIKE '%daily-market-v1%'",
+          "SELECT COUNT(*) n FROM forecasts WHERE fixture_id=99999999 AND phase='final' AND version NOT LIKE '%daily-market-v%'",
         ).first()
       ).n,
       2,
@@ -171,7 +171,7 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     await DB.prepare("UPDATE fixtures SET finished=1 WHERE id=99999999").run();
     assert.equal(
       (await DB.prepare("SELECT COUNT(*) n FROM daily_markets").first()).n,
-      games.games[0].winnerTip?.majority ? 1 : 0,
+      games.games[0].winnerTip?.priceEligible ? 1 : 0,
     );
     // Multiple versions remain archived but one final per fixture is evaluated.
     await DB.prepare(

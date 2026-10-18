@@ -1,6 +1,7 @@
 import { fit as baseFit, predict as basePredict } from "./model.js";
 import { mixtureProjection } from "./luxg.js";
 import config from "./winner-config.json" with { type: "json" };
+import { extraGoalMarkets } from "./market-probabilities.js";
 export const VERSION = config.version;
 export function fit(history, cutoff) {
   return config.components.map((c) => ({
@@ -33,7 +34,7 @@ export function predict(states, fixture) {
     ...base,
     version: VERSION,
     baselineProbabilities: base.probabilities,
-    probabilities,
+    probabilities: { ...probabilities, ...extraGoalMarkets(goals) },
     homeGoals: goals.reduce((s, c) => s + c.weight * c.homeGoals, 0),
     awayGoals: goals.reduce((s, c) => s + c.weight * c.awayGoals, 0),
     luxg: mixtureProjection(goals),
