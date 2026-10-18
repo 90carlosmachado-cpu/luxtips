@@ -174,3 +174,61 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     globalThis.fetch = old;
   }
 });
+test("a published preliminary winner is evaluated even without a final refresh", async () => {
+  const DB = database(),
+    now = Date.now(),
+    kickoff = now - 3600000;
+  const fixture = {
+    id: 123456,
+    ts: kickoff,
+    league: 94,
+    homeName: "A",
+    awayName: "B",
+  };
+  const forecast = {
+    fixture,
+    phase: "preliminary",
+    winnerTip: { market: "H", label: "A vence" },
+    recommendation: null,
+    prediction: { probabilities: { H: 0.6, D: 0.25, A: 0.15 } },
+  };
+  await DB.prepare("INSERT INTO fixtures VALUES(?,?,?,?,?,?)")
+    .bind(fixture.id, 94, kickoff, 1, JSON.stringify(fixture), now)
+    .run();
+  await DB.prepare(
+    "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
+  )
+    .bind(
+      fixture.id,
+      "v3:old",
+      "preliminary",
+      kickoff - 7200000,
+      kickoff,
+      JSON.stringify({ ...forecast, winnerTip: { market: "A" } }),
+    )
+    .run();
+  await DB.prepare(
+    "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
+  )
+    .bind(
+      fixture.id,
+      "v3:new",
+      "preliminary",
+      kickoff - 3600000,
+      kickoff,
+      JSON.stringify(forecast),
+    )
+    .run();
+  await DB.prepare("INSERT INTO results VALUES(?,?,?,?)")
+    .bind(fixture.id, 2, 0, now)
+    .run();
+  const r = await worker.fetch(
+    new Request("https://test/api/history"),
+    { DB },
+    { waitUntil() {} },
+  );
+  const h = await r.json();
+  assert.equal(h.forecasts.length, 1);
+  assert.equal(h.forecasts[0].winnerHit, 1);
+  assert.equal(h.forecasts[0].phase, "preliminary");
+});

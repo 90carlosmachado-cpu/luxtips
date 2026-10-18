@@ -1,7 +1,16 @@
 import html from "../index.html";
-import { normalize, fit, predict, select, outcome, VERSION } from "./model.js";
+import {
+  normalize,
+  fit,
+  predict,
+  select,
+  winnerTip,
+  outcome,
+  VERSION,
+} from "./model.js";
 import { api, parseOdds } from "./provider.js";
 import validation from "./validation.json";
+import winnerReview from "./winner-review.json";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -203,33 +212,49 @@ async function sync(env, force = false) {
           }
         }
         if (matchStale)
-          p.risks.push("Fonte desatualizada; recomendações suspensas.");
+          p.risks.push(
+            "Atualização em atraso; seleção de valor suspensa, prognóstico de vencedor apenas provisório.",
+          );
         const data = {
           fixture: f,
           prediction: p,
           recommendation: matchStale ? null : select(p, validation, odds, now),
+          winnerTip: winnerTip(p, validation, odds, {
+            now,
+            sourceUpdatedAt: upcoming.fetchedAt,
+            stale: matchStale,
+          }),
           odds,
           context,
           updatedAt: now,
           sourceUpdatedAt: upcoming.fetchedAt,
           stale: matchStale,
         };
-        const phase = f.ts - now <= HOUR ? "final" : "preliminary";
+        const phase =
+          f.ts - now <= HOUR && !matchStale ? "final" : "preliminary";
         const snapshotVersion = VERSION + "@" + f.ts;
         data.phase = phase;
-        // Snapshot is append-only; repeated cron invocations cannot rewrite a forecast.
-        await db
-          .prepare(
-            "INSERT OR IGNORE INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
-          )
-          .bind(f.id, snapshotVersion, phase, now, f.ts, JSON.stringify(data))
-          .run();
+        // Final predictions stay frozen; preliminary revisions are append-only.
         const final = await db
           .prepare(
             "SELECT data FROM forecasts WHERE fixture_id=? AND version=? AND phase='final' AND kickoff=?",
           )
           .bind(f.id, snapshotVersion, f.ts)
           .first();
+        if (!final)
+          await db
+            .prepare(
+              "INSERT OR IGNORE INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
+            )
+            .bind(
+              f.id,
+              snapshotVersion + (phase === "preliminary" ? ":" + now : ""),
+              phase,
+              now,
+              f.ts,
+              JSON.stringify(data),
+            )
+            .run();
         await db
           .prepare(
             "INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires",
@@ -386,16 +411,19 @@ export default {
           },
         });
       } else if (u.pathname === "/api/validation") {
-        res = json(validation);
+        res = json({ ...validation, winnerSelection: winnerReview });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
-          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE p.phase='final' AND p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff AND p2.phase='final' ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",
+          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",
         ).all();
         const forecasts = r.results.map((r) => {
           const f = JSON.parse(r.data);
           return {
             ...f,
             result: { home: r.hg, away: r.ag },
+            winnerHit: f.winnerTip
+              ? outcome(f.winnerTip.market, r.hg, r.ag)
+              : null,
             hit: f.recommendation
               ? outcome(f.recommendation.market, r.hg, r.ag)
               : null,
@@ -436,7 +464,8 @@ export default {
         res = json({
           forecasts,
           metrics,
-          scope: "Últimas 1000 previsões finais; resultados regulamentares",
+          scope:
+            "Último prognóstico registado antes de cada jogo, final ou provisório; até 1000 jogos; resultados regulamentares",
         });
       } else if (u.pathname === "/" || u.pathname === "/index.html") {
         return new Response(html, {

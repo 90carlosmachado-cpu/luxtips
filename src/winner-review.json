@@ -1,0 +1,158 @@
+{
+  "version": "poisson-opponent-v1-winner-v3",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "scope": "Avaliação retrospetiva do seletor de vencedor nos jogos da época 2025 já avaliados. Probabilidades calculadas cronologicamente no backtest original; sem novo treino nem ajuste dos pesos. Não é novo período independente. A recolha e atrasos da API não são reproduzidos; sem odds históricas, ROI e valor não avaliados.",
+  "rule": "Maior probabilidade entre casa/empate/fora; só escolhe equipa se superar as outras duas opções. Até 3 por dia de Lisboa, ordenados por probabilidade, sem filtro de odd nem limiar de 65%. Histórico mínimo de 12 jogos efetivos já aplicado no conjunto original.",
+  "all": {
+    "interval": [
+      0.5084609531212911,
+      0.5540784194924238
+    ],
+    "ece": 0.024721877029731745,
+    "n": 1835,
+    "wins": 975,
+    "hitRate": 0.5313351498637602,
+    "meanProbability": 0.5078567874716451,
+    "brier": 0.2367682818916167,
+    "logLoss": 0.665970930734142,
+    "baselineBrierSameEvents": 0.2695504229704425,
+    "calibrationGap": 0.023478362392115093
+  },
+  "topThreePerDay": {
+    "interval": [
+      0.6157343672130194,
+      0.69899479731536
+    ],
+    "ece": 0.06651081137862458,
+    "n": 495,
+    "wins": 326,
+    "hitRate": 0.6585858585858586,
+    "meanProbability": 0.6069892861179808,
+    "brier": 0.2149754751009522,
+    "logLoss": 0.6207943123731327,
+    "baselineBrierSameEvents": 0.2931418967302693,
+    "calibrationGap": 0.051596572467877855
+  },
+  "majority": {
+    "interval": [
+      0.6651841656666305,
+      0.7548324517180863
+    ],
+    "ece": 0.0638434888896859,
+    "n": 389,
+    "wins": 277,
+    "hitRate": 0.712082262210797,
+    "meanProbability": 0.6539906232769354,
+    "brier": 0.2044624295071015,
+    "logLoss": 0.599057996786027,
+    "baselineBrierSameEvents": 0.3026868148213565,
+    "calibrationGap": 0.0580916389338616
+  },
+  "relative": {
+    "interval": [
+      0.37033458798877916,
+      0.5568332609864725
+    ],
+    "ece": 0.07629938164463543,
+    "n": 106,
+    "wins": 49,
+    "hitRate": 0.46226415094339623,
+    "meanProbability": 0.43450324692144093,
+    "brier": 0.25355636883687616,
+    "logLoss": 0.7005624893861898,
+    "baselineBrierSameEvents": 0.2581138482639215,
+    "calibrationGap": 0.0277609040219553
+  },
+  "byLeague": {
+    "39": {
+      "interval": [
+        0.3692454986165162,
+        0.5830454881967124
+      ],
+      "ece": 0.1436532482463067,
+      "n": 80,
+      "wins": 38,
+      "hitRate": 0.475,
+      "meanProbability": 0.5701821408577419,
+      "brier": 0.24188483028907726,
+      "logLoss": 0.674763546094394,
+      "baselineBrierSameEvents": 0.2583198948684964,
+      "calibrationGap": 0.0951821408577419
+    },
+    "61": {
+      "interval": [
+        0.5717217482621142,
+        0.8086273430493296
+      ],
+      "ece": 0.12658170034644858,
+      "n": 54,
+      "wins": 38,
+      "hitRate": 0.7037037037037037,
+      "meanProbability": 0.6253742859708068,
+      "brier": 0.2127112749745146,
+      "logLoss": 0.6145169484102637,
+      "baselineBrierSameEvents": 0.278529035440058,
+      "calibrationGap": 0.07832941773289692
+    },
+    "78": {
+      "interval": [
+        0.6450473904731996,
+        0.8424826738807688
+      ],
+      "ece": 0.1475138024749993,
+      "n": 70,
+      "wins": 53,
+      "hitRate": 0.7571428571428571,
+      "meanProbability": 0.6517061700259572,
+      "brier": 0.1997423583018825,
+      "logLoss": 0.5971321020589591,
+      "baselineBrierSameEvents": 0.3095935702694606,
+      "calibrationGap": 0.10543668711689991
+    },
+    "94": {
+      "interval": [
+        0.6112816903971267,
+        0.7855377076467428
+      ],
+      "ece": 0.07342982506196287,
+      "n": 102,
+      "wins": 72,
+      "hitRate": 0.7058823529411765,
+      "meanProbability": 0.6584019074902937,
+      "brier": 0.20384059124106743,
+      "logLoss": 0.5958824031792885,
+      "baselineBrierSameEvents": 0.3085734870750937,
+      "calibrationGap": 0.04748044545088281
+    },
+    "135": {
+      "interval": [
+        0.5946267078910946,
+        0.7823594707184943
+      ],
+      "ece": 0.19427313716520833,
+      "n": 89,
+      "wins": 62,
+      "hitRate": 0.6966292134831461,
+      "meanProbability": 0.5637198631934139,
+      "brier": 0.22303351659690443,
+      "logLoss": 0.6398840728880397,
+      "baselineBrierSameEvents": 0.32378506681949215,
+      "calibrationGap": 0.13290935028973216
+    },
+    "140": {
+      "interval": [
+        0.5322034757513312,
+        0.7181778743049083
+      ],
+      "ece": 0.0927949265423037,
+      "n": 100,
+      "wins": 63,
+      "hitRate": 0.63,
+      "meanProbability": 0.5812741962731695,
+      "brier": 0.20951976538376266,
+      "logLoss": 0.6059925096754453,
+      "baselineBrierSameEvents": 0.2743616283078379,
+      "calibrationGap": 0.04872580372683055
+    }
+  }
+}

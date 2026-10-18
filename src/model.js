@@ -1,5 +1,5 @@
 // All features are derived strictly from completed matches before the cutoff.
-export const VERSION = "poisson-opponent-v1-favorites-v2";
+export const VERSION = "poisson-opponent-v1-winner-v3";
 const DAY = 86400000;
 const clip = (x, a, b) => Math.max(a, Math.min(b, x));
 export function normalize(f) {
@@ -370,4 +370,102 @@ export function select(pred, validation, odds = {}, now = Date.now()) {
         b.probability - a.probability,
     )[0] || null
   );
+}
+
+// Predictive decision: choose the most probable 1X2 result, independently of price.
+// This is not an expected-value betting recommendation or a promise of a winner.
+export function winnerTip(pred, validation, odds = {}, context = {}) {
+  const now = context.now ?? Date.now();
+  const source = context.sourceUpdatedAt;
+  if (
+    pred.sample < 12 ||
+    !Number.isFinite(source) ||
+    source > now ||
+    now - source > 24 * 3600000
+  )
+    return null;
+  const p = pred.probabilities;
+  if (
+    ![p.H, p.D, p.A].every((x) => Number.isFinite(x) && x >= 0 && x <= 1) ||
+    Math.abs(p.H + p.D + p.A - 1) > 1e-6
+  )
+    return null;
+  const market = p.H > p.A ? "H" : "A";
+  const probability = p[market];
+  const runnerUp = Math.max(p.D, p[market === "H" ? "A" : "H"]);
+  if (probability <= runnerUp) return null;
+  const v = validation?.markets?.[market];
+  const bin = calibrationBin(v, probability);
+  const o = odds[market];
+  const validOdd =
+    o &&
+    Number.isFinite(o.odd) &&
+    o.odd > 1 &&
+    Number.isFinite(o.at) &&
+    o.at <= now &&
+    now - o.at < 6 * 3600000;
+  const expectedValue = validOdd ? probability * o.odd - 1 : null;
+  const team =
+    market === "H"
+      ? pred.homeName || "Equipa da casa"
+      : pred.awayName || "Equipa visitante";
+  const provisional = !!context.stale || now - source > 2 * 3600000;
+  return {
+    market,
+    label: `${team} vence`,
+    selectionType: "winner-tip",
+    probability,
+    margin: probability - runnerUp,
+    favoritism:
+      probability >= 0.65
+        ? "Favorito destacado"
+        : probability >= 0.5
+          ? "Favorito"
+          : "Vantagem curta",
+    majority: probability >= 0.5,
+    provisional,
+    sourceUpdatedAt: source,
+    reliability: bin
+      ? {
+          n: bin.n,
+          observed: bin.rate,
+          interval: bin.interval,
+          low: bin.low,
+          high: bin.high,
+        }
+      : null,
+    calibrationStatus:
+      v?.enabled &&
+      v.byLeague?.[pred.league]?.enabled &&
+      bin &&
+      Math.abs(bin.rate - bin.mean) <= 0.08
+        ? "Evidência histórica disponível"
+        : "Fiabilidade deste perfil ainda por confirmar",
+    fairOdd: 1 / probability,
+    minimumOdd: Math.ceil((1.03 / probability) * 100) / 100,
+    odd: validOdd ? o.odd : null,
+    bookmaker: validOdd ? o.bookmaker : null,
+    oddsAt: validOdd ? o.at : null,
+    expectedValue,
+    valueStatus:
+      expectedValue === null
+        ? "Valor por confirmar: sem odds reais recentes."
+        : expectedValue >= 0.03
+          ? "Odd com valor esperado positivo estimado; lucro não demonstrado."
+          : "A equipa é favorita, mas a odd não atinge o critério de valor do modelo.",
+    reason: `${team} tem a maior probabilidade no resultado final: ${(100 * probability).toFixed(1)}%, com ${(100 * (probability - runnerUp)).toFixed(1)} pontos de vantagem sobre a segunda opção. Golos estimados: ${pred.homeGoals.toFixed(2)}–${pred.awayGoals.toFixed(2)}, ajustados à força dos adversários e ao fator casa.`,
+    risks: [
+      ...(pred.risks || []),
+      ...(provisional
+        ? [
+            "Prognóstico provisório: atualização da fonte em atraso; confirmar horário e plantéis.",
+          ]
+        : []),
+      ...(probability < 0.5
+        ? [
+            "Favorito relativo: empate e vitória adversária somam maior probabilidade.",
+          ]
+        : []),
+    ],
+  };
 }

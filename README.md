@@ -119,3 +119,15 @@ A vitória simples elegível tem prioridade sobre uma dupla hipótese com maior 
 A página inicial apresenta apenas recomendações recentes de jogos futuros. Mostra nomes das equipas, odds reais quando disponíveis e o limiar de odd calculado para 3% de valor esperado estimado. Sem odds, o valor fica expressamente por confirmar.
 
 `node scripts/selection-review.js` reproduz a comparação retrospetiva das políticas a partir dos ficheiros gerados pelo backtest. `src/selection-review.json` contém os resultados reais; não é um novo teste independente e não mede ROI. As versões antigas permanecem imutáveis; para evitar duplicações, o histórico avalia a última previsão final registada antes do jogo, por encontro e horário.
+
+## Prognósticos de vencedor (v3, comportamento atual)
+
+O prognóstico desportivo é distinto da recomendação de valor: escolhe a equipa com maior probabilidade no 1X2, desde que supere empate e adversário. A apresentação destaca no máximo três por dia de Lisboa por probabilidade, sem ajustar pesos para incluir nomes específicos. Não exige 65% nem odd positiva para prever um vencedor. O campo `winnerTip` guarda este prognóstico; `recommendation` mantém os filtros mais exigentes de seleção de mercados/valor. Odds desfavoráveis são identificadas e não escondem a previsão de vencedor. Probabilidade inferior a 50% recebe a indicação «Vantagem curta».
+
+Mantém histórico mínimo de 12 jogos efetivos. Cache com até 24h permite prognóstico provisório quando a atualização falha; mostra idade real e aviso. Além de 24h, ou sem data verificável, o prognóstico é suspenso. Dados em atraso não originam previsões finais: estas aguardam atualização válida antes do início. Os snapshots antigos não são reescritos. O histórico distingue o acerto de `winnerTip` do mercado recomendado anterior.
+
+`node scripts/winner-review.js`: avaliação cronológica das probabilidades históricas já guardadas e seleção fixa de até três por dia. O relatório `src/winner-review.json` inclui acerto, Brier, Log Loss, ECE, intervalos e desempenho por competição. Não é um novo período independente, não simula a disponibilidade histórica da API e não mede ROI.
+
+`node scripts/compare-score-models.js`: experiência separada com sete correções de resultados baixos inspiradas em Dixon–Coles (1997), selecionadas em 2024 e avaliadas em 2025. O resultado é guardado em `src/score-model-research.json`; não altera automaticamente o modelo de produção.
+
+O histórico da v3 também inclui o último prognóstico provisório anterior ao jogo quando não houve final, evitando excluir precisamente os jogos com falhas da fonte. Cada revisão preliminar é acrescentada ao registo; após existir final desta versão, essa previsão fica congelada. A simulação dos três destaques históricos usa o corte diário original; a apresentação ao vivo pode mudar antes do jogo com novos dados. O histórico prospetivo avalia todos os prognósticos guardados, separadamente dessa simulação.

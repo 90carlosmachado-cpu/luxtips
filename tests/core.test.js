@@ -254,3 +254,73 @@ test("adjacent calibration bins support sparse favorites without disabling evide
     null,
   );
 });
+test("winner prognosis is separate from price and the old 65% gate", async () => {
+  const { winnerTip } = await import("../src/model.js");
+  const now = Date.now(),
+    pred = {
+      sample: 20,
+      homeName: "Equipa A",
+      awayName: "Equipa B",
+      homeGoals: 1.8,
+      awayGoals: 0.9,
+      probabilities: { H: 0.6, D: 0.25, A: 0.15 },
+      risks: [],
+    };
+  const tip = winnerTip(
+    pred,
+    {},
+    { H: { odd: 1.2, at: now } },
+    { now, sourceUpdatedAt: now },
+  );
+  assert.equal(tip.market, "H");
+  assert.equal(tip.probability, 0.6);
+  assert.ok(tip.expectedValue < 0);
+  assert.match(tip.valueStatus, /não atinge/);
+  assert.equal(
+    winnerTip(
+      { ...pred, probabilities: { H: 0.2, D: 0.25, A: 0.55 } },
+      {},
+      {},
+      { now, sourceUpdatedAt: now },
+    ).market,
+    "A",
+  );
+  assert.equal(
+    winnerTip(
+      { ...pred, probabilities: { H: 0.3, D: 0.4, A: 0.3 } },
+      {},
+      {},
+      { now, sourceUpdatedAt: now },
+    ),
+    null,
+  );
+});
+test("relative favorites and stale-data fallback are explicit and bounded", async () => {
+  const { winnerTip } = await import("../src/model.js");
+  const now = Date.now(),
+    pred = {
+      sample: 20,
+      homeGoals: 1.5,
+      awayGoals: 1,
+      probabilities: { H: 0.49, D: 0.28, A: 0.23 },
+    };
+  const tip = winnerTip(
+    pred,
+    {},
+    {},
+    { now, sourceUpdatedAt: now - 3 * 3600000, stale: true },
+  );
+  assert.equal(tip.provisional, true);
+  assert.equal(tip.favoritism, "Vantagem curta");
+  assert.equal(tip.majority, false);
+  assert.ok(tip.risks.some((x) => x.includes("somam maior")));
+  for (const source of [undefined, now + 1, now - 25 * 3600000])
+    assert.equal(
+      winnerTip(pred, {}, {}, { now, sourceUpdatedAt: source }),
+      null,
+    );
+  assert.equal(
+    winnerTip({ ...pred, sample: 2 }, {}, {}, { now, sourceUpdatedAt: now }),
+    null,
+  );
+});
