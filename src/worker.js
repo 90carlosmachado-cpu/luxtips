@@ -1,0 +1,461 @@
+import html from "../index.html";
+import { normalize, fit, predict, select, outcome, VERSION } from "./model.js";
+import { api, parseOdds } from "./provider.js";
+import validation from "./validation.json";
+const HOUR = 3600000;
+const json = (v, status = 200) =>
+  Response.json(v, {
+    status,
+    headers: {
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+const meta = async (db, k, v) =>
+  db
+    .prepare(
+      "INSERT INTO meta(key,data) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data",
+    )
+    .bind(k, JSON.stringify(v))
+    .run();
+export async function saveFixtures(db, items) {
+  const now = Date.now(),
+    rows = items.map(normalize).filter(Boolean);
+  for (let i = 0; i < rows.length; i += 50)
+    await db.batch(
+      rows
+        .slice(i, i + 50)
+        .map((f) =>
+          db
+            .prepare(
+              "INSERT INTO fixtures(id,league,kickoff,finished,data,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET league=excluded.league,kickoff=excluded.kickoff,finished=excluded.finished,data=excluded.data,updated_at=excluded.updated_at",
+            )
+            .bind(
+              f.id,
+              f.league,
+              f.ts,
+              f.finished ? 1 : 0,
+              JSON.stringify(f),
+              now,
+            ),
+        ),
+    );
+  return rows;
+}
+async function sync(env) {
+  const now = Date.now(),
+    db = env.DB;
+  const lock = await db
+    .prepare(
+      "INSERT INTO locks(key,until) VALUES('sync',?) ON CONFLICT(key) DO UPDATE SET until=excluded.until WHERE until<? RETURNING key",
+    )
+    .bind(now + 10 * 60000, now)
+    .first();
+  if (!lock) return { skipped: true };
+  let stale = false,
+    processed = 0,
+    enrichmentAvailable = true;
+  try {
+    const leagues = (env.LEAGUES || "94,39,140,78,135,61")
+      .split(",")
+      .map(Number)
+      .filter(Number.isInteger)
+      .slice(0, 6);
+    for (const league of leagues) {
+      const coverage = await api(env, "leagues?id=" + league, 24 * HOUR);
+      stale ||= coverage.stale;
+      const info = coverage.data[0],
+        seasons = (info?.seasons || []).filter((s) => s.current);
+      if (!seasons.length) continue;
+      const season = seasons[0];
+      await meta(db, "coverage:" + league, {
+        season: season.year,
+        coverage: season.coverage,
+      });
+      const upcoming = await api(
+        env,
+        `fixtures?league=${league}&season=${season.year}&from=${new Date(now - 3 * 86400000).toISOString().slice(0, 10)}&to=${new Date(now + 7 * 86400000).toISOString().slice(0, 10)}`,
+        30 * 60000,
+      );
+      stale ||= upcoming.stale;
+      if (upcoming.fromCache === false && !upcoming.stale)
+        await meta(db, "last_live_sync", { at: now, league });
+      const fixtures = await saveFixtures(db, upcoming.data);
+      // One season history per day, not one request per team or match.
+      const history = await api(
+        env,
+        `fixtures?league=${league}&season=${season.year}`,
+        24 * HOUR,
+      );
+      stale ||= history.stale;
+      await saveFixtures(db, history.data);
+      const bootstrap = await db
+        .prepare("SELECT data FROM meta WHERE key=?")
+        .bind("bootstrap:" + league + ":" + season.year)
+        .first();
+      if (!bootstrap) {
+        for (const year of [
+          season.year - 1,
+          season.year - 2,
+          season.year - 3,
+        ]) {
+          const past = await api(
+            env,
+            `fixtures?league=${league}&season=${year}`,
+            365 * 24 * HOUR,
+          );
+          if (past.stale) throw new Error("bootstrap_stale");
+          await saveFixtures(db, past.data);
+        }
+        await meta(db, "bootstrap:" + league + ":" + season.year, { at: now });
+      }
+      const stored = await db
+        .prepare(
+          "SELECT data FROM fixtures WHERE league=? AND finished=1 AND kickoff<? ORDER BY kickoff",
+        )
+        .bind(league, now)
+        .all();
+      const state = fit(
+        stored.results.map((r) => JSON.parse(r.data)),
+        now,
+        validation.opts,
+      );
+      let enriched = 0;
+      for (const f of fixtures.sort((a, b) => a.ts - b.ts)) {
+        if (f.finished) {
+          await db
+            .prepare(
+              "INSERT INTO results(fixture_id,hg,ag,settled_at) VALUES(?,?,?,?) ON CONFLICT(fixture_id) DO UPDATE SET hg=excluded.hg,ag=excluded.ag,settled_at=excluded.settled_at",
+            )
+            .bind(f.id, f.hg, f.ag, now)
+            .run();
+          continue;
+        }
+        if (
+          f.ts <= now ||
+          f.ts > now + 7 * 86400000 ||
+          !["NS", "TBD"].includes(f.status)
+        )
+          continue;
+        const p = predict(state, f);
+        let odds = {},
+          context = { injuries: null, lineups: null, updatedAt: now };
+        let matchStale = stale;
+        if (enrichmentAvailable && f.ts - now < 24 * HOUR && enriched++ < 8) {
+          if (season.coverage?.odds) {
+            try {
+              const r = await api(env, "odds?fixture=" + f.id, 3 * HOUR);
+              if (!r.stale) odds = parseOdds(r.data, f.id, now);
+            } catch {
+              enrichmentAvailable = false;
+              p.risks.push("Odds não disponíveis.");
+            }
+          }
+          if (enrichmentAvailable && season.coverage?.injuries) {
+            try {
+              const r = await api(env, "injuries?fixture=" + f.id, 6 * HOUR);
+              context.injuries = r.data.map((x) => ({
+                team: x.team?.name,
+                player: x.player?.name,
+                type: x.player?.type,
+                reason: x.player?.reason,
+              }));
+              context.injuriesStale = r.stale;
+            } catch {
+              enrichmentAvailable = false;
+              p.risks.push("Indisponibilidades não verificadas.");
+            }
+          }
+          if (
+            enrichmentAvailable &&
+            f.ts - now < 2 * HOUR &&
+            season.coverage?.fixtures?.lineups
+          ) {
+            try {
+              const r = await api(
+                env,
+                "fixtures/lineups?fixture=" + f.id,
+                30 * 60000,
+              );
+              context.lineups = r.data.map((x) => ({
+                team: x.team?.name,
+                formation: x.formation,
+                players: x.startXI?.map((y) => y.player?.name),
+              }));
+            } catch {
+              p.risks.push("Alinhamentos não disponíveis.");
+            }
+          }
+        }
+        if (matchStale)
+          p.risks.push("Fonte desatualizada; recomendações suspensas.");
+        const data = {
+          fixture: f,
+          prediction: p,
+          recommendation: matchStale ? null : select(p, validation, odds, now),
+          odds,
+          context,
+          updatedAt: now,
+          sourceUpdatedAt: upcoming.fetchedAt,
+          stale: matchStale,
+        };
+        const phase = f.ts - now <= HOUR ? "final" : "preliminary";
+        const snapshotVersion = VERSION + "@" + f.ts;
+        data.phase = phase;
+        // Snapshot is append-only; repeated cron invocations cannot rewrite a forecast.
+        await db
+          .prepare(
+            "INSERT OR IGNORE INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
+          )
+          .bind(f.id, snapshotVersion, phase, now, f.ts, JSON.stringify(data))
+          .run();
+        const final = await db
+          .prepare(
+            "SELECT data FROM forecasts WHERE fixture_id=? AND version=? AND phase='final' AND kickoff=?",
+          )
+          .bind(f.id, snapshotVersion, f.ts)
+          .first();
+        await db
+          .prepare(
+            "INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires",
+          )
+          .bind(
+            "forecast:" + f.id,
+            final?.data || JSON.stringify(data),
+            f.ts + 86400000,
+          )
+          .run();
+        processed++;
+      }
+    }
+    await meta(db, "sync", {
+      at: Date.now(),
+      ok: true,
+      stale,
+      processed,
+      contextAvailable: enrichmentAvailable,
+    });
+    // Bounded maintenance of obsolete API cache; no forecast history deletion.
+    await db
+      .prepare("DELETE FROM cache WHERE expires<? AND key LIKE ?")
+      .bind(now - 30 * 86400000, "api:%")
+      .run();
+    return { ok: true, processed, stale };
+  } catch (e) {
+    await meta(db, "sync", {
+      at: Date.now(),
+      ok: false,
+      code: e.code || "sync_failed",
+    });
+    throw e;
+  } finally {
+    await db.prepare("DELETE FROM locks WHERE key='sync'").run();
+  }
+}
+async function authorized(req, secret) {
+  if (!secret) return false;
+  const token = (req.headers.get("Authorization") || "").replace(
+    /^Bearer /,
+    "",
+  );
+  const hash = async (x) =>
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(x));
+  const a = new Uint8Array(await hash(token)),
+    b = new Uint8Array(await hash(secret));
+  let d = 0;
+  for (let i = 0; i < a.length; i++) d |= a[i] ^ b[i];
+  return d === 0;
+}
+export default {
+  async fetch(req, env, ctx) {
+    const u = new URL(req.url);
+    try {
+      if (req.method === "OPTIONS")
+        return new Response(null, {
+          status: 204,
+          headers: {
+            "Access-Control-Allow-Origin":
+              "https://90carlosmachado-cpu.github.io",
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Max-Age": "86400",
+          },
+        });
+      if (u.pathname === "/api/admin/provider") {
+        if (!(await authorized(req, env.ADMIN_TOKEN)))
+          return json({ error: "Não autorizado" }, 401);
+        if (u.searchParams.get("check") === "leagues") {
+          try {
+            const r = await api(env, "leagues?id=94", HOUR);
+            return json({ ok: true, count: r.data.length, stale: r.stale });
+          } catch (e) {
+            return json({ code: e.code || "error", reason: e.detail }, 502);
+          }
+        }
+        try {
+          const r = await fetch("https://v3.football.api-sports.io/status", {
+            headers: {
+              "x-apisports-key": env.API_FOOTBALL_KEY,
+              "User-Agent": "LuxTips/2.0",
+              Accept: "application/json",
+            },
+            signal: AbortSignal.timeout(20000),
+            cache: "no-store",
+          });
+          const text = await r.text();
+          let d;
+          try {
+            d = JSON.parse(text);
+          } catch {}
+          return json({
+            http: r.status,
+            rateLimit: Object.fromEntries(
+              [...r.headers].filter(([k]) => k.includes("ratelimit")),
+            ),
+            type: r.headers.get("content-type"),
+            errors: d?.errors,
+            subscription: d?.response?.subscription,
+            requests: d?.response?.requests,
+            parsed: !!d,
+          });
+        } catch (e) {
+          return json(
+            {
+              kind: e.name,
+              reason: String(e.message)
+                .replaceAll(env.API_FOOTBALL_KEY, "[redacted]")
+                .slice(0, 200),
+            },
+            502,
+          );
+        }
+      }
+      if (u.pathname === "/api/admin/sync") {
+        if (req.method !== "POST")
+          return json({ error: "Método não permitido" }, 405);
+        if (!(await authorized(req, env.ADMIN_TOKEN)))
+          return json({ error: "Não autorizado" }, 401);
+        return json(await sync(env));
+      }
+      if (req.method !== "GET")
+        return json({ error: "Método não permitido" }, 405);
+      let res;
+      if (u.pathname === "/api/health") {
+        const s = await env.DB.prepare(
+          "SELECT data FROM meta WHERE key='sync'",
+        ).first();
+        const status = s ? JSON.parse(s.data) : null;
+        const live = await env.DB.prepare(
+          "SELECT data FROM meta WHERE key='last_live_sync'",
+        ).first();
+        res = json({
+          service: "LuxTips",
+          version: VERSION,
+          sync: status,
+          lastLiveRefresh: live ? JSON.parse(live.data) : null,
+          ready: !!status?.ok,
+        });
+      } else if (u.pathname === "/api/games") {
+        const r = await env.DB.prepare(
+          "SELECT c.data FROM fixtures f JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff LIMIT 150",
+        )
+          .bind(Date.now(), Date.now() + 7 * 86400000)
+          .all();
+        const games = r.results.map((x) => JSON.parse(x.data));
+        res = json({
+          games,
+          updatedAt: games.reduce((n, g) => Math.max(n, g.updatedAt), 0),
+          validation: {
+            holdout: validation.holdout,
+            holdoutMatches: validation.holdoutMatches,
+          },
+        });
+      } else if (u.pathname === "/api/validation") {
+        res = json(validation);
+      } else if (u.pathname === "/api/history") {
+        const r = await env.DB.prepare(
+          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE p.phase='final' ORDER BY p.created_at DESC LIMIT 1000",
+        ).all();
+        const forecasts = r.results.map((r) => {
+          const f = JSON.parse(r.data);
+          return {
+            ...f,
+            result: { home: r.hg, away: r.ag },
+            hit: f.recommendation
+              ? outcome(f.recommendation.market, r.hg, r.ag)
+              : null,
+          };
+        });
+        const metrics = {};
+        for (const f of forecasts) {
+          for (const [k, p] of Object.entries(f.prediction.probabilities)) {
+            const y = outcome(k, f.result.home, f.result.away);
+            metrics[k] ||= {
+              n: 0,
+              brier: 0,
+              logLoss: 0,
+              hits: 0,
+              bins: Array.from({ length: 10 }, () => ({ n: 0, p: 0, y: 0 })),
+            };
+            const m = metrics[k];
+            m.n++;
+            m.brier += (p - y) ** 2;
+            m.logLoss -=
+              y * Math.log(Math.max(1e-9, p)) +
+              (1 - y) * Math.log(Math.max(1e-9, 1 - p));
+            m.hits += (p >= 0.5 ? 1 : 0) === y ? 1 : 0;
+            const b = m.bins[Math.min(9, Math.floor(p * 10))];
+            b.n++;
+            b.p += p;
+            b.y += y;
+          }
+        }
+        for (const m of Object.values(metrics)) {
+          m.brier /= m.n;
+          m.logLoss /= m.n;
+          m.accuracy = m.hits / m.n;
+          m.ece =
+            m.bins.reduce((s, b) => s + (b.n ? Math.abs(b.p - b.y) : 0), 0) /
+            m.n;
+        }
+        res = json({
+          forecasts,
+          metrics,
+          scope: "Últimas 1000 previsões finais; resultados regulamentares",
+        });
+      } else if (u.pathname === "/" || u.pathname === "/index.html") {
+        return new Response(html, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "X-Content-Type-Options": "nosniff",
+            "Referrer-Policy": "no-referrer",
+            "Content-Security-Policy":
+              "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://luxtips.90carlosmachado.workers.dev; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'",
+          },
+        });
+      } else return json({ error: "Não encontrado" }, 404);
+      res.headers.set(
+        "Access-Control-Allow-Origin",
+        "https://90carlosmachado-cpu.github.io",
+      );
+      return res;
+    } catch {
+      console.error(
+        JSON.stringify({
+          event: "request_failed",
+          path: u.pathname.slice(0, 80),
+        }),
+      );
+      return json(
+        { error: "Serviço temporariamente indisponível. Tente novamente." },
+        503,
+      );
+    }
+  },
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(
+      sync(env).catch(() =>
+        console.error(JSON.stringify({ event: "scheduled_sync_failed" })),
+      ),
+    );
+  },
+};

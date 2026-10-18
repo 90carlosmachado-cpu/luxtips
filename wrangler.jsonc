@@ -1,0 +1,20 @@
+{
+  "name": "luxtips",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-18",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+    "redact_query_string": true,
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "luxtips-analysis",
+      "database_id": "efc001a1-1d87-4a21-b94d-372980392f1c",
+    },
+  ],
+  "triggers": { "crons": ["7,37 * * * *"] },
+  "vars": { "DAILY_BUDGET": "600", "LEAGUES": "94,39,140,78,135,61" },
+  "rules": [{ "type": "Text", "globs": ["**/*.html"], "fallthrough": true }],
+}
