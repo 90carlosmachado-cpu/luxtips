@@ -141,10 +141,10 @@ test("provider caches requests, respects quota and falls back explicitly", async
     });
   };
   try {
-    assert.equal((await api(env, "leagues", 10)).stale, false);
-    await api(env, "leagues", 10);
+    assert.equal((await api(env, "leagues", 60000)).stale, false);
+    await api(env, "leagues", 60000);
     assert.equal(calls, 1);
-    assert.equal((await api(env, "leagues", 10, true)).stale, false);
+    assert.equal((await api(env, "leagues", 60000, true)).stale, false);
     assert.equal(calls, 1);
     await db.prepare("UPDATE cache SET expires=0").run();
     assert.equal((await api(env, "leagues")).stale, true);
