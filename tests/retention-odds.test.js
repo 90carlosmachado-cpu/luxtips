@@ -59,6 +59,7 @@ test("multiple winners, maximum one alternative and no replacement by a later hi
   for (const g of games.slice(0, 2)) {
     g.odds.HX = { odd: 1.25, at: now, bookmaker: "Book" };
     g.displayTip = { market: "HX", probability: 0.9 };
+    g.prediction.probabilities.HX = 0.9;
   }
   await publishDailyPicks(db, games, now);
   const r = await publishedGames(db, now);
@@ -197,4 +198,90 @@ test("history evaluates the published selection, not a later changed forecast", 
   assert.equal(r.status, 200);
   assert.equal(body.forecasts[0].winnerTip.market, "H");
   assert.equal(body.forecasts[0].winnerHit, 0);
+});
+
+test("invalid legacy reservation cannot block a real alternative; published winners remain unchanged", async () => {
+  const db = database(),
+    g = game();
+  await publishDailyPicks(db, [g], now);
+  const original = (
+    await db
+      .prepare("SELECT data FROM published_picks WHERE fixture_id=1")
+      .first()
+  ).data;
+  await db
+    .prepare(
+      "INSERT INTO daily_markets(day,fixture_id,kickoff,market,policy_version,created_at,data) VALUES(?,?,?,?,?,?,?)",
+    )
+    .bind(
+      "2026-10-18",
+      1,
+      g.fixture.ts,
+      "HX",
+      "daily-market-v1",
+      now,
+      JSON.stringify(g),
+    )
+    .run();
+  g.displayTip = { market: "HX", probability: 0.9 };
+  g.prediction.probabilities.HX = 0.9;
+  g.odds.HX = { odd: 1.12, at: now, bookmaker: "Book" };
+  g.prediction.probabilities.U35 = 0.8;
+  g.odds.U35 = { odd: 1.4, at: now, bookmaker: "Book" };
+  await publishDailyPicks(db, [g], now + 1000);
+  let picks = await publishedGames(db, now + 1000);
+  assert.equal(picks.length, 2);
+  assert.equal(picks.filter((x) => x.published.alternative).length, 1);
+  assert.equal(
+    picks.find((x) => x.published.alternative).displayTip.market,
+    "U35",
+  );
+  assert.equal(
+    (
+      await db
+        .prepare("SELECT data FROM published_picks WHERE fixture_id=1")
+        .first()
+    ).data,
+    original,
+  );
+  g.prediction.probabilities.O05 = 0.99;
+  g.odds.O05 = { odd: 1.3, at: now, bookmaker: "Book" };
+  await publishDailyPicks(db, [g], now + 2000);
+  picks = await publishedGames(db, now + 2000);
+  assert.equal(picks.filter((x) => x.published.alternative).length, 1);
+  assert.equal(
+    picks.find((x) => x.published.alternative).displayTip.market,
+    "U35",
+  );
+  await assert.rejects(
+    db.prepare("DELETE FROM published_alternatives").run(),
+    /immutable/,
+  );
+});
+test("no eligible alternative falls back to winners, never low odds or unverified handicap", async () => {
+  const db = database(),
+    g = game();
+  g.prediction.probabilities.HX = 0.9;
+  g.odds.HX = { odd: 1.12, at: now, bookmaker: "Book" };
+  g.prediction.probabilities.HAP15 = 0.99;
+  g.odds.HAP15 = { odd: 2.5, at: now, bookmaker: "Book" };
+  await publishDailyPicks(db, [g], now);
+  const picks = await publishedGames(db, now);
+  assert.equal(picks.length, 1);
+  assert.equal(picks[0].winnerTip.market, "H");
+  assert.equal(picks[0].displayTip, undefined);
+});
+
+test("an eligible alternative can publish even when the winner odd is below the minimum", async () => {
+  const db = database(),
+    g = game();
+  g.odds.H.odd = 1.2;
+  g.prediction.probabilities.U35 = 0.85;
+  g.odds.U35 = { odd: 1.4, at: now, bookmaker: "Book" };
+  await publishDailyPicks(db, [g], now);
+  const picks = await publishedGames(db, now);
+  assert.equal(picks.length, 1);
+  assert.equal(picks[0].displayTip.market, "U35");
+  assert.equal(picks[0].displayTip.odd, 1.4);
+  assert.equal(picks[0].published.alternative, true);
 });

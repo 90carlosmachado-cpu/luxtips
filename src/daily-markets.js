@@ -23,10 +23,14 @@ export function eligible(g, now) {
     now - w.sourceUpdatedAt <= 24 * HOUR
   );
 }
-export function chooseDailyMarkets(games, now) {
+export function chooseDailyMarkets(games, now, options = {}) {
   const days = new Map();
   for (const g of games
-    .filter((g) => eligible(g, now) && quoteFor(g, g.winnerTip.market, now))
+    .filter(
+      (g) =>
+        eligible(g, now) &&
+        (options.alternativeFirst || quoteFor(g, g.winnerTip.market, now)),
+    )
     .sort(
       (a, b) =>
         b.winnerTip.probability - a.winnerTip.probability ||
@@ -65,6 +69,9 @@ export function chooseDailyMarkets(games, now) {
       for (const market of allowed) {
         const gain = p[market] - p[g.winnerTip.market];
         if (
+          (options.verifiedOnly &&
+            (["HAP15", "AAP15"].includes(market) ||
+              !(p[market] * (quoteFor(g, market, now)?.odd || 0) > 1))) ||
           !Number.isFinite(gain) ||
           gain <= 0 ||
           p[market] > 1 ||

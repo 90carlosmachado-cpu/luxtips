@@ -500,6 +500,26 @@ export default {
               : null,
           };
         });
+        const publishedRows = await env.DB.prepare(
+          `SELECT p.data,r.hg,r.ag FROM (
+          SELECT fixture_id,kickoff,published_at,data FROM published_picks
+          UNION ALL SELECT fixture_id,kickoff,published_at,data FROM published_alternatives
+        ) p JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff
+          JOIN results r ON r.fixture_id=p.fixture_id WHERE f.finished=1 ORDER BY p.published_at DESC LIMIT 1000`,
+        ).all();
+        const publishedSelections = publishedRows.results.map((row) => {
+          const g = JSON.parse(row.data);
+          return {
+            ...g,
+            result: { home: row.hg, away: row.ag },
+            winnerHit: g.winnerTip
+              ? outcome(g.winnerTip.market, row.hg, row.ag)
+              : null,
+            displayHit: g.displayTip
+              ? outcome(g.displayTip.market, row.hg, row.ag)
+              : null,
+          };
+        });
         const metrics = {};
         for (const f of forecasts) {
           for (const [k, p] of Object.entries(f.prediction.probabilities)) {
@@ -534,6 +554,7 @@ export default {
         }
         res = json({
           forecasts,
+          publishedSelections,
           modelComparison: compareForecasts(forecasts),
           metrics,
           scope:

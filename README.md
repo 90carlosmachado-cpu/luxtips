@@ -286,3 +286,18 @@ sem repetir consultas cujas odds já estão válidas. Ao receber `rateLimit`/HTT
 o cliente respeita uma pausa global de pelo menos 60 segundos (ou Retry-After,
 até 300 segundos); as respostas em cache continuam disponíveis. Não altera plano
 nem contorna o limite do fornecedor.
+
+### Alternativa efetivamente publicada
+
+A migração `0005_published_alternatives.sql` preserva as vitórias publicadas e permite
+uma alternativa adicional quando a escolha original já foi divulgada. Para novos
+jogos, a alternativa é selecionada primeiro, e os restantes lugares são vitórias.
+O limite global é uma alternativa efetivamente publicada por data, incluindo jogos
+iniciados/concluídos. Uma reserva antiga em `daily_markets` não consome esse limite.
+A escolha exige preço real >=1,25, maior probabilidade estimada que vencer e valor
+esperado positivo segundo o modelo; estes critérios não constituem validação de lucro.
+Handicap fica fora da publicação automática até a correspondência entre os rótulos
+e a liquidação do preço ser verificada. As probabilidades históricas permanecem intactas.
+A seleção e a odd originais nunca são substituídas. Uma alternativa acrescentada a um
+jogo já publicado é identificada e avaliada separadamente; pode fazer a lista desse
+dia exceder os três lugares iniciais, sem implicar evidência de melhoria de volume.

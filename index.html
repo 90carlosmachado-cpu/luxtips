@@ -606,6 +606,7 @@
         });
         return `<article class="card pick" data-fixture="${f.id}">
           <div class="fixture-meta"><span>${esc(f.competition)}</span><time>${hour}</time></div>
+          ${g.published?.alternative ? '<p class="small">Alternativa do dia</p>' : ""}
           <h3 class="selection">${esc(pickLabel(g))}</h3>
           <p class="small">${g.published ? "Odd registada" : "Odd"} ${Number(r.odd).toFixed(2).replace(".", ",")} · ${esc(r.bookmaker || "")}</p>
           <p class="teams">${esc(f.homeName)} · ${esc(f.awayName)}</p>
@@ -735,14 +736,23 @@
       }
       async function history() {
         const d = await get("/api/history");
-        const winners = d.forecasts
+        const historyForecasts = [
+          ...(d.publishedSelections || []),
+          ...d.forecasts.filter(
+            (f) =>
+              !(d.publishedSelections || []).some(
+                (p) => p.fixture.id === f.fixture.id,
+              ),
+          ),
+        ];
+        const winners = historyForecasts
           .filter((f) => f.winnerTip)
           .map((f) => ({
             ...f,
             pick: f.displayTip || f.winnerTip,
             correct: f.displayTip ? f.displayHit : f.winnerHit,
           }));
-        const legacy = d.forecasts
+        const legacy = historyForecasts
           .filter((f) => !f.winnerTip && f.recommendation)
           .map((f) => ({ ...f, pick: f.recommendation, correct: f.hit }));
         const rows = (rs) =>

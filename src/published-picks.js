@@ -1,35 +1,90 @@
 import { forecastWindow, lisbonDay } from "./window.js";
-import { eligible, MAX_DAILY_GAMES } from "./daily-markets.js";
+import {
+  eligible,
+  MAX_DAILY_GAMES,
+  chooseDailyMarkets,
+  decorateDailyMarket,
+} from "./daily-markets.js";
 import { applyPricing } from "./pricing-policy.js";
 import { outcome } from "./model.js";
 export async function publishDailyPicks(db, games, now = Date.now()) {
+  // Old daily_markets rows are research/reservation records, not publications.
+  // Strip their overlays before selecting; only an actually published alternative
+  // consumes the daily allowance.
   const candidates = games
-    .map((g) => applyPricing(g, now))
-    .filter(
-      (g) => eligible(g, now) && (g.displayTip || g.winnerTip)?.priceEligible,
-    )
+    .map((g) => {
+      const clean = { ...g };
+      delete clean.displayTip;
+      return applyPricing(clean, now);
+    })
+    .filter((g) => eligible(g, now))
     .sort(
       (a, b) =>
         b.winnerTip.probability - a.winnerTip.probability ||
         a.fixture.ts - b.fixture.ts ||
         a.fixture.id - b.fixture.id,
     );
-  for (const g of candidates) {
-    const tip = g.displayTip || g.winnerTip,
-      day = lisbonDay(g.fixture.ts),
-      alternative = +!["H", "A"].includes(tip.market);
-    // Single atomic INSERT guards concurrent requests and never replaces a pick.
+  for (const choice of chooseDailyMarkets(candidates, now, {
+    verifiedOnly: true,
+    alternativeFirst: true,
+  })) {
+    const g = decorateDailyMarket(
+      choice.game,
+      { ...choice, policy_version: "published-alternative-v1" },
+      now,
+    );
+    if (!g.displayTip) continue;
+    const existing = await db
+      .prepare(
+        "SELECT fixture_id FROM published_picks WHERE day=? AND fixture_id=?",
+      )
+      .bind(choice.day, choice.fixture_id)
+      .first();
+    const params = [
+      choice.day,
+      choice.fixture_id,
+      choice.kickoff,
+      choice.market,
+      now,
+      now,
+      JSON.stringify(g),
+      choice.day,
+      choice.day,
+    ];
+    if (existing) {
+      await db
+        .prepare(
+          `INSERT OR IGNORE INTO published_alternatives(day,fixture_id,kickoff,market,published_at,recorded_at,data)
+        SELECT ?,?,?,?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM published_picks WHERE day=? AND alternative=1)
+        AND NOT EXISTS(SELECT 1 FROM published_alternatives WHERE day=?)`,
+        )
+        .bind(...params)
+        .run();
+    } else {
+      await db
+        .prepare(
+          `INSERT OR IGNORE INTO published_picks(day,fixture_id,kickoff,market,alternative,published_at,recorded_at,data)
+        SELECT ?,?,?,?,1,?,?,? WHERE NOT EXISTS(SELECT 1 FROM published_picks WHERE day=? AND alternative=1)
+        AND NOT EXISTS(SELECT 1 FROM published_alternatives WHERE day=?)
+        AND (SELECT COUNT(*) FROM published_picks WHERE day=? AND recovered=0)<?`,
+        )
+        .bind(...params, choice.day, MAX_DAILY_GAMES)
+        .run();
+    }
+  }
+  for (const g of candidates.filter((g) => g.winnerTip?.priceEligible)) {
+    const day = lisbonDay(g.fixture.ts),
+      tip = g.winnerTip;
     await db
       .prepare(
         `INSERT OR IGNORE INTO published_picks(day,fixture_id,kickoff,market,alternative,published_at,recorded_at,data)
-      SELECT ?,?,?,?,?,?,?,? WHERE (SELECT COUNT(*) FROM published_picks WHERE day=? AND recovered=0)<?`,
+      SELECT ?,?,?,?,0,?,?,? WHERE (SELECT COUNT(*) FROM published_picks WHERE day=? AND recovered=0)<?`,
       )
       .bind(
         day,
         g.fixture.id,
         g.fixture.ts,
         tip.market,
-        alternative,
         now,
         now,
         JSON.stringify(g),
@@ -39,11 +94,15 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
       .run();
   }
 }
+
 export async function publishedGames(db, now = Date.now()) {
   const w = forecastWindow(now);
   const rows = await db
     .prepare(
-      `SELECT p.*, f.data current_fixture FROM published_picks p LEFT JOIN fixtures f ON f.id=p.fixture_id WHERE p.day>=? AND p.day<=? ORDER BY p.day,p.published_at,p.fixture_id`,
+      `SELECT p.*, f.data current_fixture FROM (
+        SELECT day,fixture_id,kickoff,market,alternative,published_at,recorded_at,recovered,data FROM published_picks
+        UNION ALL SELECT day,fixture_id,kickoff,market,1,published_at,recorded_at,0,data FROM published_alternatives
+      ) p LEFT JOIN fixtures f ON f.id=p.fixture_id WHERE p.day>=? AND p.day<=? ORDER BY p.day,p.published_at,p.fixture_id`,
     )
     .bind(w.days[0], w.days[2])
     .all();
@@ -66,6 +125,7 @@ export async function publishedGames(db, now = Date.now()) {
         recordedAt: row.recorded_at,
         recovered: !!row.recovered,
         day: row.day,
+        alternative: !!row.alternative,
       },
       currentFixture: current,
       result: finished
