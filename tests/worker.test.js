@@ -24,7 +24,7 @@ test("HTTP routing, CORS, CSP and admin authentication", async () => {
   assert.match(await r.text(), /LuxTips/);
   assert.match(
     r.headers.get("Content-Security-Policy"),
-    /frame-ancestors 'none'/,
+    /frame-ancestors 'self' https:\/\/web\.telegram\.org/,
   );
   r = await worker.fetch(
     new Request("https://example.com/api/admin/sync", { method: "POST" }),
@@ -164,6 +164,7 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     await DB.prepare("INSERT INTO results VALUES(?,?,?,?)")
       .bind(99999999, 2, 0, Date.now())
       .run();
+    await DB.prepare("UPDATE fixtures SET finished=1 WHERE id=99999999").run();
     // Multiple versions remain archived but one final per fixture is evaluated.
     await DB.prepare(
       "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) SELECT fixture_id,version||'-review',phase,created_at+1,kickoff,data FROM forecasts WHERE fixture_id=99999999 AND phase='final' ORDER BY kickoff DESC LIMIT 1",
@@ -231,4 +232,85 @@ test("a published preliminary winner is evaluated even without a final refresh",
   assert.equal(h.forecasts.length, 1);
   assert.equal(h.forecasts[0].winnerHit, 1);
   assert.equal(h.forecasts[0].phase, "preliminary");
+});
+test("one failed competition does not block another or delayed result settlement", async () => {
+  const DB = database(),
+    old = globalThis.fetch,
+    now = Date.now(),
+    kickoff = now - 7 * 86400000;
+  const f = {
+    id: 42,
+    ts: kickoff,
+    league: 94,
+    finished: true,
+    status: "FT",
+    home: 1,
+    away: 2,
+    homeName: "A",
+    awayName: "B",
+    hg: 2,
+    ag: 0,
+  };
+  await DB.prepare("INSERT INTO fixtures VALUES(?,?,?,?,?,?)")
+    .bind(f.id, 94, kickoff, 1, JSON.stringify(f), now)
+    .run();
+  const forecast = {
+    fixture: f,
+    phase: "preliminary",
+    winnerTip: { market: "H", label: "A vence" },
+    recommendation: null,
+    prediction: { probabilities: { H: 0.6, D: 0.25, A: 0.15 } },
+  };
+  await DB.prepare(
+    "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) VALUES(?,?,?,?,?,?)",
+  )
+    .bind(
+      f.id,
+      "review",
+      "preliminary",
+      kickoff - 3600000,
+      kickoff,
+      JSON.stringify(forecast),
+    )
+    .run();
+  globalThis.fetch = async (url) => {
+    const u = new URL(url);
+    if (u.pathname === "/leagues" && u.searchParams.get("id") === "94")
+      return Response.json({ errors: { rateLimit: "limited" }, response: [] });
+    return Response.json({
+      response:
+        u.pathname === "/leagues"
+          ? [{ seasons: [{ year: 2026, current: true, coverage: {} }] }]
+          : [],
+      errors: [],
+      paging: { total: 1 },
+    });
+  };
+  try {
+    const r = await worker.fetch(
+      new Request("https://test/api/admin/sync", {
+        method: "POST",
+        headers: { Authorization: "Bearer private" },
+      }),
+      {
+        DB,
+        ADMIN_TOKEN: "private",
+        API_FOOTBALL_KEY: "test",
+        LEAGUES: "94,39",
+      },
+      { waitUntil() {} },
+    );
+    assert.equal(r.status, 200);
+    const result = await r.json();
+    assert.equal(result.failedLeagues[0].league, 94);
+    assert.ok(
+      await DB.prepare("SELECT data FROM meta WHERE key='coverage:39'").first(),
+    );
+    const settlement = await DB.prepare(
+      "SELECT hg,ag FROM results WHERE fixture_id=42",
+    ).first();
+    assert.deepEqual({ ...settlement }, { hg: 2, ag: 0 });
+  } finally {
+    globalThis.fetch = old;
+  }
 });

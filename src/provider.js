@@ -11,12 +11,20 @@ export async function api(env, path, ttl = 3600000, force = false) {
     old = await env.DB.prepare("SELECT data,expires FROM cache WHERE key=?")
       .bind(key)
       .first();
-  if (!force && old && old.expires > now)
+  const stored = old ? JSON.parse(old.data) : null;
+  const cachedData = Array.isArray(stored) ? stored : stored?.items;
+  const inferredAt = old ? old.expires - ttl : null;
+  const fetchedAt = Number.isFinite(stored?.fetchedAt)
+    ? stored.fetchedAt
+    : inferredAt;
+  const validCache =
+    Array.isArray(cachedData) && Number.isFinite(fetchedAt) && fetchedAt <= now;
+  if (!force && validCache && old.expires > now)
     return {
-      data: JSON.parse(old.data),
+      data: cachedData,
       stale: false,
       fromCache: true,
-      fetchedAt: old.expires - ttl,
+      fetchedAt,
     };
   const day = new Date(now).toISOString().slice(0, 10),
     limit = Math.min(600, Math.max(1, Number(env.DAILY_BUDGET) || 300));
@@ -34,13 +42,13 @@ export async function api(env, path, ttl = 3600000, force = false) {
     .bind(day, ceiling)
     .first();
   if (!q) {
-    if (old)
+    if (validCache)
       return {
-        data: JSON.parse(old.data),
+        data: cachedData,
         stale: old.expires <= now,
         refreshFailed: true,
         fromCache: true,
-        fetchedAt: old.expires - ttl,
+        fetchedAt,
       };
     throw new ProviderError("daily_budget");
   }
@@ -70,17 +78,21 @@ export async function api(env, path, ttl = 3600000, force = false) {
     await env.DB.prepare(
       "INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires",
     )
-      .bind(key, JSON.stringify(d.response), now + ttl)
+      .bind(
+        key,
+        JSON.stringify({ items: d.response, fetchedAt: now }),
+        now + ttl,
+      )
       .run();
     return { data: d.response, stale: false, fromCache: false, fetchedAt: now };
   } catch (e) {
-    if (old)
+    if (validCache)
       return {
-        data: JSON.parse(old.data),
+        data: cachedData,
         stale: old.expires <= now,
         refreshFailed: true,
         fromCache: true,
-        fetchedAt: old.expires - ttl,
+        fetchedAt,
       };
     if (e instanceof ProviderError) throw e;
     const error = new ProviderError("upstream_unavailable");

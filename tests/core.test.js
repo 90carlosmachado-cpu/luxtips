@@ -324,3 +324,19 @@ test("relative favorites and stale-data fallback are explicit and bounded", asyn
     null,
   );
 });
+test("cache provenance stays unchanged when a caller uses a different TTL", async () => {
+  const db = database(),
+    before = globalThis.fetch,
+    env = { DB: db, API_FOOTBALL_KEY: "test" };
+  globalThis.fetch = async () =>
+    Response.json({ response: [{ id: 1 }], errors: [], paging: { total: 1 } });
+  try {
+    const first = await api(env, "provenance", 60000);
+    const cached = await api(env, "provenance", 3600000);
+    assert.equal(cached.fetchedAt, first.fetchedAt);
+    assert.equal(cached.fromCache, true);
+    assert.deepEqual(cached.data, [{ id: 1 }]);
+  } finally {
+    globalThis.fetch = before;
+  }
+});

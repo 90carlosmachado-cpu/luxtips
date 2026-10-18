@@ -8,12 +8,13 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #101412;
-        --panel: #191f1b;
-        --line: #303b32;
-        --text: #eef3e9;
-        --muted: #a8b5a9;
+        --bg: #101512;
+        --panel: #19211b;
+        --line: #2c392e;
+        --text: #edf3ea;
+        --muted: #a9b5aa;
         --lime: #c8f474;
+        --amber: #f4c77b;
       }
       * {
         box-sizing: border-box;
@@ -23,15 +24,15 @@
         background: var(--bg);
         color: var(--text);
         font:
-          15px/1.55 system-ui,
+          15px/1.5 system-ui,
           sans-serif;
       }
       header,
       main,
       footer {
-        max-width: 1180px;
+        max-width: 1120px;
         margin: auto;
-        padding: 24px;
+        padding: 20px 24px;
       }
       header {
         display: flex;
@@ -40,9 +41,9 @@
         border-bottom: 1px solid var(--line);
       }
       .logo {
-        font-size: 28px;
+        font-size: 25px;
         font-weight: 900;
-        letter-spacing: -1.5px;
+        letter-spacing: -1.4px;
       }
       .logo span {
         color: var(--lime);
@@ -58,8 +59,8 @@
         color: var(--text);
         background: var(--panel);
         border: 1px solid var(--line);
-        padding: 10px 17px;
-        border-radius: 8px;
+        padding: 10px 14px;
+        border-radius: 10px;
         cursor: pointer;
       }
       button:hover,
@@ -73,40 +74,41 @@
         outline: 2px solid var(--lime);
         outline-offset: 3px;
       }
-      .eyebrow {
-        color: var(--lime);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-size: 12px;
-        font-weight: 700;
-      }
       h1 {
-        font-size: clamp(32px, 5vw, 56px);
-        line-height: 1.08;
-        letter-spacing: -2px;
-        margin: 16px 0;
+        font-size: 27px;
+        line-height: 1.2;
+        letter-spacing: -0.8px;
+        margin: 0 0 6px;
       }
       h2 {
-        font-size: 22px;
-        letter-spacing: -0.5px;
+        font-size: 19px;
+        letter-spacing: -0.4px;
+        margin: 0;
       }
       h3 {
-        margin: 10px 0;
-        font-size: 17px;
+        font-size: 16px;
+        margin: 18px 0 10px;
+      }
+      h4 {
+        font-size: 14px;
+        margin: 18px 0 8px;
+      }
+      p {
+        overflow-wrap: anywhere;
       }
       .intro {
-        padding: 36px 0 28px;
-        max-width: 760px;
+        padding: 6px 0 14px;
       }
       .intro p {
+        margin: 0;
         color: var(--muted);
-        max-width: 620px;
+        font-size: 13px;
       }
       .status {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
+        max-width: 55%;
+        text-align: right;
+        font-size: 11px;
+        color: var(--muted);
       }
       .dot {
         height: 7px;
@@ -114,113 +116,230 @@
         display: inline-block;
         background: var(--lime);
         border-radius: 50%;
+        margin-right: 6px;
+      }
+      .dot.warn {
+        background: var(--amber);
       }
       .tabs {
         display: flex;
-        gap: 8px;
-        margin: 20px 0 28px;
-        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0 24px;
+      }
+      .tabs button {
+        background: transparent;
+        border-color: transparent;
+        padding: 9px 13px;
+      }
+      .tabs button[aria-selected="true"] {
+        background: var(--panel);
+        border-color: var(--line);
+      }
+      .days {
+        display: flex;
+        gap: 6px;
+        margin: 0 0 20px;
+      }
+      .days button {
+        flex: 1;
+        padding: 10px 8px;
+        font-size: 13px;
+      }
+      .days button[aria-selected="true"] {
+        background: #26351f;
+        border-color: var(--lime);
       }
       .toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
+        gap: 12px;
         margin-bottom: 16px;
+      }
+      .toolbar select {
+        font-size: 12px;
+        max-width: 50%;
+        padding: 9px 12px;
       }
       .grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        align-items: start;
       }
       .card {
         border: 1px solid var(--line);
-        border-radius: 14px;
+        border-radius: 16px;
         background: var(--panel);
-        padding: 22px;
+        padding: 18px;
         min-width: 0;
       }
       .card.pick {
-        border-top: 3px solid var(--lime);
+        border-top: 2px solid var(--lime);
+      }
+      .fixture-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .fixture-meta time {
+        white-space: nowrap;
       }
       .teams {
-        font-size: 19px;
-        font-weight: 650;
-        line-height: 1.4;
-        margin: 18px 0;
-      }
-      .versus {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--muted);
-        font-weight: 400;
-        display: block;
-        margin: 3px 0;
-      }
-      .tag {
-        font-size: 11px;
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        padding: 4px 9px;
-        display: inline-block;
-        color: var(--muted);
-      }
-      .prob {
-        font-size: 32px;
-        font-weight: 750;
-        color: var(--lime);
-        letter-spacing: -1px;
+        margin: 13px 0 16px;
+        overflow-wrap: anywhere;
       }
       .market {
-        border-top: 1px solid var(--line);
-        padding-top: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        margin-bottom: 12px;
       }
-      .explain {
-        font-size: 13px;
+      .selection {
+        font-size: 20px;
+        line-height: 1.25;
+        font-weight: 750;
+        letter-spacing: -0.4px;
+      }
+      .prob {
+        text-align: right;
+        font-size: 28px;
+        line-height: 1.1;
+        font-weight: 750;
+        color: var(--lime);
+        letter-spacing: -1px;
+        white-space: nowrap;
+      }
+      .prob small {
+        display: block;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0;
+        margin-top: 4px;
+      }
+      .tags {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .tag {
+        font-size: 10px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 3px 7px;
+        display: inline-block;
         color: var(--muted);
       }
-      details {
-        margin-top: 18px;
+      .tag.strong {
+        color: var(--lime);
+        background: #24341f;
+        border-color: #405830;
+      }
+      .tag.pending {
+        color: var(--amber);
+        background: #32291d;
+        border-color: #54432c;
+      }
+      .price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 12px;
         border-top: 1px solid var(--line);
-        padding-top: 14px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .price b {
+        font-size: 16px;
+        color: var(--text);
+      }
+      .price-note {
+        margin: 7px 0 0;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .price-note.warn {
+        color: var(--amber);
+      }
+      details {
+        margin-top: 15px;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
       }
       summary {
         cursor: pointer;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      summary:hover {
         color: var(--lime);
+      }
+      details[open] > summary {
+        color: var(--lime);
+        margin-bottom: 12px;
+      }
+      .analysis {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .analysis p {
+        margin: 10px 0;
+      }
+      .analysis h4 {
+        color: var(--text);
+      }
+      .analysis ul {
+        padding-left: 17px;
       }
       .stats {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin: 15px 0;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 18px 0;
       }
       .stat {
-        padding: 12px;
-        background: var(--bg);
-        border-radius: 8px;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
       }
       .stat b {
         display: block;
+        font-size: 24px;
+        color: var(--lime);
       }
       .wide {
         grid-column: 1/-1;
       }
       .notice {
-        border-left: 3px solid var(--lime);
-        padding: 15px 20px;
-        background: #1e271b;
-        color: #c5d2be;
-        margin: 18px 0;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 12px;
+        margin: 14px 0;
       }
       .empty {
-        padding: 38px;
+        padding: 30px 20px;
         border: 1px dashed var(--line);
-        border-radius: 12px;
+        border-radius: 14px;
         color: var(--muted);
         text-align: center;
+      }
+      .empty h3 {
+        color: var(--text);
+        margin-top: 0;
+      }
+      .empty p {
+        font-size: 13px;
+        margin-bottom: 0;
       }
       .tablewrap {
         overflow: auto;
@@ -228,11 +347,11 @@
       table {
         border-collapse: collapse;
         width: 100%;
-        font-size: 13px;
+        font-size: 12px;
       }
       th,
       td {
-        padding: 12px 10px;
+        padding: 10px 8px;
         border-bottom: 1px solid var(--line);
         text-align: left;
         white-space: nowrap;
@@ -241,102 +360,158 @@
         color: var(--muted);
         font-weight: 500;
       }
-      p {
-        overflow-wrap: anywhere;
+      .compare td,
+      .compare th {
+        white-space: normal;
+        padding: 8px 5px;
+        font-size: 11px;
+      }
+      .compare th:first-child {
+        width: 30%;
+      }
+      .history-list {
+        display: grid;
+        gap: 10px;
+      }
+      .history-row {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+        background: var(--panel);
+      }
+      .history-row .result {
+        float: right;
+        font-weight: 650;
+        color: var(--lime);
+      }
+      .history-row .result.loss {
+        color: var(--amber);
       }
       footer {
         border-top: 1px solid var(--line);
         color: var(--muted);
-        font-size: 12px;
-        margin-top: 40px;
+        font-size: 11px;
+        margin-top: 30px;
       }
       .error {
-        color: #ffc1ab;
-      }
-      ul {
-        padding-left: 18px;
+        color: #ffbda9;
       }
       .hidden {
         display: none !important;
       }
+      .section-note {
+        margin: 7px 0 18px;
+      }
+      .other-picks {
+        margin-top: 10px;
+      }
+      .other-picks > summary {
+        font-size: 13px;
+      }
+      .count {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 400;
+        margin-left: 7px;
+      }
       @media (max-width: 950px) {
         .grid {
-          grid-template-columns: repeat(2, 1fr);
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
       @media (max-width: 620px) {
         header,
         main,
         footer {
-          padding: 18px;
+          padding: 16px;
+        }
+        .logo {
+          font-size: 24px;
+        }
+        header {
+          padding-top: 14px;
+          padding-bottom: 14px;
+        }
+        h1 {
+          font-size: 24px;
+        }
+        .tabs {
+          margin: 8px 0 20px;
+        }
+        .tabs button {
+          flex: 1;
+          font-size: 12px;
+          padding: 9px 7px;
         }
         .grid {
           grid-template-columns: 1fr;
         }
-        .intro {
-          padding: 24px 0 14px;
+        .days {
+          gap: 5px;
         }
-        h1 {
-          letter-spacing: -1px;
-        }
-        .toolbar {
-          align-items: flex-start;
-          flex-direction: column;
+        .days button {
+          font-size: 12px;
+          padding: 10px 5px;
         }
         .card {
-          padding: 18px;
+          padding: 17px;
         }
-        header .small {
-          max-width: 130px;
-          text-align: right;
+        .toolbar {
+          align-items: center;
         }
-        .tabs button {
-          padding: 9px 11px;
+        .toolbar select {
+          max-width: 48%;
         }
         .status {
-          font-size: 11px;
+          font-size: 10px;
+        }
+        .stats {
+          gap: 7px;
+        }
+        .stat {
+          padding: 11px;
+        }
+        .stat b {
+          font-size: 21px;
+        }
+        .stat small {
+          font-size: 10px;
+        }
+        .selection {
+          font-size: 21px;
+        }
+        .prob {
+          font-size: 30px;
         }
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="logo">
-        LUX<span>TIPS</span>
-        <div class="small">FOOTBALL INTELLIGENCE</div>
-      </div>
-      <div class="small">Dados reais.<br />Decisões com fundamento.</div>
+      <div class="logo">LUX<span>TIPS</span></div>
+      <div class="status" id="status" aria-live="polite">A atualizar…</div>
     </header>
     <main>
       <section class="intro">
-        <div class="eyebrow">O jogo começa nos dados</div>
-        <h1>Menos palpites.<br />Mais fundamento.</h1>
-        <p>
-          Análise estatística de futebol, atualizada automaticamente. Seleção de
-          vencedores mais prováveis, com probabilidades, riscos e valor das odds
-          apresentados separadamente.
-        </p>
-        <div class="status small" id="status" aria-live="polite">
-          A verificar a última atualização…
-        </div>
+        <h1>Futebol com fundamento.</h1>
+        <p>Os favoritos de hoje e dos próximos dois dias.</p>
       </section>
       <nav class="tabs" aria-label="Secções">
         <button data-tab="games" aria-selected="true">Prognósticos</button
         ><button data-tab="history" aria-selected="false">Histórico</button
-        ><button data-tab="validation" aria-selected="false">
-          Desempenho do modelo
-        </button>
+        ><button data-tab="validation" aria-selected="false">Desempenho</button>
       </nav>
       <section id="games">
+        <nav id="dayNav" class="days" aria-label="Dia dos prognósticos"></nav>
         <div class="toolbar">
-          <h2>Quem tem mais hipóteses de vencer</h2>
+          <h2 id="dayTitle">Hoje</h2>
           <select id="league" aria-label="Filtrar competição">
-            <option value="">Todas as competições</option>
+            <option value="">Todas as ligas</option>
           </select>
         </div>
         <div id="best"></div>
         <div id="cards" class="grid">
-          <div class="empty wide">A carregar os jogos…</div>
+          <div class="empty wide">A carregar os prognósticos…</div>
         </div>
       </section>
       <section id="history" class="hidden">
@@ -375,7 +550,7 @@
                 "'": "&#39;",
               })[c],
           ),
-        pct = (x) => (x * 100).toFixed(1) + "%",
+        pct = (x) => (Number.isFinite(x) ? (x * 100).toFixed(1) + "%" : "—"),
         date = (t) =>
           new Date(t).toLocaleString("pt-PT", {
             timeZone: "Europe/Lisbon",
@@ -422,24 +597,69 @@
             .join(" ") || "Sem histórico suficiente"
         );
       }
+      function freshOdd(r, now = Date.now()) {
+        return Number.isFinite(r?.odd) &&
+          r.odd > 1 &&
+          Number.isFinite(r.oddsAt) &&
+          r.oddsAt <= now &&
+          now - r.oddsAt < 6 * 3600000
+          ? r.odd
+          : null;
+      }
       function card(g) {
         const f = g.fixture,
           p = g.prediction,
-          r = g.winnerTip || g.recommendation,
-          h = p.teams.home,
-          a = p.teams.away,
-          old =
-            r?.selectionType === "winner-tip"
-              ? Date.now() - r.sourceUpdatedAt > 24 * 3600000
-              : Date.now() - g.updatedAt > 2 * 3600000,
-          rec = old ? null : r;
-        return `<article class="card ${rec ? "pick" : ""}"><div class="small">${esc(f.competition)} · ${date(f.ts)}</div><div class="teams">${esc(f.homeName)}<span class="versus">vs</span>${esc(f.awayName)}</div><span class="tag">${r?.provisional ? "Provisório · fonte em atraso" : g.phase === "final" ? "Previsão final" : "Previsão preliminar"} · Dados: ${esc(p.quality)}</span><div class="market"><div>${rec ? esc(pickLabel(g)) : "Sem recomendação"}<div class="small">${rec ? "Probabilidade estimada" : "Critérios de seleção não satisfeitos"}</div></div>${rec ? `<div class="prob">${pct(rec.probability)}</div>` : ""}</div>${rec ? `<span class="tag">${esc(rec.favoritism || "Mercado alternativo")}</span><p class="small">${rec.odd ? `Odd ${rec.odd.toFixed(2)} · ` : ""}Odd mínima do modelo: ${(rec.minimumOdd || Math.ceil((1.03 / rec.probability) * 100) / 100).toFixed(2)}<br>${esc(rec.valueStatus)}${rec.provisional ? `<br>Última recolha: ${date(rec.sourceUpdatedAt)}` : ""}${rec.majority === false ? "<br>Favorito relativo: os outros resultados somados são mais prováveis." : ""}</p>` : ""}<details><summary>Ver análise do jogo</summary>${rec ? `<span class="tag">${esc(rec.favoritism || "Mercado alternativo")}</span><p class="explain">${esc(rec.reason)}</p><div class="stats"><div class="stat"><small>Odd disponível</small><b>${rec.odd ? rec.odd.toFixed(2) : "Indisponível"}</b></div><div class="stat"><small>Odd mínima para avaliar valor*</small><b>${(rec.minimumOdd || Math.ceil((1.03 / rec.probability) * 100) / 100).toFixed(2)}</b></div></div><p class="small">${rec.odd ? esc(rec.bookmaker || "Fonte de odds") + " · " + date(rec.oddsAt) : "Sem odd recente: seleção desportiva; valor por confirmar."}</p><p class="small">* Limiar do modelo para 3% de valor esperado estimado; não é garantia de lucro.</p>${rec.reliability ? `<p class="small">Frequência histórica${rec.reliability.low != null ? ` no escalão ${pct(rec.reliability.low)}–${pct(rec.reliability.high)}` : ""}: ${pct(rec.reliability.observed)} em ${rec.reliability.n} casos.<br>Intervalo de 95%: ${pct(rec.reliability.interval[0])}–${pct(rec.reliability.interval[1])}.</p>` : '<p class="small">Amostra de calibração insuficiente neste perfil.</p>'}<p class="small">${esc(rec.calibrationStatus || "Seleção sujeita a confirmação prospetiva")}${rec.provisional ? " · A atualização da fonte está em atraso; prognóstico provisório." : ""}</p><p class="small">${esc(rec.valueStatus)} ${rec.odd ? `Odd ${rec.odd.toFixed(2)} · ${esc(rec.bookmaker)} · EV ${pct(rec.expectedValue)}` : ""}</p>` : '<p class="explain">O modelo apresenta as probabilidades, mas não existe base suficiente para destacar um prognóstico.</p>'}<div class="stats"><div class="stat"><small>Golos estimados · casa</small><b>${p.homeGoals.toFixed(2)}</b></div><div class="stat"><small>Golos estimados · fora</small><b>${p.awayGoals.toFixed(2)}</b></div><div class="stat"><small>Elo · casa / fora</small><b>${Math.round(h?.elo || 1500)} / ${Math.round(a?.elo || 1500)}</b></div><div class="stat"><small>Jogos efetivos · mínimo</small><b>${p.sample.toFixed(1)}</b></div></div><p class="small">Golos previstos pelo modelo Poisson; não são xG medidos por eventos. O Elo é apresentado como contexto e só altera probabilidades se validado.</p><h3>Forma recente</h3><p class="small">${esc(f.homeName)}<br>${form(h)}</p><p class="small">${esc(f.awayName)}<br>${form(a)}</p><p class="small">Descanso na competição: ${h?.restDays ?? "—"} / ${a?.restDays ?? "—"} dias. Não inclui jogos noutras competições.</p><h3>Casa / fora</h3><p class="small">Casa: ${h?.home?.n || 0} jogos, ${h?.home?.gf || 0} golos marcados / ${h?.home?.ga || 0} sofridos.<br>Fora: ${a?.away?.n || 0} jogos, ${a?.away?.gf || 0} golos marcados / ${a?.away?.ga || 0} sofridos.<br>Histórico disponível dos últimos três anos.</p><h3>Probabilidades</h3><div class="tablewrap"><table><tbody>${Object.entries(
-          p.probabilities,
-        )
-          .map(([k, v]) => `<tr><td>${labels[k]}</td><td>${pct(v)}</td></tr>`)
-          .join(
-            "",
-          )}</tbody></table></div><h3>Ausências comunicadas</h3><p class="small">${g.context.injuries === null ? "Não disponíveis para este jogo." : g.context.injuries.length ? g.context.injuries.map((x) => `${esc(x.player)} (${esc(x.team)}): ${esc(x.reason)}`).join("<br>") : "Sem ausências comunicadas pela fonte; não garante plantel completo."}${g.context.injuriesStale ? " Dados em cache desatualizados." : ""}</p><h3>Alinhamentos</h3><p class="small">${g.context.lineups?.length ? g.context.lineups.map((x) => `${esc(x.team)} · ${esc(x.formation)}<br>${(x.players || []).map(esc).join(", ")}`).join("<br>") : "Ainda não disponibilizados pela fonte."}</p><h3>Riscos e limitações</h3><ul class="small">${(rec?.risks || p.risks).map((x) => `<li>${esc(x)}</li>`).join("")}${old ? "<li>Atualização com mais de duas horas; recomendação suspensa.</li>" : ""}</ul><p class="small">Análise: ${date(g.updatedAt)} · Dados: ${date(g.sourceUpdatedAt || g.updatedAt)} · Hora de Lisboa</p></details></article>`;
+          r = g.winnerTip || g.recommendation;
+        const odd = freshOdd(r),
+          minimum =
+            r.minimumOdd || Math.ceil((1.03 / r.probability) * 100) / 100;
+        const provisional =
+          !!r.provisional ||
+          !!g.stale ||
+          Date.now() - (r.sourceUpdatedAt || g.sourceUpdatedAt) > 2 * 3600000;
+        const h = p.teams.home,
+          a = p.teams.away;
+        const risks = [
+          ...new Set([
+            ...(r.risks || p.risks || []),
+            ...(provisional
+              ? [
+                  "Fonte em atraso: confirmar horário e notícias das equipas antes do jogo.",
+                ]
+              : []),
+          ]),
+        ];
+        const hour = new Date(f.ts).toLocaleTimeString("pt-PT", {
+          timeZone: "Europe/Lisbon",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const strong = r.probability >= 0.65,
+          short = r.probability < 0.5;
+        return `<article class="card pick" data-fixture="${f.id}">
+          <div class="fixture-meta"><span>${esc(f.competition)}</span><time>${hour}</time></div>
+          <p class="teams">${esc(f.homeName)} · ${esc(f.awayName)}</p>
+          <div class="market"><div class="selection">${esc(pickLabel(g))}</div><div class="prob">${pct(r.probability)}<small>probabilidade</small></div></div>
+          <div class="tags"><span class="tag ${strong ? "strong" : ""}" title="Categoria de probabilidade; não é uma garantia de acerto.">${g.winnerTip ? (short ? "Vantagem curta" : strong ? "Favorito destacado" : "Favorito") : "Mercado alternativo"}</span>${provisional ? '<span class="tag pending">Fonte em atraso</span>' : g.phase === "final" ? '<span class="tag">Previsão final</span>' : ""}</div>
+          <div class="price"><span>Odd ${odd ? `<b>${odd.toFixed(2)}</b>` : "—"}</span><span>Mínima estimada <b>${minimum.toFixed(2)}</b></span></div>
+          <p class="price-note ${odd && odd < minimum ? "warn" : ""}">${short ? "Os outros resultados somados são mais prováveis." : odd ? (odd < minimum ? "Odd abaixo da mínima do modelo." : "Odd acima da mínima do modelo.") : "Sem odd recente · valor por confirmar."}</p>
+          <details data-key="${f.id}:analysis"><summary>Ver análise</summary><div class="analysis">
+            <h4>Porquê esta escolha?</h4><p>${esc(r.reason)}</p>
+            <h4>Comparação das equipas</h4><table class="compare"><thead><tr><th></th><th>${esc(f.homeName)}</th><th>${esc(f.awayName)}</th></tr></thead><tbody><tr><th>Golos estimados</th><td>${p.homeGoals.toFixed(2)}</td><td>${p.awayGoals.toFixed(2)}</td></tr><tr><th>Últimos jogos</th><td>${form(h)}</td><td>${form(a)}</td></tr><tr><th>Descanso*</th><td>${h?.restDays ?? "—"} dias</td><td>${a?.restDays ?? "—"} dias</td></tr><tr><th>Casa / fora</th><td>${h?.home?.gf ?? "—"} golos / ${h?.home?.n ?? "—"} jogos</td><td>${a?.away?.gf ?? "—"} golos / ${a?.away?.n ?? "—"} jogos</td></tr></tbody></table>
+            <p>* Apenas jogos desta competição. Histórico disponível até três anos. Os golos estimados são do modelo; não são xG medidos por eventos.</p>
+            <h4>Ausências e alinhamentos</h4><p>${g.context?.injuries === null || !g.context?.injuries ? "Ausências não disponibilizadas." : g.context.injuries.length ? g.context.injuries.map((x) => `${esc(x.player)} (${esc(x.team)}): ${esc(x.reason)}`).join("<br>") : "Sem ausências comunicadas; não garante plantel completo."}${g.context?.injuriesStale ? " Informação em cache desatualizada." : ""}</p><p>${g.context?.lineups?.length ? g.context.lineups.map((x) => `${esc(x.team)} · ${esc(x.formation)}<br>${(x.players || []).map(esc).join(", ")}`).join("<br>") : "Alinhamentos ainda não disponíveis."}</p>
+            <h4>Odd e valor</h4><p>A odd mínima ${minimum.toFixed(2)} corresponde a 3% de valor esperado estimado pelo modelo. Não demonstra rentabilidade.${odd ? ` Odd ${odd.toFixed(2)} · ${esc(r.bookmaker || "Fonte de odds")} · ${date(r.oddsAt)}. Valor esperado estimado: ${pct(r.probability * odd - 1)}.` : " Sem odds recentes, não é possível confirmar valor."}</p>
+            <h4>Riscos e dados</h4><ul>${risks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p>Histórico mínimo: ${Math.floor(p.sample)} jogos efetivos por equipa. Recolha: ${date(g.sourceUpdatedAt)}. Cálculo: ${date(g.updatedAt)}.</p>
+            <details data-key="${f.id}:numbers"><summary>Probabilidades e calibração</summary><p>${esc(r.calibrationStatus || "Seleção sujeita a confirmação prospetiva.")}</p>${r.reliability ? `<p>No escalão histórico ${pct(r.reliability.low)}–${pct(r.reliability.high)}: ${pct(r.reliability.observed)} em ${r.reliability.n} casos. Intervalo de 95%: ${pct(r.reliability.interval[0])}–${pct(r.reliability.interval[1])}. Este intervalo descreve a frequência do grupo, não a probabilidade individual.</p>` : "<p>Sem amostra de calibração suficiente neste perfil.</p>"}<div class="tablewrap"><table><tbody>${Object.entries(
+              p.probabilities,
+            )
+              .map(
+                ([k, v]) =>
+                  `<tr><td>${esc(labels[k])}</td><td>${pct(v)}</td></tr>`,
+              )
+              .join("")}</tbody></table></div></details>
+          </div></details>
+        </article>`;
       }
       function pickLabel(g) {
         const selection = g.winnerTip || g.recommendation;
@@ -452,29 +672,48 @@
       }
       const localDay = (ts) =>
         new Date(ts).toLocaleDateString("sv-SE", { timeZone: "Europe/Lisbon" });
+      function dayKeys(now = Date.now()) {
+        const first = localDay(now),
+          base = Date.parse(first + "T12:00:00Z");
+        return [0, 1, 2].map((i) =>
+          new Date(base + i * 86400000).toISOString().slice(0, 10),
+        );
+      }
+      let chosenDay = localDay(Date.now());
       function render() {
         const now = Date.now(),
+          days = dayKeys(now),
           league = Number($("#league").value);
+        if (!days.includes(chosenDay)) chosenDay = days[0];
+        const names = ["Hoje", "Amanhã", "Depois de amanhã"];
+        const open = new Set(
+          [...document.querySelectorAll("#cards details[open]")].map(
+            (e) => e.dataset.key,
+          ),
+        );
+        $("#dayNav").innerHTML = days
+          .map(
+            (day, i) =>
+              `<button data-day="${day}" aria-selected="${chosenDay === day}" title="${day.split("-").reverse().join("/")}">${names[i]}</button>`,
+          )
+          .join("");
         const available = games.filter(
-          (g) => g.fixture.ts > now && (!league || g.fixture.league === league),
+          (g) =>
+            g.fixture.ts > now &&
+            days.includes(localDay(g.fixture.ts)) &&
+            localDay(g.fixture.ts) === chosenDay &&
+            (!league || g.fixture.league === league),
         );
         const tips = available
           .filter(
             (g) =>
-              g.winnerTip && now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000,
+              g.winnerTip &&
+              Number.isFinite(g.winnerTip.sourceUpdatedAt) &&
+              g.winnerTip.sourceUpdatedAt <= now &&
+              now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000,
           )
-          .sort(
-            (a, b) =>
-              localDay(a.fixture.ts).localeCompare(localDay(b.fixture.ts)) ||
-              b.winnerTip.probability - a.winnerTip.probability,
-          );
-        const byDay = new Map();
-        for (const g of tips.filter((g) => g.winnerTip.majority)) {
-          const key = localDay(g.fixture.ts);
-          if (!byDay.has(key)) byDay.set(key, []);
-          if (byDay.get(key).length < 3) byDay.get(key).push(g);
-        }
-        const shown = [...byDay.values()].flat();
+          .sort((a, b) => b.winnerTip.probability - a.winnerTip.probability);
+        const favorites = tips.filter((g) => g.winnerTip.majority).slice(0, 3);
         const relative = tips.filter((g) => !g.winnerTip.majority);
         const alternatives = available.filter(
           (g) =>
@@ -483,35 +722,35 @@
             now - g.updatedAt <= 2 * 3600000 &&
             !["H", "A"].includes(g.recommendation.market),
         );
-        $("#best").innerHTML = shown.length
-          ? `<div class="notice"><b>${shown.length} prognósticos de vitória</b><br>Até três favoritos por dia, com probabilidade de vitória de pelo menos 50%. Prognóstico de vencedor e valor da odd são avaliações distintas.</div>`
-          : "";
+        $("#dayTitle").innerHTML =
+          `${names[days.indexOf(chosenDay)]}<span class="count">${favorites.length} ${favorites.length === 1 ? "prognóstico" : "prognósticos"}</span>`;
+        $("#best").innerHTML = "";
         $("#cards").innerHTML =
-          ([...byDay.entries()]
-            .map(
-              ([day, gs]) =>
-                `<h3 class="wide">${day === localDay(now) ? "Hoje" : esc(new Date(gs[0].fixture.ts).toLocaleDateString("pt-PT", { timeZone: "Europe/Lisbon", weekday: "long", day: "numeric", month: "long" }))}</h3>${gs.map(card).join("")}`,
-            )
-            .join("") ||
-            '<div class="empty wide"><h3>Sem prognósticos disponíveis nesta seleção</h3><p>Nenhuma equipa supera agora 50% de probabilidade nesta seleção com histórico suficiente e dados das últimas 24 horas.</p></div>') +
+          (favorites.map(card).join("") ||
+            '<div class="empty wide"><h3>Sem favoritos para destacar</h3><p>Não há escolhas com pelo menos 50% de probabilidade e dados suficientes nesta seleção. Podes consultar os outros dias.</p></div>') +
           (relative.length
-            ? `<details class="wide"><summary>Vantagem curta · sem favorito claro (${relative.length})</summary><p class="small">A equipa tem a maior probabilidade isolada, mas abaixo de 50%. Estas escolhas não estão entre os favoritos destacados.</p><div class="grid">${relative.map(card).join("")}</div></details>`
+            ? `<details class="wide other-picks" data-key="relative"><summary>Vantagem curta (${relative.length})</summary><p class="small">Abaixo de 50% de probabilidade. Estas equipas não são favoritos claros.</p><div class="grid">${relative.map(card).join("")}</div></details>`
             : "") +
           (alternatives.length
-            ? `<details class="wide"><summary>Outros mercados (${alternatives.length})</summary><div class="grid">${alternatives.map((g) => card({ ...g, winnerTip: null })).join("")}</div></details>`
+            ? `<details class="wide other-picks" data-key="markets"><summary>Outros mercados (${alternatives.length})</summary><div class="grid">${alternatives.map((g) => card({ ...g, winnerTip: null })).join("")}</div></details>`
             : "");
+        for (const e of document.querySelectorAll("#cards details"))
+          if (open.has(e.dataset.key)) e.open = true;
       }
-
       async function loadGames() {
         try {
-          const [d, h] = await Promise.all([
+          const results = await Promise.allSettled([
             get("/api/games"),
             get("/api/health"),
           ]);
+          if (results[0].status !== "fulfilled") throw results[0].reason;
+          const d = results[0].value,
+            h = results[1].status === "fulfilled" ? results[1].value : null;
+          if (!Array.isArray(d.games))
+            throw new Error("Dados temporariamente indisponíveis.");
           games = d.games;
           const selectedLeague = $("#league").value;
-          $("#league").innerHTML =
-            '<option value="">Todas as competições</option>';
+          $("#league").innerHTML = '<option value="">Todas as ligas</option>';
           for (const [id, name] of new Map(
             games.map((g) => [g.fixture.league, g.fixture.competition]),
           )) {
@@ -520,44 +759,63 @@
             o.textContent = name;
             $("#league").append(o);
           }
-          $("#league").value = selectedLeague;
+          $("#league").value = [...$("#league").options].some(
+            (o) => o.value === selectedLeague,
+          )
+            ? selectedLeague
+            : "";
+          const stamp = d.updatedAt
+            ? new Date(d.updatedAt).toLocaleTimeString("pt-PT", {
+                timeZone: "Europe/Lisbon",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : null;
+          const warn = !h?.ready;
           $("#status").innerHTML =
-            `<span class="dot"></span> ${d.updatedAt ? "Atualizado " + date(d.updatedAt) : "A aguardar a primeira atualização"} · 6 competições · Hora de Lisboa${h.sync?.ok && !h.sync?.stale ? "" : " · A atualização automática requer atenção"}${!h.lastLiveRefresh ? " · Carga inicial em cache; recolha direta por confirmar" : ""}${h.sync?.upstreamDegraded ? " · Falhas pontuais na fonte; cache ativa" : ""}`;
+            `<span class="dot ${warn ? "warn" : ""}"></span>${stamp ? "Revisto às " + stamp : "A aguardar dados"} · Lisboa${warn ? "<br>Alguns dados por atualizar" : ""}`;
           render();
         } catch (e) {
-          $("#cards").innerHTML =
-            `<div class="empty wide error">${esc(e.message)}</div>`;
-          $("#status").textContent = "Dados temporariamente indisponíveis";
+          $("#status").textContent = "Sem atualização · a tentar novamente";
+          if (games.length) render();
+          else {
+            $("#best").innerHTML = "";
+            $("#cards").innerHTML =
+              `<div class="empty wide error">${esc(e.message)}</div>`;
+          }
         }
       }
       async function history() {
-        const d = await get("/api/history"),
-          rs = d.forecasts
-            .map((f) =>
-              f.winnerTip
-                ? { ...f, recommendation: f.winnerTip, hit: f.winnerHit }
-                : f,
-            )
-            .filter((f) => f.recommendation),
-          wins = rs.filter((f) => f.hit).length;
-        $("#historyBody").innerHTML = rs.length
-          ? `<div class="notice">${wins} certos em ${rs.length} prognósticos (${pct(wins / rs.length)}). ${esc(d.scope)}.</div><div class="tablewrap"><table><thead><tr><th>Jogo</th><th>Mercado</th><th>Probabilidade</th><th>Resultado</th><th>Avaliação</th></tr></thead><tbody>${rs.map((f) => `<tr><td>${esc(f.fixture.homeName)} – ${esc(f.fixture.awayName)}</td><td>${esc(f.recommendation.label)}<br><small>${f.phase === "final" ? "Final" : "Provisório"}</small></td><td>${pct(f.recommendation.probability)}</td><td>${f.result.home}–${f.result.away}</td><td>${f.hit ? "Certo" : "Errado"}</td></tr>`).join("")}</tbody></table></div>`
-          : '<div class="empty">Ainda não existem prognósticos registados com resultado. O histórico começa com esta versão; o backtest está em «Desempenho do modelo».</div>';
+        const d = await get("/api/history");
+        const winners = d.forecasts
+          .filter((f) => f.winnerTip)
+          .map((f) => ({ ...f, pick: f.winnerTip, correct: f.winnerHit }));
+        const legacy = d.forecasts
+          .filter((f) => !f.winnerTip && f.recommendation)
+          .map((f) => ({ ...f, pick: f.recommendation, correct: f.hit }));
+        const rows = (rs) =>
+          `<div class="history-list">${rs.map((f) => `<article class="history-row"><span class="result ${f.correct ? "" : "loss"}">${f.correct ? "Certo" : "Errado"}</span><strong>${esc(f.pick.label)}</strong><div class="small">${esc(f.fixture.homeName)} · ${esc(f.fixture.awayName)}<br>${date(f.fixture.ts)} · ${pct(f.pick.probability)} · Resultado ${f.result.home}–${f.result.away} · ${f.phase === "final" ? "Final" : "Provisório"}</div></article>`).join("")}</div>`;
+        $("#historyBody").innerHTML = winners.length
+          ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos de vencedor. Inclui todos os prognósticos registados, além dos três destaques.</p>${rows(winners)}`
+          : '<div class="empty"><h3>O histórico começa aqui</h3><p>Os prognósticos de vencedor aparecem aqui quando os jogos terminarem e os resultados forem confirmados.</p></div>';
+        if (legacy.length)
+          $("#historyBody").innerHTML +=
+            `<details><summary>Prognósticos anteriores (${legacy.length})</summary>${rows(legacy)}</details>`;
         if (d.forecasts.length)
           $("#historyBody").innerHTML +=
-            `<h3>Avaliação contínua dos prognósticos registados</h3><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Jogos</th><th>Brier</th><th>Log Loss</th><th>Desvio calibração</th></tr></thead><tbody>${Object.entries(
+            `<details><summary>Métricas de todas as probabilidades registadas</summary><p class="small">${esc(d.scope)}</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Jogos</th><th>Brier</th><th>Log Loss</th><th>Calibração</th></tr></thead><tbody>${Object.entries(
               d.metrics,
             )
               .map(
                 ([k, m]) =>
-                  `<tr><td>${labels[k]}</td><td>${m.n}</td><td>${m.brier.toFixed(3)}</td><td>${m.logLoss.toFixed(3)}</td><td>${pct(m.ece)}</td></tr>`,
+                  `<tr><td>${esc(labels[k])}</td><td>${m.n}</td><td>${m.brier.toFixed(3)}</td><td>${m.logLoss.toFixed(3)}</td><td>${pct(m.ece)}</td></tr>`,
               )
-              .join("")}</tbody></table></div>`;
+              .join("")}</tbody></table></div></details>`;
       }
       async function validation() {
         const v = await get("/api/validation");
         $("#validationBody").innerHTML =
-          `<h3>Prognósticos de vencedor · até três por dia</h3><p>${v.winnerSelection?.majority?.wins ?? "—"} vitórias em ${v.winnerSelection?.majority?.n ?? "—"} seleções históricas (${v.winnerSelection ? pct(v.winnerSelection.majority.hitRate) : "—"}). Brier: ${v.winnerSelection?.majority?.brier?.toFixed(3) ?? "—"}; Log Loss: ${v.winnerSelection?.majority?.logLoss?.toFixed(3) ?? "—"}; desvio de calibração: ${v.winnerSelection ? pct(v.winnerSelection.majority.ece) : "—"}.</p><p class="small">${esc(v.winnerSelection?.scope || "")}</p><div class="notice"><b>${v.holdoutMatches} jogos no teste histórico</b><br>${esc(v.holdout)}. ${v.matches} jogos reais no conjunto de dados.</div><p>${esc(v.training)}. ${esc(v.development)}. ${esc(v.cutoff)}.</p><p class="small">Brier e Log Loss: valores menores são melhores. A referência usa apenas a média de golos da competição, sem força das equipas. A calibração mede o desvio entre probabilidade e frequência observada. Não foi demonstrada rentabilidade.</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Casos</th><th>Brier</th><th>Referência</th><th>Log Loss</th><th>Desvio calibração</th><th>Acerto binário*</th><th>Seleção</th></tr></thead><tbody>${Object.entries(
+          `<h3>Teste histórico · favoritos</h3><p>${v.winnerSelection?.majority?.wins ?? "—"} vitórias em ${v.winnerSelection?.majority?.n ?? "—"} seleções históricas (${v.winnerSelection ? pct(v.winnerSelection.majority.hitRate) : "—"}). Brier: ${v.winnerSelection?.majority?.brier?.toFixed(3) ?? "—"}; Log Loss: ${v.winnerSelection?.majority?.logLoss?.toFixed(3) ?? "—"}; desvio de calibração: ${v.winnerSelection ? pct(v.winnerSelection.majority.ece) : "—"}.</p><p class="small">${esc(v.winnerSelection?.scope || "")}</p><details><summary>Como foi testado e detalhes estatísticos</summary><div class="notice"><b>${v.holdoutMatches} jogos no teste histórico</b><br>${esc(v.holdout)}. ${v.matches} jogos reais no conjunto de dados.</div><p>${esc(v.training)}. ${esc(v.development)}. ${esc(v.cutoff)}.</p><p class="small">Brier e Log Loss: valores menores são melhores. A referência usa apenas a média de golos da competição, sem força das equipas. A calibração mede o desvio entre probabilidade e frequência observada. Não foi demonstrada rentabilidade.</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Casos</th><th>Brier</th><th>Referência</th><th>Log Loss</th><th>Desvio calibração</th><th>Acerto binário*</th><th>Seleção</th></tr></thead><tbody>${Object.entries(
             v.markets,
           )
             .map(
@@ -566,9 +824,16 @@
             )
             .join(
               "",
-            )}</tbody></table></div><p class="small">* Acerto binário: classifica cada evento como sim/não usando o limiar de 50%. Não é a taxa de acerto dos prognósticos selecionados.</p><h3>Limitações da validação</h3><ul class="small">${v.limitations.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="small">Cantos, cartões, handicaps e empate anula aposta não são recomendados nesta versão: faltam modelos e dados adequadamente validados.</p>`;
+            )}</tbody></table></div><p class="small">* Acerto binário: classifica cada evento como sim/não usando o limiar de 50%. Não é a taxa de acerto dos prognósticos selecionados.</p><h3>Limitações da validação</h3><ul class="small">${v.limitations.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="small">Cantos, cartões, handicaps e empate anula aposta não são recomendados nesta versão: faltam modelos e dados adequadamente validados.</p></details>`;
       }
       $("#league").addEventListener("change", render);
+      $("#dayNav").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-day]");
+        if (b) {
+          chosenDay = b.dataset.day;
+          render();
+        }
+      });
       setInterval(render, 60000);
       setInterval(loadGames, 300000);
       document.querySelectorAll("[data-tab]").forEach((b) =>
