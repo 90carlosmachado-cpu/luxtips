@@ -3,6 +3,7 @@ import { fit, predict, select, winnerTip, outcome, VERSION } from "./model.js";
 import { api, parseOdds } from "./provider.js";
 import validation from "./validation.json";
 import winnerReview from "./winner-review.json";
+import luxgValidation from "./luxg-validation.json";
 import { forecastWindow, publicGames } from "./window.js";
 import { saveFixtures } from "./storage.js";
 const HOUR = 3600000;
@@ -418,7 +419,11 @@ export default {
           },
         });
       } else if (u.pathname === "/api/validation") {
-        res = json({ ...validation, winnerSelection: winnerReview });
+        res = json({
+          ...validation,
+          winnerSelection: winnerReview,
+          luxg: luxgValidation,
+        });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
           "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE f.finished=1 AND p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",

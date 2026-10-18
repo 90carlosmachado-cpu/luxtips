@@ -1,5 +1,6 @@
+import { scoreProjection } from "./luxg.js";
 // All features are derived strictly from completed matches before the cutoff.
-export const VERSION = "poisson-opponent-v1-winner-v3";
+export const VERSION = "luxg-1-opponent-poisson";
 const DAY = 86400000;
 const clip = (x, a, b) => Math.max(a, Math.min(b, x));
 export function normalize(f) {
@@ -90,6 +91,8 @@ export function fit(history, cutoff, opts = {}) {
         gf,
         ga,
         opponent: t === r.home ? r.awayName : r.homeName,
+        opponentId: t === r.home ? r.away : r.home,
+        side,
       });
       x.recent = x.recent.slice(-5);
       x[side].n++;
@@ -136,6 +139,30 @@ export function fit(history, cutoff, opts = {}) {
         0.25,
         3,
       );
+    }
+  }
+  // Venue residuals use the final strengths fitted exclusively on past games.
+  for (const x of Object.values(teams))
+    for (const side of ["home", "away"])
+      Object.assign(x[side], {
+        weightedGF: 0,
+        weightedGA: 0,
+        expectedGF: 0,
+        expectedGA: 0,
+      });
+  for (const r of rows) {
+    const h = teams[r.home],
+      a = teams[r.away],
+      eh = bh * h.attack * a.defense,
+      ea = ba * a.attack * h.defense;
+    for (const [x, side, gf, ga, ef, eg] of [
+      [h, "home", r.hg, r.ag, eh, ea],
+      [a, "away", r.ag, r.hg, ea, eh],
+    ]) {
+      x[side].weightedGF += r._w * gf;
+      x[side].weightedGA += r._w * ga;
+      x[side].expectedGF += r._w * ef;
+      x[side].expectedGA += r._w * eg;
     }
   }
   return { teams, bh, ba, n: rows.length, cutoff, opts };
@@ -232,6 +259,7 @@ export function predict(state, f) {
     homeGoals,
     awayGoals,
     probabilities,
+    luxg: scoreProjection(homeGoals, awayGoals),
     sample,
     quality: sample >= 20 ? "Boa" : sample >= 12 ? "Moderada" : "Insuficiente",
     teams: { home: team(h), away: team(a) },

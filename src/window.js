@@ -1,3 +1,4 @@
+import { scoreProjection } from "./luxg.js";
 const DAY = 86400000;
 const formatter = new Intl.DateTimeFormat("sv-SE", {
   timeZone: "Europe/Lisbon",
@@ -42,6 +43,16 @@ export function publicGames(rows, now = Date.now()) {
         current.away !== g.fixture.away
       )
         return [];
+      // Deterministic presentation of already frozen means; no refit or timestamp change.
+      if (
+        !g.prediction?.luxg &&
+        Number.isFinite(g.prediction?.homeGoals) &&
+        Number.isFinite(g.prediction?.awayGoals)
+      )
+        g.prediction.luxg = scoreProjection(
+          g.prediction.homeGoals,
+          g.prediction.awayGoals,
+        );
       return [g];
     } catch {
       return [];
