@@ -4,14 +4,14 @@ export class ProviderError extends Error {
     this.code = code;
   }
 }
-export async function api(env, path, ttl = 3600000) {
+export async function api(env, path, ttl = 3600000, force = false) {
   if (!env.API_FOOTBALL_KEY) throw new ProviderError("missing_key");
   const key = "api:" + path,
     now = Date.now(),
     old = await env.DB.prepare("SELECT data,expires FROM cache WHERE key=?")
       .bind(key)
       .first();
-  if (old && old.expires > now)
+  if (!force && old && old.expires > now)
     return {
       data: JSON.parse(old.data),
       stale: false,
@@ -29,7 +29,8 @@ export async function api(env, path, ttl = 3600000) {
     if (old)
       return {
         data: JSON.parse(old.data),
-        stale: true,
+        stale: old.expires <= now,
+        refreshFailed: true,
         fromCache: true,
         fetchedAt: old.expires - ttl,
       };
@@ -68,7 +69,8 @@ export async function api(env, path, ttl = 3600000) {
     if (old)
       return {
         data: JSON.parse(old.data),
-        stale: true,
+        stale: old.expires <= now,
+        refreshFailed: true,
         fromCache: true,
         fetchedAt: old.expires - ttl,
       };

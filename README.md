@@ -9,7 +9,7 @@ Análise probabilística de futebol com API-Football, Cloudflare Workers e D1. O
 - Sem KV, R2, serviços de IA generativa ou novos planos pagos.
 - Seis competições iniciais: Portugal (94), Inglaterra (39), Espanha (140), Alemanha (78), Itália (135) e França (61).
 - Sincronização aos minutos 07 e 37 de cada hora, em UTC. A época atual é descoberta na API.
-- Cache: cobertura 24 h; histórico da época 24 h; jogos próximos 30 min; odds 3 h; lesões 6 h; alinhamentos 30 min. Histórico de épocas anteriores é carregado no arranque.
+- Cache: cobertura 24 h; histórico da época 24 h; jogos próximos 30 min; odds 3 h; lesões 6 h; alinhamentos 30 min. Histórico de épocas anteriores é carregado no arranque. Jogos sem alterações não voltam a ser escritos em D1.
 - Limite local de 600 pedidos/dia, partilhado atomicamente em D1. O plano consultado permite 7.500/dia e 300/minuto, estando ativo até 07/11/2026. Isto é uma observação de 18/10/2026, não uma garantia de renovação.
 - A consulta pública nunca origina chamadas à API-Football. Os erros não registam a chave, cabeçalhos ou corpos das respostas externas.
 
@@ -62,7 +62,7 @@ Endpoints:
 - `GET /api/history`: previsões finais liquidadas e métricas prospetivas.
 - `GET /api/validation`: relatório histórico reproduzível.
 - `GET /api/health`: resultado da última sincronização.
-- `POST /api/admin/sync`: sincronização pontual, com `Authorization: Bearer <ADMIN_TOKEN>`.
+- `POST /api/admin/sync`: sincronização pontual, com `Authorization: Bearer <ADMIN_TOKEN>`. O parâmetro opcional `?force=1` verifica a recolha direta sem ignorar a quota diária.
 - `GET /api/admin/provider`: diagnóstico restrito do plano e limites, sem dados da conta ou valores da chave.
 
 O acesso público de leitura é intencional. CORS permite a página GitHub do projeto; a interface no Worker usa a mesma origem. A autenticação administrativa verifica o token por comparação dos hashes em tempo constante. CSP restringe origens de scripts, pedidos e enquadramento. A cache desatualizada é assinalada; a seleção é suspensa quando os dados da recolha estão desatualizados ou a análise apresentada tem mais de duas horas.
@@ -106,6 +106,8 @@ A configuração aponta exclusivamente para o Worker e a D1 do LuxTips. Não alt
 
 ## Estado verificado nesta entrega (18/10/2026)
 
-A interface e o processamento foram publicados no Worker existente. A primeira sincronização de cálculo em produção terminou com 54 jogos analisados nas seis competições, usando a cache inicial preenchida com os dados reais recolhidos diretamente da API nesta sessão. A ligação de leitura do plano respondeu corretamente a partir do Worker, mas as consultas de competições a partir do Worker devolveram erros de limite por minuto, mesmo com quota disponível na consulta direta. Por isso, **a atualização automática integral em produção ainda não está validada**. O aviso de carga inicial em cache permanece visível até existir uma recolha direta de jogos bem-sucedida.
+A interface e o processamento foram publicados no Worker existente. A primeira sincronização de cálculo em produção terminou com 54 jogos analisados nas seis competições, usando uma carga inicial de dados reais recolhidos diretamente da API nesta sessão. Uma verificação posterior confirmou recolhas diretas de jogos no Worker para Portugal, Inglaterra e França. Noutras consultas houve erros de limite por minuto e foi usada a cache. A renovação direta das seis competições numa execução integral ainda não foi confirmada.
 
-O cron de 30 em 30 minutos está configurado; não foi aumentada a frequência nem contratado qualquer plano adicional. Os dados da cache conservam as datas de recolha originais; não se renovou artificialmente a sua validade. Após expiração, o fallback assinala desatualização e suspende recomendações. A resolução da resposta de limite do fornecedor ao Worker é o bloqueio operacional restante. A classificação deste estado como uma plataforma totalmente autónoma seria incorreta.
+O cron de 30 em 30 minutos está configurado; não foi aumentada a frequência nem contratado qualquer plano adicional. Os dados da cache conservam as datas de recolha originais; não se renovou artificialmente a sua validade. Uma falha de atualização não transforma dados dentro da validade em dados expirados. O fallback sinaliza falhas da fonte e suspende recomendações quando a cache utilizada já expirou. A interface distingue estas situações. A redução das respostas intermitentes de limite do fornecedor é a limitação operacional restante.
+
+Os 13 testes locais passaram, incluindo repetição da sincronização, novo horário de jogo, imutabilidade e liquidação. O workflow do primeiro commit também passou no GitHub. A interface publicada foi testada no navegador para listagem, filtro de competição, análise detalhada e relatório histórico. A validação visual num telemóvel físico não foi executada.

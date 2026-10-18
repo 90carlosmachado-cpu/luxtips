@@ -18,7 +18,7 @@ const meta = async (db, k, v) =>
     )
     .bind(k, JSON.stringify(v))
     .run();
-export async function saveFixtures(db, items) {
+async function saveFixtures(db, items) {
   const now = Date.now(),
     rows = items.map(normalize).filter(Boolean);
   for (let i = 0; i < rows.length; i += 50)
@@ -28,7 +28,7 @@ export async function saveFixtures(db, items) {
         .map((f) =>
           db
             .prepare(
-              "INSERT INTO fixtures(id,league,kickoff,finished,data,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET league=excluded.league,kickoff=excluded.kickoff,finished=excluded.finished,data=excluded.data,updated_at=excluded.updated_at",
+              "INSERT INTO fixtures(id,league,kickoff,finished,data,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET league=excluded.league,kickoff=excluded.kickoff,finished=excluded.finished,data=excluded.data,updated_at=excluded.updated_at WHERE fixtures.data<>excluded.data",
             )
             .bind(
               f.id,
@@ -42,7 +42,7 @@ export async function saveFixtures(db, items) {
     );
   return rows;
 }
-async function sync(env) {
+async function sync(env, force = false) {
   const now = Date.now(),
     db = env.DB;
   const lock = await db
@@ -54,6 +54,7 @@ async function sync(env) {
   if (!lock) return { skipped: true };
   let stale = false,
     processed = 0,
+    upstreamDegraded = false,
     enrichmentAvailable = true;
   try {
     const leagues = (env.LEAGUES || "94,39,140,78,135,61")
@@ -62,8 +63,9 @@ async function sync(env) {
       .filter(Number.isInteger)
       .slice(0, 6);
     for (const league of leagues) {
-      const coverage = await api(env, "leagues?id=" + league, 24 * HOUR);
-      stale ||= coverage.stale;
+      const coverage = await api(env, "leagues?id=" + league, 24 * HOUR, force);
+      let leagueStale = coverage.stale;
+      upstreamDegraded ||= !!coverage.refreshFailed;
       const info = coverage.data[0],
         seasons = (info?.seasons || []).filter((s) => s.current);
       if (!seasons.length) continue;
@@ -76,8 +78,10 @@ async function sync(env) {
         env,
         `fixtures?league=${league}&season=${season.year}&from=${new Date(now - 3 * 86400000).toISOString().slice(0, 10)}&to=${new Date(now + 7 * 86400000).toISOString().slice(0, 10)}`,
         30 * 60000,
+        force,
       );
-      stale ||= upcoming.stale;
+      leagueStale ||= upcoming.stale;
+      upstreamDegraded ||= !!upcoming.refreshFailed;
       if (upcoming.fromCache === false && !upcoming.stale)
         await meta(db, "last_live_sync", { at: now, league });
       const fixtures = await saveFixtures(db, upcoming.data);
@@ -86,8 +90,11 @@ async function sync(env) {
         env,
         `fixtures?league=${league}&season=${season.year}`,
         24 * HOUR,
+        force,
       );
-      stale ||= history.stale;
+      leagueStale ||= history.stale;
+      upstreamDegraded ||= !!history.refreshFailed;
+      stale ||= leagueStale;
       await saveFixtures(db, history.data);
       const bootstrap = await db
         .prepare("SELECT data FROM meta WHERE key=?")
@@ -140,7 +147,15 @@ async function sync(env) {
         const p = predict(state, f);
         let odds = {},
           context = { injuries: null, lineups: null, updatedAt: now };
-        let matchStale = stale;
+        let matchStale = leagueStale;
+        if (
+          coverage.refreshFailed ||
+          upcoming.refreshFailed ||
+          history.refreshFailed
+        )
+          p.risks.push(
+            "Consulta direta falhou; foram utilizados os dados disponíveis em cache.",
+          );
         if (enrichmentAvailable && f.ts - now < 24 * HOUR && enriched++ < 8) {
           if (season.coverage?.odds) {
             try {
@@ -234,6 +249,7 @@ async function sync(env) {
       stale,
       processed,
       contextAvailable: enrichmentAvailable,
+      upstreamDegraded,
     });
     // Bounded maintenance of obsolete API cache; no forecast history deletion.
     await db
@@ -334,7 +350,7 @@ export default {
           return json({ error: "Método não permitido" }, 405);
         if (!(await authorized(req, env.ADMIN_TOKEN)))
           return json({ error: "Não autorizado" }, 401);
-        return json(await sync(env));
+        return json(await sync(env, u.searchParams.get("force") === "1"));
       }
       if (req.method !== "GET")
         return json({ error: "Método não permitido" }, 405);
@@ -352,7 +368,7 @@ export default {
           version: VERSION,
           sync: status,
           lastLiveRefresh: live ? JSON.parse(live.data) : null,
-          ready: !!status?.ok,
+          ready: !!status?.ok && !status?.stale,
         });
       } else if (u.pathname === "/api/games") {
         const r = await env.DB.prepare(

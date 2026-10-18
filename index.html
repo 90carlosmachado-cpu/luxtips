@@ -477,7 +477,7 @@
             $("#league").append(o);
           }
           $("#status").innerHTML =
-            `<span class="dot"></span> ${d.updatedAt ? "Atualizado " + date(d.updatedAt) : "A aguardar a primeira atualização"} · 6 competições · Hora de Lisboa${h.sync?.ok ? "" : " · A atualização automática requer atenção"}${!h.lastLiveRefresh ? " · Carga inicial em cache; recolha direta por confirmar" : ""}`;
+            `<span class="dot"></span> ${d.updatedAt ? "Atualizado " + date(d.updatedAt) : "A aguardar a primeira atualização"} · 6 competições · Hora de Lisboa${h.sync?.ok && !h.sync?.stale ? "" : " · A atualização automática requer atenção"}${!h.lastLiveRefresh ? " · Carga inicial em cache; recolha direta por confirmar" : ""}${h.sync?.upstreamDegraded ? " · Falhas pontuais na fonte; cache ativa" : ""}`;
           render();
         } catch (e) {
           $("#cards").innerHTML =
