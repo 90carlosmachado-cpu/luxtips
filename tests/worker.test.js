@@ -164,6 +164,10 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     await DB.prepare("INSERT INTO results VALUES(?,?,?,?)")
       .bind(99999999, 2, 0, Date.now())
       .run();
+    // Multiple versions remain archived but one final per fixture is evaluated.
+    await DB.prepare(
+      "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) SELECT fixture_id,version||'-review',phase,created_at+1,kickoff,data FROM forecasts WHERE fixture_id=99999999 AND phase='final' ORDER BY kickoff DESC LIMIT 1",
+    ).run();
     r = await worker.fetch(new Request("https://test/api/history"), env, ctx);
     assert.equal((await r.json()).forecasts.length, 1);
   } finally {

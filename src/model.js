@@ -311,7 +311,7 @@ export function select(pred, validation, odds = {}, now = Date.now()) {
       bin = ["H", "A"].includes(k)
         ? calibrationBin(v, p)
         : v?.bins?.find((b) => p >= b.low && p < b.high);
-    // Reliability measured on untouched holdout, distinct from model probability.
+    // Historical calibration evidence; selection policy still needs prospective validation.
     if (
       !v?.enabled ||
       !v.byLeague?.[pred.league]?.enabled ||

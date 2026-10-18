@@ -465,13 +465,23 @@
               b.recommendation.probability - a.recommendation.probability ||
               a.fixture.ts - b.fixture.ts,
           );
-        $("#best").innerHTML = picks.length
-          ? `<div class="notice"><b>${picks.length} ${picks.length === 1 ? "seleção disponível" : "seleções disponíveis"}</b><br>Vitórias de favoritos elegíveis em primeiro lugar. Uma seleção por jogo; odds e probabilidade avaliadas separadamente.</div>`
+        const favorites = picks.filter((g) =>
+          ["H", "A"].includes(g.recommendation.market),
+        );
+        const alternatives = picks.filter(
+          (g) => !["H", "A"].includes(g.recommendation.market),
+        );
+        $("#best").innerHTML = favorites.length
+          ? `<div class="notice"><b>${favorites.length} ${favorites.length === 1 ? "favorito selecionado" : "favoritos selecionados"}</b><br>Vitórias simples com fundamento. Uma seleção por jogo; valor por confirmar quando faltam odds.</div>`
           : "";
         $("#cards").innerHTML =
-          picks.map(card).join("") ||
-          '<div class="empty wide"><h3>Sem recomendações neste momento</h3><p>Não há jogos com dados recentes que cumpram os critérios nesta seleção. Os prognósticos surgem automaticamente quando existir fundamento suficiente.</p></div>';
+          (favorites.map(card).join("") ||
+            '<div class="empty wide"><h3>Sem favoritos elegíveis neste momento</h3><p>Nenhuma vitória simples reúne agora os critérios e dados recentes nesta seleção. A lista atualiza automaticamente.</p></div>') +
+          (alternatives.length
+            ? `<details class="wide"><summary>Outras recomendações (${alternatives.length})</summary><p class="small">Dupla hipótese e outros mercados elegíveis. Não equivalem a uma recomendação de vitória simples.</p><div class="grid">${alternatives.map(card).join("")}</div></details>`
+            : "");
       }
+
       async function loadGames() {
         try {
           const [d, h] = await Promise.all([
@@ -529,6 +539,7 @@
             )}</tbody></table></div><p class="small">* Acerto binário: classifica cada evento como sim/não usando o limiar de 50%. Não é a taxa de acerto dos prognósticos selecionados.</p><h3>Limitações da validação</h3><ul class="small">${v.limitations.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="small">Cantos, cartões, handicaps e empate anula aposta não são recomendados nesta versão: faltam modelos e dados adequadamente validados.</p>`;
       }
       $("#league").addEventListener("change", render);
+      setInterval(render, 60000);
       document.querySelectorAll("[data-tab]").forEach((b) =>
         b.addEventListener("click", async () => {
           document
