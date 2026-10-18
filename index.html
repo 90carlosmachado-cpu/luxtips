@@ -586,7 +586,7 @@
       }
       function card(g) {
         const f = g.fixture,
-          r = g.winnerTip;
+          r = g.displayTip || g.winnerTip;
         const hour = new Date(f.ts).toLocaleTimeString("pt-PT", {
           timeZone: "Europe/Lisbon",
           hour: "2-digit",
@@ -600,7 +600,7 @@
         </article>`;
       }
       function pickLabel(g) {
-        const selection = g.winnerTip || g.recommendation;
+        const selection = g.displayTip || g.winnerTip || g.recommendation;
         const k = selection?.market;
         return k === "H"
           ? `${g.fixture.homeName} vence`
@@ -645,7 +645,12 @@
               g.winnerTip.sourceUpdatedAt <= now &&
               now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000,
           )
-          .sort((a, b) => b.winnerTip.probability - a.winnerTip.probability);
+          .sort(
+            (a, b) =>
+              b.winnerTip.probability - a.winnerTip.probability ||
+              a.fixture.ts - b.fixture.ts ||
+              a.fixture.id - b.fixture.id,
+          );
         const favorites = tips.filter((g) => g.winnerTip.majority).slice(0, 3);
         $("#dayTitle").innerHTML =
           `${names[days.indexOf(chosenDay)]}<span class="count">${favorites.length} ${favorites.length === 1 ? "prognóstico" : "prognósticos"}</span>`;
@@ -706,15 +711,19 @@
         const d = await get("/api/history");
         const winners = d.forecasts
           .filter((f) => f.winnerTip)
-          .map((f) => ({ ...f, pick: f.winnerTip, correct: f.winnerHit }));
+          .map((f) => ({
+            ...f,
+            pick: f.displayTip || f.winnerTip,
+            correct: f.displayTip ? f.displayHit : f.winnerHit,
+          }));
         const legacy = d.forecasts
           .filter((f) => !f.winnerTip && f.recommendation)
           .map((f) => ({ ...f, pick: f.recommendation, correct: f.hit }));
         const rows = (rs) =>
           `<div class="history-list">${rs.map((f) => `<article class="history-row"><span class="result ${f.correct ? "" : "loss"}">${f.correct ? "Certo" : "Errado"}</span><strong>${esc(f.pick.label)}</strong><div class="small">${esc(f.fixture.homeName)} · ${esc(f.fixture.awayName)}<br>${date(f.fixture.ts)} · ${pct(f.pick.probability)} · Resultado ${f.result.home}–${f.result.away} · ${f.phase === "final" ? "Final" : "Provisório"}</div></article>`).join("")}</div>`;
         $("#historyBody").innerHTML = winners.length
-          ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos de vencedor. Inclui todos os prognósticos registados, além dos três destaques.</p>${rows(winners)}`
-          : '<div class="empty"><h3>O histórico começa aqui</h3><p>Os prognósticos de vencedor aparecem aqui quando os jogos terminarem e os resultados forem confirmados.</p></div>';
+          ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos. Inclui todos os prognósticos registados, além dos três destaques.</p>${rows(winners)}`
+          : '<div class="empty"><h3>O histórico começa aqui</h3><p>Os prognósticos aparecem aqui quando os jogos terminarem e os resultados forem confirmados.</p></div>';
         if (d.modelComparison?.n) {
           const c = d.modelComparison;
           $("#historyBody").innerHTML +=
@@ -737,9 +746,13 @@
       async function validation() {
         const v = await get("/api/validation"),
           m = v.winnerModel,
-          p = m.pooled;
+          p = m.pooled,
+          d = v.dailyMarket.pooled;
         $("#validationBody").innerHTML =
-          `<h3>Novo cálculo · força recente e de longo prazo</h3>
+          `<h3>Mesmos jogos · uma proteção do empate por dia</h3>
+          <p>${d.candidate.wins} acertos em ${d.candidate.n} seleções históricas (${pct(d.candidate.hitRate)}). Só vencedores nos mesmos jogos: ${d.baseline.wins}/${d.baseline.n} (${pct(d.baseline.hitRate)}).</p>
+          <p class="small">Resultado retrospetivo em dados já analisados. A melhoria resulta de cobrir também o empate num jogo por dia; não melhora a previsão do vencedor. Intervalo bootstrap de 95%: ${d.hitRateDayBootstrap95.map(pct).join(" a ")}. Não garante 80% nem demonstra lucro. Atrasos da API e alterações da lista ao longo do dia não foram simulados.</p>
+          <details><summary>Cálculo dos favoritos</summary><h3>Força recente e de longo prazo</h3>
           <p>${p.candidateTips.wins} acertos em ${p.candidateTips.n} seleções históricas (${pct(p.candidateTips.hitRate)}). Modelo anterior: ${p.baselineTips.wins} em ${p.baselineTips.n} (${pct(p.baselineTips.hitRate)}).</p>
           <p class="small">Melhoria pequena em avaliação retrospetiva. Os dados já tinham sido analisados em investigação anterior; não é um novo teste independente nem uma promessa de acerto. As seleções dos dois modelos não são exatamente as mesmas.</p>
           <details><summary>Como foi avaliado</summary><p>${p.candidate.n} jogos; treino e escolha de parâmetros sempre anteriores ao período avaliado. Máximo de três favoritos por dia, com probabilidade de vitória de pelo menos 50%. Atrasos da API não são simulados.</p>
@@ -747,7 +760,7 @@
           <tr><td>Brier</td><td>${p.baseline.brier.toFixed(4)}</td><td>${p.candidate.brier.toFixed(4)}</td></tr>
           <tr><td>Log Loss</td><td>${p.baseline.logLoss.toFixed(4)}</td><td>${p.candidate.logLoss.toFixed(4)}</td></tr>
           <tr><td>Desvio de calibração</td><td>${pct(p.baseline.ece)}</td><td>${pct(p.candidate.ece)}</td></tr></tbody></table></div>
-          <p>Valores menores são melhores. Diferença de Log Loss: ${p.logLossImprovement.toFixed(4)}; intervalo bootstrap semanal de 95%: ${p.weekBootstrap95.map((x) => x.toFixed(4)).join(" a ")}. A pesquisa de vários modelos limita esta evidência.</p><p>Sem odds históricas adequadas, não há rentabilidade demonstrada. A comparação com o cálculo anterior continua nos novos prognósticos guardados.</p></details>`;
+          <p>Valores menores são melhores. Diferença de Log Loss: ${p.logLossImprovement.toFixed(4)}; intervalo bootstrap semanal de 95%: ${p.weekBootstrap95.map((x) => x.toFixed(4)).join(" a ")}. A pesquisa de vários modelos limita esta evidência.</p><p>Sem odds históricas adequadas, não há rentabilidade demonstrada. A comparação com o cálculo anterior continua nos novos prognósticos guardados.</p></details></details>`;
       }
       $("#league").addEventListener("change", render);
       $("#dayNav").addEventListener("click", (e) => {

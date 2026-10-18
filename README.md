@@ -165,3 +165,35 @@ Reprodução: gerar `data/luxg-training.json` com `node scripts/luxg-dataset.js`
 O Worker guarda a probabilidade nova e a do Poisson anterior em cada snapshot novo; `/api/history.modelComparison` compara ambas apenas nesses registos anteriores ao jogo e já liquidados. Não recalcula o passado. A comparação inclui todos os jogos registados, não só os três destaques diários. Endpoints públicos preservam os relatórios antigos identificados como legado e incluem `winnerModel` para a versão ativa. Alternativas de mercados deixaram de gerar recomendações na versão nova por não terem validação específica para a nova política.
 
 A página principal mostra apenas até três vencedores por dia, confronto e hora; mantém aviso curto quando a fonte está atrasada. Estatísticas e a evidência ficam em Histórico/Desempenho, fora dos cartões. Não força três escolhas quando não existem favoritos elegíveis. `scripts/recalculate-cache.js` permite uma migração autorizada dos jogos futuros já em cache, sem chamadas à API nem alteração da data da fonte, acrescentando snapshots preliminares da nova versão.
+
+## Política diária de mercado (daily-market-v1)
+
+A lista mantém a ordenação dos favoritos e até três jogos por dia de Lisboa.
+Uma única seleção por dia pode passar de vitória para vitória ou empate: escolhe-se,
+entre os três favoritos, o maior ganho de probabilidade, que corresponde à probabilidade
+do empate. Os restantes mercados continuam a ser vencedores. A reserva é persistida
+em `daily_markets`, com data única, jogo, horário, lado e previsão originais. Não é
+reciclada depois do início, cancelamento ou mudança de favorito. Revisões posteriores
+preservam o lado reservado e os registos anteriores; não alteram resultados passados.
+
+Reprodução: `python scripts/daily-market.py`, com os mesmos dados e dependências da
+investigação multiescala descrita acima. Protocolo em `scripts/daily-market-protocol.json`;
+resultados em `src/daily-market-research.json`. Compararam-se três políticas fixas:
+só vencedores, proteção do empate e maior ganho entre dupla hipótese, totais e ambas
+marcam. A escolha foi feita na época anterior a cada avaliação; ambas escolheram a
+proteção do empate. Nos mesmos 459 jogos: 335 acertos (73,0%) só vencedores; 368
+(80,2%) com 199 proteções em 199 dias. É uma mudança do evento previsto, não uma
+melhoria de 7,2 pontos na previsão de vencedores. É desenvolvimento retrospetivo em
+dados já observados, não um novo teste independente. Intervalo bootstrap por dia de
+95% para a taxa: 76,7–83,5%; não demonstra um mínimo de 80%. Em 2025: 310/388
+(79,9%); em 2026: 58/71 (81,7%). Não existem odds históricas para calcular ROI.
+A simulação seleciona uma lista diária; não simula atrasos da API nem mudanças da
+lista ao longo do dia. Estas diferenças exigem avaliação prospetiva.
+
+Aplicar `migrations/0002_daily_markets.sql` à base D1 existente antes de publicar o
+Worker. Não adiciona recursos, chamadas à API-Football ou subscrições. O cron existente
+reserva e regista os mercados; a interface lê apenas os registos. O histórico distingue
+`displayTip`/`displayHit` da previsão original `winnerTip`/`winnerHit`. O historial geral
+inclui também jogos fora dos três destaques e não deve ser comparado diretamente com
+os 459 jogos da investigação. A fiabilidade da dupla hipótese não reutiliza a calibração
+do vencedor e não é apresentada como uma confiança garantida de 80%.

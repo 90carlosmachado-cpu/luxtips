@@ -9,6 +9,12 @@ import winnerReview from "./winner-review.json";
 import luxgValidation from "./luxg-validation.json";
 import { forecastWindow, publicGames } from "./window.js";
 import { saveFixtures } from "./storage.js";
+import {
+  readDailyMarkets,
+  decorateDailyMarket,
+  finalizeDailyMarkets,
+} from "./daily-markets.js";
+import dailyMarketResearch from "./daily-market-research.json";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -42,6 +48,7 @@ async function sync(env, force = false) {
     failedLeagues = [],
     enrichmentAvailable = true;
   try {
+    const dailyPlans = await readDailyMarkets(db, now);
     const leagues = (env.LEAGUES || "94,39,140,78,135,61")
       .split(",")
       .map(Number)
@@ -199,26 +206,35 @@ async function sync(env, force = false) {
             p.risks.push(
               "Atualização em atraso; seleção de valor suspensa, prognóstico de vencedor apenas provisório.",
             );
-          const data = {
+          const predictionAt = Date.now();
+          if (f.ts <= predictionAt) continue;
+          let data = {
             fixture: f,
             prediction: p,
-            // Selection now focuses on outright winners; alternate markets have no new validation.
+            // The daily overlay preserves the original winner for comparison.
             recommendation: null,
             winnerTip: winnerTip(p, winnerResearch.calibration, odds, {
-              now,
+              now: predictionAt,
               sourceUpdatedAt: upcoming.fetchedAt,
               stale: matchStale,
             }),
             odds,
             context,
-            updatedAt: now,
+            updatedAt: predictionAt,
             sourceUpdatedAt: upcoming.fetchedAt,
             stale: matchStale,
           };
           const phase =
-            f.ts - now <= HOUR && !matchStale ? "final" : "preliminary";
+            f.ts - predictionAt <= HOUR && !matchStale
+              ? "final"
+              : "preliminary";
           const snapshotVersion = VERSION + "@" + f.ts;
           data.phase = phase;
+          data = decorateDailyMarket(
+            data,
+            dailyPlans.find((p) => p.fixture_id === f.id),
+            predictionAt,
+          );
           // Final predictions stay frozen; preliminary revisions are append-only.
           const final = await db
             .prepare(
@@ -233,9 +249,10 @@ async function sync(env, force = false) {
               )
               .bind(
                 f.id,
-                snapshotVersion + (phase === "preliminary" ? ":" + now : ""),
+                snapshotVersion +
+                  (phase === "preliminary" ? ":" + predictionAt : ""),
                 phase,
-                now,
+                predictionAt,
                 f.ts,
                 JSON.stringify(data),
               )
@@ -246,7 +263,15 @@ async function sync(env, force = false) {
             )
             .bind(
               "forecast:" + f.id,
-              final?.data || JSON.stringify(data),
+              final
+                ? JSON.stringify(
+                    decorateDailyMarket(
+                      JSON.parse(final.data),
+                      dailyPlans.find((p) => p.fixture_id === f.id),
+                      now,
+                    ),
+                  )
+                : JSON.stringify(data),
               f.ts + 86400000,
             )
             .run();
@@ -271,9 +296,11 @@ async function sync(env, force = false) {
       )
       .bind(now)
       .run();
+    const dailyMarkets = await finalizeDailyMarkets(db);
     await meta(db, "sync", {
       at: Date.now(),
       ok: true,
+      dailyMarkets,
       stale,
       processed,
       contextAvailable: enrichmentAvailable,
@@ -429,6 +456,7 @@ export default {
           winnerSelection: winnerReview,
           luxg: luxgValidation,
           winnerModel: winnerResearch,
+          dailyMarket: dailyMarketResearch,
         });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
@@ -439,6 +467,9 @@ export default {
           return {
             ...f,
             result: { home: r.hg, away: r.ag },
+            displayHit: f.displayTip
+              ? outcome(f.displayTip.market, r.hg, r.ag)
+              : null,
             winnerHit: f.winnerTip
               ? outcome(f.winnerTip.market, r.hg, r.ag)
               : null,

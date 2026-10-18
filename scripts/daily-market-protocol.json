@@ -1,0 +1,13 @@
+{
+ "version":"daily-market-v1",
+ "dataStatus":"Retrospective development on seasons already observed; not an independent new holdout.",
+ "population":"Identical fixtures to current winner policy: at most three daily favorites with win probability >=0.5, same ordering and sample eligibility.",
+ "constraint":"At most ONE non-winner selection per Lisbon calendar day across all selected fixtures. All other picks remain outright winners; never add or drop a fixture to improve hit rate.",
+ "policies":["winner-only","draw-protection","largest-probability-gain"],
+ "draw-protection":"Replace the winner with its same-side double chance on the selected fixture with largest draw probability.",
+ "largest-probability-gain":"Consider same-side double chance, over/under 1.5/2.5/3.5, BTTS yes/no. Replace at most one selection by the market with largest raw probability increase. Ties prefer same-side double chance, then fixture ordering.",
+ "selection":"Select policy using preceding season hit rate; ties prefer winner-only then draw-protection. Use mixture weights available before the selection period, then refit weights on past seasons as in the locked winner protocol. Evaluate 2025 and 2026 without further tuning.",
+ "promotion":"Same fixture IDs/counts, <=1 alternative per day, positive paired day-bootstrap95 lower bound for hit-rate improvement, and nonnegative improvement in each outer fold. Do not claim 80% minimum from point estimates.",
+ "bootstrap":{"draws":2000,"seed":20261020,"unit":"Lisbon calendar day"},
+ "limitations":"Different market targets: hit-rate change is not a pure improvement in winner prediction. No historical odds or ROI. Existing API source delays not simulated. Freeze live daily market assignment before kickoff to prevent multiple alternatives as games finish."
+}

@@ -2,7 +2,11 @@ import fs from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 export function database() {
   const sql = new DatabaseSync(":memory:");
-  sql.exec(fs.readFileSync("migrations/0001.sql", "utf8"));
+  for (const file of fs
+    .readdirSync("migrations")
+    .filter((f) => f.endsWith(".sql"))
+    .sort())
+    sql.exec(fs.readFileSync("migrations/" + file, "utf8"));
   const wrap = (text, params = []) => ({
     bind(...p) {
       return wrap(text, p);

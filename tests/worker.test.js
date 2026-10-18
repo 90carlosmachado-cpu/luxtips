@@ -125,6 +125,10 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     assert.equal(games.games.length, 1);
     assert.equal(games.games[0].phase, "final");
     assert.ok(games.games[0].prediction.sample > 12);
+    assert.ok(
+      games.games[0].winnerTip,
+      "a newly fetched source is eligible immediately",
+    );
     const original = await DB.prepare(
       "SELECT data FROM forecasts WHERE fixture_id=99999999",
     ).first();
@@ -156,7 +160,7 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     assert.equal(
       (
         await DB.prepare(
-          "SELECT COUNT(*) n FROM forecasts WHERE fixture_id=99999999 AND phase='final'",
+          "SELECT COUNT(*) n FROM forecasts WHERE fixture_id=99999999 AND phase='final' AND version NOT LIKE '%daily-market-v1%'",
         ).first()
       ).n,
       2,
@@ -165,6 +169,10 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
       .bind(99999999, 2, 0, Date.now())
       .run();
     await DB.prepare("UPDATE fixtures SET finished=1 WHERE id=99999999").run();
+    assert.equal(
+      (await DB.prepare("SELECT COUNT(*) n FROM daily_markets").first()).n,
+      games.games[0].winnerTip?.majority ? 1 : 0,
+    );
     // Multiple versions remain archived but one final per fixture is evaluated.
     await DB.prepare(
       "INSERT INTO forecasts(fixture_id,version,phase,created_at,kickoff,data) SELECT fixture_id,version||'-review',phase,created_at+1,kickoff,data FROM forecasts WHERE fixture_id=99999999 AND phase='final' ORDER BY kickoff DESC LIMIT 1",
@@ -190,6 +198,7 @@ test("a published preliminary winner is evaluated even without a final refresh",
     fixture,
     phase: "preliminary",
     winnerTip: { market: "H", label: "A vence" },
+    displayTip: { market: "HX", label: "A ou empate" },
     recommendation: null,
     prediction: { probabilities: { H: 0.6, D: 0.25, A: 0.15 } },
   };
@@ -221,7 +230,7 @@ test("a published preliminary winner is evaluated even without a final refresh",
     )
     .run();
   await DB.prepare("INSERT INTO results VALUES(?,?,?,?)")
-    .bind(fixture.id, 2, 0, now)
+    .bind(fixture.id, 1, 1, now)
     .run();
   const r = await worker.fetch(
     new Request("https://test/api/history"),
@@ -230,7 +239,8 @@ test("a published preliminary winner is evaluated even without a final refresh",
   );
   const h = await r.json();
   assert.equal(h.forecasts.length, 1);
-  assert.equal(h.forecasts[0].winnerHit, 1);
+  assert.equal(h.forecasts[0].winnerHit, 0);
+  assert.equal(h.forecasts[0].displayHit, 1);
   assert.equal(h.forecasts[0].phase, "preliminary");
 });
 test("one failed competition does not block another or delayed result settlement", async () => {

@@ -1,0 +1,381 @@
+{
+  "version": "daily-market-v1",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "protocol": {
+    "version": "daily-market-v1",
+    "dataStatus": "Retrospective development on seasons already observed; not an independent new holdout.",
+    "population": "Identical fixtures to current winner policy: at most three daily favorites with win probability >=0.5, same ordering and sample eligibility.",
+    "constraint": "At most ONE non-winner selection per Lisbon calendar day across all selected fixtures. All other picks remain outright winners; never add or drop a fixture to improve hit rate.",
+    "policies": [
+      "winner-only",
+      "draw-protection",
+      "largest-probability-gain"
+    ],
+    "draw-protection": "Replace the winner with its same-side double chance on the selected fixture with largest draw probability.",
+    "largest-probability-gain": "Consider same-side double chance, over/under 1.5/2.5/3.5, BTTS yes/no. Replace at most one selection by the market with largest raw probability increase. Ties prefer same-side double chance, then fixture ordering.",
+    "selection": "Select policy using preceding season hit rate; ties prefer winner-only then draw-protection. Use mixture weights available before the selection period, then refit weights on past seasons as in the locked winner protocol. Evaluate 2025 and 2026 without further tuning.",
+    "promotion": "Same fixture IDs/counts, <=1 alternative per day, positive paired day-bootstrap95 lower bound for hit-rate improvement, and nonnegative improvement in each outer fold. Do not claim 80% minimum from point estimates.",
+    "bootstrap": {
+      "draws": 2000,
+      "seed": 20261020,
+      "unit": "Lisbon calendar day"
+    },
+    "limitations": "Different market targets: hit-rate change is not a pure improvement in winner prediction. No historical odds or ROI. Existing API source delays not simulated. Freeze live daily market assignment before kickoff to prevent multiple alternatives as games finish."
+  },
+  "folds": [
+    {
+      "season": 2025,
+      "selected": "draw-protection",
+      "development": [
+        {
+          "policy": "winner-only",
+          "metrics": {
+            "n": 387,
+            "wins": 272,
+            "hitRate": 0.7028423772609819,
+            "days": 167,
+            "alternatives": 0,
+            "meanProbability": 0.6686825245980077,
+            "brier": 0.1964802429420781,
+            "logLoss": 0.5788376636589406,
+            "byMarket": {
+              "H": {
+                "n": 293,
+                "wins": 210
+              },
+              "A": {
+                "n": 94,
+                "wins": 62
+              }
+            }
+          }
+        },
+        {
+          "policy": "draw-protection",
+          "metrics": {
+            "n": 387,
+            "wins": 312,
+            "hitRate": 0.8062015503875969,
+            "days": 167,
+            "alternatives": 167,
+            "meanProbability": 0.7602817448775832,
+            "brier": 0.15096994409744055,
+            "logLoss": 0.4740875369570365,
+            "byMarket": {
+              "H": {
+                "n": 174,
+                "wins": 135
+              },
+              "A": {
+                "n": 46,
+                "wins": 35
+              },
+              "HX": {
+                "n": 119,
+                "wins": 103
+              },
+              "XA": {
+                "n": 48,
+                "wins": 39
+              }
+            }
+          }
+        },
+        {
+          "policy": "largest-probability-gain",
+          "metrics": {
+            "n": 387,
+            "wins": 310,
+            "hitRate": 0.8010335917312662,
+            "days": 167,
+            "alternatives": 167,
+            "meanProbability": 0.7670275083811924,
+            "brier": 0.1495302990715368,
+            "logLoss": 0.47006841664369475,
+            "byMarket": {
+              "H": {
+                "n": 176,
+                "wins": 136
+              },
+              "A": {
+                "n": 44,
+                "wins": 30
+              },
+              "HX": {
+                "n": 75,
+                "wins": 66
+              },
+              "XA": {
+                "n": 28,
+                "wins": 24
+              },
+              "O15": {
+                "n": 55,
+                "wins": 45
+              },
+              "U35": {
+                "n": 9,
+                "wins": 9
+              }
+            }
+          }
+        }
+      ],
+      "baseline": {
+        "n": 388,
+        "wins": 280,
+        "hitRate": 0.7216494845360825,
+        "days": 164,
+        "alternatives": 0,
+        "meanProbability": 0.6604189226719737,
+        "brier": 0.20181956599390458,
+        "logLoss": 0.5931962635002623,
+        "byMarket": {
+          "H": {
+            "n": 291,
+            "wins": 213
+          },
+          "A": {
+            "n": 97,
+            "wins": 67
+          }
+        }
+      },
+      "candidate": {
+        "n": 388,
+        "wins": 310,
+        "hitRate": 0.7989690721649485,
+        "days": 164,
+        "alternatives": 164,
+        "meanProbability": 0.7520598111489063,
+        "brier": 0.1520741894129634,
+        "logLoss": 0.47564182778111375,
+        "byMarket": {
+          "H": {
+            "n": 177,
+            "wins": 132
+          },
+          "A": {
+            "n": 47,
+            "wins": 30
+          },
+          "HX": {
+            "n": 114,
+            "wins": 104
+          },
+          "XA": {
+            "n": 50,
+            "wins": 44
+          }
+        }
+      }
+    },
+    {
+      "season": 2026,
+      "selected": "draw-protection",
+      "development": [
+        {
+          "policy": "winner-only",
+          "metrics": {
+            "n": 388,
+            "wins": 280,
+            "hitRate": 0.7216494845360825,
+            "days": 164,
+            "alternatives": 0,
+            "meanProbability": 0.6604189226719737,
+            "brier": 0.20181956599390458,
+            "logLoss": 0.5931962635002623,
+            "byMarket": {
+              "H": {
+                "n": 291,
+                "wins": 213
+              },
+              "A": {
+                "n": 97,
+                "wins": 67
+              }
+            }
+          }
+        },
+        {
+          "policy": "draw-protection",
+          "metrics": {
+            "n": 388,
+            "wins": 310,
+            "hitRate": 0.7989690721649485,
+            "days": 164,
+            "alternatives": 164,
+            "meanProbability": 0.7520598111489063,
+            "brier": 0.1520741894129634,
+            "logLoss": 0.47564182778111375,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 132
+              },
+              "A": {
+                "n": 47,
+                "wins": 30
+              },
+              "HX": {
+                "n": 114,
+                "wins": 104
+              },
+              "XA": {
+                "n": 50,
+                "wins": 44
+              }
+            }
+          }
+        },
+        {
+          "policy": "largest-probability-gain",
+          "metrics": {
+            "n": 388,
+            "wins": 306,
+            "hitRate": 0.788659793814433,
+            "days": 164,
+            "alternatives": 164,
+            "meanProbability": 0.7579879454625159,
+            "brier": 0.15929863011792833,
+            "logLoss": 0.49141007792674996,
+            "byMarket": {
+              "H": {
+                "n": 177,
+                "wins": 133
+              },
+              "A": {
+                "n": 47,
+                "wins": 31
+              },
+              "HX": {
+                "n": 77,
+                "wins": 72
+              },
+              "XA": {
+                "n": 31,
+                "wins": 28
+              },
+              "O15": {
+                "n": 49,
+                "wins": 38
+              },
+              "U35": {
+                "n": 7,
+                "wins": 4
+              }
+            }
+          }
+        }
+      ],
+      "baseline": {
+        "n": 71,
+        "wins": 55,
+        "hitRate": 0.7746478873239436,
+        "days": 35,
+        "alternatives": 0,
+        "meanProbability": 0.6451793334320284,
+        "brier": 0.1798544105975361,
+        "logLoss": 0.5458183060837515,
+        "byMarket": {
+          "H": {
+            "n": 54,
+            "wins": 42
+          },
+          "A": {
+            "n": 17,
+            "wins": 13
+          }
+        }
+      },
+      "candidate": {
+        "n": 71,
+        "wins": 58,
+        "hitRate": 0.8169014084507042,
+        "days": 35,
+        "alternatives": 35,
+        "meanProbability": 0.7514357948268858,
+        "brier": 0.15132532571265922,
+        "logLoss": 0.4744101486264443,
+        "byMarket": {
+          "H": {
+            "n": 29,
+            "wins": 24
+          },
+          "A": {
+            "n": 7,
+            "wins": 6
+          },
+          "HX": {
+            "n": 25,
+            "wins": 20
+          },
+          "XA": {
+            "n": 10,
+            "wins": 8
+          }
+        }
+      }
+    }
+  ],
+  "pooled": {
+    "baseline": {
+      "n": 459,
+      "wins": 335,
+      "hitRate": 0.7298474945533769,
+      "days": 199,
+      "alternatives": 0,
+      "meanProbability": 0.6580616005891065,
+      "brier": 0.19842190579098049,
+      "logLoss": 0.5858676469935689,
+      "byMarket": {
+        "H": {
+          "n": 345,
+          "wins": 255
+        },
+        "A": {
+          "n": 114,
+          "wins": 80
+        }
+      }
+    },
+    "candidate": {
+      "n": 459,
+      "wins": 368,
+      "hitRate": 0.8017429193899782,
+      "days": 199,
+      "alternatives": 199,
+      "meanProbability": 0.7519632857483324,
+      "brier": 0.15195835210855907,
+      "logLoss": 0.4754513066046834,
+      "byMarket": {
+        "H": {
+          "n": 206,
+          "wins": 156
+        },
+        "A": {
+          "n": 54,
+          "wins": 36
+        },
+        "HX": {
+          "n": 139,
+          "wins": 124
+        },
+        "XA": {
+          "n": 60,
+          "wins": 52
+        }
+      }
+    },
+    "pairedDayBootstrap95": [
+      0.049783549783549784,
+      0.09545671685002895
+    ],
+    "hitRateDayBootstrap95": [
+      0.7666647597254005,
+      0.8348479666708121
+    ]
+  },
+  "promoted": true,
+  "activePolicy": "draw-protection"
+}
