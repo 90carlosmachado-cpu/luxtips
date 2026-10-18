@@ -389,7 +389,7 @@ export default {
         res = json(validation);
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
-          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE p.phase='final' ORDER BY p.created_at DESC LIMIT 1000",
+          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE p.phase='final' AND p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff AND p2.phase='final' ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",
         ).all();
         const forecasts = r.results.map((r) => {
           const f = JSON.parse(r.data);

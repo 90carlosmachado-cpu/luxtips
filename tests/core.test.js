@@ -199,3 +199,58 @@ test("real odds parsed only for supported markets and fresh timestamps", () => {
   assert.deepEqual(parseOdds(r, 2, now), {});
   assert.deepEqual(parseOdds(r, 1, now + 7 * 3600000), {});
 });
+test("eligible outright favorite takes priority over a more probable double chance", () => {
+  const bin = {
+    low: 0.6,
+    high: 1,
+    n: 200,
+    mean: 0.75,
+    rate: 0.75,
+    interval: [0.68, 0.81],
+  };
+  const v = {
+    markets: Object.fromEntries(
+      ["H", "HX", "A"].map((k) => [
+        k,
+        { enabled: true, byLeague: { 94: { enabled: true } }, bins: [bin] },
+      ]),
+    ),
+  };
+  const p = {
+    sample: 20,
+    league: 94,
+    homeName: "Benfica",
+    awayName: "Porto",
+    homeGoals: 2.4,
+    awayGoals: 0.7,
+    probabilities: { H: 0.75, HX: 0.9 },
+  };
+  const r = select(p, v);
+  assert.equal(r.market, "H");
+  assert.equal(r.label, "Benfica vence");
+  assert.ok(r.minimumOdd * r.probability >= 1.03);
+  assert.equal(
+    select({ ...p, probabilities: { A: 0.75 } }, v).label,
+    "Porto vence",
+  );
+  assert.equal(select(p, v, { H: { odd: 1.1, at: Date.now() } }).market, "HX");
+});
+test("adjacent calibration bins support sparse favorites without disabling evidence gates", async () => {
+  const { calibrationBin } = await import("../src/model.js");
+  const bins = [
+    { low: 0.5, high: 0.6, n: 80, mean: 0.55, rate: 0.55 },
+    { low: 0.6, high: 0.7, n: 60, mean: 0.65, rate: 0.65 },
+    { low: 0.7, high: 0.8, n: 20, mean: 0.75, rate: 0.75 },
+    { low: 0.8, high: 0.9, n: 3, mean: 0.85, rate: 1 },
+    { low: 0.9, high: 1, n: 0, mean: null, rate: null },
+  ];
+  const b = calibrationBin({ bins }, 0.75);
+  assert.equal(b.n, 160);
+  assert.equal(b.low, 0.5);
+  assert.equal(b.high, 0.8);
+  assert.equal(calibrationBin({ bins }, 0.95), null);
+  assert.equal(
+    calibrationBin({ bins: bins.map((b) => ({ ...b, n: 1 })) }, 0.75),
+    null,
+  );
+});

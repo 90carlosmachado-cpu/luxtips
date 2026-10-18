@@ -312,16 +312,16 @@
         <div class="eyebrow">O jogo começa nos dados</div>
         <h1>Menos palpites.<br />Mais fundamento.</h1>
         <p>
-          Análise estatística de futebol, atualizada automaticamente. Seleção
-          criteriosa, probabilidades transparentes e espaço para dizer «sem
-          recomendação».
+          Análise estatística de futebol, atualizada automaticamente. Seleção de
+          favoritos e outros mercados com fundamento. Aqui só aparecem jogos com
+          uma recomendação elegível.
         </p>
         <div class="status small" id="status" aria-live="polite">
           A verificar a última atualização…
         </div>
       </section>
       <nav class="tabs" aria-label="Secções">
-        <button data-tab="games" aria-selected="true">Próximos jogos</button
+        <button data-tab="games" aria-selected="true">Prognósticos</button
         ><button data-tab="history" aria-selected="false">Histórico</button
         ><button data-tab="validation" aria-selected="false">
           Desempenho do modelo
@@ -329,7 +329,7 @@
       </nav>
       <section id="games">
         <div class="toolbar">
-          <h2>Análise da semana</h2>
+          <h2>Seleções com fundamento</h2>
           <select id="league" aria-label="Filtrar competição">
             <option value="">Todas as competições</option>
           </select>
@@ -430,7 +430,7 @@
           a = p.teams.away,
           old = Date.now() - g.updatedAt > 2 * 3600000,
           rec = old ? null : r;
-        return `<article class="card ${rec ? "pick" : ""}"><div class="small">${esc(f.competition)} · ${date(f.ts)}</div><div class="teams">${esc(f.homeName)}<span class="versus">vs</span>${esc(f.awayName)}</div><span class="tag">${g.phase === "final" ? "Previsão final" : "Previsão preliminar"} · Dados: ${esc(p.quality)}</span><div class="market"><div>${rec ? esc(rec.label) : "Sem recomendação"}<div class="small">${rec ? "Probabilidade estimada" : "Critérios de seleção não satisfeitos"}</div></div>${rec ? `<div class="prob">${pct(rec.probability)}</div>` : ""}</div>${rec ? `<p class="explain">${esc(rec.reason)}</p><p class="small">Fiabilidade histórica: ${pct(rec.reliability.observed)} em ${rec.reliability.n} casos semelhantes.<br>Intervalo de 95%: ${pct(rec.reliability.interval[0])}–${pct(rec.reliability.interval[1])}.</p><p class="small">${esc(rec.valueStatus)} ${rec.odd ? `Odd ${rec.odd.toFixed(2)} · ${esc(rec.bookmaker)} · EV ${pct(rec.expectedValue)}` : ""}</p>` : '<p class="explain">O modelo apresenta as probabilidades, mas não existe base suficiente para destacar um prognóstico.</p>'}<details><summary>Ver análise do jogo</summary><div class="stats"><div class="stat"><small>Golos estimados · casa</small><b>${p.homeGoals.toFixed(2)}</b></div><div class="stat"><small>Golos estimados · fora</small><b>${p.awayGoals.toFixed(2)}</b></div><div class="stat"><small>Elo · casa / fora</small><b>${Math.round(h?.elo || 1500)} / ${Math.round(a?.elo || 1500)}</b></div><div class="stat"><small>Jogos efetivos · mínimo</small><b>${p.sample.toFixed(1)}</b></div></div><p class="small">Golos previstos pelo modelo Poisson; não são xG medidos por eventos. O Elo é apresentado como contexto e só altera probabilidades se validado.</p><h3>Forma recente</h3><p class="small">${esc(f.homeName)}<br>${form(h)}</p><p class="small">${esc(f.awayName)}<br>${form(a)}</p><p class="small">Descanso na competição: ${h?.restDays ?? "—"} / ${a?.restDays ?? "—"} dias. Não inclui jogos noutras competições.</p><h3>Casa / fora</h3><p class="small">Casa: ${h?.home?.n || 0} jogos, ${h?.home?.gf || 0} golos marcados / ${h?.home?.ga || 0} sofridos.<br>Fora: ${a?.away?.n || 0} jogos, ${a?.away?.gf || 0} golos marcados / ${a?.away?.ga || 0} sofridos.<br>Histórico disponível dos últimos três anos.</p><h3>Probabilidades</h3><div class="tablewrap"><table><tbody>${Object.entries(
+        return `<article class="card ${rec ? "pick" : ""}"><div class="small">${esc(f.competition)} · ${date(f.ts)}</div><div class="teams">${esc(f.homeName)}<span class="versus">vs</span>${esc(f.awayName)}</div><span class="tag">${g.phase === "final" ? "Previsão final" : "Previsão preliminar"} · Dados: ${esc(p.quality)}</span><div class="market"><div>${rec ? esc(pickLabel(g)) : "Sem recomendação"}<div class="small">${rec ? "Probabilidade estimada" : "Critérios de seleção não satisfeitos"}</div></div>${rec ? `<div class="prob">${pct(rec.probability)}</div>` : ""}</div>${rec ? `<p class="explain">${esc(rec.reason)}</p><div class="stats"><div class="stat"><small>Odd disponível</small><b>${rec.odd ? rec.odd.toFixed(2) : "Indisponível"}</b></div><div class="stat"><small>Odd mínima para avaliar valor*</small><b>${(rec.minimumOdd || Math.ceil((1.03 / rec.probability) * 100) / 100).toFixed(2)}</b></div></div><p class="small">${rec.odd ? esc(rec.bookmaker || "Fonte de odds") + " · " + date(rec.oddsAt) : "Sem odd recente: seleção desportiva; valor por confirmar."}</p><p class="small">* Limiar do modelo para 3% de valor esperado estimado; não é garantia de lucro.</p><p class="small">Frequência histórica${rec.reliability.low != null ? ` no escalão ${pct(rec.reliability.low)}–${pct(rec.reliability.high)}` : " no escalão de probabilidade"}: ${pct(rec.reliability.observed)} em ${rec.reliability.n} casos semelhantes.<br>Intervalo de 95%: ${pct(rec.reliability.interval[0])}–${pct(rec.reliability.interval[1])}.</p><p class="small">${esc(rec.valueStatus)} ${rec.odd ? `Odd ${rec.odd.toFixed(2)} · ${esc(rec.bookmaker)} · EV ${pct(rec.expectedValue)}` : ""}</p>` : '<p class="explain">O modelo apresenta as probabilidades, mas não existe base suficiente para destacar um prognóstico.</p>'}<details><summary>Ver análise do jogo</summary><div class="stats"><div class="stat"><small>Golos estimados · casa</small><b>${p.homeGoals.toFixed(2)}</b></div><div class="stat"><small>Golos estimados · fora</small><b>${p.awayGoals.toFixed(2)}</b></div><div class="stat"><small>Elo · casa / fora</small><b>${Math.round(h?.elo || 1500)} / ${Math.round(a?.elo || 1500)}</b></div><div class="stat"><small>Jogos efetivos · mínimo</small><b>${p.sample.toFixed(1)}</b></div></div><p class="small">Golos previstos pelo modelo Poisson; não são xG medidos por eventos. O Elo é apresentado como contexto e só altera probabilidades se validado.</p><h3>Forma recente</h3><p class="small">${esc(f.homeName)}<br>${form(h)}</p><p class="small">${esc(f.awayName)}<br>${form(a)}</p><p class="small">Descanso na competição: ${h?.restDays ?? "—"} / ${a?.restDays ?? "—"} dias. Não inclui jogos noutras competições.</p><h3>Casa / fora</h3><p class="small">Casa: ${h?.home?.n || 0} jogos, ${h?.home?.gf || 0} golos marcados / ${h?.home?.ga || 0} sofridos.<br>Fora: ${a?.away?.n || 0} jogos, ${a?.away?.gf || 0} golos marcados / ${a?.away?.ga || 0} sofridos.<br>Histórico disponível dos últimos três anos.</p><h3>Probabilidades</h3><div class="tablewrap"><table><tbody>${Object.entries(
           p.probabilities,
         )
           .map(([k, v]) => `<tr><td>${labels[k]}</td><td>${pct(v)}</td></tr>`)
@@ -438,28 +438,39 @@
             "",
           )}</tbody></table></div><h3>Ausências comunicadas</h3><p class="small">${g.context.injuries === null ? "Não disponíveis para este jogo." : g.context.injuries.length ? g.context.injuries.map((x) => `${esc(x.player)} (${esc(x.team)}): ${esc(x.reason)}`).join("<br>") : "Sem ausências comunicadas pela fonte; não garante plantel completo."}${g.context.injuriesStale ? " Dados em cache desatualizados." : ""}</p><h3>Alinhamentos</h3><p class="small">${g.context.lineups?.length ? g.context.lineups.map((x) => `${esc(x.team)} · ${esc(x.formation)}<br>${(x.players || []).map(esc).join(", ")}`).join("<br>") : "Ainda não disponibilizados pela fonte."}</p><h3>Riscos e limitações</h3><ul class="small">${p.risks.map((x) => `<li>${esc(x)}</li>`).join("")}${old ? "<li>Atualização com mais de duas horas; recomendação suspensa.</li>" : ""}</ul><p class="small">Análise: ${date(g.updatedAt)} · Dados: ${date(g.sourceUpdatedAt || g.updatedAt)} · Hora de Lisboa</p></details></article>`;
       }
+      function pickLabel(g) {
+        const k = g.recommendation?.market;
+        return k === "H"
+          ? `${g.fixture.homeName} vence`
+          : k === "A"
+            ? `${g.fixture.awayName} vence`
+            : g.recommendation?.label;
+      }
       function render() {
-        const filtered = games.filter(
+        const now = Date.now();
+        const picks = games
+          .filter(
             (g) =>
-              !$("#league").value ||
-              g.fixture.league === $("#league").value * 1,
-          ),
-          best = filtered
-            .filter(
-              (g) =>
-                g.recommendation && Date.now() - g.updatedAt <= 2 * 3600000,
-            )
-            .sort(
-              (a, b) =>
-                b.recommendation.probability - a.recommendation.probability,
-            )
-            .slice(0, 3);
-        $("#best").innerHTML = best.length
-          ? `<div class="notice"><b>Em destaque</b><br>${best.map((g) => `${esc(g.fixture.homeName)} – ${esc(g.fixture.awayName)}: ${esc(g.recommendation.label)} (${pct(g.recommendation.probability)})`).join("<br>")}<div class="small">Seleção exploratória com controlo de calibração. Rentabilidade não demonstrada.</div></div>`
-          : '<div class="notice">Sem prognósticos destacados neste momento. A análise continua disponível nos jogos abaixo.</div>';
+              g.recommendation &&
+              !g.stale &&
+              g.fixture.ts > now &&
+              now - g.updatedAt <= 2 * 3600000 &&
+              (!$("#league").value ||
+                g.fixture.league === Number($("#league").value)),
+          )
+          .sort(
+            (a, b) =>
+              Number(["H", "A"].includes(b.recommendation.market)) -
+                Number(["H", "A"].includes(a.recommendation.market)) ||
+              b.recommendation.probability - a.recommendation.probability ||
+              a.fixture.ts - b.fixture.ts,
+          );
+        $("#best").innerHTML = picks.length
+          ? `<div class="notice"><b>${picks.length} ${picks.length === 1 ? "seleção disponível" : "seleções disponíveis"}</b><br>Vitórias de favoritos elegíveis em primeiro lugar. Uma seleção por jogo; odds e probabilidade avaliadas separadamente.</div>`
+          : "";
         $("#cards").innerHTML =
-          filtered.map(card).join("") ||
-          '<div class="empty wide">Sem jogos disponíveis nesta seleção nos próximos sete dias.</div>';
+          picks.map(card).join("") ||
+          '<div class="empty wide"><h3>Sem recomendações neste momento</h3><p>Não há jogos com dados recentes que cumpram os critérios nesta seleção. Os prognósticos surgem automaticamente quando existir fundamento suficiente.</p></div>';
       }
       async function loadGames() {
         try {

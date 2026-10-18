@@ -111,3 +111,11 @@ A interface e o processamento foram publicados no Worker existente. A primeira s
 O cron de 30 em 30 minutos está configurado; não foi aumentada a frequência nem contratado qualquer plano adicional. Os dados da cache conservam as datas de recolha originais; não se renovou artificialmente a sua validade. Uma falha de atualização não transforma dados dentro da validade em dados expirados. O fallback sinaliza falhas da fonte e suspende recomendações quando a cache utilizada já expirou. A interface distingue estas situações. A redução das respostas intermitentes de limite do fornecedor é a limitação operacional restante.
 
 Os 13 testes locais passaram, incluindo repetição da sincronização, novo horário de jogo, imutabilidade e liquidação. O workflow do primeiro commit também passou no GitHub. A interface publicada foi testada no navegador para listagem, filtro de competição, análise detalhada e relatório histórico. A validação visual num telemóvel físico não foi executada.
+
+## Seleção de favoritos (v2)
+
+A vitória simples elegível tem prioridade sobre uma dupla hipótese com maior probabilidade. Mantêm-se probabilidade mínima de 65%, amostra efetiva, evidência por competição e filtros de valor. Na vitória simples, intervalos adjacentes de calibração podem ser agregados até 30 pontos percentuais, com pelo menos 100 casos; a escolha do intervalo usa apenas amostras e probabilidades, nunca resultados. A frequência histórica descreve o intervalo completo e não substitui a probabilidade individual. A agregação é uma alteração exploratória que exige acompanhamento prospetivo.
+
+A página inicial apresenta apenas recomendações recentes de jogos futuros. Mostra nomes das equipas, odds reais quando disponíveis e o limiar de odd calculado para 3% de valor esperado estimado. Sem odds, o valor fica expressamente por confirmar.
+
+`node scripts/selection-review.js` reproduz a comparação retrospetiva das políticas a partir dos ficheiros gerados pelo backtest. `src/selection-review.json` contém os resultados reais; não é um novo teste independente e não mede ROI. As versões antigas permanecem imutáveis; para evitar duplicações, o histórico avalia a última previsão final registada antes do jogo, por encontro e horário.

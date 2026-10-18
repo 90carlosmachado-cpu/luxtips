@@ -1,0 +1,53 @@
+{
+  "version": "poisson-opponent-v1-favorites-v2",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "scope": "Retrospetiva da política de seleção sobre os 1835 jogos previamente avaliados; os filtros de elegibilidade usam este mesmo período. Não é teste independente, nem validação prospetiva. Sem odds históricas; valor e ROI não avaliados. A amostra efetiva mínima já foi aplicada ao gerar holdout-records.",
+  "previous": {
+    "n": 1280,
+    "wins": 1007,
+    "hitRate": 0.78671875,
+    "meanProbability": 0.7429986351879482,
+    "brier": 0.16711228192452512,
+    "logLoss": 0.5147484200426921,
+    "byMarket": {
+      "HX": {
+        "n": 821,
+        "wins": 654
+      },
+      "XA": {
+        "n": 445,
+        "wins": 343
+      },
+      "H": {
+        "n": 14,
+        "wins": 10
+      }
+    }
+  },
+  "favorites": {
+    "n": 1392,
+    "wins": 1086,
+    "hitRate": 0.7801724137931034,
+    "meanProbability": 0.7362098687374393,
+    "brier": 0.17187428032496463,
+    "logLoss": 0.5270938233357291,
+    "byMarket": {
+      "HX": {
+        "n": 758,
+        "wins": 596
+      },
+      "XA": {
+        "n": 445,
+        "wins": 343
+      },
+      "H": {
+        "n": 152,
+        "wins": 119
+      },
+      "A": {
+        "n": 37,
+        "wins": 28
+      }
+    }
+  }
+}

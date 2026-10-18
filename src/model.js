@@ -1,5 +1,5 @@
 // All features are derived strictly from completed matches before the cutoff.
-export const VERSION = "poisson-opponent-v1";
+export const VERSION = "poisson-opponent-v1-favorites-v2";
 const DAY = 86400000;
 const clip = (x, a, b) => Math.max(a, Math.min(b, x));
 export function normalize(f) {
@@ -226,6 +226,8 @@ export function predict(state, f) {
   return {
     version: VERSION,
     league: f.league,
+    homeName: f.homeName,
+    awayName: f.awayName,
     cutoff: state.cutoff,
     homeGoals,
     awayGoals,
@@ -265,12 +267,50 @@ export function wilson(w, n) {
     m = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / d;
   return [c - m, c + m];
 }
+// Adjacent bins avoid rejecting strong favorites solely because a narrow
+// 10-point bin is sparse. Never pool competitions' eligibility or change gates.
+export function calibrationBin(market, p) {
+  const bins = market?.bins || [];
+  const direct = bins.find((b) => p >= b.low && p < b.high);
+  if (direct?.n >= 100) return direct;
+  const windows = [];
+  for (let start = 0; start < bins.length; start++) {
+    for (let end = start; end < Math.min(start + 3, bins.length); end++) {
+      const bs = bins.slice(start, end + 1),
+        low = bs[0].low,
+        high = bs.at(-1).high;
+      if (low < 0.5 || p < low || p >= high) continue;
+      const n = bs.reduce((s, b) => s + b.n, 0);
+      if (n < 100) continue;
+      const mean = bs.reduce((s, b) => s + b.n * (b.mean || 0), 0) / n;
+      const wins = bs.reduce((s, b) => s + b.n * (b.rate || 0), 0);
+      windows.push({
+        low,
+        high,
+        n,
+        mean,
+        rate: wins / n,
+        interval: wilson(wins, n),
+      });
+    }
+  }
+  // Window choice uses counts/probabilities only, never observed hit rates.
+  return (
+    windows.sort(
+      (a, b) =>
+        a.high - a.low - (b.high - b.low) ||
+        Math.abs(a.mean - p) - Math.abs(b.mean - p),
+    )[0] || null
+  );
+}
 export function select(pred, validation, odds = {}, now = Date.now()) {
   if (pred.sample < 12) return null;
   const candidates = [];
   for (const [k, p] of Object.entries(pred.probabilities)) {
     const v = validation?.markets?.[k],
-      bin = v?.bins?.find((b) => p >= b.low && p < b.high);
+      bin = ["H", "A"].includes(k)
+        ? calibrationBin(v, p)
+        : v?.bins?.find((b) => p >= b.low && p < b.high);
     // Reliability measured on untouched holdout, distinct from model probability.
     if (
       !v?.enabled ||
@@ -292,19 +332,42 @@ export function select(pred, validation, odds = {}, now = Date.now()) {
     if (ev !== null && ev < 0.03) continue;
     candidates.push({
       market: k,
-      label: LABELS[k],
+      label:
+        k === "H"
+          ? `${pred.homeName || "Equipa da casa"} vence`
+          : k === "A"
+            ? `${pred.awayName || "Equipa visitante"} vence`
+            : LABELS[k],
+      selectionType: ["H", "A"].includes(k) ? "favorite" : "alternative",
+      fairOdd: 1 / p,
+      minimumOdd: Math.ceil((1.03 / p) * 100) / 100,
       probability: p,
-      reliability: { n: bin.n, observed: bin.rate, interval: bin.interval },
+      reliability: {
+        n: bin.n,
+        observed: bin.rate,
+        interval: bin.interval,
+        low: bin.low,
+        high: bin.high,
+      },
       odd: validOdd ? o.odd : null,
       bookmaker: validOdd ? o.bookmaker : null,
       oddsAt: validOdd ? o.at : null,
       expectedValue: ev,
-      reason: `${pred.homeGoals.toFixed(2)} e ${pred.awayGoals.toFixed(2)} golos estimados; ${Math.floor(pred.sample)} jogos efetivos por equipa, no mínimo.`,
+      reason: `${["H", "A"].includes(k) ? "Favorito com superioridade estimada após ajuste à força dos adversários. " : "Alternativa elegível pelos critérios de calibração. "}${pred.homeGoals.toFixed(2)}–${pred.awayGoals.toFixed(2)} golos estimados; pelo menos ${Math.floor(pred.sample)} jogos efetivos por equipa.`,
       valueStatus:
         ev === null
           ? "Valor não avaliado: sem odds reais recentes."
           : "Valor esperado estimado; rentabilidade não demonstrada.",
     });
   }
-  return candidates.sort((a, b) => b.probability - a.probability)[0] || null;
+  // Prefer a qualified outright favorite. A double chance is a separate fallback,
+  // never a way to inflate the probability shown for an eligible outright pick.
+  return (
+    candidates.sort(
+      (a, b) =>
+        Number(b.selectionType === "favorite") -
+          Number(a.selectionType === "favorite") ||
+        b.probability - a.probability,
+    )[0] || null
+  );
 }
