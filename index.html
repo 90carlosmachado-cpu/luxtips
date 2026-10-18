@@ -489,6 +489,9 @@
             get("/api/health"),
           ]);
           games = d.games;
+          const selectedLeague = $("#league").value;
+          $("#league").innerHTML =
+            '<option value="">Todas as competições</option>';
           for (const [id, name] of new Map(
             games.map((g) => [g.fixture.league, g.fixture.competition]),
           )) {
@@ -497,6 +500,7 @@
             o.textContent = name;
             $("#league").append(o);
           }
+          $("#league").value = selectedLeague;
           $("#status").innerHTML =
             `<span class="dot"></span> ${d.updatedAt ? "Atualizado " + date(d.updatedAt) : "A aguardar a primeira atualização"} · 6 competições · Hora de Lisboa${h.sync?.ok && !h.sync?.stale ? "" : " · A atualização automática requer atenção"}${!h.lastLiveRefresh ? " · Carga inicial em cache; recolha direta por confirmar" : ""}${h.sync?.upstreamDegraded ? " · Falhas pontuais na fonte; cache ativa" : ""}`;
           render();
@@ -540,6 +544,7 @@
       }
       $("#league").addEventListener("change", render);
       setInterval(render, 60000);
+      setInterval(loadGames, 300000);
       document.querySelectorAll("[data-tab]").forEach((b) =>
         b.addEventListener("click", async () => {
           document
