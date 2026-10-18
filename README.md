@@ -10,7 +10,7 @@ Análise probabilística de futebol com API-Football, Cloudflare Workers e D1. O
 - Seis competições iniciais: Portugal (94), Inglaterra (39), Espanha (140), Alemanha (78), Itália (135) e França (61).
 - Sincronização aos minutos 07 e 37 de cada hora, em UTC. A época atual é descoberta na API.
 - Cache: cobertura 24 h; histórico da época 24 h; jogos próximos 30 min; odds 3 h; lesões 6 h; alinhamentos 30 min. Histórico de épocas anteriores é carregado no arranque. Jogos sem alterações não voltam a ser escritos em D1.
-- Limite local de 600 pedidos/dia, partilhado atomicamente em D1. O plano consultado permite 7.500/dia e 300/minuto, estando ativo até 07/11/2026. Isto é uma observação de 18/10/2026, não uma garantia de renovação.
+- Limite local de 600 pedidos/dia, partilhado atomicamente em D1, com reserva para as atualizações essenciais antes das consultas de odds, lesões e alinhamentos. O plano consultado permite 7.500/dia e 300/minuto, estando ativo até 07/11/2026. Isto é uma observação de 18/10/2026, não uma garantia de renovação.
 - A consulta pública nunca origina chamadas à API-Football. Os erros não registam a chave, cabeçalhos ou corpos das respostas externas.
 
 ## Modelo e decisões estatísticas

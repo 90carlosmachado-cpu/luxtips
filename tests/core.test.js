@@ -149,6 +149,12 @@ test("provider caches requests, respects quota and falls back explicitly", async
     await db.prepare("UPDATE cache SET expires=0").run();
     assert.equal((await api(env, "leagues")).stale, true);
     await assert.rejects(api(env, "fixtures"), /daily_budget/);
+    await assert.rejects(
+      api({ ...env, DAILY_BUDGET: "2" }, "odds?fixture=1"),
+      /daily_budget/,
+    );
+    await api({ ...env, DAILY_BUDGET: "2" }, "fixtures");
+    assert.equal(calls, 2);
   } finally {
     globalThis.fetch = original;
   }

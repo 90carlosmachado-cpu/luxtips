@@ -20,10 +20,18 @@ export async function api(env, path, ttl = 3600000, force = false) {
     };
   const day = new Date(now).toISOString().slice(0, 10),
     limit = Math.min(600, Math.max(1, Number(env.DAILY_BUDGET) || 300));
+  // Reserve the remaining twice-hourly fixture polls before contextual endpoints.
+  const contextual = /^(odds\?|injuries\?|fixtures\/lineups\?)/.test(path);
+  const utcHour =
+    new Date(now).getUTCHours() + new Date(now).getUTCMinutes() / 60;
+  const reserve = contextual
+    ? Math.min(limit - 1, 24 + Math.ceil((24 - utcHour) * 12))
+    : 0;
+  const ceiling = limit - reserve;
   const q = await env.DB.prepare(
     "INSERT INTO quota(day,n) VALUES(?,1) ON CONFLICT(day) DO UPDATE SET n=n+1 WHERE n<? RETURNING n",
   )
-    .bind(day, limit)
+    .bind(day, ceiling)
     .first();
   if (!q) {
     if (old)
