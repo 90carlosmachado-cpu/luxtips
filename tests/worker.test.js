@@ -122,12 +122,19 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     let games = await (
       await worker.fetch(new Request("https://test/api/games"), env, ctx)
     ).json();
-    assert.equal(games.games.length, 1);
-    assert.equal(games.games[0].phase, "final");
-    assert.ok(games.games[0].prediction.sample > 12);
+    assert.equal(games.games.length, 0, "no unpriced forecast is published");
+    const cached = JSON.parse(
+      (
+        await DB.prepare(
+          "SELECT data FROM cache WHERE key='forecast:99999999'",
+        ).first()
+      ).data,
+    );
+    assert.equal(cached.phase, "final");
+    assert.ok(cached.prediction.sample > 12);
     assert.ok(
-      games.games[0].winnerTip,
-      "a newly fetched source is eligible immediately",
+      cached.winnerTip,
+      "fresh forecasts are still calculated even before prices arrive",
     );
     const original = await DB.prepare(
       "SELECT data FROM forecasts WHERE fixture_id=99999999",
@@ -171,7 +178,7 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     await DB.prepare("UPDATE fixtures SET finished=1 WHERE id=99999999").run();
     assert.equal(
       (await DB.prepare("SELECT COUNT(*) n FROM daily_markets").first()).n,
-      games.games[0].winnerTip?.priceEligible ? 1 : 0,
+      cached.winnerTip?.priceEligible ? 1 : 0,
     );
     // Multiple versions remain archived but one final per fixture is evaluated.
     await DB.prepare(
@@ -286,7 +293,10 @@ test("one failed competition does not block another or delayed result settlement
   globalThis.fetch = async (url) => {
     const u = new URL(url);
     if (u.pathname === "/leagues" && u.searchParams.get("id") === "94")
-      return Response.json({ errors: { rateLimit: "limited" }, response: [] });
+      return Response.json({
+        errors: { league: "temporarily unavailable" },
+        response: [],
+      });
     return Response.json({
       response:
         u.pathname === "/leagues"

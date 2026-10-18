@@ -184,8 +184,13 @@ export async function finalizeDailyMarkets(db, now = Date.now()) {
     let odds = { ...original.odds };
     // Reuse already downloaded prices; no extra provider requests or quota.
     const cached = await db
-      .prepare("SELECT data FROM cache WHERE key=?")
-      .bind("api:odds?fixture=" + original.fixture.id)
+      .prepare(
+        "SELECT data FROM cache WHERE key IN (?,?) ORDER BY CASE WHEN key LIKE 'api:odds-complete%' THEN 0 ELSE 1 END LIMIT 1",
+      )
+      .bind(
+        "api:odds-complete?fixture=" + original.fixture.id,
+        "api:odds?fixture=" + original.fixture.id,
+      )
       .first();
     if (cached) {
       try {

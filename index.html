@@ -494,7 +494,7 @@
     <main>
       <section class="intro">
         <h1>Os prognósticos.</h1>
-        <p>Até três escolhas por dia · odds ≥ 1,25.</p>
+        <p>Seleções do dia · odds registadas ≥ 1,25.</p>
       </section>
       <nav class="tabs" aria-label="Secções">
         <button data-tab="games" aria-selected="true">Prognósticos</button
@@ -607,8 +607,9 @@
         return `<article class="card pick" data-fixture="${f.id}">
           <div class="fixture-meta"><span>${esc(f.competition)}</span><time>${hour}</time></div>
           <h3 class="selection">${esc(pickLabel(g))}</h3>
-          <p class="small">Odd ${Number(r.odd).toFixed(2).replace(".", ",")} · ${esc(r.bookmaker || "")}</p>
+          <p class="small">${g.published ? "Odd registada" : "Odd"} ${Number(r.odd).toFixed(2).replace(".", ",")} · ${esc(r.bookmaker || "")}</p>
           <p class="teams">${esc(f.homeName)} · ${esc(f.awayName)}</p>
+          <p class="small">${g.result ? `Terminado · ${g.result.home}–${g.result.away} · ${g.result.hit === 1 ? "Certo" : "Errado"}` : ["CANC", "PST", "ABD"].includes(g.currentFixture?.status) ? "Adiado ou cancelado · seleção original mantida" : f.ts <= Date.now() ? (g.currentFixture?.status === "NS" ? "Hora prevista ultrapassada · atualização pendente" : "Em jogo · seleção original mantida") : "Por disputar"}</p>
           ${r.provisional || g.stale ? '<span class="small pending">Provisório · fonte em atraso</span>' : ""}
         </article>`;
       }
@@ -645,7 +646,6 @@
           .join("");
         const available = games.filter(
           (g) =>
-            g.fixture.ts > now &&
             days.includes(localDay(g.fixture.ts)) &&
             localDay(g.fixture.ts) === chosenDay &&
             (!league || g.fixture.league === league),
@@ -653,20 +653,21 @@
         const tips = available
           .filter(
             (g) =>
-              g.winnerTip &&
-              Number.isFinite(g.winnerTip.sourceUpdatedAt) &&
-              g.winnerTip.sourceUpdatedAt <= now &&
-              now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000 &&
-              (() => {
-                const tip = g.displayTip || g.winnerTip;
-                return (
-                  Number.isFinite(tip.odd) &&
-                  tip.odd >= 1.25 &&
-                  Number.isFinite(tip.oddsAt) &&
-                  tip.oddsAt <= now &&
-                  now - tip.oddsAt < 6 * 3600000
-                );
-              })(),
+              g.published ||
+              (g.winnerTip &&
+                Number.isFinite(g.winnerTip.sourceUpdatedAt) &&
+                g.winnerTip.sourceUpdatedAt <= now &&
+                now - g.winnerTip.sourceUpdatedAt <= 24 * 3600000 &&
+                (() => {
+                  const tip = g.displayTip || g.winnerTip;
+                  return (
+                    Number.isFinite(tip.odd) &&
+                    tip.odd >= 1.25 &&
+                    Number.isFinite(tip.oddsAt) &&
+                    tip.oddsAt <= now &&
+                    now - tip.oddsAt < 6 * 3600000
+                  );
+                })()),
           )
           .sort(
             (a, b) =>
@@ -674,7 +675,9 @@
               a.fixture.ts - b.fixture.ts ||
               a.fixture.id - b.fixture.id,
           );
-        const favorites = tips.filter((g) => g.winnerTip.majority).slice(0, 3);
+        const favorites = tips.filter(
+          (g) => g.published || g.winnerTip.majority,
+        );
         $("#dayTitle").innerHTML =
           `${names[days.indexOf(chosenDay)]}<span class="count">${favorites.length} ${favorites.length === 1 ? "prognóstico" : "prognósticos"}</span>`;
         $("#best").innerHTML = "";

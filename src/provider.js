@@ -4,7 +4,13 @@ export class ProviderError extends Error {
     this.code = code;
   }
 }
-export async function api(env, path, ttl = 3600000, force = false) {
+export async function api(
+  env,
+  path,
+  ttl = 3600000,
+  force = false,
+  allowPaging = false,
+) {
   if (!env.API_FOOTBALL_KEY) throw new ProviderError("missing_key");
   const key = "api:" + path,
     now = Date.now(),
@@ -25,7 +31,23 @@ export async function api(env, path, ttl = 3600000, force = false) {
       stale: false,
       fromCache: true,
       fetchedAt,
+      paging: stored?.paging || { current: 1, total: 1 },
     };
+  const cooldown = await env.DB.prepare(
+    "SELECT until FROM locks WHERE key='api-cooldown'",
+  ).first();
+  if (cooldown?.until > now) {
+    if (validCache)
+      return {
+        data: cachedData,
+        stale: old.expires <= now,
+        refreshFailed: true,
+        fromCache: true,
+        fetchedAt,
+        paging: stored?.paging || { current: 1, total: 1 },
+      };
+    throw new ProviderError("rate_limit_cooldown");
+  }
   const day = new Date(now).toISOString().slice(0, 10),
     limit = Math.min(600, Math.max(1, Number(env.DAILY_BUDGET) || 300));
   // Reserve the remaining twice-hourly fixture polls before contextual endpoints.
@@ -47,6 +69,7 @@ export async function api(env, path, ttl = 3600000, force = false) {
         data: cachedData,
         stale: old.expires <= now,
         refreshFailed: true,
+        paging: stored?.paging || { current: 1, total: 1 },
         fromCache: true,
         fetchedAt,
       };
@@ -63,34 +86,45 @@ export async function api(env, path, ttl = 3600000, force = false) {
       redirect: "manual",
       cache: "no-store",
     });
-    if (!r.ok)
+    if (!r.ok) {
+      await providerStatus(env, path, r, {});
       throw new ProviderError(
         r.status === 429 ? "rate_limit" : "upstream_http",
       );
+    }
     if (Number(r.headers.get("content-length") || 0) > 8000000)
       throw new ProviderError("payload_size");
     const d = await r.json();
+    if (Object.keys(d?.errors || {}).length)
+      await providerStatus(env, path, r, d.errors);
     if (d?.errors?.rateLimit) throw new ProviderError("rate_limit");
     if (!d || Object.keys(d.errors || {}).length || !Array.isArray(d.response))
       throw new ProviderError("upstream_data");
-    if ((d.paging?.total || 1) > 1)
+    if (!allowPaging && (d.paging?.total || 1) > 1)
       throw new ProviderError("pagination_required");
     await env.DB.prepare(
       "INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires",
     )
       .bind(
         key,
-        JSON.stringify({ items: d.response, fetchedAt: now }),
+        JSON.stringify({ items: d.response, fetchedAt: now, paging: d.paging }),
         now + ttl,
       )
       .run();
-    return { data: d.response, stale: false, fromCache: false, fetchedAt: now };
+    return {
+      data: d.response,
+      stale: false,
+      fromCache: false,
+      fetchedAt: now,
+      paging: d.paging,
+    };
   } catch (e) {
     if (validCache)
       return {
         data: cachedData,
         stale: old.expires <= now,
         refreshFailed: true,
+        paging: stored?.paging || { current: 1, total: 1 },
         fromCache: true,
         fetchedAt,
       };
@@ -165,4 +199,97 @@ export function parseOdds(data, fixtureId, at = Date.now()) {
         out[k] = { odd, at: stamp, bookmaker: String(book.name) };
     }
   return out;
+}
+
+// Each page is quota-accounted and cached separately; a single failed fixture
+// must never disable odds for another league or an unrelated injury endpoint.
+export async function fixtureOdds(
+  env,
+  id,
+  now = Date.now(),
+  force = false,
+  winnerOnly = false,
+) {
+  if (!Number.isSafeInteger(id) || id <= 0)
+    throw new ProviderError("invalid_fixture");
+  const path = "odds?fixture=" + id + (winnerOnly ? "&bet=1" : "");
+  const first = await api(env, path, 3 * 3600000, force, true);
+  const total = first.paging?.total || 1;
+  if (!Number.isInteger(total) || total < 1 || total > 10)
+    throw new ProviderError("odds_page_limit");
+  const items = [...first.data];
+  for (let page = 2; page <= total; page++) {
+    const next = await api(
+      env,
+      `${path}&page=${page}`,
+      3 * 3600000,
+      force,
+      true,
+    );
+    items.push(...next.data);
+  }
+  const matches = items.filter((x) => x.fixture?.id === id);
+  // Some responses split bookmaker lists across pages.
+  const merged = new Map();
+  for (const f of matches) {
+    const k = f.update;
+    if (!merged.has(k)) merged.set(k, { ...f, bookmakers: [] });
+    merged.get(k).bookmakers.push(...(f.bookmakers || []));
+  }
+  const newest = [...merged.values()].sort(
+    (a, b) => Date.parse(b.update) - Date.parse(a.update),
+  );
+  if (matches.length)
+    await env.DB.prepare(
+      "INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires",
+    )
+      .bind(
+        "api:odds-complete?fixture=" + id,
+        JSON.stringify({ items: newest, fetchedAt: now }),
+        now + 3 * 3600000,
+      )
+      .run();
+  return {
+    odds: parseOdds(newest, id, now),
+    pages: total,
+    records: matches.length,
+    refreshFailed: !!first.refreshFailed,
+  };
+}
+
+async function providerStatus(env, path, response, errors) {
+  if (response.status === 429 || errors.rateLimit)
+    await env.DB.prepare(
+      "INSERT INTO locks(key,until) VALUES('api-cooldown',?) ON CONFLICT(key) DO UPDATE SET until=excluded.until",
+    )
+      .bind(
+        Date.now() +
+          Math.max(
+            60,
+            Math.min(300, Number(response.headers.get("retry-after")) || 60),
+          ) *
+            1000,
+      )
+      .run();
+  const safe = {
+    at: Date.now(),
+    path,
+    http: response.status,
+    limits: Object.fromEntries(
+      [...response.headers].filter(
+        ([k]) => k.includes("ratelimit") || k === "retry-after",
+      ),
+    ),
+    errors: Object.fromEntries(
+      Object.entries(errors).map(([k, v]) => [
+        k,
+        String(v).replaceAll(env.API_FOOTBALL_KEY, "[redacted]").slice(0, 220),
+      ]),
+    ),
+  };
+  await env.DB.prepare(
+    "INSERT INTO meta(key,data) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data",
+  )
+    .bind("provider-error:" + path, JSON.stringify(safe))
+    .run();
 }

@@ -259,3 +259,30 @@ As odds usam apenas os nomes completos observados na API, com uma única casa de
 apostas escolhida pela maior cobertura de mercados válidos. Não mistura preços de
 casas ou partes do jogo. Ausência de preço não é convertida numa odd inventada. Não
 muda o plano, a quota, o cron nem cria chamadas externas adicionais.
+
+### Odds e permanência diária (18/10/2026)
+
+As consultas de odds são independentes das consultas de lesões e alinhamentos.
+`fixtureOdds` percorre até dez páginas por jogo, contabilizando cada chamada no
+orçamento existente (600/dia). Uma falha num jogo não suspende as outras competições.
+As respostas completas são guardadas em cache, sem inventar preços ou alterar
+credenciais. Erros de quota guardam apenas diagnóstico sanitizado em D1.
+
+A migração `0004_published_picks.sql` acrescenta um registo imutável de seleções
+publicadas. O mercado, a probabilidade e a **odd registada** ficam fixos; o estado e o
+resultado vêm da ficha atual do jogo. As seleções do dia permanecem até à meia-noite
+de Lisboa, mesmo com preços expirados, início do jogo ou derrota. Depois continuam
+arquivadas. Há até três novas seleções diárias e no máximo uma alternativa; vitórias
+podem repetir-se. Recuperações explícitas de registos anteriores à migração são
+marcadas `recovered` e não contam como novas escolhas nem prova prospetiva.
+
+A tabela `maintenance_jobs` aceita tarefas `refresh-odds` criadas apenas pelo plano
+de controlo autenticado de D1. Um pedido de leitura executa uma tarefa já autorizada,
+com aquisição atómica; não permite ao público criar tarefas ou escolher consultas.
+O cron mantém a cadência original. A correção não constitui validação da taxa de acerto.
+
+A recuperação de preços em falta pede especificamente `bet=1` (Match Winner),
+sem repetir consultas cujas odds já estão válidas. Ao receber `rateLimit`/HTTP 429,
+o cliente respeita uma pausa global de pelo menos 60 segundos (ou Retry-After,
+até 300 segundos); as respostas em cache continuam disponíveis. Não altera plano
+nem contorna o limite do fornecedor.

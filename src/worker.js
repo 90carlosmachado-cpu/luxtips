@@ -3,7 +3,7 @@ import { winnerTip, outcome } from "./model.js";
 import { fit, predict, VERSION } from "./forecast.js";
 import winnerResearch from "./winner-multiscale-research.json";
 import { compareForecasts } from "./comparison.js";
-import { api, parseOdds } from "./provider.js";
+import { api, parseOdds, fixtureOdds } from "./provider.js";
 import validation from "./validation.json";
 import winnerReview from "./winner-review.json";
 import luxgValidation from "./luxg-validation.json";
@@ -17,6 +17,8 @@ import {
 import dailyMarketResearch from "./daily-market-research.json";
 import marketExpansionResearch from "./market-expansion-research.json";
 import { MIN_ODD, PRICING_VERSION, applyPricing } from "./pricing-policy.js";
+import { publishDailyPicks, publishedGames } from "./published-picks.js";
+import { runQueuedRefresh } from "./odds-refresh.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -158,16 +160,15 @@ async function sync(env, force = false) {
             p.risks.push(
               "Consulta direta falhou; foram utilizados os dados disponíveis em cache.",
             );
-          if (enrichmentAvailable && f.ts - now < 24 * HOUR && enriched++ < 8) {
-            if (season.coverage?.odds) {
-              try {
-                const r = await api(env, "odds?fixture=" + f.id, 3 * HOUR);
-                if (!r.stale) odds = parseOdds(r.data, f.id, now);
-              } catch {
-                enrichmentAvailable = false;
-                p.risks.push("Odds não disponíveis.");
-              }
+          // Prices are independent of injury/lineup failures and cover all three days.
+          if (season.coverage?.odds) {
+            try {
+              odds = (await fixtureOdds(env, f.id, now)).odds;
+            } catch {
+              p.risks.push("Odds não disponíveis nesta atualização.");
             }
+          }
+          if (enrichmentAvailable && f.ts - now < 24 * HOUR && enriched++ < 8) {
             if (enrichmentAvailable && season.coverage?.injuries) {
               try {
                 const r = await api(env, "injuries?fixture=" + f.id, 6 * HOUR);
@@ -439,9 +440,12 @@ export default {
         )
           .bind(Date.now(), forecastWindow().end)
           .all();
-        const { games, window } = publicGames(r.results);
+        const { games: candidates, window } = publicGames(r.results);
+        await publishDailyPicks(env.DB, candidates);
+        const games = await publishedGames(env.DB);
+        ctx.waitUntil(runQueuedRefresh(env));
         res = json({
-          games: games.map((g) => applyPricing(g, Date.now())),
+          games,
           selectionPolicy: {
             version: PRICING_VERSION,
             minimumOdd: MIN_ODD,
@@ -478,7 +482,7 @@ export default {
         });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
-          "SELECT p.data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE f.finished=1 AND p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",
+          "SELECT COALESCE((SELECT pp.data FROM published_picks pp WHERE pp.fixture_id=p.fixture_id AND pp.kickoff=p.kickoff ORDER BY pp.published_at LIMIT 1),p.data) data,r.hg,r.ag,r.settled_at FROM forecasts p JOIN results r ON p.fixture_id=r.fixture_id JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff WHERE f.finished=1 AND p.rowid=(SELECT p2.rowid FROM forecasts p2 WHERE p2.fixture_id=p.fixture_id AND p2.kickoff=p.kickoff ORDER BY p2.created_at DESC,p2.rowid DESC LIMIT 1) ORDER BY p.created_at DESC LIMIT 1000",
         ).all();
         const forecasts = r.results.map((r) => {
           const f = JSON.parse(r.data);
@@ -533,7 +537,7 @@ export default {
           modelComparison: compareForecasts(forecasts),
           metrics,
           scope:
-            "Último prognóstico registado antes de cada jogo, final ou provisório; até 1000 jogos; resultados regulamentares",
+            "Seleção publicada quando disponível; nos registos anteriores, último prognóstico pré-jogo. Até 1000 jogos; resultados regulamentares",
         });
       } else if (u.pathname === "/" || u.pathname === "/index.html") {
         return new Response(html, {
