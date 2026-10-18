@@ -1,5 +1,8 @@
 import html from "../index.html";
-import { fit, predict, select, winnerTip, outcome, VERSION } from "./model.js";
+import { winnerTip, outcome } from "./model.js";
+import { fit, predict, VERSION } from "./forecast.js";
+import winnerResearch from "./winner-multiscale-research.json";
+import { compareForecasts } from "./comparison.js";
 import { api, parseOdds } from "./provider.js";
 import validation from "./validation.json";
 import winnerReview from "./winner-review.json";
@@ -199,10 +202,9 @@ async function sync(env, force = false) {
           const data = {
             fixture: f,
             prediction: p,
-            recommendation: matchStale
-              ? null
-              : select(p, validation, odds, now),
-            winnerTip: winnerTip(p, validation, odds, {
+            // Selection now focuses on outright winners; alternate markets have no new validation.
+            recommendation: null,
+            winnerTip: winnerTip(p, winnerResearch.calibration, odds, {
               now,
               sourceUpdatedAt: upcoming.fetchedAt,
               stale: matchStale,
@@ -414,15 +416,19 @@ export default {
           window,
           updatedAt: games.reduce((n, g) => Math.max(n, g.updatedAt), 0),
           validation: {
-            holdout: validation.holdout,
-            holdoutMatches: validation.holdoutMatches,
+            holdout: "Avaliação retrospetiva cronológica do modelo de vencedor",
+            holdoutMatches: winnerResearch.pooled.candidate.n,
+            model: VERSION,
           },
         });
       } else if (u.pathname === "/api/validation") {
         res = json({
           ...validation,
+          activeModel: VERSION,
+          legacyModel: "luxg-1-opponent-poisson",
           winnerSelection: winnerReview,
           luxg: luxgValidation,
+          winnerModel: winnerResearch,
         });
       } else if (u.pathname === "/api/history") {
         const r = await env.DB.prepare(
@@ -475,6 +481,7 @@ export default {
         }
         res = json({
           forecasts,
+          modelComparison: compareForecasts(forecasts),
           metrics,
           scope:
             "Último prognóstico registado antes de cada jogo, final ou provisório; até 1000 jogos; resultados regulamentares",

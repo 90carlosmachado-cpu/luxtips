@@ -190,7 +190,7 @@
       .teams {
         font-size: 13px;
         color: var(--muted);
-        margin: 13px 0 16px;
+        margin: 10px 0 0;
         overflow-wrap: anywhere;
       }
       .market {
@@ -493,8 +493,8 @@
     </header>
     <main>
       <section class="intro">
-        <h1>Futebol com fundamento.</h1>
-        <p>Os favoritos de hoje e dos próximos dois dias.</p>
+        <h1>Os prognósticos.</h1>
+        <p>Até três escolhas por dia.</p>
       </section>
       <nav class="tabs" aria-label="Secções">
         <button data-tab="games" aria-selected="true">Prognósticos</button
@@ -528,9 +528,8 @@
       </section>
     </main>
     <footer>
-      LuxTips · Análise de futebol com dados API-Football. As probabilidades são
-      estimativas e não garantem resultados. Probabilidade de ocorrência,
-      fiabilidade histórica e valor de uma aposta são medidas distintas.
+      LuxTips · API-Football. Prognósticos probabilísticos, sem garantia de
+      acerto.
     </footer>
     <script>
       const API =
@@ -585,81 +584,19 @@
           );
         return r.json();
       }
-      function form(t) {
-        return (
-          t?.recent
-            ?.slice()
-            .reverse()
-            .map(
-              (r) =>
-                `<span class="tag" title="${esc(r.opponent)}">${r.gf > r.ga ? "V" : r.gf === r.ga ? "E" : "D"} ${r.gf}–${r.ga}</span>`,
-            )
-            .join(" ") || "Sem histórico suficiente"
-        );
-      }
-      function freshOdd(r, now = Date.now()) {
-        return Number.isFinite(r?.odd) &&
-          r.odd > 1 &&
-          Number.isFinite(r.oddsAt) &&
-          r.oddsAt <= now &&
-          now - r.oddsAt < 6 * 3600000
-          ? r.odd
-          : null;
-      }
       function card(g) {
         const f = g.fixture,
-          p = g.prediction,
-          r = g.winnerTip || g.recommendation;
-        const odd = freshOdd(r),
-          minimum =
-            r.minimumOdd || Math.ceil((1.03 / r.probability) * 100) / 100;
-        const provisional =
-          !!r.provisional ||
-          !!g.stale ||
-          Date.now() - (r.sourceUpdatedAt || g.sourceUpdatedAt) > 2 * 3600000;
-        const h = p.teams.home,
-          a = p.teams.away;
-        const risks = [
-          ...new Set([
-            ...(r.risks || p.risks || []),
-            ...(provisional
-              ? [
-                  "Fonte em atraso: confirmar horário e notícias das equipas antes do jogo.",
-                ]
-              : []),
-          ]),
-        ];
+          r = g.winnerTip;
         const hour = new Date(f.ts).toLocaleTimeString("pt-PT", {
           timeZone: "Europe/Lisbon",
           hour: "2-digit",
           minute: "2-digit",
         });
-        const strong = r.probability >= 0.65,
-          short = r.probability < 0.5;
         return `<article class="card pick" data-fixture="${f.id}">
           <div class="fixture-meta"><span>${esc(f.competition)}</span><time>${hour}</time></div>
+          <h3 class="selection">${esc(pickLabel(g))}</h3>
           <p class="teams">${esc(f.homeName)} · ${esc(f.awayName)}</p>
-          <div class="market"><div class="selection">${esc(pickLabel(g))}</div><div class="prob">${pct(r.probability)}<small>probabilidade</small></div></div>
-          <div class="tags"><span class="tag ${strong ? "strong" : ""}" title="Categoria de probabilidade; não é uma garantia de acerto.">${g.winnerTip ? (short ? "Vantagem curta" : strong ? "Favorito destacado" : "Favorito") : "Mercado alternativo"}</span>${provisional ? '<span class="tag pending">Fonte em atraso</span>' : g.phase === "final" ? '<span class="tag">Previsão final</span>' : ""}</div>
-          <div class="price"><span>Odd ${odd ? `<b>${odd.toFixed(2)}</b>` : "—"}</span><span>Mínima estimada <b>${minimum.toFixed(2)}</b></span></div>
-          <p class="price-note ${odd && odd < minimum ? "warn" : ""}">${short ? "Os outros resultados somados são mais prováveis." : odd ? (odd < minimum ? "Odd abaixo da mínima do modelo." : "Odd acima da mínima do modelo.") : "Sem odd recente · valor por confirmar."}</p>
-          <details data-key="${f.id}:analysis"><summary>Ver análise</summary><div class="analysis">
-            <h4>Porquê esta escolha?</h4><p>${esc(r.reason)}</p>
-            <h4>Comparação das equipas</h4><table class="compare"><thead><tr><th></th><th>${esc(f.homeName)}</th><th>${esc(f.awayName)}</th></tr></thead><tbody><tr><th>Golos estimados</th><td>${p.homeGoals.toFixed(2)}</td><td>${p.awayGoals.toFixed(2)}</td></tr><tr><th>Últimos jogos</th><td>${form(h)}</td><td>${form(a)}</td></tr><tr><th>Descanso*</th><td>${h?.restDays ?? "—"} dias</td><td>${a?.restDays ?? "—"} dias</td></tr><tr><th>Casa / fora</th><td>${h?.home?.gf ?? "—"} golos / ${h?.home?.n ?? "—"} jogos</td><td>${a?.away?.gf ?? "—"} golos / ${a?.away?.n ?? "—"} jogos</td></tr></tbody></table>
-            <p>* Apenas jogos desta competição. Histórico disponível até três anos. Os golos estimados são do modelo; não são xG medidos por eventos.</p>
-            ${p.luxg ? `<h4>LuxG · cenários de marcador</h4><p>${p.luxg.topScores.map((s) => `<b>${s.home}–${s.away}</b> · ${pct(s.probability)}`).join(" &nbsp; / &nbsp; ")}</p><p>Os três cenários somam ${pct(p.luxg.topThreeMass)}. São possibilidades, não resultados garantidos nem recomendações de resultado exato.</p><p>Faixa de golos por equipa (pelo menos 80% de massa do modelo): ${esc(f.homeName)} ${p.luxg.goalRanges.home.low}–${p.luxg.goalRanges.home.high}; ${esc(f.awayName)} ${p.luxg.goalRanges.away.low}–${p.luxg.goalRanges.away.high}. Não é um intervalo de confiança da estimativa.</p>` : ""}
-            <h4>Ausências e alinhamentos</h4><p>${g.context?.injuries === null || !g.context?.injuries ? "Ausências não disponibilizadas." : g.context.injuries.length ? g.context.injuries.map((x) => `${esc(x.player)} (${esc(x.team)}): ${esc(x.reason)}`).join("<br>") : "Sem ausências comunicadas; não garante plantel completo."}${g.context?.injuriesStale ? " Informação em cache desatualizada." : ""}</p><p>${g.context?.lineups?.length ? g.context.lineups.map((x) => `${esc(x.team)} · ${esc(x.formation)}<br>${(x.players || []).map(esc).join(", ")}`).join("<br>") : "Alinhamentos ainda não disponíveis."}</p>
-            <h4>Odd e valor</h4><p>A odd mínima ${minimum.toFixed(2)} corresponde a 3% de valor esperado estimado pelo modelo. Não demonstra rentabilidade.${odd ? ` Odd ${odd.toFixed(2)} · ${esc(r.bookmaker || "Fonte de odds")} · ${date(r.oddsAt)}. Valor esperado estimado: ${pct(r.probability * odd - 1)}.` : " Sem odds recentes, não é possível confirmar valor."}</p>
-            <h4>Riscos e dados</h4><ul>${risks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p>Histórico mínimo: ${Math.floor(p.sample)} jogos efetivos por equipa. Recolha: ${date(g.sourceUpdatedAt)}. Cálculo: ${date(g.updatedAt)}.</p>
-            <details data-key="${f.id}:numbers"><summary>Probabilidades e calibração</summary><p>${esc(r.calibrationStatus || "Seleção sujeita a confirmação prospetiva.")}</p>${r.reliability ? `<p>No escalão histórico ${pct(r.reliability.low)}–${pct(r.reliability.high)}: ${pct(r.reliability.observed)} em ${r.reliability.n} casos. Intervalo de 95%: ${pct(r.reliability.interval[0])}–${pct(r.reliability.interval[1])}. Este intervalo descreve a frequência do grupo, não a probabilidade individual.</p>` : "<p>Sem amostra de calibração suficiente neste perfil.</p>"}<div class="tablewrap"><table><tbody>${Object.entries(
-              p.probabilities,
-            )
-              .map(
-                ([k, v]) =>
-                  `<tr><td>${esc(labels[k])}</td><td>${pct(v)}</td></tr>`,
-              )
-              .join("")}</tbody></table></div></details>
-          </div></details>
+          ${r.provisional || g.stale ? '<span class="small pending">Provisório · fonte em atraso</span>' : ""}
         </article>`;
       }
       function pickLabel(g) {
@@ -687,11 +624,6 @@
           league = Number($("#league").value);
         if (!days.includes(chosenDay)) chosenDay = days[0];
         const names = ["Hoje", "Amanhã", "Depois de amanhã"];
-        const open = new Set(
-          [...document.querySelectorAll("#cards details[open]")].map(
-            (e) => e.dataset.key,
-          ),
-        );
         $("#dayNav").innerHTML = days
           .map(
             (day, i) =>
@@ -715,28 +647,12 @@
           )
           .sort((a, b) => b.winnerTip.probability - a.winnerTip.probability);
         const favorites = tips.filter((g) => g.winnerTip.majority).slice(0, 3);
-        const relative = tips.filter((g) => !g.winnerTip.majority);
-        const alternatives = available.filter(
-          (g) =>
-            g.recommendation &&
-            !g.stale &&
-            now - g.updatedAt <= 2 * 3600000 &&
-            !["H", "A"].includes(g.recommendation.market),
-        );
         $("#dayTitle").innerHTML =
           `${names[days.indexOf(chosenDay)]}<span class="count">${favorites.length} ${favorites.length === 1 ? "prognóstico" : "prognósticos"}</span>`;
         $("#best").innerHTML = "";
         $("#cards").innerHTML =
-          (favorites.map(card).join("") ||
-            '<div class="empty wide"><h3>Sem favoritos para destacar</h3><p>Não há escolhas com pelo menos 50% de probabilidade e dados suficientes nesta seleção. Podes consultar os outros dias.</p></div>') +
-          (relative.length
-            ? `<details class="wide other-picks" data-key="relative"><summary>Vantagem curta (${relative.length})</summary><p class="small">Abaixo de 50% de probabilidade. Estas equipas não são favoritos claros.</p><div class="grid">${relative.map(card).join("")}</div></details>`
-            : "") +
-          (alternatives.length
-            ? `<details class="wide other-picks" data-key="markets"><summary>Outros mercados (${alternatives.length})</summary><div class="grid">${alternatives.map((g) => card({ ...g, winnerTip: null })).join("")}</div></details>`
-            : "");
-        for (const e of document.querySelectorAll("#cards details"))
-          if (open.has(e.dataset.key)) e.open = true;
+          favorites.map(card).join("") ||
+          '<div class="empty wide"><h3>Sem prognósticos para este dia</h3><p>Consulta os outros dias.</p></div>';
       }
       async function loadGames() {
         try {
@@ -799,6 +715,11 @@
         $("#historyBody").innerHTML = winners.length
           ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos de vencedor. Inclui todos os prognósticos registados, além dos três destaques.</p>${rows(winners)}`
           : '<div class="empty"><h3>O histórico começa aqui</h3><p>Os prognósticos de vencedor aparecem aqui quando os jogos terminarem e os resultados forem confirmados.</p></div>';
+        if (d.modelComparison?.n) {
+          const c = d.modelComparison;
+          $("#historyBody").innerHTML +=
+            `<details><summary>Comparação desde a publicação (${c.n} jogos)</summary><p>Probabilidades dos dois cálculos guardadas antes dos jogos. Log Loss: novo ${c.currentLogLoss.toFixed(4)}, anterior ${c.baselineLogLoss.toFixed(4)}. Brier: novo ${c.currentBrier.toFixed(4)}, anterior ${c.baselineBrier.toFixed(4)}. Inclui todos os jogos registados, não apenas os três destaques.</p></details>`;
+        }
         if (legacy.length)
           $("#historyBody").innerHTML +=
             `<details><summary>Prognósticos anteriores (${legacy.length})</summary>${rows(legacy)}</details>`;
@@ -814,18 +735,19 @@
               .join("")}</tbody></table></div></details>`;
       }
       async function validation() {
-        const v = await get("/api/validation");
+        const v = await get("/api/validation"),
+          m = v.winnerModel,
+          p = m.pooled;
         $("#validationBody").innerHTML =
-          `${v.luxg ? `<h3>LuxG · teste independente</h3><p>${v.luxg.holdout.baseline.n} jogos de 2026: marcador principal ${pct(v.luxg.holdout.baseline.exactScoreAccuracy)}; um dos três cenários ${pct(v.luxg.holdout.baseline.topThreeScoresAccuracy)}.</p><p class="small">Estimativa de golos a partir de resultados e força dos adversários. Sem dados de remates, não é xG por eventos. Os modelos experimentais não passaram todos os critérios prévios e não alteram as probabilidades publicadas.</p><details><summary>Validação LuxG</summary><p>Treino: épocas 2023–2024 (${v.luxg.trainMatches} jogos elegíveis). Desenvolvimento: 2025 (${v.luxg.developmentMatches}). Teste final: 2026, sem reajustar coeficientes. Brier 1X2: ${v.luxg.holdout.baseline.brier1X2.toFixed(3)}; Log Loss 1X2: ${v.luxg.holdout.baseline.logLoss1X2.toFixed(3)}; Log Loss do marcador: ${v.luxg.holdout.baseline.scoreLogLoss.toFixed(3)}. Valores menores são melhores.</p><p>A amostra de teste é limitada. Não existem odds históricas adequadas para demonstrar rentabilidade. O acerto de marcador não mede o acerto dos favoritos selecionados.</p></details>` : ""}<h3>Teste histórico · favoritos</h3><p>${v.winnerSelection?.majority?.wins ?? "—"} vitórias em ${v.winnerSelection?.majority?.n ?? "—"} seleções históricas (${v.winnerSelection ? pct(v.winnerSelection.majority.hitRate) : "—"}). Brier: ${v.winnerSelection?.majority?.brier?.toFixed(3) ?? "—"}; Log Loss: ${v.winnerSelection?.majority?.logLoss?.toFixed(3) ?? "—"}; desvio de calibração: ${v.winnerSelection ? pct(v.winnerSelection.majority.ece) : "—"}.</p><p class="small">${esc(v.winnerSelection?.scope || "")}</p><details><summary>Como foi testado e detalhes estatísticos</summary><div class="notice"><b>${v.holdoutMatches} jogos no teste histórico</b><br>${esc(v.holdout)}. ${v.matches} jogos reais no conjunto de dados.</div><p>${esc(v.training)}. ${esc(v.development)}. ${esc(v.cutoff)}.</p><p class="small">Brier e Log Loss: valores menores são melhores. A referência usa apenas a média de golos da competição, sem força das equipas. A calibração mede o desvio entre probabilidade e frequência observada. Não foi demonstrada rentabilidade.</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Casos</th><th>Brier</th><th>Referência</th><th>Log Loss</th><th>Desvio calibração</th><th>Acerto binário*</th><th>Seleção</th></tr></thead><tbody>${Object.entries(
-            v.markets,
-          )
-            .map(
-              ([k, m]) =>
-                `<tr><td>${labels[k]}</td><td>${m.n}</td><td>${m.brier.toFixed(3)}</td><td>${m.baselineBrier.toFixed(3)}</td><td>${m.logLoss.toFixed(3)}</td><td>${pct(m.ece)}</td><td>${pct(m.accuracy)}</td><td>${m.enabled ? "Elegível com filtros" : "Suspensa"}</td></tr>`,
-            )
-            .join(
-              "",
-            )}</tbody></table></div><p class="small">* Acerto binário: classifica cada evento como sim/não usando o limiar de 50%. Não é a taxa de acerto dos prognósticos selecionados.</p><h3>Limitações da validação</h3><ul class="small">${v.limitations.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><p class="small">Cantos, cartões, handicaps e empate anula aposta não são recomendados nesta versão: faltam modelos e dados adequadamente validados.</p></details>`;
+          `<h3>Novo cálculo · força recente e de longo prazo</h3>
+          <p>${p.candidateTips.wins} acertos em ${p.candidateTips.n} seleções históricas (${pct(p.candidateTips.hitRate)}). Modelo anterior: ${p.baselineTips.wins} em ${p.baselineTips.n} (${pct(p.baselineTips.hitRate)}).</p>
+          <p class="small">Melhoria pequena em avaliação retrospetiva. Os dados já tinham sido analisados em investigação anterior; não é um novo teste independente nem uma promessa de acerto. As seleções dos dois modelos não são exatamente as mesmas.</p>
+          <details><summary>Como foi avaliado</summary><p>${p.candidate.n} jogos; treino e escolha de parâmetros sempre anteriores ao período avaliado. Máximo de três favoritos por dia, com probabilidade de vitória de pelo menos 50%. Atrasos da API não são simulados.</p>
+          <div class="tablewrap"><table><thead><tr><th>Indicador 1X2</th><th>Anterior</th><th>Novo</th></tr></thead><tbody>
+          <tr><td>Brier</td><td>${p.baseline.brier.toFixed(4)}</td><td>${p.candidate.brier.toFixed(4)}</td></tr>
+          <tr><td>Log Loss</td><td>${p.baseline.logLoss.toFixed(4)}</td><td>${p.candidate.logLoss.toFixed(4)}</td></tr>
+          <tr><td>Desvio de calibração</td><td>${pct(p.baseline.ece)}</td><td>${pct(p.candidate.ece)}</td></tr></tbody></table></div>
+          <p>Valores menores são melhores. Diferença de Log Loss: ${p.logLossImprovement.toFixed(4)}; intervalo bootstrap semanal de 95%: ${p.weekBootstrap95.map((x) => x.toFixed(4)).join(" a ")}. A pesquisa de vários modelos limita esta evidência.</p><p>Sem odds históricas adequadas, não há rentabilidade demonstrada. A comparação com o cálculo anterior continua nos novos prognósticos guardados.</p></details>`;
       }
       $("#league").addEventListener("change", render);
       $("#dayNav").addEventListener("click", (e) => {

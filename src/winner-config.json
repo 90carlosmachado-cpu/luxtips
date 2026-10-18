@@ -1,0 +1,18 @@
+{
+  "version": "winner-multiscale-v1",
+  "status": "retrospective-evidence-awaiting-prospective-confirmation",
+  "components": [
+    {
+      "halfLife": 180,
+      "prior": 8,
+      "weight": 0.23402670885449198
+    },
+    {
+      "halfLife": 365,
+      "prior": 8,
+      "weight": 0.765973291145508
+    }
+  ],
+  "trainedBefore": 1786060800000,
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477"
+}
