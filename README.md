@@ -301,3 +301,11 @@ e a liquidação do preço ser verificada. As probabilidades históricas permane
 A seleção e a odd originais nunca são substituídas. Uma alternativa acrescentada a um
 jogo já publicado é identificada e avaliada separadamente; pode fazer a lista desse
 dia exceder os três lugares iniciais, sem implicar evidência de melhoria de volume.
+
+### Hora de atualização na interface
+
+O cabeçalho apresenta `health.sync.at` com dia/mês e hora de Lisboa, distinguindo
+sincronização parcial, falha ou atraso superior a uma hora. Não usa a data imutável
+do prognóstico publicado. O cron continua nos minutos 7 e 37 de cada hora; a página
+consulta os dados a cada cinco minutos e quando volta a ficar visível (incluindo a
+mini app). Os limites da API podem deixar uma sincronização parcialmente atualizada.

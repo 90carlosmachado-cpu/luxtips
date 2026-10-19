@@ -713,16 +713,31 @@
           )
             ? selectedLeague
             : "";
-          const stamp = d.updatedAt
-            ? new Date(d.updatedAt).toLocaleTimeString("pt-PT", {
+          // Published predictions are immutable. Their timestamp is not a sync clock.
+          const syncAt = h?.sync?.at;
+          const validSync =
+            Number.isFinite(syncAt) && syncAt > 0 && syncAt <= Date.now();
+          const stamp = validSync
+            ? new Date(syncAt).toLocaleString("pt-PT", {
                 timeZone: "Europe/Lisbon",
+                day: "2-digit",
+                month: "2-digit",
                 hour: "2-digit",
                 minute: "2-digit",
               })
             : null;
           const warn = !h?.ready;
+          const statusNote = !validSync
+            ? "A aguardar a primeira sincronização"
+            : !h?.sync?.ok
+              ? "A última tentativa falhou"
+              : Date.now() - syncAt > 3600000
+                ? "Atualização automática em atraso"
+                : warn
+                  ? "Atualização parcial · alguns dados em atraso"
+                  : "Atualização automática · a cada 30 min";
           $("#status").innerHTML =
-            `<span class="dot ${warn ? "warn" : ""}"></span>${stamp ? "Revisto às " + stamp : "A aguardar dados"} · Lisboa${warn ? "<br>Alguns dados por atualizar" : ""}`;
+            `<span class="dot ${warn ? "warn" : ""}"></span>${stamp ? "Última sincronização: " + stamp + " · Lisboa<br>" : ""}${statusNote}`;
           render();
         } catch (e) {
           $("#status").textContent = "Sem atualização · a tentar novamente";
@@ -808,6 +823,9 @@
       });
       setInterval(render, 60000);
       setInterval(loadGames, 300000);
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") loadGames();
+      });
       document.querySelectorAll("[data-tab]").forEach((b) =>
         b.addEventListener("click", async () => {
           document
