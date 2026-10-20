@@ -146,21 +146,28 @@ test("private requests load all four additions, calculate pre-match forecasts an
         await DB.prepare("UPDATE sync_requests SET started_at=? WHERE id=?")
           .bind(now - 11 * 60000, "job-" + id)
           .run();
-      const tasks = [];
-      const response = await worker.fetch(
-        new Request("https://test/api/games"),
-        env,
-        {
-          waitUntil(p) {
-            tasks.push(p);
+      let job;
+      for (let pass = 0; pass < 5; pass++) {
+        await DB.prepare("UPDATE sync_requests SET requested_at=0 WHERE id=?")
+          .bind("job-" + id)
+          .run();
+        const tasks = [];
+        const response = await worker.fetch(
+          new Request("https://test/api/games"),
+          env,
+          {
+            waitUntil(p) {
+              tasks.push(p);
+            },
           },
-        },
-      );
-      assert.equal(response.status, 200);
-      await Promise.all(tasks);
-      const job = await DB.prepare("SELECT * FROM sync_requests WHERE id=?")
-        .bind("job-" + id)
-        .first();
+        );
+        assert.equal(response.status, 200);
+        await Promise.all(tasks);
+        job = await DB.prepare("SELECT * FROM sync_requests WHERE id=?")
+          .bind("job-" + id)
+          .first();
+        if (job.finished_at) break;
+      }
       assert.ok(job.finished_at, job.result);
       const cached = await DB.prepare("SELECT data FROM cache WHERE key=?")
         .bind("forecast:" + (70000000 + id))

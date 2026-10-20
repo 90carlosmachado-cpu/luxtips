@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import worker from "../dist/worker.js";
 import { database } from "./db.js";
+import { saveFixtures } from "../src/storage.js";
 test("HTTP routing, CORS, CSP and admin authentication", async () => {
   const env = { DB: database(), ADMIN_TOKEN: "private" },
     ctx = { waitUntil() {} };
@@ -105,6 +106,14 @@ test("full synchronization, cached repeat, immutable final forecast and settleme
     return Response.json({ response, errors: [], paging: { total: 1 } });
   };
   try {
+    // This regression exercises a warmed installation and immutable final snapshots.
+    const historyResponse = await globalThis.fetch(
+      "https://test/fixtures?league=94&season=2026",
+    );
+    await saveFixtures(DB, (await historyResponse.json()).response, Date.now());
+    await DB.prepare("INSERT INTO meta(key,data) VALUES('bootstrap:94:2026',?)")
+      .bind(JSON.stringify({ at: Date.now() }))
+      .run();
     let r = await worker.fetch(
       new Request("https://test/api/admin/sync", {
         method: "POST",

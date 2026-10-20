@@ -23,8 +23,8 @@ import {
   COMPETITIONS,
   configuredCompetitions,
   competitionEvidence,
-  historyPath,
 } from "./competitions.js";
+import { backfillHistory } from "./history-backfill.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -59,6 +59,8 @@ async function sync(env, force = false, requestedLeague = null) {
     enrichmentAvailable = true;
   try {
     const dailyPlans = await readDailyMarkets(db, now);
+    const historyPlans = [],
+      contextTasks = [];
     const configured = configuredCompetitions(env).map((c) => c.id);
     const previous = await db
       .prepare("SELECT data FROM meta WHERE key='sync'")
@@ -128,46 +130,13 @@ async function sync(env, force = false, requestedLeague = null) {
           upcoming.fetchedAt,
           true,
         );
-        // One season history per day, not one request per team or match.
-        const history = await api(
-          env,
-          historyPath(league, season.year, now),
-          24 * HOUR,
-          force,
-        );
-        leagueStale ||= history.stale;
-        upstreamDegraded ||= !!history.refreshFailed;
-        stale ||= leagueStale;
-        await saveFixtures(db, history.data, history.fetchedAt);
         const bootstrap = await db
           .prepare("SELECT data FROM meta WHERE key=?")
           .bind("bootstrap:" + league + ":" + season.year)
           .first();
-        if (!bootstrap) {
-          for (const year of [
-            season.year - 1,
-            season.year - 2,
-            season.year - 3,
-          ]) {
-            const past = await api(
-              env,
-              historyPath(league, year, now),
-              365 * 24 * HOUR,
-            );
-            if (past.stale) throw new Error("bootstrap_stale");
-            if (
-              COMPETITIONS.find((c) => c.id === league)?.validationPending &&
-              !past.data.length
-            )
-              throw Object.assign(new Error("bootstrap_no_history"), {
-                code: "bootstrap_no_history",
-              });
-            await saveFixtures(db, past.data, past.fetchedAt);
-          }
-          await meta(db, "bootstrap:" + league + ":" + season.year, {
-            at: now,
-          });
-        }
+        const historyIncomplete = !bootstrap;
+        stale ||= leagueStale || historyIncomplete;
+        historyPlans.push({ league, season: season.year });
         const european =
           COMPETITIONS.find((c) => c.id === league)?.kind === "european";
         const historyLeagues = european ? configured : [league];
@@ -185,7 +154,26 @@ async function sync(env, force = false, requestedLeague = null) {
           validation.opts,
         );
         let enriched = 0;
-        for (const f of fixtures.sort((a, b) => a.ts - b.ts)) {
+        const analyzed = fixtures.map((f) => ({
+          f,
+          p:
+            !f.finished && f.ts > now && f.ts < window.end && f.status === "NS"
+              ? competitionEvidence(predict(state, f), league)
+              : null,
+        }));
+        // Qualifying price candidates go first, before low-priority enrichment.
+        analyzed.sort(
+          (a, b) =>
+            Number(
+              b.p?.sample >= 12 &&
+                Math.max(b.p.probabilities.H, b.p.probabilities.A) >= 0.5,
+            ) -
+              Number(
+                a.p?.sample >= 12 &&
+                  Math.max(a.p.probabilities.H, a.p.probabilities.A) >= 0.5,
+              ) || a.f.ts - b.f.ts,
+        );
+        for (const { f, p } of analyzed) {
           if (f.finished) {
             await db
               .prepare(
@@ -196,63 +184,79 @@ async function sync(env, force = false, requestedLeague = null) {
             continue;
           }
           if (f.ts <= now || f.ts >= window.end || f.status !== "NS") continue;
-          const p = competitionEvidence(predict(state, f), league);
           let odds = {},
             context = { injuries: null, lineups: null, updatedAt: now };
-          let matchStale = leagueStale;
-          if (
-            coverage.refreshFailed ||
-            upcoming.refreshFailed ||
-            history.refreshFailed
-          )
+          let matchStale = leagueStale || historyIncomplete;
+          p.historyIncomplete = historyIncomplete;
+          if (historyIncomplete)
+            p.risks.push(
+              "Importação histórica incompleta; cálculo provisório com a amostra disponível, mantendo o mínimo de 12 jogos efetivos por equipa.",
+            );
+          if (coverage.refreshFailed || upcoming.refreshFailed)
             p.risks.push(
               "Consulta direta falhou; foram utilizados os dados disponíveis em cache.",
             );
           // Prices are independent of injury/lineup failures and cover all three days.
-          if (season.coverage?.odds) {
+          if (
+            season.coverage?.odds &&
+            p.sample >= 12 &&
+            Math.max(p.probabilities.H, p.probabilities.A) >= 0.5
+          ) {
             try {
               odds = (await fixtureOdds(env, f.id, now)).odds;
             } catch {
               p.risks.push("Odds não disponíveis nesta atualização.");
             }
           }
-          if (enrichmentAvailable && f.ts - now < 24 * HOUR && enriched++ < 8) {
-            if (enrichmentAvailable && season.coverage?.injuries) {
-              try {
-                const r = await api(env, "injuries?fixture=" + f.id, 6 * HOUR);
-                context.injuries = r.data.map((x) => ({
-                  team: x.team?.name,
-                  player: x.player?.name,
-                  type: x.player?.type,
-                  reason: x.player?.reason,
-                }));
-                context.injuriesStale = r.stale;
-              } catch {
-                enrichmentAvailable = false;
-                p.risks.push("Indisponibilidades não verificadas.");
-              }
-            }
-            if (
-              enrichmentAvailable &&
-              f.ts - now < 2 * HOUR &&
-              season.coverage?.fixtures?.lineups
-            ) {
-              try {
-                const r = await api(
-                  env,
-                  "fixtures/lineups?fixture=" + f.id,
-                  30 * 60000,
-                );
-                context.lineups = r.data.map((x) => ({
-                  team: x.team?.name,
-                  formation: x.formation,
-                  players: x.startXI?.map((y) => y.player?.name),
-                }));
-              } catch {
-                p.risks.push("Alinhamentos não disponíveis.");
+          // Context never changes model probabilities without validation. Reuse
+          // its cache here; refresh it only after every competition has prices.
+          if (f.ts - now < 24 * HOUR && enriched++ < 8) {
+            if (season.coverage?.injuries)
+              contextTasks.push({
+                path: "injuries?fixture=" + f.id,
+                ttl: 6 * HOUR,
+              });
+            if (f.ts - now < 2 * HOUR && season.coverage?.fixtures?.lineups)
+              contextTasks.push({
+                path: "fixtures/lineups?fixture=" + f.id,
+                ttl: 30 * 60000,
+              });
+            for (const [field, path] of [
+              ["injuries", "injuries?fixture=" + f.id],
+              ["lineups", "fixtures/lineups?fixture=" + f.id],
+            ]) {
+              const saved = await db
+                .prepare("SELECT data,expires FROM cache WHERE key=?")
+                .bind("api:" + path)
+                .first();
+              if (saved) {
+                try {
+                  const payload = JSON.parse(saved.data),
+                    items = Array.isArray(payload) ? payload : payload.items;
+                  if (Array.isArray(items))
+                    context[field] = items.map((x) =>
+                      field === "injuries"
+                        ? {
+                            team: x.team?.name,
+                            player: x.player?.name,
+                            type: x.player?.type,
+                            reason: x.player?.reason,
+                          }
+                        : {
+                            team: x.team?.name,
+                            formation: x.formation,
+                            players: x.startXI?.map((y) => y.player?.name),
+                          },
+                    );
+                  context[field + "Stale"] = saved.expires <= now;
+                } catch {}
               }
             }
           }
+          if (season.coverage?.injuries && context.injuries === null)
+            p.risks.push("Indisponibilidades não verificadas.");
+          if (season.coverage?.fixtures?.lineups && context.lineups === null)
+            p.risks.push("Alinhamentos não disponíveis.");
           if (matchStale)
             p.risks.push(
               "Atualização em atraso; seleção de valor suspensa, prognóstico de vencedor apenas provisório.",
@@ -370,6 +374,15 @@ async function sync(env, force = false, requestedLeague = null) {
       .bind(Date.now(), forecastWindow().end)
       .all();
     await publishDailyPicks(db, publicGames(publishRows.results).games);
+    const historyBackfill = await backfillHistory(env, historyPlans);
+    for (const task of contextTasks.slice(0, 8)) {
+      try {
+        await api(env, task.path, task.ttl);
+      } catch {
+        enrichmentAvailable = false;
+        break;
+      }
+    }
     await meta(
       db,
       requestedLeague === null ? "sync" : "sync:competition:" + requestedLeague,
@@ -377,6 +390,7 @@ async function sync(env, force = false, requestedLeague = null) {
         at: Date.now(),
         ok: true,
         dailyMarkets,
+        historyPending: historyBackfill.pending,
         stale,
         processed,
         contextAvailable: enrichmentAvailable,
@@ -389,7 +403,13 @@ async function sync(env, force = false, requestedLeague = null) {
       .prepare("DELETE FROM cache WHERE expires<? AND key LIKE ?")
       .bind(now - 30 * 86400000, "api:%")
       .run();
-    return { ok: true, processed, stale, failedLeagues };
+    return {
+      ok: true,
+      processed,
+      stale,
+      failedLeagues,
+      historyPending: historyBackfill.pending,
+    };
   } catch (e) {
     await meta(
       db,
@@ -408,10 +428,8 @@ async function sync(env, force = false, requestedLeague = null) {
 async function runRequestedSync(env) {
   const now = Date.now(),
     db = env.DB;
-  const cooldown = await db
-    .prepare("SELECT until FROM locks WHERE key='api-cooldown'")
-    .first();
-  if (cooldown?.until > now) return;
+  // api() still blocks all network calls during cooldown, while cached
+  // schedules and histories remain usable for calculations.
   const check = await db
     .prepare("SELECT data FROM meta WHERE key='provider:plan-check'")
     .first();
@@ -449,7 +467,12 @@ async function runRequestedSync(env) {
   } catch (e) {
     result = { ok: false, code: e.code || "sync_failed" };
   }
-  if (result.skipped || !result.ok || result.failedLeagues?.length) {
+  if (
+    result.skipped ||
+    !result.ok ||
+    result.failedLeagues?.length ||
+    result.historyPending?.length
+  ) {
     const lock = await db
       .prepare("SELECT until FROM locks WHERE key='api-cooldown'")
       .first();
