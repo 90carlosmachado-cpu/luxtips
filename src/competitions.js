@@ -52,3 +52,13 @@ export function competitionEvidence(prediction, league) {
     ],
   };
 }
+
+export function historyPath(league, season, now = Date.now()) {
+  const pending = COMPETITIONS.find((c) => c.id === league)?.validationPending;
+  const base = `fixtures?league=${league}&season=${season}`;
+  if (!pending) return base;
+  // Request only the historical part of the season, avoiding future fixture payloads.
+  const today = new Date(now).toISOString().slice(0, 10);
+  const end = `${season + 1}-12-31`;
+  return `${base}&from=${season}-01-01&to=${today < end ? today : end}`;
+}

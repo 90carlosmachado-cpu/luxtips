@@ -99,6 +99,14 @@ export async function api(
     if (Number(r.headers.get("content-length") || 0) > 8000000)
       throw new ProviderError("payload_size");
     const d = await r.json();
+    // Retain only subscription/quota fields; never cache account identity data.
+    if (path === "status" && d?.response && !Array.isArray(d.response))
+      d.response = [
+        {
+          subscription: d.response.subscription,
+          requests: d.response.requests,
+        },
+      ];
     if (Object.keys(d?.errors || {}).length)
       await providerStatus(env, path, r, d.errors);
     if (d?.errors?.rateLimit) throw new ProviderError("rate_limit");

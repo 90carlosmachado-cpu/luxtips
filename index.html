@@ -587,6 +587,7 @@
         BN: "Ambas não marcam",
       };
       let games = [],
+        importsPending = 0,
         loaded = {};
       async function get(path) {
         const r = await fetch(API + path);
@@ -684,7 +685,9 @@
         $("#best").innerHTML = "";
         $("#cards").innerHTML =
           favorites.map(card).join("") ||
-          '<div class="empty wide"><h3>Sem prognósticos elegíveis</h3><p>Não há seleções com odds verificadas de pelo menos 1,25 para este dia.</p></div>';
+          (importsPending
+            ? '<div class="empty wide"><h3>A preparar as novas competições</h3><p>O histórico está a ser carregado. Os prognósticos surgem quando os dados e as odds estiverem verificados.</p></div>'
+            : '<div class="empty wide"><h3>Sem prognósticos elegíveis</h3><p>Não há seleções com odds verificadas de pelo menos 1,25 para este dia.</p></div>');
       }
       async function loadGames() {
         try {
@@ -698,6 +701,7 @@
           if (!Array.isArray(d.games))
             throw new Error("Dados temporariamente indisponíveis.");
           games = d.games;
+          importsPending = d.imports?.pending || 0;
           const selectedLeague = $("#league").value;
           $("#league").innerHTML = '<option value="">Todas as ligas</option>';
           for (const [id, name] of new Map([

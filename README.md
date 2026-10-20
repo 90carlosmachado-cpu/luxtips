@@ -339,3 +339,8 @@ precisar de uma visita à página. O teto permanece **600 chamadas/dia**, sem au
 do plano; a reserva para consultas de calendário adapta-se às dez competições.
 As seleções já publicadas, as odds originais, a janela de três dias e o limite de
 uma alternativa por dia permanecem preservados.
+
+As consultas iniciais das novas competições limitam o histórico à parte da época
+já decorrida, e a interface distingue a preparação inicial de uma ausência de
+seleções elegíveis. A verificação do plano em `/status` guarda apenas subscrição e
+quota em D1, sem dados de identidade da conta, e respeita o mesmo controlo de chamadas.

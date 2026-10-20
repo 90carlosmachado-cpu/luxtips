@@ -23,6 +23,7 @@ import {
   COMPETITIONS,
   configuredCompetitions,
   competitionEvidence,
+  historyPath,
 } from "./competitions.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
@@ -83,7 +84,11 @@ async function sync(env, force = false, requestedLeague = null) {
       try {
         const coverage = await api(
           env,
-          "leagues?id=" + league,
+          "leagues?id=" +
+            league +
+            (COMPETITIONS.find((c) => c.id === league)?.validationPending
+              ? "&current=true"
+              : ""),
           24 * HOUR,
           force,
         );
@@ -126,7 +131,7 @@ async function sync(env, force = false, requestedLeague = null) {
         // One season history per day, not one request per team or match.
         const history = await api(
           env,
-          `fixtures?league=${league}&season=${season.year}`,
+          historyPath(league, season.year, now),
           24 * HOUR,
           force,
         );
@@ -146,7 +151,7 @@ async function sync(env, force = false, requestedLeague = null) {
           ]) {
             const past = await api(
               env,
-              `fixtures?league=${league}&season=${year}`,
+              historyPath(league, year, now),
               365 * 24 * HOUR,
             );
             if (past.stale) throw new Error("bootstrap_stale");
@@ -407,6 +412,30 @@ async function runRequestedSync(env) {
     .prepare("SELECT until FROM locks WHERE key='api-cooldown'")
     .first();
   if (cooldown?.until > now) return;
+  const check = await db
+    .prepare("SELECT data FROM meta WHERE key='provider:plan-check'")
+    .first();
+  if (!check || now - JSON.parse(check.data).at > 6 * HOUR) {
+    await meta(db, "provider:plan-check", { at: now });
+    try {
+      const status = await api(env, "status", 6 * HOUR);
+      if (status.data[0])
+        await meta(db, "provider:plan", { at: now, ...status.data[0] });
+    } catch (e) {
+      await meta(db, "provider:plan-error", {
+        at: now,
+        code: e.code || "status_failed",
+      });
+    }
+    return;
+  }
+  // A terminated foreground invocation must not leave an import stuck forever.
+  await db
+    .prepare(
+      "UPDATE sync_requests SET started_at=NULL,requested_at=? WHERE finished_at IS NULL AND started_at<?",
+    )
+    .bind(now, now - 10 * 60000)
+    .run();
   const job = await db
     .prepare(
       "UPDATE sync_requests SET started_at=?,attempts=attempts+1 WHERE id=(SELECT id FROM sync_requests WHERE finished_at IS NULL AND started_at IS NULL AND requested_at<=? AND attempts<12 ORDER BY requested_at,id LIMIT 1) AND started_at IS NULL RETURNING id,league_id,attempts",
@@ -557,10 +586,14 @@ export default {
         const { games: candidates, window } = publicGames(r.results);
         await publishDailyPicks(env.DB, candidates);
         const games = await publishedGames(env.DB);
+        const importState = await env.DB.prepare(
+          "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
+        ).first();
         ctx.waitUntil(runRequestedSync(env).then(() => runQueuedRefresh(env)));
         res = json({
           games,
           competitions: configuredCompetitions(env),
+          imports: { pending: importState?.pending || 0 },
           selectionPolicy: {
             version: PRICING_VERSION,
             minimumOdd: MIN_ODD,
