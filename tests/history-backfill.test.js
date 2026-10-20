@@ -326,3 +326,63 @@ test("accelerated import stops network requests on the first rate limit and resp
     globalThis.fetch = old;
   }
 });
+
+test("an active extraordinary import does not start a normal foreground sync after a rate limit", async () => {
+  const DB = database(),
+    old = globalThis.fetch,
+    now = Date.now();
+  let calls = 0;
+  const env = {
+    DB,
+    API_FOOTBALL_KEY: "test",
+    LEAGUES: "88",
+    DAILY_BUDGET: "600",
+  };
+  await DB.prepare("INSERT INTO meta(key,data) VALUES('coverage:88',?)")
+    .bind(JSON.stringify({ season: 2026 }))
+    .run();
+  await DB.prepare("INSERT INTO meta(key,data) VALUES('history:catchup',?)")
+    .bind(
+      JSON.stringify({ active: true, leagues: [88], expiresAt: now + 3600000 }),
+    )
+    .run();
+  await DB.prepare(
+    "INSERT INTO sync_requests(id,league_id,requested_at) VALUES('normal-job',88,0)",
+  ).run();
+  globalThis.fetch = async (url) => {
+    calls++;
+    assert.match(new URL(url).pathname, /^\/fixtures$/);
+    return Response.json({
+      errors: { rateLimit: "Too many requests" },
+      response: [],
+    });
+  };
+  try {
+    const tasks = [];
+    const response = await worker.fetch(
+      new Request("https://test/api/games"),
+      env,
+      { waitUntil: (p) => tasks.push(p) },
+    );
+    assert.equal(response.status, 200);
+    await Promise.all(tasks);
+    const job = await DB.prepare(
+      "SELECT * FROM sync_requests WHERE id='normal-job'",
+    ).first();
+    assert.equal(job.started_at, null);
+    assert.equal(job.attempts, 0);
+    assert.equal(calls, 1);
+    const cron = [];
+    await worker.scheduled({ cron: "7,37 * * * *" }, env, {
+      waitUntil: (p) => cron.push(p),
+    });
+    await Promise.all(cron);
+    assert.equal(calls, 1);
+    assert.equal(
+      await DB.prepare("SELECT data FROM meta WHERE key='sync'").first(),
+      null,
+    );
+  } finally {
+    globalThis.fetch = old;
+  }
+});
