@@ -345,6 +345,18 @@ async function sync(env, force = false, requestedLeague = null) {
               f.ts + 86400000,
             )
             .run();
+          // Persist each fully priced selection before another provider call can
+          // consume the foreground waitUntil lifetime. Published rows stay immutable.
+          await publishDailyPicks(
+            db,
+            publicGames([
+              {
+                data: final?.data || JSON.stringify(data),
+                fixture_data: JSON.stringify(f),
+              },
+            ]).games,
+            predictionAt,
+          );
           processed++;
         }
       } catch (e) {

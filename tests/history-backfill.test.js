@@ -58,15 +58,25 @@ test("sufficient stored history produces a priced provisional pick before histor
     if (u.pathname === "/fixtures" && u.searchParams.has("from"))
       return Response.json({
         errors: [],
-        response: [item(99999, now + 3600000, false)],
+        response: [
+          item(99999, now + 3600000, false),
+          item(99998, now + 3700000, false),
+        ],
       });
-    if (u.pathname === "/odds")
+    if (u.pathname === "/odds") {
+      if (u.searchParams.get("fixture") === "99998")
+        assert.equal(
+          (await DB.prepare("SELECT COUNT(*) n FROM published_picks").first())
+            .n,
+          1,
+          "first priced selection persists before the next network call",
+        );
       return Response.json({
         errors: [],
         paging: { current: 1, total: 1 },
         response: [
           {
-            fixture: { id: 99999 },
+            fixture: { id: Number(u.searchParams.get("fixture")) },
             update: new Date(now - 1000).toISOString(),
             bookmakers: [
               {
@@ -86,6 +96,7 @@ test("sufficient stored history produces a priced provisional pick before histor
           },
         ],
       });
+    }
     return Response.json({
       errors: { rateLimit: "Too many requests" },
       response: [],
@@ -116,7 +127,7 @@ test("sufficient stored history produces a priced provisional pick before histor
     assert.ok(g.winnerTip.priceEligible);
     assert.equal(
       (await DB.prepare("SELECT COUNT(*) n FROM published_picks").first()).n,
-      1,
+      2,
     );
     assert.ok(
       calls.findIndex((x) => x.startsWith("/odds?")) <
