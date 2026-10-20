@@ -187,3 +187,142 @@ test("historical backfill makes at most one uncached attempt, even on failure", 
     globalThis.fetch = old;
   }
 });
+
+test("extraordinary catchup is private, bounded, resumable and disables itself after the missing seasons arrive", async () => {
+  const { runHistoryCatchup } = await import("../src/history-backfill.js");
+  const DB = database(),
+    old = globalThis.fetch,
+    now = Date.now();
+  let calls = 0;
+  const env = {
+    DB,
+    API_FOOTBALL_KEY: "test",
+    LEAGUES: "88,848",
+    DAILY_BUDGET: "600",
+  };
+  globalThis.fetch = async (url) => {
+    calls++;
+    const u = new URL(url),
+      league = Number(u.searchParams.get("league")),
+      season = Number(u.searchParams.get("season"));
+    return Response.json({
+      errors: [],
+      response: [
+        {
+          fixture: {
+            id: league * 10000 + season,
+            date: new Date(now - 86400000).toISOString(),
+            status: { short: "FT" },
+          },
+          league: { id: league, season, name: "Test" },
+          teams: { home: { id: 1, name: "H" }, away: { id: 2, name: "A" } },
+          score: { fulltime: { home: 1, away: 0 } },
+        },
+      ],
+    });
+  };
+  try {
+    assert.equal((await runHistoryCatchup(env)).skipped, true);
+    assert.equal(calls, 0);
+    for (const league of [88, 848])
+      await DB.prepare("INSERT INTO meta(key,data) VALUES(?,?)")
+        .bind("coverage:" + league, JSON.stringify({ season: 2026 }))
+        .run();
+    await DB.prepare("INSERT INTO meta(key,data) VALUES('history:catchup',?)")
+      .bind(
+        JSON.stringify({
+          active: true,
+          leagues: [88, 848, 9999],
+          expiresAt: now + 3600000,
+        }),
+      )
+      .run();
+    const first = await runHistoryCatchup(env);
+    assert.equal(first.attempts, 4);
+    assert.equal(calls, 4);
+    assert.equal(first.pending.length, 1);
+    assert.ok(
+      await DB.prepare(
+        "SELECT data FROM meta WHERE key='bootstrap:88:2026'",
+      ).first(),
+    );
+    assert.equal(
+      await DB.prepare(
+        "SELECT data FROM meta WHERE key='bootstrap:848:2026'",
+      ).first(),
+      null,
+    );
+    await runHistoryCatchup(env);
+    assert.equal(calls, 8);
+    const saved = JSON.parse(
+      (
+        await DB.prepare(
+          "SELECT data FROM meta WHERE key='history:catchup'",
+        ).first()
+      ).data,
+    );
+    assert.equal(saved.active, false);
+    assert.ok(saved.finishedAt);
+    assert.equal((await runHistoryCatchup(env)).skipped, true);
+    assert.equal(calls, 8);
+    assert.equal(
+      (await DB.prepare("SELECT COUNT(*) n FROM fixtures").first()).n,
+      8,
+    );
+    assert.equal(
+      await DB.prepare("SELECT * FROM locks WHERE key='sync'").first(),
+      null,
+    );
+  } finally {
+    globalThis.fetch = old;
+  }
+});
+
+test("accelerated import stops network requests on the first rate limit and respects expiration and another sync lease", async () => {
+  const { runHistoryCatchup } = await import("../src/history-backfill.js");
+  const DB = database(),
+    old = globalThis.fetch,
+    now = Date.now();
+  let calls = 0;
+  const env = {
+    DB,
+    API_FOOTBALL_KEY: "test",
+    LEAGUES: "88",
+    DAILY_BUDGET: "600",
+  };
+  globalThis.fetch = async () => {
+    calls++;
+    return Response.json({
+      errors: { rateLimit: "Too many requests" },
+      response: [],
+    });
+  };
+  try {
+    await DB.prepare("INSERT INTO meta(key,data) VALUES('coverage:88',?)")
+      .bind(JSON.stringify({ season: 2026 }))
+      .run();
+    const job = { active: true, leagues: [88], expiresAt: now + 3600000 };
+    await DB.prepare("INSERT INTO meta(key,data) VALUES('history:catchup',?)")
+      .bind(JSON.stringify(job))
+      .run();
+    await DB.prepare("INSERT INTO locks(key,until) VALUES('sync',?)")
+      .bind(now + 60000)
+      .run();
+    assert.equal((await runHistoryCatchup(env)).skipped, true);
+    assert.equal(calls, 0);
+    await DB.prepare("DELETE FROM locks WHERE key='sync'").run();
+    const first = await runHistoryCatchup(env);
+    assert.equal(first.attempts, 1);
+    assert.equal(calls, 1);
+    assert.ok(first.pending.length);
+    await runHistoryCatchup(env);
+    assert.equal(calls, 1, "provider cooldown blocks the next batch");
+    await DB.prepare("UPDATE meta SET data=? WHERE key='history:catchup'")
+      .bind(JSON.stringify({ ...job, expiresAt: now - 1 }))
+      .run();
+    assert.equal((await runHistoryCatchup(env)).skipped, true);
+    assert.equal(calls, 1);
+  } finally {
+    globalThis.fetch = old;
+  }
+});

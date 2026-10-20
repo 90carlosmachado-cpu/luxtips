@@ -24,7 +24,7 @@ import {
   configuredCompetitions,
   competitionEvidence,
 } from "./competitions.js";
-import { backfillHistory } from "./history-backfill.js";
+import { backfillHistory, runHistoryCatchup } from "./history-backfill.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -624,7 +624,11 @@ export default {
         const importState = await env.DB.prepare(
           "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
         ).first();
-        ctx.waitUntil(runRequestedSync(env).then(() => runQueuedRefresh(env)));
+        ctx.waitUntil(
+          runHistoryCatchup(env)
+            .then(() => runRequestedSync(env))
+            .then(() => runQueuedRefresh(env)),
+        );
         res = json({
           games,
           competitions: configuredCompetitions(env),
@@ -774,7 +778,8 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
-      sync(env)
+      runHistoryCatchup(env)
+        .then(() => sync(env))
         .then(() => runRequestedSync(env))
         .catch(() =>
           console.error(JSON.stringify({ event: "scheduled_sync_failed" })),
