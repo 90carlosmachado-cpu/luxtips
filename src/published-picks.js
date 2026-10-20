@@ -1,3 +1,4 @@
+import { invalidatePublicGames } from "./public-cache.js";
 import { forecastWindow, lisbonDay } from "./window.js";
 import {
   eligible,
@@ -8,6 +9,7 @@ import {
 import { applyPricing } from "./pricing-policy.js";
 import { outcome } from "./model.js";
 export async function publishDailyPicks(db, games, now = Date.now()) {
+  let modified = false;
   // Old daily_markets rows are research/reservation records, not publications.
   // Strip their overlays before selecting; only an actually published alternative
   // consumes the daily allowance.
@@ -52,7 +54,7 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
       choice.day,
     ];
     if (existing) {
-      await db
+      const write = await db
         .prepare(
           `INSERT OR IGNORE INTO published_alternatives(day,fixture_id,kickoff,market,published_at,recorded_at,data)
         SELECT ?,?,?,?,?,?,? WHERE NOT EXISTS(SELECT 1 FROM published_picks WHERE day=? AND alternative=1)
@@ -60,8 +62,9 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
         )
         .bind(...params)
         .run();
+      modified ||= !!write.meta?.changes;
     } else {
-      await db
+      const write = await db
         .prepare(
           `INSERT OR IGNORE INTO published_picks(day,fixture_id,kickoff,market,alternative,published_at,recorded_at,data)
         SELECT ?,?,?,?,1,?,?,? WHERE NOT EXISTS(SELECT 1 FROM published_picks WHERE day=? AND alternative=1)
@@ -70,12 +73,13 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
         )
         .bind(...params, choice.day, MAX_DAILY_GAMES)
         .run();
+      modified ||= !!write.meta?.changes;
     }
   }
   for (const g of candidates.filter((g) => g.winnerTip?.priceEligible)) {
     const day = lisbonDay(g.fixture.ts),
       tip = g.winnerTip;
-    await db
+    const write = await db
       .prepare(
         `INSERT OR IGNORE INTO published_picks(day,fixture_id,kickoff,market,alternative,published_at,recorded_at,data)
       SELECT ?,?,?,?,0,?,?,? WHERE (SELECT COUNT(*) FROM published_picks WHERE day=? AND recovered=0)<?`,
@@ -92,7 +96,9 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
         MAX_DAILY_GAMES,
       )
       .run();
+    modified ||= !!write.meta?.changes;
   }
+  if (modified) await invalidatePublicGames(db);
 }
 
 export async function publishedGames(db, now = Date.now()) {

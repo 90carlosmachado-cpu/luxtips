@@ -1,3 +1,4 @@
+import { cachedPublicGames, invalidatePublicGames } from "./public-cache.js";
 import html from "../index.html";
 import { winnerTip, outcome } from "./model.js";
 import { fit, predict, VERSION } from "./forecast.js";
@@ -140,14 +141,20 @@ async function sync(env, force = false, requestedLeague = null) {
         const european =
           COMPETITIONS.find((c) => c.id === league)?.kind === "european";
         const historyLeagues = european ? configured : [league];
-        const stored = await db
-          .prepare(
-            "SELECT data FROM fixtures WHERE league IN (" +
-              historyLeagues.map(() => "?").join(",") +
-              ") AND finished=1 AND kickoff<? AND kickoff>? ORDER BY kickoff",
-          )
-          .bind(...historyLeagues, now, now - 3 * 365 * 86400000)
-          .all();
+        const needsForecast = fixtures.some(
+          (f) =>
+            !f.finished && f.ts > now && f.ts < window.end && f.status === "NS",
+        );
+        const stored = needsForecast
+          ? await db
+              .prepare(
+                "SELECT data FROM fixtures WHERE league IN (" +
+                  historyLeagues.map(() => "?").join(",") +
+                  ") AND finished=1 AND kickoff<? AND kickoff>? ORDER BY kickoff",
+              )
+              .bind(...historyLeagues, now, now - 3 * 365 * 86400000)
+              .all()
+          : { results: [] };
         const state = fit(
           stored.results.map((r) => JSON.parse(r.data)),
           now,
@@ -371,13 +378,15 @@ async function sync(env, force = false, requestedLeague = null) {
       .prepare(
         `INSERT INTO results(fixture_id,hg,ag,settled_at)
       SELECT f.id,json_extract(f.data,'$.hg'),json_extract(f.data,'$.ag'),?
-      FROM fixtures f LEFT JOIN results r ON r.fixture_id=f.id
-      WHERE f.finished=1 AND EXISTS(SELECT 1 FROM forecasts p WHERE p.fixture_id=f.id)
+      FROM (SELECT DISTINCT fixture_id FROM forecasts) p
+      JOIN fixtures f ON f.id=p.fixture_id LEFT JOIN results r ON r.fixture_id=f.id
+      WHERE f.finished=1
       AND (r.fixture_id IS NULL OR r.hg<>json_extract(f.data,'$.hg') OR r.ag<>json_extract(f.data,'$.ag'))
       ON CONFLICT(fixture_id) DO UPDATE SET hg=excluded.hg,ag=excluded.ag,settled_at=excluded.settled_at`,
       )
       .bind(now)
       .run();
+    await invalidatePublicGames(db);
     const dailyMarkets = await finalizeDailyMarkets(db);
     const publishRows = await db
       .prepare(
@@ -613,43 +622,48 @@ export default {
             Date.now() - status.at <= HOUR,
         });
       } else if (u.pathname === "/api/games") {
-        const r = await env.DB.prepare(
-          "SELECT c.data,f.data fixture_data FROM fixtures f JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff LIMIT 150",
-        )
-          .bind(Date.now(), forecastWindow().end)
-          .all();
-        const { games: candidates, window } = publicGames(r.results);
-        await publishDailyPicks(env.DB, candidates);
-        const games = await publishedGames(env.DB);
-        const importState = await env.DB.prepare(
-          "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
-        ).first();
         ctx.waitUntil(
           runHistoryCatchup(env).then((result) => {
             if (result.active) return;
             return runRequestedSync(env).then(() => runQueuedRefresh(env));
           }),
         );
-        res = json({
-          games,
-          competitions: configuredCompetitions(env),
-          imports: { pending: importState?.pending || 0 },
-          selectionPolicy: {
-            version: PRICING_VERSION,
-            minimumOdd: MIN_ODD,
-            oddsMaxAgeHours: 6,
-            maxAlternativePerDay: 1,
-            maxGamesPerDay: 3,
-            historicalValidation: "pending-adequate-historical-odds",
-          },
-          window,
-          updatedAt: games.reduce((n, g) => Math.max(n, g.updatedAt), 0),
-          validation: {
-            holdout: "Avaliação retrospetiva cronológica do modelo de vencedor",
-            holdoutMatches: winnerResearch.pooled.candidate.n,
-            model: VERSION,
-          },
-        });
+        res = json(
+          await cachedPublicGames(env, async () => {
+            const r = await env.DB.prepare(
+              "SELECT c.data,f.data fixture_data FROM fixtures f JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff LIMIT 150",
+            )
+              .bind(Date.now(), forecastWindow().end)
+              .all();
+            const { games: candidates, window } = publicGames(r.results);
+            await publishDailyPicks(env.DB, candidates);
+            const games = await publishedGames(env.DB);
+            const importState = await env.DB.prepare(
+              "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
+            ).first();
+            return {
+              games,
+              competitions: configuredCompetitions(env),
+              imports: { pending: importState?.pending || 0 },
+              selectionPolicy: {
+                version: PRICING_VERSION,
+                minimumOdd: MIN_ODD,
+                oddsMaxAgeHours: 6,
+                maxAlternativePerDay: 1,
+                maxGamesPerDay: 3,
+                historicalValidation: "pending-adequate-historical-odds",
+              },
+              window,
+              updatedAt: games.reduce((n, g) => Math.max(n, g.updatedAt), 0),
+              validation: {
+                holdout:
+                  "Avaliação retrospetiva cronológica do modelo de vencedor",
+                holdoutMatches: winnerResearch.pooled.candidate.n,
+                model: VERSION,
+              },
+            };
+          }),
+        );
       } else if (u.pathname === "/api/validation") {
         res = json({
           ...validation,
