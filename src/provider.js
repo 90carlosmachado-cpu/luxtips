@@ -1,3 +1,4 @@
+import { configuredCompetitions } from "./competitions.js";
 export class ProviderError extends Error {
   constructor(code) {
     super(code);
@@ -55,7 +56,10 @@ export async function api(
   const utcHour =
     new Date(now).getUTCHours() + new Date(now).getUTCMinutes() / 60;
   const reserve = contextual
-    ? Math.min(limit - 1, 24 + Math.ceil((24 - utcHour) * 12))
+    ? Math.min(
+        limit - 1,
+        24 + Math.ceil((24 - utcHour) * 2 * configuredCompetitions(env).length),
+      )
     : 0;
   const ceiling = limit - reserve;
   const q = await env.DB.prepare(

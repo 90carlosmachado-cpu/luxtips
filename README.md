@@ -309,3 +309,33 @@ sincronização parcial, falha ou atraso superior a uma hora. Não usa a data im
 do prognóstico publicado. O cron continua nos minutos 7 e 37 de cada hora; a página
 consulta os dados a cada cinco minutos e quando volta a ficar visível (incluindo a
 mini app). Os limites da API podem deixar uma sincronização parcialmente atualizada.
+
+### Dez competições (20/10/2026)
+
+Acrescentadas UEFA Champions League (2), UEFA Europa League (3), UEFA Conference
+League (848) e Eredivisie (88), mantendo as seis ligas nacionais anteriores. O
+catálogo único está em `src/competitions.js`; a configuração do Worker e a API
+pública expõem as dez competições, sem o antigo corte de seis entradas. O filtro
+mostra também competições sem seleções elegíveis no dia.
+
+A Eredivisie usa histórico próprio. As provas europeias usam a rede conjunta dos
+jogos terminados nas dez competições disponíveis, ligada pelos confrontos europeus,
+para estimar força ofensiva/defensiva contra adversários de países diferentes.
+Aplica-se a mesma mistura Poisson e o mesmo mínimo de amostra; dados posteriores
+ao momento do cálculo ficam excluídos. A cobertura de clubes de outros países é
+mais limitada. Trata-se de extensão ainda sem validação histórica específica:
+não usa os intervalos de calibração das seis ligas antigas e assinala explicitamente
+a validação pendente, incluindo na previsão arquivada. Não há nova taxa de acerto
+comprovada nem promessa de rentabilidade.
+
+A cobertura real, a época corrente e as odds são consultadas no plano existente.
+A importação inicial recolhe a época corrente e as três anteriores em cache. A
+migração `0006_sync_requests.sql` permite pedidos de sincronização por competição
+criados pelo plano de controlo autenticado de D1; a leitura pública só executa um
+pedido já autorizado, com aquisição atómica, intervalo após rateLimit e até 12
+tentativas. A cadência do cron continua em 7/37; competições adiadas por falhas são
+priorizadas na passagem seguinte. O cron também publica seleções elegíveis sem
+precisar de uma visita à página. O teto permanece **600 chamadas/dia**, sem aumento
+do plano; a reserva para consultas de calendário adapta-se às dez competições.
+As seleções já publicadas, as odds originais, a janela de três dias e o limite de
+uma alternativa por dia permanecem preservados.

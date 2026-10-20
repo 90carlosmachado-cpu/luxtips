@@ -700,9 +700,10 @@
           games = d.games;
           const selectedLeague = $("#league").value;
           $("#league").innerHTML = '<option value="">Todas as ligas</option>';
-          for (const [id, name] of new Map(
-            games.map((g) => [g.fixture.league, g.fixture.competition]),
-          )) {
+          for (const [id, name] of new Map([
+            ...(d.competitions || []).map((c) => [c.id, c.name]),
+            ...games.map((g) => [g.fixture.league, g.fixture.competition]),
+          ])) {
             const o = document.createElement("option");
             o.value = id;
             o.textContent = name;

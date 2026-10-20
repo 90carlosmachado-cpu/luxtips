@@ -19,6 +19,11 @@ import marketExpansionResearch from "./market-expansion-research.json";
 import { MIN_ODD, PRICING_VERSION, applyPricing } from "./pricing-policy.js";
 import { publishDailyPicks, publishedGames } from "./published-picks.js";
 import { runQueuedRefresh } from "./odds-refresh.js";
+import {
+  COMPETITIONS,
+  configuredCompetitions,
+  competitionEvidence,
+} from "./competitions.js";
 const HOUR = 3600000;
 const json = (v, status = 200) =>
   Response.json(v, {
@@ -35,7 +40,7 @@ const meta = async (db, k, v) =>
     )
     .bind(k, JSON.stringify(v))
     .run();
-async function sync(env, force = false) {
+async function sync(env, force = false, requestedLeague = null) {
   const now = Date.now(),
     db = env.DB,
     window = forecastWindow(now);
@@ -53,11 +58,27 @@ async function sync(env, force = false) {
     enrichmentAvailable = true;
   try {
     const dailyPlans = await readDailyMarkets(db, now);
-    const leagues = (env.LEAGUES || "94,39,140,78,135,61")
-      .split(",")
-      .map(Number)
-      .filter(Number.isInteger)
-      .slice(0, 6);
+    const configured = configuredCompetitions(env).map((c) => c.id);
+    const previous = await db
+      .prepare("SELECT data FROM meta WHERE key='sync'")
+      .first();
+    let pending = [];
+    try {
+      pending =
+        JSON.parse(previous?.data || "{}").failedLeagues?.map(
+          (x) => x.league,
+        ) || [];
+    } catch {}
+    // Retry competitions deferred by the provider first, preventing permanent starvation.
+    const leagues =
+      requestedLeague !== null
+        ? configured.filter((id) => id === requestedLeague)
+        : [
+            ...new Set([
+              ...pending.filter((id) => configured.includes(id)),
+              ...configured,
+            ]),
+          ];
     for (const league of leagues) {
       try {
         const coverage = await api(
@@ -70,9 +91,19 @@ async function sync(env, force = false) {
         upstreamDegraded ||= !!coverage.refreshFailed;
         const info = coverage.data[0],
           seasons = (info?.seasons || []).filter((s) => s.current);
-        if (!seasons.length) continue;
+        if (!seasons.length)
+          throw Object.assign(new Error("competition_coverage_unavailable"), {
+            code: "competition_coverage_unavailable",
+          });
         const season = seasons[0];
+        if (info?.league?.id && info.league.id !== league)
+          throw new Error("competition_identity_mismatch");
         await meta(db, "coverage:" + league, {
+          id: info?.league?.id || league,
+          name:
+            info?.league?.name ||
+            COMPETITIONS.find((c) => c.id === league)?.name,
+          checkedAt: Date.now(),
           season: season.year,
           coverage: season.coverage,
         });
@@ -119,17 +150,29 @@ async function sync(env, force = false) {
               365 * 24 * HOUR,
             );
             if (past.stale) throw new Error("bootstrap_stale");
+            if (
+              COMPETITIONS.find((c) => c.id === league)?.validationPending &&
+              !past.data.length
+            )
+              throw Object.assign(new Error("bootstrap_no_history"), {
+                code: "bootstrap_no_history",
+              });
             await saveFixtures(db, past.data, past.fetchedAt);
           }
           await meta(db, "bootstrap:" + league + ":" + season.year, {
             at: now,
           });
         }
+        const european =
+          COMPETITIONS.find((c) => c.id === league)?.kind === "european";
+        const historyLeagues = european ? configured : [league];
         const stored = await db
           .prepare(
-            "SELECT data FROM fixtures WHERE league=? AND finished=1 AND kickoff<? ORDER BY kickoff",
+            "SELECT data FROM fixtures WHERE league IN (" +
+              historyLeagues.map(() => "?").join(",") +
+              ") AND finished=1 AND kickoff<? AND kickoff>? ORDER BY kickoff",
           )
-          .bind(league, now)
+          .bind(...historyLeagues, now, now - 3 * 365 * 86400000)
           .all();
         const state = fit(
           stored.results.map((r) => JSON.parse(r.data)),
@@ -148,7 +191,7 @@ async function sync(env, force = false) {
             continue;
           }
           if (f.ts <= now || f.ts >= window.end || f.status !== "NS") continue;
-          const p = predict(state, f);
+          const p = competitionEvidence(predict(state, f), league);
           let odds = {},
             context = { injuries: null, lineups: null, updatedAt: now };
           let matchStale = leagueStale;
@@ -216,17 +259,32 @@ async function sync(env, force = false) {
             prediction: p,
             // The daily overlay preserves the original winner for comparison.
             recommendation: null,
-            winnerTip: winnerTip(p, winnerResearch.calibration, odds, {
-              now: predictionAt,
-              sourceUpdatedAt: upcoming.fetchedAt,
-              stale: matchStale,
-            }),
+            winnerTip: winnerTip(
+              p,
+              COMPETITIONS.find((c) => c.id === league)?.validationPending
+                ? null
+                : winnerResearch.calibration,
+              odds,
+              {
+                now: predictionAt,
+                sourceUpdatedAt: upcoming.fetchedAt,
+                stale: matchStale,
+              },
+            ),
             odds,
             context,
             updatedAt: predictionAt,
             sourceUpdatedAt: upcoming.fetchedAt,
             stale: matchStale,
           };
+          if (
+            data.winnerTip &&
+            COMPETITIONS.find((c) => c.id === league)?.validationPending
+          ) {
+            data.winnerTip.reliability = null;
+            data.winnerTip.calibrationStatus =
+              "Validação histórica desta competição pendente";
+          }
           const phase =
             f.ts - predictionAt <= HOUR && !matchStale
               ? "final"
@@ -300,16 +358,27 @@ async function sync(env, force = false) {
       .bind(now)
       .run();
     const dailyMarkets = await finalizeDailyMarkets(db);
-    await meta(db, "sync", {
-      at: Date.now(),
-      ok: true,
-      dailyMarkets,
-      stale,
-      processed,
-      contextAvailable: enrichmentAvailable,
-      failedLeagues,
-      upstreamDegraded,
-    });
+    const publishRows = await db
+      .prepare(
+        "SELECT c.data,f.data fixture_data FROM fixtures f JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff LIMIT 150",
+      )
+      .bind(Date.now(), forecastWindow().end)
+      .all();
+    await publishDailyPicks(db, publicGames(publishRows.results).games);
+    await meta(
+      db,
+      requestedLeague === null ? "sync" : "sync:competition:" + requestedLeague,
+      {
+        at: Date.now(),
+        ok: true,
+        dailyMarkets,
+        stale,
+        processed,
+        contextAvailable: enrichmentAvailable,
+        failedLeagues,
+        upstreamDegraded,
+      },
+    );
     // Bounded maintenance of obsolete API cache; no forecast history deletion.
     await db
       .prepare("DELETE FROM cache WHERE expires<? AND key LIKE ?")
@@ -317,15 +386,59 @@ async function sync(env, force = false) {
       .run();
     return { ok: true, processed, stale, failedLeagues };
   } catch (e) {
-    await meta(db, "sync", {
-      at: Date.now(),
-      ok: false,
-      code: e.code || "sync_failed",
-    });
+    await meta(
+      db,
+      requestedLeague === null ? "sync" : "sync:competition:" + requestedLeague,
+      {
+        at: Date.now(),
+        ok: false,
+        code: e.code || "sync_failed",
+      },
+    );
     throw e;
   } finally {
     await db.prepare("DELETE FROM locks WHERE key='sync'").run();
   }
+}
+async function runRequestedSync(env) {
+  const now = Date.now(),
+    db = env.DB;
+  const cooldown = await db
+    .prepare("SELECT until FROM locks WHERE key='api-cooldown'")
+    .first();
+  if (cooldown?.until > now) return;
+  const job = await db
+    .prepare(
+      "UPDATE sync_requests SET started_at=?,attempts=attempts+1 WHERE id=(SELECT id FROM sync_requests WHERE finished_at IS NULL AND started_at IS NULL AND requested_at<=? AND attempts<12 ORDER BY requested_at,id LIMIT 1) AND started_at IS NULL RETURNING id,league_id,attempts",
+    )
+    .bind(now, now)
+    .first();
+  if (!job) return;
+  let result;
+  try {
+    result = await sync(env, false, job.league_id);
+  } catch (e) {
+    result = { ok: false, code: e.code || "sync_failed" };
+  }
+  if (result.skipped || !result.ok || result.failedLeagues?.length) {
+    const lock = await db
+      .prepare("SELECT until FROM locks WHERE key='api-cooldown'")
+      .first();
+    await db
+      .prepare(
+        "UPDATE sync_requests SET started_at=NULL,requested_at=?,result=? WHERE id=?",
+      )
+      .bind(
+        Math.max(Date.now() + 65000, lock?.until || 0),
+        JSON.stringify(result),
+        job.id,
+      )
+      .run();
+  } else
+    await db
+      .prepare("UPDATE sync_requests SET finished_at=?,result=? WHERE id=?")
+      .bind(Date.now(), JSON.stringify(result), job.id)
+      .run();
 }
 async function authorized(req, secret) {
   if (!secret) return false;
@@ -424,6 +537,7 @@ export default {
         ).first();
         res = json({
           service: "LuxTips",
+          competitions: configuredCompetitions(env),
           version: VERSION,
           sync: status,
           lastLiveRefresh: live ? JSON.parse(live.data) : null,
@@ -443,9 +557,10 @@ export default {
         const { games: candidates, window } = publicGames(r.results);
         await publishDailyPicks(env.DB, candidates);
         const games = await publishedGames(env.DB);
-        ctx.waitUntil(runQueuedRefresh(env));
+        ctx.waitUntil(runRequestedSync(env).then(() => runQueuedRefresh(env)));
         res = json({
           games,
+          competitions: configuredCompetitions(env),
           selectionPolicy: {
             version: PRICING_VERSION,
             minimumOdd: MIN_ODD,
@@ -591,9 +706,11 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
-      sync(env).catch(() =>
-        console.error(JSON.stringify({ event: "scheduled_sync_failed" })),
-      ),
+      sync(env)
+        .then(() => runRequestedSync(env))
+        .catch(() =>
+          console.error(JSON.stringify({ event: "scheduled_sync_failed" })),
+        ),
     );
   },
 };

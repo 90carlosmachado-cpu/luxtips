@@ -15,6 +15,9 @@
     },
   ],
   "triggers": { "crons": ["7,37 * * * *"] },
-  "vars": { "DAILY_BUDGET": "600", "LEAGUES": "94,39,140,78,135,61" },
+  "vars": {
+    "DAILY_BUDGET": "600",
+    "LEAGUES": "94,39,140,78,135,61,88,2,3,848",
+  },
   "rules": [{ "type": "Text", "globs": ["**/*.html"], "fallthrough": true }],
 }
