@@ -625,9 +625,10 @@ export default {
           "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
         ).first();
         ctx.waitUntil(
-          runHistoryCatchup(env)
-            .then(() => runRequestedSync(env))
-            .then(() => runQueuedRefresh(env)),
+          runHistoryCatchup(env).then((result) => {
+            if (result.active) return;
+            return runRequestedSync(env).then(() => runQueuedRefresh(env));
+          }),
         );
         res = json({
           games,
@@ -779,8 +780,10 @@ export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
       runHistoryCatchup(env)
-        .then(() => sync(env))
-        .then(() => runRequestedSync(env))
+        .then((result) => {
+          if (result.active) return;
+          return sync(env).then(() => runRequestedSync(env));
+        })
         .catch(() =>
           console.error(JSON.stringify({ event: "scheduled_sync_failed" })),
         ),

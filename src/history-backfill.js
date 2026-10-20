@@ -111,7 +111,7 @@ export async function runHistoryCatchup(env) {
     )
     .bind(lease, now)
     .first();
-  if (!lock) return { skipped: true };
+  if (!lock) return { skipped: true, active: true };
   try {
     const plans = [];
     for (const competition of configuredCompetitions(env)) {
@@ -144,7 +144,7 @@ export async function runHistoryCatchup(env) {
       .prepare("UPDATE meta SET data=? WHERE key='history:catchup'")
       .bind(JSON.stringify(next))
       .run();
-    return result;
+    return { ...result, active: next.active };
   } finally {
     await db
       .prepare("DELETE FROM locks WHERE key='sync' AND until=?")
