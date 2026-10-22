@@ -1,0 +1,49 @@
+{
+  "version": "market-expansion-v1",
+  "status": "Retrospective development on previously inspected seasons; no independent new holdout",
+  "baseline": "Current daily-market-v1: top three outright favorites, replace at most one winner with its same-side double chance at maximum draw gain",
+  "marketSets": [
+    "draw",
+    "standard",
+    "team-goals",
+    "broad-goals"
+  ],
+  "draw": "Same-side double chance",
+  "standard": "Same-side double chance plus over/under 1.5, 2.5, 3.5 total goals and both teams to score yes/no",
+  "team-goals": "standard plus favorite team over 0.5 and over 1.5 goals; no arbitrary extreme goal lines",
+  "listPolicies": [
+    {
+      "cap": 3,
+      "extraMinProbability": 0.5
+    },
+    {
+      "cap": 4,
+      "extraMinProbability": 0.65
+    },
+    {
+      "cap": 4,
+      "extraMinProbability": 0.7
+    },
+    {
+      "cap": 4,
+      "extraMinProbability": 0.75
+    },
+    {
+      "cap": 5,
+      "extraMinProbability": 0.65
+    },
+    {
+      "cap": 5,
+      "extraMinProbability": 0.7
+    },
+    {
+      "cap": 5,
+      "extraMinProbability": 0.75
+    }
+  ],
+  "selection": "28 fixed policies. Select by preceding-season hit rate only; ties prefer fewer games then fewer market families. Original top three always retained. Extra fixtures require the fixed winner-probability threshold. At most one alternative market across the entire Lisbon calendar day, chosen by maximum probability gain. Use the existing frozen chronological mixture weights, trained before each development/test season.",
+  "evaluation": "Nested previous-season selection, outer 2025 and 2026. Compare rates on shared calendar days, preserving all baseline fixtures. Cluster paired bootstrap by day, 2000 draws, seed 20261021. Also report added games separately, per market and league, Brier and Log Loss for the selected event.",
+  "promotion": "Positive lower 95% paired day-bootstrap bound for hit-rate change, no deterioration in either outer fold, and at least as many games in each fold. Runtime policy is the policy selected using 2025 before 2026. Count increase must have separate positive evidence versus cap=3 using the same new market family, otherwise retain cap=3.",
+  "limitations": "Different markets cover different events and have different odds. Higher hit rate alone is not better winner prediction or profitability. No adequate historical odds, no ROI. Live API delays, intraday ranking changes and frozen reservations not simulated. Repeated research on already inspected seasons limits statistical evidence. Corners/cards/handicaps with pushes excluded: no validated event data or comparable settlement metrics. No 80% minimum guarantee.",
+  "broad-goals": "team-goals plus over 0.5 / under 4.5 total goals, either team under 1.5 / under 2.5 goals, and favorite Asian handicap +1.5 (no push). Broader events can have very low odds; do not equate accuracy with value."
+}

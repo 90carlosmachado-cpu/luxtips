@@ -1,0 +1,122 @@
+{
+  "scope": "Experiência separada; seleção do rho na época 2024, avaliação cronológica na época 2025. Brier multiclasse 1X2 (soma, não média). Não mede ROI, não reconstrói atrasos da API. Sem alteração automática do modelo de produção.",
+  "reference": "Dixon & Coles (1997), doi:10.1111/1467-9876.00065; apenas correção de quatro resultados baixos, não reprodução integral do artigo.",
+  "rule": "7 valores predefinidos; exige melhoria de 0.001 de Brier em desenvolvimento para justificar complexidade.",
+  "development": [
+    {
+      "rho": 0,
+      "n": 1804,
+      "brier": 0.5869745408405973,
+      "logLoss": 0.9850592415697939,
+      "hits": 943,
+      "accuracy": 0.5227272727272727
+    },
+    {
+      "rho": -0.15,
+      "n": 1804,
+      "brier": 0.5867935028478225,
+      "logLoss": 0.9838265759134714,
+      "hits": 940,
+      "accuracy": 0.5210643015521065
+    },
+    {
+      "rho": -0.1,
+      "n": 1804,
+      "brier": 0.586488962746546,
+      "logLoss": 0.9835911525788653,
+      "hits": 947,
+      "accuracy": 0.5249445676274944
+    },
+    {
+      "rho": -0.05,
+      "n": 1804,
+      "brier": 0.5865493087441381,
+      "logLoss": 0.983991172556624,
+      "hits": 942,
+      "accuracy": 0.5221729490022173
+    },
+    {
+      "rho": 0.05,
+      "n": 1804,
+      "brier": 0.5877646590359272,
+      "logLoss": 0.9868341787645462,
+      "hits": 943,
+      "accuracy": 0.5227272727272727
+    },
+    {
+      "rho": 0.1,
+      "n": 1804,
+      "brier": 0.5889196633301239,
+      "logLoss": 0.9893620952470119,
+      "hits": 943,
+      "accuracy": 0.5227272727272727
+    },
+    {
+      "rho": 0.15,
+      "n": 1804,
+      "brier": 0.5904395537231865,
+      "logLoss": 0.9926977746367475,
+      "hits": 943,
+      "accuracy": 0.5227272727272727
+    }
+  ],
+  "chosen": 0,
+  "holdout": [
+    {
+      "rho": 0,
+      "n": 1835,
+      "brier": 0.5899380614631253,
+      "logLoss": 0.9902466943049908,
+      "hits": 975,
+      "accuracy": 0.5313351498637602
+    },
+    {
+      "rho": -0.15,
+      "n": 1835,
+      "brier": 0.5901740706517195,
+      "logLoss": 0.9894687733739282,
+      "hits": 974,
+      "accuracy": 0.5307901907356948
+    },
+    {
+      "rho": -0.1,
+      "n": 1835,
+      "brier": 0.5897158494275994,
+      "logLoss": 0.989063960326235,
+      "hits": 976,
+      "accuracy": 0.5318801089918256
+    },
+    {
+      "rho": -0.05,
+      "n": 1835,
+      "brier": 0.5896371796980663,
+      "logLoss": 0.9893121544242164,
+      "hits": 976,
+      "accuracy": 0.5318801089918256
+    },
+    {
+      "rho": 0.05,
+      "n": 1835,
+      "brier": 0.5906184947227707,
+      "logLoss": 0.9919073914431898,
+      "hits": 975,
+      "accuracy": 0.5313351498637602
+    },
+    {
+      "rho": 0.1,
+      "n": 1835,
+      "brier": 0.5916784794770057,
+      "logLoss": 0.9943416527495456,
+      "hits": 975,
+      "accuracy": 0.5313351498637602
+    },
+    {
+      "rho": 0.15,
+      "n": 1835,
+      "brier": 0.59311801572583,
+      "logLoss": 0.9976059219425711,
+      "hits": 975,
+      "accuracy": 0.5313351498637602
+    }
+  ]
+}

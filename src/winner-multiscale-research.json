@@ -1,0 +1,699 @@
+{
+  "version": "winner-multiscale-v1",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "options": [
+    {
+      "halfLife": 90,
+      "prior": 8
+    },
+    {
+      "halfLife": 180,
+      "prior": 8
+    },
+    {
+      "halfLife": 365,
+      "prior": 8
+    },
+    {
+      "halfLife": 180,
+      "prior": 16
+    }
+  ],
+  "protocol": {
+    "version": "winner-multiscale-v1",
+    "dataStatus": "Retrospective development extension after the direct-winner result; all seasons already observed. Not a fresh independent test.",
+    "models": [
+      {
+        "halfLife": 90,
+        "prior": 8
+      },
+      {
+        "halfLife": 180,
+        "prior": 8
+      },
+      {
+        "halfLife": 365,
+        "prior": 8
+      },
+      {
+        "halfLife": 180,
+        "prior": 16
+      }
+    ],
+    "pool": "Nonnegative weights summing to one, fit to 1X2 log loss with quadratic shrinkage toward existing baseline weights [0,1,0,0]",
+    "ridge": [
+      0.001,
+      0.01,
+      0.1
+    ],
+    "selection": "Prior season log loss including baseline; train before selection season, choose ridge, refit all past seasons, then score next season. Outer folds 2025 and 2026.",
+    "promotion": "Same as winner-direct-v1: positive log-loss improvement in both folds and pooled week-bootstrap95 lower bound >0, Brier and top-three hit rate no worse.",
+    "restrictions": "Stop this research batch after these fixed mixtures. Any change remains subject to future prospective confirmation. No parameter changes after reading output."
+  },
+  "folds": [
+    {
+      "season": 2025,
+      "selected": "pool-0.001",
+      "weights": [
+        0.0,
+        0.2932976509678343,
+        0.7067023490321657,
+        0.0
+      ],
+      "candidates": [
+        {
+          "id": "baseline",
+          "ridge": null,
+          "weights": [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "development": {
+            "n": 1804,
+            "logLoss": 0.9850592415697951,
+            "brier": 0.5869745408405983,
+            "accuracy": 0.5227272727272727,
+            "ece": 0.021254499608178906
+          }
+        },
+        {
+          "id": "pool-0.001",
+          "ridge": 0.001,
+          "weights": [
+            0.0,
+            0.34811437381301846,
+            0.6518856261869815,
+            0.0
+          ],
+          "development": {
+            "n": 1804,
+            "logLoss": 0.9836456333502885,
+            "brier": 0.5862060244025561,
+            "accuracy": 0.5221729490022173,
+            "ece": 0.01984713729549112
+          }
+        },
+        {
+          "id": "pool-0.01",
+          "ridge": 0.01,
+          "weights": [
+            0.0,
+            0.9163390606522805,
+            0.08366093934771947,
+            0.0
+          ],
+          "development": {
+            "n": 1804,
+            "logLoss": 0.9848366736764766,
+            "brier": 0.5868444226943439,
+            "accuracy": 0.5227272727272727,
+            "ece": 0.02510168255768024
+          }
+        },
+        {
+          "id": "pool-0.1",
+          "ridge": 0.1,
+          "weights": [
+            1.4398507179421514e-18,
+            0.9913928842877575,
+            0.00860711571224254,
+            0.0
+          ],
+          "development": {
+            "n": 1804,
+            "logLoss": 0.9850357867130505,
+            "brier": 0.5869607262574139,
+            "accuracy": 0.5227272727272727,
+            "ece": 0.02124048555514435
+          }
+        }
+      ],
+      "baseline": {
+        "n": 1835,
+        "logLoss": 0.9902466943049921,
+        "brier": 0.5899380614631244,
+        "accuracy": 0.5313351498637602,
+        "ece": 0.024721877029732088
+      },
+      "candidate": {
+        "n": 1835,
+        "logLoss": 0.9880896306159017,
+        "brier": 0.5884089965537042,
+        "accuracy": 0.5302452316076294,
+        "ece": 0.024206505513748682
+      },
+      "baselineTips": {
+        "n": 389,
+        "wins": 277,
+        "hitRate": 0.712082262210797,
+        "meanProbability": 0.6539906232769354
+      },
+      "candidateTips": {
+        "n": 388,
+        "wins": 280,
+        "hitRate": 0.7216494845360825,
+        "meanProbability": 0.6604189226719738
+      }
+    },
+    {
+      "season": 2026,
+      "selected": "pool-0.001",
+      "weights": [
+        1.7847754911202507e-18,
+        0.23402670885449195,
+        0.7659732911455079,
+        0.0
+      ],
+      "candidates": [
+        {
+          "id": "baseline",
+          "ridge": null,
+          "weights": [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          "development": {
+            "n": 1835,
+            "logLoss": 0.9902466943049921,
+            "brier": 0.5899380614631244,
+            "accuracy": 0.5313351498637602,
+            "ece": 0.024721877029732088
+          }
+        },
+        {
+          "id": "pool-0.001",
+          "ridge": 0.001,
+          "weights": [
+            0.0,
+            0.2932976509678343,
+            0.7067023490321657,
+            0.0
+          ],
+          "development": {
+            "n": 1835,
+            "logLoss": 0.9880896306159017,
+            "brier": 0.5884089965537042,
+            "accuracy": 0.5302452316076294,
+            "ece": 0.024206505513748682
+          }
+        },
+        {
+          "id": "pool-0.01",
+          "ridge": 0.01,
+          "weights": [
+            0.0,
+            0.8899863468307885,
+            0.11001365316921155,
+            0.0
+          ],
+          "development": {
+            "n": 1835,
+            "logLoss": 0.9898150479176249,
+            "brier": 0.589630091352671,
+            "accuracy": 0.5291553133514987,
+            "ece": 0.022215230619279547
+          }
+        },
+        {
+          "id": "pool-0.1",
+          "ridge": 0.1,
+          "weights": [
+            1.7952029932046512e-18,
+            0.9883562959409616,
+            0.011643704059038367,
+            0.0
+          ],
+          "development": {
+            "n": 1835,
+            "logLoss": 0.9901993290105828,
+            "brier": 0.589904245989085,
+            "accuracy": 0.5318801089918256,
+            "ece": 0.025213383767810748
+          }
+        }
+      ],
+      "baseline": {
+        "n": 285,
+        "logLoss": 0.9720562948419895,
+        "brier": 0.577091731441316,
+        "accuracy": 0.5263157894736842,
+        "ece": 0.04568365735869852
+      },
+      "candidate": {
+        "n": 285,
+        "logLoss": 0.9685377789835722,
+        "brier": 0.5747933932196762,
+        "accuracy": 0.543859649122807,
+        "ece": 0.048634126571442685
+      },
+      "baselineTips": {
+        "n": 75,
+        "wins": 57,
+        "hitRate": 0.76,
+        "meanProbability": 0.6287705239264451
+      },
+      "candidateTips": {
+        "n": 71,
+        "wins": 55,
+        "hitRate": 0.7746478873239436,
+        "meanProbability": 0.6451793334320284
+      }
+    }
+  ],
+  "pooled": {
+    "baseline": {
+      "n": 2120,
+      "logLoss": 0.987801286830013,
+      "brier": 0.5882110784177398,
+      "accuracy": 0.5306603773584906,
+      "ece": 0.02505405414651265
+    },
+    "candidate": {
+      "n": 2120,
+      "logLoss": 0.9854611977313668,
+      "brier": 0.5865785970488938,
+      "accuracy": 0.5320754716981132,
+      "ece": 0.023245919210422166
+    },
+    "baselineTips": {
+      "n": 464,
+      "wins": 334,
+      "hitRate": 0.7198275862068966,
+      "meanProbability": 0.6499140985974379
+    },
+    "candidateTips": {
+      "n": 459,
+      "wins": 335,
+      "hitRate": 0.7298474945533769,
+      "meanProbability": 0.6580616005891065
+    },
+    "logLossImprovement": 0.0023400890986462475,
+    "weekBootstrap95": [
+      0.000507264044838245,
+      0.0041557017119699625
+    ],
+    "weeks": 48
+  },
+  "promoted": true,
+  "calibration": {
+    "markets": {
+      "H": {
+        "enabled": true,
+        "bins": [
+          {
+            "low": 0.0,
+            "high": 0.1,
+            "n": 16,
+            "rate": 0.0625,
+            "mean": 0.08495567257682524,
+            "interval": [
+              0.01111934476464252,
+              0.28328737570298945
+            ]
+          },
+          {
+            "low": 0.1,
+            "high": 0.2,
+            "n": 119,
+            "rate": 0.12605042016806722,
+            "mean": 0.16124256441989304,
+            "interval": [
+              0.07789721130352727,
+              0.19759169240683083
+            ]
+          },
+          {
+            "low": 0.2,
+            "high": 0.3,
+            "n": 297,
+            "rate": 0.2222222222222222,
+            "mean": 0.24859342661116465,
+            "interval": [
+              0.17865679566598575,
+              0.2728815639510562
+            ]
+          },
+          {
+            "low": 0.3,
+            "high": 0.4,
+            "n": 491,
+            "rate": 0.3380855397148676,
+            "mean": 0.35380490249406515,
+            "interval": [
+              0.2976433836816181,
+              0.381041582652996
+            ]
+          },
+          {
+            "low": 0.4,
+            "high": 0.5,
+            "n": 522,
+            "rate": 0.4444444444444444,
+            "mean": 0.44745154322357156,
+            "interval": [
+              0.4023772918557579,
+              0.48732330320558104
+            ]
+          },
+          {
+            "low": 0.5,
+            "high": 0.6,
+            "n": 356,
+            "rate": 0.547752808988764,
+            "mean": 0.5477199527901754,
+            "interval": [
+              0.49581568605225484,
+              0.5986703693106483
+            ]
+          },
+          {
+            "low": 0.6,
+            "high": 0.7,
+            "n": 197,
+            "rate": 0.7258883248730964,
+            "mean": 0.6401253005017938,
+            "interval": [
+              0.6597259354591424,
+              0.7834096627514683
+            ]
+          },
+          {
+            "low": 0.7,
+            "high": 0.8,
+            "n": 91,
+            "rate": 0.8351648351648352,
+            "mean": 0.7458310319499203,
+            "interval": [
+              0.7456929440655073,
+              0.8974856906634852
+            ]
+          },
+          {
+            "low": 0.8,
+            "high": 0.9,
+            "n": 30,
+            "rate": 0.8333333333333334,
+            "mean": 0.836343901830835,
+            "interval": [
+              0.6643564949358398,
+              0.9266345762815145
+            ]
+          },
+          {
+            "low": 0.9,
+            "high": 1.0,
+            "n": 1,
+            "rate": 1.0,
+            "mean": 0.9123837814607418,
+            "interval": [
+              0.20654931437723745,
+              1.0
+            ]
+          }
+        ],
+        "byLeague": {
+          "39": {
+            "enabled": true
+          },
+          "61": {
+            "enabled": true
+          },
+          "78": {
+            "enabled": true
+          },
+          "94": {
+            "enabled": true
+          },
+          "135": {
+            "enabled": true
+          },
+          "140": {
+            "enabled": true
+          }
+        }
+      },
+      "A": {
+        "enabled": true,
+        "bins": [
+          {
+            "low": 0.0,
+            "high": 0.1,
+            "n": 84,
+            "rate": 0.03571428571428571,
+            "mean": 0.0746530215407658,
+            "interval": [
+              0.012219669231335377,
+              0.0998169357251345
+            ]
+          },
+          {
+            "low": 0.1,
+            "high": 0.2,
+            "n": 332,
+            "rate": 0.11746987951807229,
+            "mean": 0.15864262565275714,
+            "interval": [
+              0.08713280508196794,
+              0.15655795039557216
+            ]
+          },
+          {
+            "low": 0.2,
+            "high": 0.3,
+            "n": 579,
+            "rate": 0.23834196891191708,
+            "mean": 0.25372561828044604,
+            "interval": [
+              0.20543336479735932,
+              0.27469970498617646
+            ]
+          },
+          {
+            "low": 0.3,
+            "high": 0.4,
+            "n": 538,
+            "rate": 0.30297397769516726,
+            "mean": 0.3465481698030152,
+            "interval": [
+              0.2656520158450726,
+              0.3430896251851039
+            ]
+          },
+          {
+            "low": 0.4,
+            "high": 0.5,
+            "n": 297,
+            "rate": 0.45454545454545453,
+            "mean": 0.4480236879104951,
+            "interval": [
+              0.3988567234819962,
+              0.5113950080917016
+            ]
+          },
+          {
+            "low": 0.5,
+            "high": 0.6,
+            "n": 197,
+            "rate": 0.5786802030456852,
+            "mean": 0.5450946688995223,
+            "interval": [
+              0.5088703653973246,
+              0.6454802362265959
+            ]
+          },
+          {
+            "low": 0.6,
+            "high": 0.7,
+            "n": 64,
+            "rate": 0.703125,
+            "mean": 0.6423980792897889,
+            "interval": [
+              0.5822979889645707,
+              0.8009484867446022
+            ]
+          },
+          {
+            "low": 0.7,
+            "high": 0.8,
+            "n": 26,
+            "rate": 0.7692307692307693,
+            "mean": 0.7419172930789688,
+            "interval": [
+              0.5794844592105632,
+              0.8896615059421671
+            ]
+          },
+          {
+            "low": 0.8,
+            "high": 0.9,
+            "n": 3,
+            "rate": 0.6666666666666666,
+            "mean": 0.8212647478932672,
+            "interval": [
+              0.2076596008020477,
+              0.9385080552796037
+            ]
+          },
+          {
+            "low": 0.9,
+            "high": 1.0,
+            "n": 0,
+            "rate": 0,
+            "mean": 0,
+            "interval": [
+              0.0,
+              1.0
+            ]
+          }
+        ],
+        "byLeague": {
+          "39": {
+            "enabled": true
+          },
+          "61": {
+            "enabled": true
+          },
+          "78": {
+            "enabled": true
+          },
+          "94": {
+            "enabled": true
+          },
+          "135": {
+            "enabled": true
+          },
+          "140": {
+            "enabled": true
+          }
+        }
+      }
+    }
+  },
+  "byLeague": {
+    "39": {
+      "baseline": {
+        "n": 386,
+        "logLoss": 1.0412442353102158,
+        "brier": 0.625760382569543,
+        "accuracy": 0.47150259067357514,
+        "ece": 0.029040667613967827
+      },
+      "candidate": {
+        "n": 386,
+        "logLoss": 1.0396580771758943,
+        "brier": 0.62437403375372,
+        "accuracy": 0.4637305699481865,
+        "ece": 0.04113213539426025
+      }
+    },
+    "61": {
+      "baseline": {
+        "n": 313,
+        "logLoss": 1.007006179677805,
+        "brier": 0.6032377266136606,
+        "accuracy": 0.5079872204472844,
+        "ece": 0.06781293185517828
+      },
+      "candidate": {
+        "n": 313,
+        "logLoss": 1.0053415730376776,
+        "brier": 0.6020827550204856,
+        "accuracy": 0.5239616613418531,
+        "ece": 0.04296466535759516
+      }
+    },
+    "78": {
+      "baseline": {
+        "n": 313,
+        "logLoss": 0.9699411083143029,
+        "brier": 0.5734061580957704,
+        "accuracy": 0.5654952076677316,
+        "ece": 0.05103869018619631
+      },
+      "candidate": {
+        "n": 313,
+        "logLoss": 0.9667004916637275,
+        "brier": 0.5713458189191924,
+        "accuracy": 0.5718849840255591,
+        "ece": 0.05558574001876939
+      }
+    },
+    "94": {
+      "baseline": {
+        "n": 330,
+        "logLoss": 0.9385823268176711,
+        "brier": 0.5563042715508505,
+        "accuracy": 0.5696969696969697,
+        "ece": 0.040645614484367404
+      },
+      "candidate": {
+        "n": 330,
+        "logLoss": 0.9366176906261126,
+        "brier": 0.5551721221516873,
+        "accuracy": 0.5606060606060606,
+        "ece": 0.032086693444541924
+      }
+    },
+    "135": {
+      "baseline": {
+        "n": 385,
+        "logLoss": 0.9815021630274169,
+        "brier": 0.5833759070139082,
+        "accuracy": 0.5428571428571428,
+        "ece": 0.05151032702629682
+      },
+      "candidate": {
+        "n": 385,
+        "logLoss": 0.9798031399193137,
+        "brier": 0.5823257124278368,
+        "accuracy": 0.5506493506493506,
+        "ece": 0.052597886549169345
+      }
+    },
+    "140": {
+      "baseline": {
+        "n": 393,
+        "logLoss": 0.9817390623230731,
+        "brier": 0.5826827197139378,
+        "accuracy": 0.5343511450381679,
+        "ece": 0.07121946613549662
+      },
+      "candidate": {
+        "n": 393,
+        "logLoss": 0.9778944233422638,
+        "brier": 0.5797783854372156,
+        "accuracy": 0.5318066157760815,
+        "ece": 0.055406393121149505
+      }
+    }
+  },
+  "configuration": {
+    "version": "winner-multiscale-v1",
+    "status": "retrospective-evidence-awaiting-prospective-confirmation",
+    "components": [
+      {
+        "halfLife": 180,
+        "prior": 8,
+        "weight": 0.23402670885449198
+      },
+      {
+        "halfLife": 365,
+        "prior": 8,
+        "weight": 0.765973291145508
+      }
+    ],
+    "trainedBefore": 1786060800000,
+    "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477"
+  },
+  "limitations": [
+    "Retrospective nested evaluation; seasons already inspected in earlier model research.",
+    "Hit-rate difference is small; selected match sets and counts differ.",
+    "No historical odds; profitability not demonstrated.",
+    "Daily historical cutoff differs from intraday live refresh; source delays not simulated.",
+    "Prospective forecasts must remain immutable."
+  ]
+}

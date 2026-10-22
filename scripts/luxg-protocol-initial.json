@@ -1,0 +1,13 @@
+{
+  "version":"luxg-1",
+  "data":"API-Football regulation-time results; no event xG or shots available locally",
+  "features":"Only completed matches at least two hours before 00:00 UTC of target match day; 3-year window",
+  "training":"Seasons 2023 and 2024; prequential features with minimum effective sample 5; target sample at least 12 for evaluation",
+  "development":"Season 2025; choose one candidate by joint score log loss, requiring >=0.005 improvement and no worse 1X2 Brier by more than 0.001",
+  "holdout":"Season 2026, never used for fitting/selection; evaluated once after candidate is locked",
+  "candidates":{"panels":["calibration","strength","context"],"ridge":[0.01,0.1,1],"correlation":["independent","fittedDixonColes"]},
+  "tieBreak":"Prefer smallest panel and strongest regularization within 0.002 score log loss of development best",
+  "productionGate":"Holdout score log loss improvement >=0.005, week-block bootstrap 95% lower bound >0, 1X2 Brier no worse by 0.001, 1X2 log loss no worse by 0.002; otherwise retain current probabilities",
+  "bootstrap":{"unit":"ISO-calendar-week UTC","draws":2000,"seed":20261018},
+  "restrictions":"No historical odds/ROI; no post-hoc edits after holdout; new generation available only as experimental if not promoted"
+}

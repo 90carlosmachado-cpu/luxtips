@@ -1,0 +1,17 @@
+{
+  "version": "winner-direct-v1",
+  "created": "2026-10-18",
+  "purpose": "Predict 1/X/2 directly; exact-score loss is not a selection criterion",
+  "dataStatus": "All available seasons have been inspected in earlier research. This is retrospective nested walk-forward evaluation, not a new independent holdout.",
+  "features": "Prequential Poisson probabilities, Elo and opponent-adjusted recent/venue residuals; no target results or future data",
+  "families": ["calibration", "strength", "context"],
+  "ridge": [0.01, 0.1, 1],
+  "selection": "Minimum 1X2 log loss on preceding season, including unchanged baseline as candidate; then refit selected family on all preceding seasons",
+  "outerFolds": [2025, 2026],
+  "selectionYears": [2024, 2025],
+  "fitting": "Standardization on training only; regularized multinomial logit correction around baseline log probabilities; coefficients bounded to +/-1.5",
+  "presentation": "At most three outright favorites per Lisbon day, sorted by probability with p>=0.5; no forced quota",
+  "promotion": "Nested pooled 1X2 log loss improvement with paired ISO-week bootstrap lower 95% bound >0, Brier no worse, and top-three daily hit rate no worse; improvement must have same sign in both outer folds. Otherwise record research and preserve active model.",
+  "bootstrap": {"draws": 2000, "seed": 20261019, "unit": "ISO-week UTC"},
+  "restrictions": "No retuning after observing outer-fold output; no ROI without historical odds; no claim of certainty. Prospective confirmation remains necessary."
+}

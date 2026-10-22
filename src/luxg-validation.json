@@ -1,0 +1,420 @@
+{
+  "version": "luxg-1",
+  "activeModel": "opponent-adjusted Poisson",
+  "promoted": false,
+  "reason": "No candidate passed the development gate; holdout is reported without changing that decision.",
+  "datasetHash": "70e5dae1441488c37a742a69ce3dc01a848f082da43b66dcda64271129027477",
+  "protocol": {
+    "version": "luxg-1",
+    "data": "API-Football regulation-time results; no event xG or shots available locally",
+    "features": "Only completed matches at least two hours before 00:00 UTC of target match day; 3-year window",
+    "training": "Seasons 2023 and 2024; prequential features with minimum effective sample 12, matching production eligibility",
+    "development": "Season 2025; choose one candidate by joint score log loss, requiring >=0.005 improvement and no worse 1X2 Brier by more than 0.001",
+    "holdout": "Season 2026, never used for fitting/selection; evaluated once after candidate is locked",
+    "candidates": {
+      "panels": [
+        "calibration",
+        "strength",
+        "context"
+      ],
+      "ridge": [
+        0.01,
+        0.1,
+        1
+      ],
+      "correlation": [
+        "independent",
+        "fittedDixonColes"
+      ]
+    },
+    "tieBreak": "Prefer smallest panel and strongest regularization within 0.002 score log loss of development best",
+    "productionGate": "Holdout score log loss improvement >=0.005, week-block bootstrap 95% lower bound >0, 1X2 Brier no worse by 0.001, 1X2 log loss no worse by 0.002; otherwise retain current probabilities; goal MAE no worse by 0.01",
+    "bootstrap": {
+      "unit": "ISO-calendar-week UTC",
+      "draws": 2000,
+      "seed": 20261018
+    },
+    "restrictions": "No historical odds/ROI; no post-hoc edits after holdout; new generation available only as experimental if not promoted",
+    "developmentRevision": "Before opening 2026 holdout: align training sample eligibility with development/production. Initial sample>=5 experiment retained separately; no holdout scores used.",
+    "additionalDevelopment": "Before opening holdout, compare 9 proper joint-score exponential-family corrections (3 panels x 3 ridge strengths). Goals means are derived from the corrected joint distribution, not from rounded intensities."
+  },
+  "trainMatches": 2940,
+  "developmentMatches": 1835,
+  "candidateCount": 45,
+  "baselineDevelopment": {
+    "n": 1835,
+    "scoreLogLoss": 2.887150385174171,
+    "brier1X2": 0.5899380614631244,
+    "logLoss1X2": 0.9902466943049921,
+    "accuracy1X2": 0.5313351498637602,
+    "ece1X2": 0.024721877029732088,
+    "exactScoreAccuracy": 0.12861035422343325,
+    "topThreeScoresAccuracy": 0.3237057220708447,
+    "goalMAE": 0.9004756905211441,
+    "goalMeanPredicted": [
+      1.507973225140683,
+      1.2535554835994354
+    ],
+    "goalMeanObserved": [
+      1.5291553133514986,
+      1.228882833787466
+    ],
+    "goalIntervalCoverage80": [
+      0.9416893732970028,
+      0.9493188010899183
+    ]
+  },
+  "holdout": {
+    "season": 2026,
+    "baseline": {
+      "n": 285,
+      "scoreLogLoss": 2.991191564430779,
+      "brier1X2": 0.577091731441316,
+      "logLoss1X2": 0.9720562948419895,
+      "accuracy1X2": 0.5263157894736842,
+      "ece1X2": 0.04568365735869852,
+      "exactScoreAccuracy": 0.10877192982456141,
+      "topThreeScoresAccuracy": 0.312280701754386,
+      "goalMAE": 0.9480138587825666,
+      "goalMeanPredicted": [
+        1.5420711425418117,
+        1.272269394917593
+      ],
+      "goalMeanObserved": [
+        1.6456140350877193,
+        1.3508771929824561
+      ],
+      "goalIntervalCoverage80": [
+        0.9157894736842105,
+        0.9298245614035088
+      ]
+    },
+    "experimental": {
+      "n": 285,
+      "scoreLogLoss": 2.977949085186124,
+      "brier1X2": 0.5711240994937731,
+      "logLoss1X2": 0.9627081060222094,
+      "accuracy1X2": 0.5298245614035088,
+      "ece1X2": 0.04841486817812654,
+      "exactScoreAccuracy": 0.12631578947368421,
+      "topThreeScoresAccuracy": 0.312280701754386,
+      "goalMAE": 0.945127906873754,
+      "goalMeanPredicted": [
+        1.511320847953778,
+        1.3165770912158115
+      ],
+      "goalMeanObserved": [
+        1.6456140350877193,
+        1.3508771929824561
+      ],
+      "goalIntervalCoverage80": [
+        0.9192982456140351,
+        0.9403508771929825
+      ]
+    },
+    "experimentalId": "strength-ridge0.1",
+    "scoreLogLossImprovement": 0.013242479244654623,
+    "weekBootstrap95": [
+      0.005713673444122786,
+      0.020187371399011184
+    ],
+    "weeks": 9
+  },
+  "byLeague": {
+    "39": {
+      "baseline": {
+        "n": 46,
+        "scoreLogLoss": 3.0278714347484654,
+        "brier1X2": 0.6414260058031275,
+        "logLoss1X2": 1.0636602303564866,
+        "accuracy1X2": 0.43478260869565216,
+        "ece1X2": 0.061775631355087506,
+        "exactScoreAccuracy": 0.10869565217391304,
+        "topThreeScoresAccuracy": 0.2608695652173913,
+        "goalMAE": 0.9534214956058619,
+        "goalMeanPredicted": [
+          1.5110131907040711,
+          1.2830840481808041
+        ],
+        "goalMeanObserved": [
+          1.5217391304347827,
+          1.3695652173913044
+        ],
+        "goalIntervalCoverage80": [
+          0.8695652173913043,
+          0.9347826086956522
+        ]
+      },
+      "experimental": {
+        "n": 46,
+        "scoreLogLoss": 3.016654429692257,
+        "brier1X2": 0.6303869272872342,
+        "logLoss1X2": 1.048991987310164,
+        "accuracy1X2": 0.43478260869565216,
+        "ece1X2": 0.056672351640617576,
+        "exactScoreAccuracy": 0.10869565217391304,
+        "topThreeScoresAccuracy": 0.2608695652173913,
+        "goalMAE": 0.9517845771126069,
+        "goalMeanPredicted": [
+          1.4987209769370424,
+          1.3451048011679192
+        ],
+        "goalMeanObserved": [
+          1.5217391304347827,
+          1.3695652173913044
+        ],
+        "goalIntervalCoverage80": [
+          0.8695652173913043,
+          0.9782608695652174
+        ]
+      }
+    },
+    "61": {
+      "baseline": {
+        "n": 44,
+        "scoreLogLoss": 2.891915575162246,
+        "brier1X2": 0.6185217732293954,
+        "logLoss1X2": 1.0312837524331204,
+        "accuracy1X2": 0.5227272727272727,
+        "ece1X2": 0.1836317038586184,
+        "exactScoreAccuracy": 0.045454545454545456,
+        "topThreeScoresAccuracy": 0.36363636363636365,
+        "goalMAE": 0.8841227489469106,
+        "goalMeanPredicted": [
+          1.5273766784476699,
+          1.329924832853842
+        ],
+        "goalMeanObserved": [
+          1.6363636363636365,
+          1.1818181818181819
+        ],
+        "goalIntervalCoverage80": [
+          0.9545454545454546,
+          0.9772727272727273
+        ]
+      },
+      "experimental": {
+        "n": 44,
+        "scoreLogLoss": 2.8917479775607733,
+        "brier1X2": 0.6193340082846186,
+        "logLoss1X2": 1.0325138368185602,
+        "accuracy1X2": 0.5454545454545454,
+        "ece1X2": 0.15279322933521364,
+        "exactScoreAccuracy": 0.06818181818181818,
+        "topThreeScoresAccuracy": 0.3409090909090909,
+        "goalMAE": 0.8940453282935107,
+        "goalMeanPredicted": [
+          1.564293948919431,
+          1.4389533373190153
+        ],
+        "goalMeanObserved": [
+          1.6363636363636365,
+          1.1818181818181819
+        ],
+        "goalIntervalCoverage80": [
+          0.9318181818181818,
+          0.9772727272727273
+        ]
+      }
+    },
+    "78": {
+      "baseline": {
+        "n": 35,
+        "scoreLogLoss": 3.5069486223043436,
+        "brier1X2": 0.5709640326657534,
+        "logLoss1X2": 0.9583237703148325,
+        "accuracy1X2": 0.5714285714285714,
+        "ece1X2": 0.09632022678553105,
+        "exactScoreAccuracy": 0.05714285714285714,
+        "topThreeScoresAccuracy": 0.11428571428571428,
+        "goalMAE": 1.2240861777242709,
+        "goalMeanPredicted": [
+          1.8966712790985651,
+          1.4690055351113867
+        ],
+        "goalMeanObserved": [
+          2.6857142857142855,
+          1.457142857142857
+        ],
+        "goalIntervalCoverage80": [
+          0.8285714285714286,
+          0.8857142857142857
+        ]
+      },
+      "experimental": {
+        "n": 35,
+        "scoreLogLoss": 3.5126876426371463,
+        "brier1X2": 0.5791849894397808,
+        "logLoss1X2": 0.96781857745337,
+        "accuracy1X2": 0.5714285714285714,
+        "ece1X2": 0.14714066024565753,
+        "exactScoreAccuracy": 0.05714285714285714,
+        "topThreeScoresAccuracy": 0.14285714285714285,
+        "goalMAE": 1.2351492437170144,
+        "goalMeanPredicted": [
+          1.8197889188973162,
+          1.4757086910538615
+        ],
+        "goalMeanObserved": [
+          2.6857142857142855,
+          1.457142857142857
+        ],
+        "goalIntervalCoverage80": [
+          0.8571428571428571,
+          0.8857142857142857
+        ]
+      }
+    },
+    "94": {
+      "baseline": {
+        "n": 56,
+        "scoreLogLoss": 2.901117537997868,
+        "brier1X2": 0.5383827264864709,
+        "logLoss1X2": 0.9156768950715738,
+        "accuracy1X2": 0.5714285714285714,
+        "ece1X2": 0.10161902613753386,
+        "exactScoreAccuracy": 0.17857142857142858,
+        "topThreeScoresAccuracy": 0.39285714285714285,
+        "goalMAE": 0.9125466323954453,
+        "goalMeanPredicted": [
+          1.503706953567626,
+          1.1938551275839715
+        ],
+        "goalMeanObserved": [
+          1.3571428571428572,
+          1.4107142857142858
+        ],
+        "goalIntervalCoverage80": [
+          0.9642857142857143,
+          0.9107142857142857
+        ]
+      },
+      "experimental": {
+        "n": 56,
+        "scoreLogLoss": 2.866015575920789,
+        "brier1X2": 0.5320840490631815,
+        "logLoss1X2": 0.9032800264466211,
+        "accuracy1X2": 0.5535714285714286,
+        "ece1X2": 0.07905910772708169,
+        "exactScoreAccuracy": 0.19642857142857142,
+        "topThreeScoresAccuracy": 0.39285714285714285,
+        "goalMAE": 0.9051454495300533,
+        "goalMeanPredicted": [
+          1.4830940739238152,
+          1.2411188956924069
+        ],
+        "goalMeanObserved": [
+          1.3571428571428572,
+          1.4107142857142858
+        ],
+        "goalIntervalCoverage80": [
+          0.9642857142857143,
+          0.9107142857142857
+        ]
+      }
+    },
+    "135": {
+      "baseline": {
+        "n": 45,
+        "scoreLogLoss": 2.627483225233549,
+        "brier1X2": 0.5345040063625469,
+        "logLoss1X2": 0.9160222580415128,
+        "accuracy1X2": 0.5555555555555556,
+        "ece1X2": 0.19613912202360742,
+        "exactScoreAccuracy": 0.13333333333333333,
+        "topThreeScoresAccuracy": 0.4444444444444444,
+        "goalMAE": 0.6986309770607416,
+        "goalMeanPredicted": [
+          1.3092811848507588,
+          1.2051659679140974
+        ],
+        "goalMeanObserved": [
+          1.4444444444444444,
+          1.2666666666666666
+        ],
+        "goalIntervalCoverage80": [
+          0.9333333333333333,
+          0.9333333333333333
+        ]
+      },
+      "experimental": {
+        "n": 45,
+        "scoreLogLoss": 2.6186807220410393,
+        "brier1X2": 0.5257123642556965,
+        "logLoss1X2": 0.9020129057156013,
+        "accuracy1X2": 0.5555555555555556,
+        "ece1X2": 0.14746744366127285,
+        "exactScoreAccuracy": 0.17777777777777778,
+        "topThreeScoresAccuracy": 0.4444444444444444,
+        "goalMAE": 0.6932469028913636,
+        "goalMeanPredicted": [
+          1.2834506652081967,
+          1.2361371152902776
+        ],
+        "goalMeanObserved": [
+          1.4444444444444444,
+          1.2666666666666666
+        ],
+        "goalIntervalCoverage80": [
+          0.9333333333333333,
+          0.9555555555555556
+        ]
+      }
+    },
+    "140": {
+      "baseline": {
+        "n": 59,
+        "scoreLogLoss": 3.093571110392566,
+        "brier1X2": 0.5688938145572788,
+        "logLoss1X2": 0.9608635360951855,
+        "accuracy1X2": 0.5084745762711864,
+        "ece1X2": 0.08540522349793062,
+        "exactScoreAccuracy": 0.1016949152542373,
+        "topThreeScoresAccuracy": 0.2542372881355932,
+        "goalMAE": 1.0515447186316946,
+        "goalMeanPredicted": [
+          1.5808535171832259,
+          1.2297401569473334
+        ],
+        "goalMeanObserved": [
+          1.5593220338983051,
+          1.4067796610169492
+        ],
+        "goalIntervalCoverage80": [
+          0.9152542372881356,
+          0.9322033898305084
+        ]
+      },
+      "experimental": {
+        "n": 59,
+        "scoreLogLoss": 3.0751000383697717,
+        "brier1X2": 0.5558751790941102,
+        "logLoss1X2": 0.9430450428977072,
+        "accuracy1X2": 0.5254237288135594,
+        "ece1X2": 0.12400436289535591,
+        "exactScoreAccuracy": 0.11864406779661017,
+        "topThreeScoresAccuracy": 0.2542372881355932,
+        "goalMAE": 1.0360489683565373,
+        "goalMeanPredicted": [
+          1.49924038541964,
+          1.241645267237676
+        ],
+        "goalMeanObserved": [
+          1.5593220338983051,
+          1.4067796610169492
+        ],
+        "goalIntervalCoverage80": [
+          0.9322033898305084,
+          0.9322033898305084
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Goal estimates from match results, not shot-based event xG.",
+    "No historical odds: no ROI or betting advantage established.",
+    "2026 season is incomplete; limited holdout size.",
+    "Training and development experiments are retained; multiple testing limits evidence.",
+    "Rolling team states only use matches available before each prediction cutoff."
+  ]
+}

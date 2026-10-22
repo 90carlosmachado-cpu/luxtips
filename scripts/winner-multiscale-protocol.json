@@ -1,0 +1,10 @@
+{
+ "version":"winner-multiscale-v1",
+ "dataStatus":"Retrospective development extension after the direct-winner result; all seasons already observed. Not a fresh independent test.",
+ "models":[{"halfLife":90,"prior":8},{"halfLife":180,"prior":8},{"halfLife":365,"prior":8},{"halfLife":180,"prior":16}],
+ "pool":"Nonnegative weights summing to one, fit to 1X2 log loss with quadratic shrinkage toward existing baseline weights [0,1,0,0]",
+ "ridge":[0.001,0.01,0.1],
+ "selection":"Prior season log loss including baseline; train before selection season, choose ridge, refit all past seasons, then score next season. Outer folds 2025 and 2026.",
+ "promotion":"Same as winner-direct-v1: positive log-loss improvement in both folds and pooled week-bootstrap95 lower bound >0, Brier and top-three hit rate no worse.",
+ "restrictions":"Stop this research batch after these fixed mixtures. Any change remains subject to future prospective confirmation. No parameter changes after reading output."
+}
