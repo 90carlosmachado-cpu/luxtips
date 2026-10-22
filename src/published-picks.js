@@ -1,3 +1,9 @@
+import {
+  rankPublicationPool,
+  MIN_WIN_PROBABILITY,
+  MIN_ALTERNATIVE_PROBABILITY,
+  SELECTION_POLICY,
+} from "./publication-ranking.js";
 import { invalidatePublicGames } from "./public-cache.js";
 import { forecastWindow, lisbonDay } from "./window.js";
 import {
@@ -13,7 +19,7 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
   // Old daily_markets rows are research/reservation records, not publications.
   // Strip their overlays before selecting; only an actually published alternative
   // consumes the daily allowance.
-  const candidates = games
+  const pool = games
     .map((g) => {
       const clean = { ...g };
       delete clean.displayTip;
@@ -26,9 +32,11 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
         a.fixture.ts - b.fixture.ts ||
         a.fixture.id - b.fixture.id,
     );
+  const candidates = await rankPublicationPool(db, pool, now);
   for (const choice of chooseDailyMarkets(candidates, now, {
     verifiedOnly: true,
     alternativeFirst: true,
+    minimumProbability: MIN_ALTERNATIVE_PROBABILITY,
   })) {
     const g = decorateDailyMarket(
       choice.game,
@@ -36,6 +44,7 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
       now,
     );
     if (!g.displayTip) continue;
+    g.selectionPolicy = SELECTION_POLICY;
     const existing = await db
       .prepare(
         "SELECT fixture_id FROM published_picks WHERE day=? AND fixture_id=?",
@@ -76,9 +85,14 @@ export async function publishDailyPicks(db, games, now = Date.now()) {
       modified ||= !!write.meta?.changes;
     }
   }
-  for (const g of candidates.filter((g) => g.winnerTip?.priceEligible)) {
+  for (const g of candidates.filter(
+    (g) =>
+      g.winnerTip?.priceEligible &&
+      g.winnerTip.probability >= MIN_WIN_PROBABILITY,
+  )) {
     const day = lisbonDay(g.fixture.ts),
       tip = g.winnerTip;
+    g.selectionPolicy = SELECTION_POLICY;
     const write = await db
       .prepare(
         `INSERT OR IGNORE INTO published_picks(day,fixture_id,kickoff,market,alternative,published_at,recorded_at,data)

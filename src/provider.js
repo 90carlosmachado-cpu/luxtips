@@ -52,7 +52,8 @@ export async function api(
   const day = new Date(now).toISOString().slice(0, 10),
     limit = Math.min(600, Math.max(1, Number(env.DAILY_BUDGET) || 300));
   // Reserve the remaining twice-hourly fixture polls before contextual endpoints.
-  const contextual = /^(odds\?|injuries\?|fixtures\/lineups\?)/.test(path);
+  const contextual =
+    /^(odds\?|injuries\?|fixtures\/lineups\?|fixtures\?team=)/.test(path);
   const utcHour =
     new Date(now).getUTCHours() + new Date(now).getUTCMinutes() / 60;
   const reserve = contextual

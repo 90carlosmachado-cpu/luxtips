@@ -756,15 +756,7 @@
       }
       async function history() {
         const d = await get("/api/history");
-        const historyForecasts = [
-          ...(d.publishedSelections || []),
-          ...d.forecasts.filter(
-            (f) =>
-              !(d.publishedSelections || []).some(
-                (p) => p.fixture.id === f.fixture.id,
-              ),
-          ),
-        ];
+        const historyForecasts = d.publishedSelections || [];
         const winners = historyForecasts
           .filter((f) => f.winnerTip)
           .map((f) => ({
@@ -778,19 +770,19 @@
         const rows = (rs) =>
           `<div class="history-list">${rs.map((f) => `<article class="history-row"><span class="result ${f.correct ? "" : "loss"}">${f.correct ? "Certo" : "Errado"}</span><strong>${esc(f.pick.label)}</strong><div class="small">${esc(f.fixture.homeName)} · ${esc(f.fixture.awayName)}<br>${date(f.fixture.ts)} · ${pct(f.pick.probability)} · Resultado ${f.result.home}–${f.result.away} · ${f.phase === "final" ? "Final" : "Provisório"}</div></article>`).join("")}</div>`;
         $("#historyBody").innerHTML = winners.length
-          ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos. Inclui todos os prognósticos registados, além dos três destaques.</p>${rows(winners)}`
+          ? `<p class="section-note small">${winners.filter((f) => f.correct).length} certos em ${winners.length} prognósticos. Apenas seleções publicadas na página principal, com os resultados certos e errados.</p>${rows(winners)}`
           : '<div class="empty"><h3>O histórico começa aqui</h3><p>Os prognósticos aparecem aqui quando os jogos terminarem e os resultados forem confirmados.</p></div>';
         if (d.modelComparison?.n) {
           const c = d.modelComparison;
           $("#historyBody").innerHTML +=
-            `<details><summary>Comparação desde a publicação (${c.n} jogos)</summary><p>Probabilidades dos dois cálculos guardadas antes dos jogos. Log Loss: novo ${c.currentLogLoss.toFixed(4)}, anterior ${c.baselineLogLoss.toFixed(4)}. Brier: novo ${c.currentBrier.toFixed(4)}, anterior ${c.baselineBrier.toFixed(4)}. Inclui todos os jogos registados, não apenas os três destaques.</p></details>`;
+            `<details><summary>Investigação interna: comparação dos cálculos (${c.n} jogos)</summary><p>Probabilidades dos dois cálculos guardadas antes dos jogos. Log Loss: novo ${c.currentLogLoss.toFixed(4)}, anterior ${c.baselineLogLoss.toFixed(4)}. Brier: novo ${c.currentBrier.toFixed(4)}, anterior ${c.baselineBrier.toFixed(4)}. Inclui todos os jogos registados, não apenas os três destaques.</p></details>`;
         }
         if (legacy.length)
           $("#historyBody").innerHTML +=
             `<details><summary>Prognósticos anteriores (${legacy.length})</summary>${rows(legacy)}</details>`;
         if (d.forecasts.length)
           $("#historyBody").innerHTML +=
-            `<details><summary>Métricas de todas as probabilidades registadas</summary><p class="small">${esc(d.scope)}</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Jogos</th><th>Brier</th><th>Log Loss</th><th>Calibração</th></tr></thead><tbody>${Object.entries(
+            `<details><summary>Investigação interna: probabilidades calculadas</summary><p class="small">${esc(d.scope)}</p><div class="tablewrap"><table><thead><tr><th>Mercado</th><th>Jogos</th><th>Brier</th><th>Log Loss</th><th>Calibração</th></tr></thead><tbody>${Object.entries(
               d.metrics,
             )
               .map(
@@ -801,11 +793,17 @@
       }
       async function validation() {
         const v = await get("/api/validation"),
+          results = await get("/api/history"),
+          performance = results.publishedPerformance || {
+            total: 0,
+            correct: 0,
+            byMarket: {},
+          },
           m = v.winnerModel,
           p = m.pooled,
           d = v.marketExpansion.cap3MarketImpact;
         $("#validationBody").innerHTML =
-          `<h3>Odds mínimas de 1,25</h3><p>A seleção exige um preço real, atualizado há menos de seis horas, de pelo menos 1,25. No máximo um mercado alternativo por dia.</p><p class="small">A taxa de acerto desta regra ainda não está validada: faltam odds históricas adequadas. Os resultados abaixo não aplicam este filtro e não representam o desempenho esperado da seleção atual.</p><details><summary>Investigação anterior sem filtro de odds</summary><h3>Mesmos jogos · um mercado alternativo por dia</h3>
+          `<h3>Seleções publicadas</h3><p>${performance.total ? `${performance.correct} certas em ${performance.total} seleções terminadas (${pct(performance.correct / performance.total)}).` : "Ainda não há seleções publicadas com resultado confirmado."}</p><p class="small">Conta apenas o mercado efetivamente publicado, incluindo os erros. Amostra inicial; não demonstra rentabilidade nem garante acerto futuro.</p><h3>Odds mínimas de 1,25</h3><p>As novas seleções comparam todas as ligas disponíveis. Vitórias exigem uma probabilidade estimada de pelo menos 60%; alternativas, 70%. Estes mínimos são critérios de seleção, não taxas de acerto demonstradas.</p><p>A seleção exige um preço real, atualizado há menos de seis horas, de pelo menos 1,25. No máximo um mercado alternativo por dia.</p><p class="small">A taxa de acerto desta regra ainda não está validada: faltam odds históricas adequadas. Os resultados abaixo não aplicam este filtro e não representam o desempenho esperado da seleção atual.</p><details><summary>Investigação anterior sem filtro de odds</summary><h3>Mesmos jogos · um mercado alternativo por dia</h3>
           <p>${d.candidate.wins} acertos em ${d.candidate.n} seleções históricas (${pct(d.candidate.hitRate)}). Regra anterior, com uma dupla hipótese diária: ${d.baseline.wins}/${d.baseline.n} (${pct(d.baseline.hitRate)}).</p>
           <p class="small">Resultado retrospetivo em dados já analisados. A regra compara dupla hipótese, golos, ambas marcam e handicap +1,5 para a única alternativa diária. Os mercados mais abrangentes aumentam o acerto e podem ter odds muito baixas; não são melhorias na previsão do vencedor. Intervalo bootstrap de 95%: ${d.hitRateDayBootstrap95.map(pct).join(" a ")}. Não garante 80% nem demonstra lucro. Aumentar para quatro ou cinco jogos não demonstrou uma melhoria adicional, pelo que se mantêm três. Atrasos da API e alterações da lista ao longo do dia não foram simulados.</p>
           <details><summary>Cálculo dos favoritos</summary><h3>Força recente e de longo prazo</h3>

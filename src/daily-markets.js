@@ -72,6 +72,7 @@ export function chooseDailyMarkets(games, now, options = {}) {
           (options.verifiedOnly &&
             (["HAP15", "AAP15"].includes(market) ||
               !(p[market] * (quoteFor(g, market, now)?.odd || 0) > 1))) ||
+          p[market] < (options.minimumProbability || 0) ||
           !Number.isFinite(gain) ||
           gain <= 0 ||
           p[market] > 1 ||

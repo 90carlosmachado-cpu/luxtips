@@ -1,3 +1,13 @@
+import {
+  collectOpponentHistory,
+  runQueuedOpponentHistory,
+} from "./opponent-history.js";
+import { reviewSelections, cachedFixtureOdds } from "./selection-review.js";
+import {
+  MIN_WIN_PROBABILITY,
+  MIN_ALTERNATIVE_PROBABILITY,
+  SELECTION_POLICY,
+} from "./publication-ranking.js";
 import { cachedPublicGames, invalidatePublicGames } from "./public-cache.js";
 import html from "../index.html";
 import { winnerTip, outcome } from "./model.js";
@@ -61,7 +71,8 @@ async function sync(env, force = false, requestedLeague = null) {
   try {
     const dailyPlans = await readDailyMarkets(db, now);
     const historyPlans = [],
-      contextTasks = [];
+      contextTasks = [],
+      missingOpponents = [];
     const configured = configuredCompetitions(env).map((c) => c.id);
     const previous = await db
       .prepare("SELECT data FROM meta WHERE key='sync'")
@@ -195,6 +206,32 @@ async function sync(env, force = false, requestedLeague = null) {
             context = { injuries: null, lineups: null, updatedAt: now };
           let matchStale = leagueStale || historyIncomplete;
           p.historyIncomplete = historyIncomplete;
+          if (european) {
+            for (const [side, other] of [
+              ["home", "away"],
+              ["away", "home"],
+            ]) {
+              if ((p.teams?.[side]?.effectiveSample || 0) < 12) {
+                const id = f[side],
+                  name = f[side + "Name"];
+                missingOpponents.push({
+                  id,
+                  name,
+                  priority: 100 + (p.teams?.[other]?.effectiveSample || 0),
+                });
+                p.risks.push(
+                  "Histórico do adversário com cobertura nacional insuficiente; comparação entre ligas por validar.",
+                );
+                const extra = await db
+                  .prepare("SELECT data FROM meta WHERE key=?")
+                  .bind("opponent-history:" + id)
+                  .first();
+                context.opponentHistory ||= [];
+                if (extra) context.opponentHistory.push(JSON.parse(extra.data));
+              }
+            }
+          }
+
           if (historyIncomplete)
             p.risks.push(
               "Importação histórica incompleta; cálculo provisório com a amostra disponível, mantendo o mínimo de 12 jogos efetivos por equipa.",
@@ -203,18 +240,8 @@ async function sync(env, force = false, requestedLeague = null) {
             p.risks.push(
               "Consulta direta falhou; foram utilizados os dados disponíveis em cache.",
             );
-          // Prices are independent of injury/lineup failures and cover all three days.
-          if (
-            season.coverage?.odds &&
-            p.sample >= 12 &&
-            Math.max(p.probabilities.H, p.probabilities.A) >= 0.5
-          ) {
-            try {
-              odds = (await fixtureOdds(env, f.id, now)).odds;
-            } catch {
-              p.risks.push("Odds não disponíveis nesta atualização.");
-            }
-          }
+          // Calculate the complete cross-league pool before requesting fresh prices.
+          odds = await cachedFixtureOdds(db, f.id, now);
           // Context never changes model probabilities without validation. Reuse
           // its cache here; refresh it only after every competition has prices.
           if (f.ts - now < 24 * HOUR && enriched++ < 8) {
@@ -352,18 +379,6 @@ async function sync(env, force = false, requestedLeague = null) {
               f.ts + 86400000,
             )
             .run();
-          // Persist each fully priced selection before another provider call can
-          // consume the foreground waitUntil lifetime. Published rows stay immutable.
-          await publishDailyPicks(
-            db,
-            publicGames([
-              {
-                data: final?.data || JSON.stringify(data),
-                fixture_data: JSON.stringify(f),
-              },
-            ]).games,
-            predictionAt,
-          );
           processed++;
         }
       } catch (e) {
@@ -388,13 +403,8 @@ async function sync(env, force = false, requestedLeague = null) {
       .run();
     await invalidatePublicGames(db);
     const dailyMarkets = await finalizeDailyMarkets(db);
-    const publishRows = await db
-      .prepare(
-        "SELECT c.data,f.data fixture_data FROM fixtures f JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff LIMIT 150",
-      )
-      .bind(Date.now(), forecastWindow().end)
-      .all();
-    await publishDailyPicks(db, publicGames(publishRows.results).games);
+    const selectionReview = await reviewSelections(env);
+    const opponentHistory = await collectOpponentHistory(env, missingOpponents);
     const historyBackfill = await backfillHistory(env, historyPlans);
     for (const task of contextTasks.slice(0, 8)) {
       try {
@@ -411,6 +421,8 @@ async function sync(env, force = false, requestedLeague = null) {
         at: Date.now(),
         ok: true,
         dailyMarkets,
+        selectionReview,
+        opponentHistory,
         historyPending: historyBackfill.pending,
         stale,
         processed,
@@ -623,10 +635,12 @@ export default {
         });
       } else if (u.pathname === "/api/games") {
         ctx.waitUntil(
-          runHistoryCatchup(env).then((result) => {
-            if (result.active) return;
-            return runRequestedSync(env).then(() => runQueuedRefresh(env));
-          }),
+          runQueuedOpponentHistory(env)
+            .then(() => runHistoryCatchup(env))
+            .then((result) => {
+              if (result.active) return;
+              return runRequestedSync(env).then(() => runQueuedRefresh(env));
+            }),
         );
         res = json(
           await cachedPublicGames(env, async () => {
@@ -636,7 +650,6 @@ export default {
               .bind(Date.now(), forecastWindow().end)
               .all();
             const { games: candidates, window } = publicGames(r.results);
-            await publishDailyPicks(env.DB, candidates);
             const games = await publishedGames(env.DB);
             const importState = await env.DB.prepare(
               "SELECT COUNT(*) pending FROM sync_requests WHERE finished_at IS NULL",
@@ -651,6 +664,9 @@ export default {
                 oddsMaxAgeHours: 6,
                 maxAlternativePerDay: 1,
                 maxGamesPerDay: 3,
+                selectionVersion: SELECTION_POLICY,
+                minimumWinnerProbability: MIN_WIN_PROBABILITY,
+                minimumAlternativeProbability: MIN_ALTERNATIVE_PROBABILITY,
                 historicalValidation: "pending-adequate-historical-odds",
               },
               window,
@@ -703,7 +719,7 @@ export default {
           };
         });
         const publishedRows = await env.DB.prepare(
-          `SELECT p.data,r.hg,r.ag FROM (
+          `SELECT p.data,p.published_at,r.hg,r.ag FROM (
           SELECT fixture_id,kickoff,published_at,data FROM published_picks
           UNION ALL SELECT fixture_id,kickoff,published_at,data FROM published_alternatives
         ) p JOIN fixtures f ON f.id=p.fixture_id AND f.kickoff=p.kickoff
@@ -713,6 +729,7 @@ export default {
           const g = JSON.parse(row.data);
           return {
             ...g,
+            published: { at: row.published_at },
             result: { home: row.hg, away: row.ag },
             winnerHit: g.winnerTip
               ? outcome(g.winnerTip.market, row.hg, row.ag)
@@ -722,6 +739,23 @@ export default {
               : null,
           };
         });
+        const publishedPerformance = {
+          total: publishedSelections.length,
+          correct: 0,
+          byMarket: {},
+        };
+        for (const g of publishedSelections) {
+          const tip = g.displayTip || g.winnerTip;
+          if (!tip) continue;
+          const hit = outcome(tip.market, g.result.home, g.result.away);
+          publishedPerformance.correct += hit === 1 ? 1 : 0;
+          const m = (publishedPerformance.byMarket[tip.market] ||= {
+            total: 0,
+            correct: 0,
+          });
+          m.total++;
+          m.correct += hit === 1 ? 1 : 0;
+        }
         const metrics = {};
         for (const f of forecasts) {
           for (const [k, p] of Object.entries(f.prediction.probabilities)) {
@@ -757,6 +791,9 @@ export default {
         res = json({
           forecasts,
           publishedSelections,
+          publishedPerformance,
+          historyScope: "published-selections-only",
+          researchScope: "internal-unpublished-calculations-included",
           modelComparison: compareForecasts(forecasts),
           metrics,
           scope:
@@ -793,7 +830,8 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
-      runHistoryCatchup(env)
+      runQueuedOpponentHistory(env)
+        .then(() => runHistoryCatchup(env))
         .then((result) => {
           if (result.active) return;
           return sync(env).then(() => runRequestedSync(env));
