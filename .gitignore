@@ -1,0 +1,12 @@
+.dev.vars
+.dev.vars.*
+*.dev.vars
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+.wrangler/
+work/
+recovered/worker.multipart.txt
+worker-configuration.d.ts

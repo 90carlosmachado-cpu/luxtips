@@ -1,0 +1,16 @@
+{
+  "name": "luxtips",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/check.mjs",
+    "probe:openfoot": "node scripts/probe-openfoot.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "devDependencies": {
+    "wrangler": "4.151.3"
+  }
+}

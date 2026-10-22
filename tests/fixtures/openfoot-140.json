@@ -1,0 +1,393 @@
+{
+  "competition": {
+    "id": "comp_laliga_es",
+    "name": "La Liga",
+    "country": "Spain",
+    "code": "ES1",
+    "currentSeason": "2026/27",
+    "availableSeasons": [
+      "2026/27",
+      "2025/26",
+      "2024/25",
+      "2023/24",
+      "2022/23",
+      "2021/22",
+      "2020/21",
+      "2019/20",
+      "2018/19",
+      "2017/18",
+      "2016/17",
+      "2015/16",
+      "2014/15",
+      "2013/14",
+      "2012/13",
+      "2011/12",
+      "2010/11"
+    ],
+    "coverage": {
+      "fixtures": true,
+      "standings": true,
+      "matchContext": true,
+      "lineups": true,
+      "advancedStats": true,
+      "events": true
+    },
+    "source": {
+      "name": "FotMob",
+      "mode": "current",
+      "license": "Unlicensed-Beta (owner-approved factual data)",
+      "url": "https://www.fotmob.com/"
+    }
+  },
+  "match": {
+    "id": "match_fmb_es1_2025-26_20250815_girona_rayo_vallecano",
+    "competitionId": "comp_laliga_es",
+    "season": "2025/26",
+    "round": "Round 1",
+    "kickoffAt": "2025-08-15T17:00:00Z",
+    "kickoffTimeKnown": true,
+    "status": "finished",
+    "venue": null,
+    "homeTeam": {
+      "id": "team_girona_es",
+      "name": "Girona",
+      "shortName": "Girona",
+      "code": "GIR",
+      "logoUrl": null,
+      "country": "Spain",
+      "competitionId": "comp_laliga_es",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_es1_girona"
+        }
+      ]
+    },
+    "awayTeam": {
+      "id": "team_rayo_vallecano_es",
+      "name": "Rayo Vallecano",
+      "shortName": "Rayo Vallecano",
+      "code": "RV",
+      "logoUrl": null,
+      "country": "Spain",
+      "competitionId": "comp_laliga_es",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_es1_rayo_vallecano"
+        }
+      ]
+    },
+    "score": {
+      "home": 1,
+      "away": 3
+    },
+    "minute": null,
+    "addedTime": null,
+    "period": "FT",
+    "updatedAt": "2026-10-22T13:38:55.877Z",
+    "sourceRefs": [
+      {
+        "source": "fotmob",
+        "id": "4837112"
+      }
+    ]
+  },
+  "xg": {
+    "data": {
+      "matchId": "match_fmb_es1_2025-26_20250815_girona_rayo_vallecano",
+      "homeTeam": "Girona",
+      "awayTeam": "Rayo Vallecano",
+      "homeXG": 0.56,
+      "awayXG": 3.43,
+      "shots": [
+        {
+          "id": "2835062497",
+          "minute": 11,
+          "player": "Florian Lejeune",
+          "team": "Rayo Vallecano",
+          "x": 94.68,
+          "y": 32.25,
+          "xG": 0.0274,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835063665",
+          "minute": 13,
+          "player": "Pedro Diaz",
+          "team": "Rayo Vallecano",
+          "x": 75.84,
+          "y": 27.61,
+          "xG": 0.0217,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835066543",
+          "minute": 17,
+          "player": "Jorge de Frutos",
+          "team": "Rayo Vallecano",
+          "x": 97.86,
+          "y": 30.23,
+          "xG": 0.1545,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835066823",
+          "minute": 18,
+          "player": "Jorge de Frutos",
+          "team": "Rayo Vallecano",
+          "x": 101.49,
+          "y": 30.26,
+          "xG": 0.4752,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835067901",
+          "minute": 20,
+          "player": "Álvaro Garcia",
+          "team": "Rayo Vallecano",
+          "x": 102.25,
+          "y": 33.54,
+          "xG": 0.9453,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835069767",
+          "minute": 24,
+          "player": "Yangel Herrera",
+          "team": "Girona",
+          "x": 83.16,
+          "y": 20.85,
+          "xG": 0.0306,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835072079",
+          "minute": 28,
+          "player": "Yaser Asprilla",
+          "team": "Girona",
+          "x": 80.12,
+          "y": 23.86,
+          "xG": 0.0323,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835081249",
+          "minute": 45,
+          "player": "Isi Palazon",
+          "team": "Rayo Vallecano",
+          "x": 94,
+          "y": 34,
+          "xG": 0.7884,
+          "result": "Goal",
+          "situation": "Penalty",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835082859",
+          "minute": 45,
+          "player": "Pathé Ciss",
+          "team": "Rayo Vallecano",
+          "x": 93.6,
+          "y": 41.06,
+          "xG": 0.5251,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835083981",
+          "minute": 45,
+          "player": "Isi Palazon",
+          "team": "Rayo Vallecano",
+          "x": 93,
+          "y": 27.61,
+          "xG": 0.0176,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835098447",
+          "minute": 48,
+          "player": "Unai Lopez",
+          "team": "Rayo Vallecano",
+          "x": 73.25,
+          "y": 37.66,
+          "xG": 0.0163,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835104125",
+          "minute": 54,
+          "player": "Pedro Diaz",
+          "team": "Rayo Vallecano",
+          "x": 76.63,
+          "y": 35.14,
+          "xG": 0.0153,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835105871",
+          "minute": 56,
+          "player": "Pep Chavarria",
+          "team": "Rayo Vallecano",
+          "x": 77.98,
+          "y": 44.28,
+          "xG": 0.0251,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835107027",
+          "minute": 57,
+          "player": "Joel Roca",
+          "team": "Girona",
+          "x": 96.61,
+          "y": 39.55,
+          "xG": 0.2503,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835110323",
+          "minute": 61,
+          "player": "Pelayo Fernandez",
+          "team": "Rayo Vallecano",
+          "x": 96.32,
+          "y": 39.38,
+          "xG": 0.0362,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835115269",
+          "minute": 66,
+          "player": "Pep Chavarria",
+          "team": "Rayo Vallecano",
+          "x": 90.8,
+          "y": 47.01,
+          "xG": 0.0401,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835122177",
+          "minute": 73,
+          "player": "Ladislav Krejci",
+          "team": "Girona",
+          "x": 99.11,
+          "y": 30.57,
+          "xG": 0.1212,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835123159",
+          "minute": 74,
+          "player": "Thomas Lemar",
+          "team": "Girona",
+          "x": 80.8,
+          "y": 35.75,
+          "xG": 0.0508,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835128927",
+          "minute": 79,
+          "player": "Cristian Portu",
+          "team": "Girona",
+          "x": 93.4,
+          "y": 30.34,
+          "xG": 0.0505,
+          "result": "BlockedShot",
+          "situation": "SetPiece",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835132175",
+          "minute": 82,
+          "player": "Thomas Lemar",
+          "team": "Girona",
+          "x": 78.99,
+          "y": 29.88,
+          "xG": 0.0265,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835137315",
+          "minute": 89,
+          "player": "Oscar Valentin",
+          "team": "Rayo Vallecano",
+          "x": 91.9,
+          "y": 22.6,
+          "xG": 0.0608,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835142857",
+          "minute": 90,
+          "player": "Pathé Ciss",
+          "team": "Rayo Vallecano",
+          "x": 95.54,
+          "y": 34.69,
+          "xG": 0.1737,
+          "result": "SavedShot",
+          "situation": "SetPiece",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835143749",
+          "minute": 90,
+          "player": "Florian Lejeune",
+          "team": "Rayo Vallecano",
+          "x": 99.5,
+          "y": 38.37,
+          "xG": 0.1099,
+          "result": "MissedShots",
+          "situation": "SetPiece",
+          "shotType": "LeftFoot"
+        }
+      ]
+    },
+    "meta": {
+      "sources": [
+        {
+          "name": "FotMob",
+          "license": "Unlicensed-Beta (owner-approved factual data)",
+          "url": "https://www.fotmob.com/",
+          "coverage": "Fixtures, results and live scores for cups and leagues without an open CSV feed (domestic cups, UEL, Libertadores, Sudamericana, AFC Champions League, Croatia, Hungary, Serbia, Ukraine, Egypt, Qatar, UAE)"
+        }
+      ]
+    }
+  }
+}

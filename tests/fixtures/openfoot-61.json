@@ -1,0 +1,549 @@
+{
+  "competition": {
+    "id": "comp_ligue_1_fr",
+    "name": "Ligue 1",
+    "country": "France",
+    "code": "FR1",
+    "currentSeason": "2026/27",
+    "availableSeasons": [
+      "2026/27",
+      "2025/26",
+      "2024/25",
+      "2023/24",
+      "2022/23",
+      "2021/22",
+      "2020/21",
+      "2019/20",
+      "2018/19",
+      "2017/18",
+      "2016/17",
+      "2015/16",
+      "2014/15",
+      "2013/14",
+      "2012/13",
+      "2011/12",
+      "2010/11"
+    ],
+    "coverage": {
+      "fixtures": true,
+      "standings": true,
+      "matchContext": true,
+      "lineups": true,
+      "advancedStats": true,
+      "events": true
+    },
+    "source": {
+      "name": "FotMob",
+      "mode": "current",
+      "license": "Unlicensed-Beta (owner-approved factual data)",
+      "url": "https://www.fotmob.com/"
+    }
+  },
+  "match": {
+    "id": "match_fmb_fr1_2025-26_20250815_rennes_marseille",
+    "competitionId": "comp_ligue_1_fr",
+    "season": "2025/26",
+    "round": "Round 1",
+    "kickoffAt": "2025-08-15T18:45:00Z",
+    "kickoffTimeKnown": true,
+    "status": "finished",
+    "venue": null,
+    "homeTeam": {
+      "id": "team_rennes_fr",
+      "name": "Rennes",
+      "shortName": "Rennes",
+      "code": "REN",
+      "logoUrl": null,
+      "country": "France",
+      "competitionId": "comp_ligue_1_fr",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_fr1_rennes"
+        }
+      ]
+    },
+    "awayTeam": {
+      "id": "team_marseille_fr",
+      "name": "Marseille",
+      "shortName": "Marseille",
+      "code": "MAR",
+      "logoUrl": null,
+      "country": "France",
+      "competitionId": "comp_ligue_1_fr",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_fr1_marseille"
+        }
+      ]
+    },
+    "score": {
+      "home": 1,
+      "away": 0
+    },
+    "minute": null,
+    "addedTime": null,
+    "period": "FT",
+    "updatedAt": "2026-10-22T13:39:00.588Z",
+    "sourceRefs": [
+      {
+        "source": "fotmob",
+        "id": "4830466"
+      }
+    ]
+  },
+  "xg": {
+    "data": {
+      "matchId": "match_fmb_fr1_2025-26_20250815_rennes_marseille",
+      "homeTeam": "Rennes",
+      "awayTeam": "Marseille",
+      "homeXG": 1.47,
+      "awayXG": 1.71,
+      "shots": [
+        {
+          "id": "2835136959",
+          "minute": 9,
+          "player": "Amine Gouiri",
+          "team": "Marseille",
+          "x": 93.5,
+          "y": 30.27,
+          "xG": 0.0724,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835139355",
+          "minute": 13,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 82.03,
+          "y": 30.27,
+          "xG": 0.0418,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835141763",
+          "minute": 17,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 98.63,
+          "y": 19.02,
+          "xG": 0.1422,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835142511",
+          "minute": 18,
+          "player": "Amine Gouiri",
+          "team": "Marseille",
+          "x": 82.82,
+          "y": 34.38,
+          "xG": 0.0573,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835143697",
+          "minute": 20,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 74.6,
+          "y": 13.58,
+          "xG": 0.0508,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835161327",
+          "minute": 38,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 83.95,
+          "y": 46.24,
+          "xG": 0.0166,
+          "result": "BlockedShot",
+          "situation": "SetPiece",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835162321",
+          "minute": 39,
+          "player": "Jonathan Rowe",
+          "team": "Marseille",
+          "x": 91.8,
+          "y": 25.3,
+          "xG": 0.0728,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835163087",
+          "minute": 39,
+          "player": "Pierre-Emile Højbjerg",
+          "team": "Marseille",
+          "x": 103.1,
+          "y": 28.29,
+          "xG": 0.2454,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835164649",
+          "minute": 41,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 81.13,
+          "y": 27.95,
+          "xG": 0.0204,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835165429",
+          "minute": 42,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 91.7,
+          "y": 33.31,
+          "xG": 0.1013,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835165475",
+          "minute": 42,
+          "player": "Valentin Rongier",
+          "team": "Rennes",
+          "x": 80.46,
+          "y": 30.49,
+          "xG": 0.0401,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835167539",
+          "minute": 44,
+          "player": "Fabian Rieder",
+          "team": "Rennes",
+          "x": 80.91,
+          "y": 14.96,
+          "xG": 0.0067,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835168721",
+          "minute": 45,
+          "player": "Jonathan Rowe",
+          "team": "Marseille",
+          "x": 97.09,
+          "y": 46.87,
+          "xG": 0.0226,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835173335",
+          "minute": 45,
+          "player": "Adrien Rabiot",
+          "team": "Marseille",
+          "x": 82.03,
+          "y": 37.76,
+          "xG": 0.0381,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835192267",
+          "minute": 49,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 91.3,
+          "y": 24.07,
+          "xG": 0.0777,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835194931",
+          "minute": 52,
+          "player": "Jonathan Rowe",
+          "team": "Marseille",
+          "x": 78.66,
+          "y": 50.59,
+          "xG": 0.0129,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835196511",
+          "minute": 54,
+          "player": "Jonathan Rowe",
+          "team": "Marseille",
+          "x": 92.3,
+          "y": 40.55,
+          "xG": 0.0666,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835197101",
+          "minute": 55,
+          "player": "Leonardo Balerdi",
+          "team": "Marseille",
+          "x": 100.07,
+          "y": 33.92,
+          "xG": 0.1883,
+          "result": "BlockedShot",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835198435",
+          "minute": 58,
+          "player": "Amir Murillo",
+          "team": "Marseille",
+          "x": 95.35,
+          "y": 38.2,
+          "xG": 0.0336,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835199629",
+          "minute": 60,
+          "player": "Jonathan Rowe",
+          "team": "Marseille",
+          "x": 103.1,
+          "y": 40.81,
+          "xG": 0.0657,
+          "result": "MissedShots",
+          "situation": "SetPiece",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835200109",
+          "minute": 61,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 94.39,
+          "y": 22.39,
+          "xG": 0.0658,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835201291",
+          "minute": 63,
+          "player": "Pierre-Emile Højbjerg",
+          "team": "Marseille",
+          "x": 96.8,
+          "y": 31.25,
+          "xG": 0.0838,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835203039",
+          "minute": 66,
+          "player": "Leonardo Balerdi",
+          "team": "Marseille",
+          "x": 101.11,
+          "y": 36.82,
+          "xG": 0.3769,
+          "result": "SavedShot",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835204819",
+          "minute": 69,
+          "player": "Amine Gouiri",
+          "team": "Marseille",
+          "x": 92,
+          "y": 55.08,
+          "xG": 0.0175,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835207845",
+          "minute": 75,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 91.6,
+          "y": 22.11,
+          "xG": 0.0234,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835208899",
+          "minute": 77,
+          "player": "Mousa Tamari",
+          "team": "Rennes",
+          "x": 89.1,
+          "y": 41.06,
+          "xG": 0.0773,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835208975",
+          "minute": 77,
+          "player": "Quentin Merlin",
+          "team": "Rennes",
+          "x": 80.91,
+          "y": 46.24,
+          "xG": 0.0295,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835210297",
+          "minute": 80,
+          "player": "Angel Gomes",
+          "team": "Marseille",
+          "x": 80.8,
+          "y": 31.1,
+          "xG": 0.0361,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835210879",
+          "minute": 82,
+          "player": "Timothy Weah",
+          "team": "Marseille",
+          "x": 79.89,
+          "y": 24.28,
+          "xG": 0.021,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835211003",
+          "minute": 82,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 90.4,
+          "y": 20.43,
+          "xG": 0.0366,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835211265",
+          "minute": 83,
+          "player": "Leonardo Balerdi",
+          "team": "Marseille",
+          "x": 97.18,
+          "y": 37.2,
+          "xG": 0.081,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835211281",
+          "minute": 83,
+          "player": "Mason Greenwood",
+          "team": "Marseille",
+          "x": 94.1,
+          "y": 42.87,
+          "xG": 0.0521,
+          "result": "BlockedShot",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835211447",
+          "minute": 83,
+          "player": "Pierre-Emile Højbjerg",
+          "team": "Marseille",
+          "x": 96.12,
+          "y": 28.03,
+          "xG": 0.0309,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835213181",
+          "minute": 88,
+          "player": "Ibrahim Salah",
+          "team": "Rennes",
+          "x": 96.89,
+          "y": 48.13,
+          "xG": 0.0218,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835213971",
+          "minute": 90,
+          "player": "Ludovic Blas",
+          "team": "Rennes",
+          "x": 90.8,
+          "y": 35.75,
+          "xG": 0.5915,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835216283",
+          "minute": 90,
+          "player": "Mahamadou Nagida",
+          "team": "Rennes",
+          "x": 96.41,
+          "y": 23.09,
+          "xG": 0.2657,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        }
+      ]
+    },
+    "meta": {
+      "sources": [
+        {
+          "name": "FotMob",
+          "license": "Unlicensed-Beta (owner-approved factual data)",
+          "url": "https://www.fotmob.com/",
+          "coverage": "Fixtures, results and live scores for cups and leagues without an open CSV feed (domestic cups, UEL, Libertadores, Sudamericana, AFC Champions League, Croatia, Hungary, Serbia, Ukraine, Egypt, Qatar, UAE)"
+        }
+      ]
+    }
+  }
+}

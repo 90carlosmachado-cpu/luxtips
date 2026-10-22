@@ -1,0 +1,465 @@
+{
+  "competition": {
+    "id": "comp_premier_league_eng",
+    "name": "Premier League",
+    "country": "England",
+    "code": "EPL",
+    "currentSeason": "2026/27",
+    "availableSeasons": [
+      "2026/27",
+      "2025/26",
+      "2024/25",
+      "2023/24",
+      "2022/23",
+      "2021/22",
+      "2020/21",
+      "2019/20",
+      "2018/19",
+      "2017/18",
+      "2016/17",
+      "2015/16",
+      "2014/15",
+      "2013/14",
+      "2012/13",
+      "2011/12",
+      "2010/11"
+    ],
+    "coverage": {
+      "fixtures": true,
+      "standings": true,
+      "matchContext": true,
+      "lineups": true,
+      "advancedStats": true,
+      "events": true
+    },
+    "source": {
+      "name": "FotMob",
+      "mode": "current",
+      "license": "Unlicensed-Beta (owner-approved factual data)",
+      "url": "https://www.fotmob.com/"
+    }
+  },
+  "match": {
+    "id": "match_fmb_epl_2025-26_20250815_liverpool_afc_bournemouth",
+    "competitionId": "comp_premier_league_eng",
+    "season": "2025/26",
+    "round": "Round 1",
+    "kickoffAt": "2025-08-15T19:00:00Z",
+    "kickoffTimeKnown": true,
+    "status": "finished",
+    "venue": null,
+    "homeTeam": {
+      "id": "team_liverpool_eng",
+      "name": "Liverpool",
+      "shortName": "Liverpool",
+      "code": "LIV",
+      "logoUrl": null,
+      "country": "England",
+      "competitionId": "comp_premier_league_eng",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_epl_liverpool"
+        }
+      ]
+    },
+    "awayTeam": {
+      "id": "team_afc_bournemouth_eng",
+      "name": "AFC Bournemouth",
+      "shortName": "AFC Bournemouth",
+      "code": "AB",
+      "logoUrl": null,
+      "country": "England",
+      "competitionId": "comp_premier_league_eng",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_epl_afc_bournemouth"
+        }
+      ]
+    },
+    "score": {
+      "home": 4,
+      "away": 2
+    },
+    "minute": null,
+    "addedTime": null,
+    "period": "FT",
+    "updatedAt": "2026-10-22T13:35:21.742Z",
+    "sourceRefs": [
+      {
+        "source": "fotmob",
+        "id": "4813374"
+      }
+    ]
+  },
+  "xg": {
+    "data": {
+      "matchId": "match_fmb_epl_2025-26_20250815_liverpool_afc_bournemouth",
+      "homeTeam": "Liverpool",
+      "awayTeam": "AFC Bournemouth",
+      "homeXG": 2.21,
+      "awayXG": 1.7,
+      "shots": [
+        {
+          "id": "2835142559",
+          "minute": 3,
+          "player": "Hugo Ekitiké",
+          "team": "Liverpool",
+          "x": 81.7,
+          "y": 47.01,
+          "xG": 0.0209,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835143711",
+          "minute": 4,
+          "player": "Mohamed Salah",
+          "team": "Liverpool",
+          "x": 91.1,
+          "y": 20.99,
+          "xG": 0.0249,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835144411",
+          "minute": 5,
+          "player": "Virgil van Dijk",
+          "team": "Liverpool",
+          "x": 96.8,
+          "y": 34.38,
+          "xG": 0.1276,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835145659",
+          "minute": 6,
+          "player": "Antoine Semenyo",
+          "team": "AFC Bournemouth",
+          "x": 96.51,
+          "y": 30.32,
+          "xG": 0.2443,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835149209",
+          "minute": 10,
+          "player": "Evanilson",
+          "team": "AFC Bournemouth",
+          "x": 100.16,
+          "y": 27.61,
+          "xG": 0.1058,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835169933",
+          "minute": 31,
+          "player": "Virgil van Dijk",
+          "team": "Liverpool",
+          "x": 96.61,
+          "y": 36.44,
+          "xG": 0.0505,
+          "result": "SavedShot",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835173349",
+          "minute": 35,
+          "player": "Marcus Tavernier",
+          "team": "AFC Bournemouth",
+          "x": 92.5,
+          "y": 35.6,
+          "xG": 0.2832,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835175299",
+          "minute": 37,
+          "player": "Hugo Ekitiké",
+          "team": "Liverpool",
+          "x": 94.58,
+          "y": 35.83,
+          "xG": 0.5487,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835176999",
+          "minute": 39,
+          "player": "Hugo Ekitiké",
+          "team": "Liverpool",
+          "x": 99.5,
+          "y": 32.7,
+          "xG": 0.3391,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835180317",
+          "minute": 42,
+          "player": "David Brooks",
+          "team": "AFC Bournemouth",
+          "x": 91,
+          "y": 46.87,
+          "xG": 0.0254,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835185369",
+          "minute": 45,
+          "player": "Marcus Tavernier",
+          "team": "AFC Bournemouth",
+          "x": 80.12,
+          "y": 21.55,
+          "xG": 0.0367,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835186253",
+          "minute": 45,
+          "player": "Mohamed Salah",
+          "team": "Liverpool",
+          "x": 90.5,
+          "y": 28.96,
+          "xG": 0.1273,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835186479",
+          "minute": 45,
+          "player": "Evanilson",
+          "team": "AFC Bournemouth",
+          "x": 93.2,
+          "y": 44.84,
+          "xG": 0.1154,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835199779",
+          "minute": 47,
+          "player": "Hugo Ekitiké",
+          "team": "Liverpool",
+          "x": 101.3,
+          "y": 35.6,
+          "xG": 0.2271,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835200893",
+          "minute": 49,
+          "player": "Cody Gakpo",
+          "team": "Liverpool",
+          "x": 90.6,
+          "y": 33.39,
+          "xG": 0.1217,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835202495",
+          "minute": 52,
+          "player": "Alexis Mac Allister",
+          "team": "Liverpool",
+          "x": 80.8,
+          "y": 23.44,
+          "xG": 0.0319,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835203279",
+          "minute": 53,
+          "player": "Jeremie Frimpong",
+          "team": "Liverpool",
+          "x": 80.12,
+          "y": 25.07,
+          "xG": 0.0081,
+          "result": "BlockedShot",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835203459",
+          "minute": 54,
+          "player": "Dominik Szoboszlai",
+          "team": "Liverpool",
+          "x": 75.05,
+          "y": 37.77,
+          "xG": 0.0087,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835208157",
+          "minute": 63,
+          "player": "Florian Wirtz",
+          "team": "Liverpool",
+          "x": 89.5,
+          "y": 30.8,
+          "xG": 0.1442,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835208631",
+          "minute": 64,
+          "player": "Antoine Semenyo",
+          "team": "AFC Bournemouth",
+          "x": 96.22,
+          "y": 34.99,
+          "xG": 0.4548,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835211217",
+          "minute": 70,
+          "player": "Cody Gakpo",
+          "team": "Liverpool",
+          "x": 90.7,
+          "y": 52.2,
+          "xG": 0.0267,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835211717",
+          "minute": 71,
+          "player": "David Brooks",
+          "team": "AFC Bournemouth",
+          "x": 96.32,
+          "y": 41.95,
+          "xG": 0.1603,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835211831",
+          "minute": 71,
+          "player": "Evanilson",
+          "team": "AFC Bournemouth",
+          "x": 96.61,
+          "y": 40.89,
+          "xG": 0.065,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "Head"
+        },
+        {
+          "id": "2835213579",
+          "minute": 76,
+          "player": "Antoine Semenyo",
+          "team": "AFC Bournemouth",
+          "x": 87.96,
+          "y": 32.7,
+          "xG": 0.2079,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835214867",
+          "minute": 80,
+          "player": "Dominik Szoboszlai",
+          "team": "Liverpool",
+          "x": 91,
+          "y": 30.22,
+          "xG": 0.0678,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2835215171",
+          "minute": 81,
+          "player": "Dominik Szoboszlai",
+          "team": "Liverpool",
+          "x": 92,
+          "y": 22.6,
+          "xG": 0.02,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835217585",
+          "minute": 88,
+          "player": "Cody Gakpo",
+          "team": "Liverpool",
+          "x": 96.51,
+          "y": 41.95,
+          "xG": 0.0492,
+          "result": "MissedShots",
+          "situation": "SetPiece",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835217703",
+          "minute": 88,
+          "player": "Federico Chiesa",
+          "team": "Liverpool",
+          "x": 95.25,
+          "y": 36.59,
+          "xG": 0.1582,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2835219487",
+          "minute": 90,
+          "player": "Mohamed Salah",
+          "team": "Liverpool",
+          "x": 95.35,
+          "y": 42.06,
+          "xG": 0.1099,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        }
+      ]
+    },
+    "meta": {
+      "sources": [
+        {
+          "name": "FotMob",
+          "license": "Unlicensed-Beta (owner-approved factual data)",
+          "url": "https://www.fotmob.com/",
+          "coverage": "Fixtures, results and live scores for cups and leagues without an open CSV feed (domestic cups, UEL, Libertadores, Sudamericana, AFC Champions League, Croatia, Hungary, Serbia, Ukraine, Egypt, Qatar, UAE)"
+        }
+      ]
+    }
+  }
+}

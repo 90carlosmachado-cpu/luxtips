@@ -1,0 +1,489 @@
+{
+  "competition": {
+    "id": "comp_bundesliga_de",
+    "name": "Bundesliga",
+    "country": "Germany",
+    "code": "DE1",
+    "currentSeason": "2026/27",
+    "availableSeasons": [
+      "2026/27",
+      "2025/26",
+      "2024/25",
+      "2023/24",
+      "2022/23",
+      "2021/22",
+      "2020/21",
+      "2019/20",
+      "2018/19",
+      "2017/18",
+      "2016/17",
+      "2015/16",
+      "2014/15",
+      "2013/14",
+      "2012/13",
+      "2011/12",
+      "2010/11"
+    ],
+    "coverage": {
+      "fixtures": true,
+      "standings": true,
+      "matchContext": true,
+      "lineups": true,
+      "advancedStats": true,
+      "events": true
+    },
+    "source": {
+      "name": "FotMob",
+      "mode": "current",
+      "license": "Unlicensed-Beta (owner-approved factual data)",
+      "url": "https://www.fotmob.com/"
+    }
+  },
+  "match": {
+    "id": "match_fmb_de1_2025-26_20250822_bayern_munchen_rb_leipzig",
+    "competitionId": "comp_bundesliga_de",
+    "season": "2025/26",
+    "round": "Round 1",
+    "kickoffAt": "2025-08-22T18:30:00Z",
+    "kickoffTimeKnown": true,
+    "status": "finished",
+    "venue": null,
+    "homeTeam": {
+      "id": "team_bayern_munich_de",
+      "name": "Bayern München",
+      "shortName": "Bayern München",
+      "code": "BMN",
+      "logoUrl": null,
+      "country": "Germany",
+      "competitionId": "comp_bundesliga_de",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_de1_bayern_munchen"
+        }
+      ]
+    },
+    "awayTeam": {
+      "id": "team_rb_leipzig_de",
+      "name": "RB Leipzig",
+      "shortName": "RB Leipzig",
+      "code": "RL",
+      "logoUrl": null,
+      "country": "Germany",
+      "competitionId": "comp_bundesliga_de",
+      "sourceRefs": [
+        {
+          "source": "fotmob",
+          "id": "team_fmb_de1_rb_leipzig"
+        }
+      ]
+    },
+    "score": {
+      "home": 6,
+      "away": 0
+    },
+    "minute": null,
+    "addedTime": null,
+    "period": "FT",
+    "updatedAt": "2026-10-22T13:38:57.506Z",
+    "sourceRefs": [
+      {
+        "source": "fotmob",
+        "id": "4824901"
+      }
+    ]
+  },
+  "xg": {
+    "data": {
+      "matchId": "match_fmb_de1_2025-26_20250822_bayern_munchen_rb_leipzig",
+      "homeTeam": "Bayern München",
+      "awayTeam": "RB Leipzig",
+      "homeXG": 1.72,
+      "awayXG": 0.54,
+      "shots": [
+        {
+          "id": "2837832663",
+          "minute": 4,
+          "player": "Michael Olise",
+          "team": "Bayern München",
+          "x": 99.4,
+          "y": 16.36,
+          "xG": 0.0144,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837841579",
+          "minute": 11,
+          "player": "Konrad Laimer",
+          "team": "Bayern München",
+          "x": 97.09,
+          "y": 23.44,
+          "xG": 0.0922,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837848059",
+          "minute": 16,
+          "player": "Serge Gnabry",
+          "team": "Bayern München",
+          "x": 83.61,
+          "y": 37.78,
+          "xG": 0.0569,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837856641",
+          "minute": 25,
+          "player": "Harry Kane",
+          "team": "Bayern München",
+          "x": 91.9,
+          "y": 29.38,
+          "xG": 0.1646,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837858005",
+          "minute": 27,
+          "player": "Michael Olise",
+          "team": "Bayern München",
+          "x": 93.4,
+          "y": 23.86,
+          "xG": 0.0732,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837859415",
+          "minute": 29,
+          "player": "David Raum",
+          "team": "RB Leipzig",
+          "x": 101.02,
+          "y": 47.01,
+          "xG": 0.0257,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837859983",
+          "minute": 29,
+          "player": "Ikoma Lois Openda",
+          "team": "RB Leipzig",
+          "x": 96.61,
+          "y": 23.02,
+          "xG": 0.0427,
+          "result": "BlockedShot",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837863083",
+          "minute": 32,
+          "player": "Luis Diaz",
+          "team": "Bayern München",
+          "x": 93.4,
+          "y": 30.8,
+          "xG": 0.2012,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837867723",
+          "minute": 36,
+          "player": "Michael Olise",
+          "team": "Bayern München",
+          "x": 83.5,
+          "y": 19.16,
+          "xG": 0.0475,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837867837",
+          "minute": 36,
+          "player": "Harry Kane",
+          "team": "Bayern München",
+          "x": 97.76,
+          "y": 22.04,
+          "xG": 0.0205,
+          "result": "SavedShot",
+          "situation": "SetPiece",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837873657",
+          "minute": 40,
+          "player": "Serge Gnabry",
+          "team": "Bayern München",
+          "x": 88.9,
+          "y": 38.12,
+          "xG": 0.0482,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837875721",
+          "minute": 42,
+          "player": "Michael Olise",
+          "team": "Bayern München",
+          "x": 96.8,
+          "y": 29.21,
+          "xG": 0.2072,
+          "result": "Goal",
+          "situation": "FromCorner",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837878799",
+          "minute": 44,
+          "player": "Xaver Schlager",
+          "team": "RB Leipzig",
+          "x": 92.6,
+          "y": 22.74,
+          "xG": 0.0475,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837885965",
+          "minute": 45,
+          "player": "Johan Bakayoko",
+          "team": "RB Leipzig",
+          "x": 95.06,
+          "y": 20.29,
+          "xG": 0.0351,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837887315",
+          "minute": 45,
+          "player": "Leon Goretzka",
+          "team": "Bayern München",
+          "x": 98.92,
+          "y": 39.55,
+          "xG": 0.0495,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        },
+        {
+          "id": "2837903115",
+          "minute": 46,
+          "player": "Johan Bakayoko",
+          "team": "RB Leipzig",
+          "x": 87.53,
+          "y": 20.99,
+          "xG": 0.0202,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837903181",
+          "minute": 46,
+          "player": "Xaver Schlager",
+          "team": "RB Leipzig",
+          "x": 80.35,
+          "y": 26.77,
+          "xG": 0.0294,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837916065",
+          "minute": 58,
+          "player": "Nicolas Seiwald",
+          "team": "RB Leipzig",
+          "x": 96.8,
+          "y": 40.64,
+          "xG": 0.0894,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837917121",
+          "minute": 59,
+          "player": "Ridle Baku",
+          "team": "RB Leipzig",
+          "x": 91,
+          "y": 20.5,
+          "xG": 0.0406,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837918709",
+          "minute": 60,
+          "player": "Michael Olise",
+          "team": "Bayern München",
+          "x": 80.46,
+          "y": 26.63,
+          "xG": 0.0167,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837920021",
+          "minute": 62,
+          "player": "Antonio Nusa",
+          "team": "RB Leipzig",
+          "x": 87.86,
+          "y": 34.23,
+          "xG": 0.133,
+          "result": "MissedShots",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837921935",
+          "minute": 64,
+          "player": "Harry Kane",
+          "team": "Bayern München",
+          "x": 100.73,
+          "y": 40.22,
+          "xG": 0.2696,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837928327",
+          "minute": 74,
+          "player": "Harry Kane",
+          "team": "Bayern München",
+          "x": 90.5,
+          "y": 49.26,
+          "xG": 0.0163,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837930853",
+          "minute": 77,
+          "player": "Harry Kane",
+          "team": "Bayern München",
+          "x": 97.38,
+          "y": 42.58,
+          "xG": 0.2784,
+          "result": "Goal",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837932593",
+          "minute": 80,
+          "player": "Lennart Karl",
+          "team": "Bayern München",
+          "x": 80.8,
+          "y": 26.94,
+          "xG": 0.0414,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837932877",
+          "minute": 81,
+          "player": "Joshua Kimmich",
+          "team": "Bayern München",
+          "x": 85.28,
+          "y": 13.32,
+          "xG": 0.0214,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837934587",
+          "minute": 83,
+          "player": "Christoph Baumgartner",
+          "team": "RB Leipzig",
+          "x": 85.82,
+          "y": 19.59,
+          "xG": 0.0283,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837937163",
+          "minute": 87,
+          "player": "Lennart Karl",
+          "team": "Bayern München",
+          "x": 86.35,
+          "y": 16.64,
+          "xG": 0.0125,
+          "result": "BlockedShot",
+          "situation": "OpenPlay",
+          "shotType": "LeftFoot"
+        },
+        {
+          "id": "2837940539",
+          "minute": 90,
+          "player": "Lennart Karl",
+          "team": "Bayern München",
+          "x": 99.78,
+          "y": 21.55,
+          "xG": 0.092,
+          "result": "SavedShot",
+          "situation": "OpenPlay",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837941533",
+          "minute": 90,
+          "player": "Antonio Nusa",
+          "team": "RB Leipzig",
+          "x": 85.71,
+          "y": 45.33,
+          "xG": 0.031,
+          "result": "BlockedShot",
+          "situation": "FromCorner",
+          "shotType": "RightFoot"
+        },
+        {
+          "id": "2837941809",
+          "minute": 90,
+          "player": "Christoph Baumgartner",
+          "team": "RB Leipzig",
+          "x": 97.76,
+          "y": 26.52,
+          "xG": 0.0184,
+          "result": "MissedShots",
+          "situation": "FromCorner",
+          "shotType": "Head"
+        }
+      ]
+    },
+    "meta": {
+      "sources": [
+        {
+          "name": "FotMob",
+          "license": "Unlicensed-Beta (owner-approved factual data)",
+          "url": "https://www.fotmob.com/",
+          "coverage": "Fixtures, results and live scores for cups and leagues without an open CSV feed (domestic cups, UEL, Libertadores, Sudamericana, AFC Champions League, Croatia, Hungary, Serbia, Ukraine, Egypt, Qatar, UAE)"
+        }
+      ]
+    }
+  }
+}

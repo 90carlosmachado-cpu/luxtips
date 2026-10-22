@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-22",
+  "summary": {
+    "matched": 1750,
+    "unmatched": 2
+  },
+  "excluded": [
+    {
+      "id": "match_fmb_it1_2025-26_20260524_torino_juventus",
+      "status": "unmatched"
+    },
+    {
+      "id": "match_fmb_fr1_2025-26_20260517_nantes_toulouse",
+      "status": "unmatched"
+    }
+  ]
+}

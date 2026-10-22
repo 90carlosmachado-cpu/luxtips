@@ -1,0 +1,998 @@
+{
+  "reviewedAt": "2026-10-22",
+  "method": "Unique kickoff, side and final-score agreement in at least three distinct matches; no competing team ID; individually reviewed names.",
+  "links": [
+    {
+      "league": 135,
+      "sourceId": "team_monza_it",
+      "sourceName": "Monza",
+      "teamId": 1579,
+      "localName": "Monza",
+      "matchingFixtures": 73,
+      "samples": [
+        {
+          "fixtureId": 1052338,
+          "sourceId": "match_fmb_it1_2023-24_20231022_roma_monza",
+          "kickoff": 1697970600000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1052350,
+          "sourceId": "match_fmb_it1_2023-24_20231029_monza_udinese",
+          "kickoff": 1698588000000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1052358,
+          "sourceId": "match_fmb_it1_2023-24_20231105_hellas_verona_monza",
+          "kickoff": 1699183800000,
+          "homeGoals": 1,
+          "awayGoals": 3
+        }
+      ]
+    },
+    {
+      "league": 135,
+      "sourceId": "team_frosinone_it",
+      "sourceName": "Frosinone",
+      "teamId": 512,
+      "localName": "Frosinone",
+      "matchingFixtures": 37,
+      "samples": [
+        {
+          "fixtureId": 1052334,
+          "sourceId": "match_fmb_it1_2023-24_20231022_bologna_frosinone",
+          "kickoff": 1697979600000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1052343,
+          "sourceId": "match_fmb_it1_2023-24_20231029_cagliari_frosinone",
+          "kickoff": 1698579000000,
+          "homeGoals": 4,
+          "awayGoals": 3
+        },
+        {
+          "fixtureId": 1052357,
+          "sourceId": "match_fmb_it1_2023-24_20231106_frosinone_empoli",
+          "kickoff": 1699291800000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 135,
+      "sourceId": "team_salernitana_it",
+      "sourceName": "Salernitana",
+      "teamId": 514,
+      "localName": "Salernitana",
+      "matchingFixtures": 30,
+      "samples": [
+        {
+          "fixtureId": 1052339,
+          "sourceId": "match_fmb_it1_2023-24_20231022_salernitana_cagliari",
+          "kickoff": 1697979600000,
+          "homeGoals": 2,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1052345,
+          "sourceId": "match_fmb_it1_2023-24_20231027_genoa_salernitana",
+          "kickoff": 1698432300000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1052361,
+          "sourceId": "match_fmb_it1_2023-24_20231104_salernitana_napoli",
+          "kickoff": 1699106400000,
+          "homeGoals": 0,
+          "awayGoals": 2
+        }
+      ]
+    },
+    {
+      "league": 135,
+      "sourceId": "team_empoli_it",
+      "sourceName": "Empoli",
+      "teamId": 511,
+      "localName": "Empoli",
+      "matchingFixtures": 64,
+      "samples": [
+        {
+          "fixtureId": 1052335,
+          "sourceId": "match_fmb_it1_2023-24_20231023_fiorentina_empoli",
+          "kickoff": 1698086700000,
+          "homeGoals": 0,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1052344,
+          "sourceId": "match_fmb_it1_2023-24_20231030_empoli_atalanta",
+          "kickoff": 1698687000000,
+          "homeGoals": 0,
+          "awayGoals": 3
+        },
+        {
+          "fixtureId": 1052357,
+          "sourceId": "match_fmb_it1_2023-24_20231106_frosinone_empoli",
+          "kickoff": 1699291800000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 135,
+      "sourceId": "team_venezia_it",
+      "sourceName": "Venezia",
+      "teamId": 517,
+      "localName": "Venezia",
+      "matchingFixtures": 43,
+      "samples": [
+        {
+          "fixtureId": 1223601,
+          "sourceId": "match_fmb_it1_2024-25_20240818_lazio_venezia",
+          "kickoff": 1724006700000,
+          "homeGoals": 3,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1223606,
+          "sourceId": "match_fmb_it1_2024-25_20240825_fiorentina_venezia",
+          "kickoff": 1724603400000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1223624,
+          "sourceId": "match_fmb_it1_2024-25_20240830_venezia_torino",
+          "kickoff": 1725035400000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_las_palmas_es",
+      "sourceName": "Las Palmas",
+      "teamId": 534,
+      "localName": "Las Palmas",
+      "matchingFixtures": 64,
+      "samples": [
+        {
+          "fixtureId": 1038042,
+          "sourceId": "match_fmb_es1_2023-24_20231022_las_palmas_rayo_vallecano",
+          "kickoff": 1697976000000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1038052,
+          "sourceId": "match_fmb_es1_2023-24_20231028_almeria_las_palmas",
+          "kickoff": 1698494400000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1038066,
+          "sourceId": "match_fmb_es1_2023-24_20231103_las_palmas_atletico_madrid",
+          "kickoff": 1699041600000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_almeria_es",
+      "sourceName": "Almería",
+      "teamId": 723,
+      "localName": "Almeria",
+      "matchingFixtures": 29,
+      "samples": [
+        {
+          "fixtureId": 1038043,
+          "sourceId": "match_fmb_es1_2023-24_20231022_girona_almeria",
+          "kickoff": 1697984100000,
+          "homeGoals": 5,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1038052,
+          "sourceId": "match_fmb_es1_2023-24_20231028_almeria_las_palmas",
+          "kickoff": 1698494400000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1038064,
+          "sourceId": "match_fmb_es1_2023-24_20231105_deportivo_alaves_almeria",
+          "kickoff": 1699189200000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_cadiz_es",
+      "sourceName": "Cádiz",
+      "teamId": 724,
+      "localName": "Cadiz",
+      "matchingFixtures": 29,
+      "samples": [
+        {
+          "fixtureId": 1038047,
+          "sourceId": "match_fmb_es1_2023-24_20231023_valencia_cadiz",
+          "kickoff": 1698087600000,
+          "homeGoals": 2,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1038056,
+          "sourceId": "match_fmb_es1_2023-24_20231028_cadiz_sevilla",
+          "kickoff": 1698519600000,
+          "homeGoals": 2,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1038068,
+          "sourceId": "match_fmb_es1_2023-24_20231106_getafe_cadiz",
+          "kickoff": 1699300800000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_granada_es",
+      "sourceName": "Granada",
+      "teamId": 715,
+      "localName": "Granada CF",
+      "matchingFixtures": 26,
+      "samples": [
+        {
+          "fixtureId": 1038058,
+          "sourceId": "match_fmb_es1_2023-24_20231030_granada_villarreal",
+          "kickoff": 1698696000000,
+          "homeGoals": 2,
+          "awayGoals": 3
+        },
+        {
+          "fixtureId": 1038071,
+          "sourceId": "match_fmb_es1_2023-24_20231105_valencia_granada",
+          "kickoff": 1699197300000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1038086,
+          "sourceId": "match_fmb_es1_2023-24_20231124_deportivo_alaves_granada",
+          "kickoff": 1700856000000,
+          "homeGoals": 3,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_leganes_es",
+      "sourceName": "Leganés",
+      "teamId": 537,
+      "localName": "Leganes",
+      "matchingFixtures": 36,
+      "samples": [
+        {
+          "fixtureId": 1208502,
+          "sourceId": "match_fmb_es1_2024-25_20240817_osasuna_leganes",
+          "kickoff": 1723914000000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208509,
+          "sourceId": "match_fmb_es1_2024-25_20240825_leganes_las_palmas",
+          "kickoff": 1724605200000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208520,
+          "sourceId": "match_fmb_es1_2024-25_20240828_real_valladolid_leganes",
+          "kickoff": 1724864400000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_real_valladolid_es",
+      "sourceName": "Real Valladolid",
+      "teamId": 720,
+      "localName": "Valladolid",
+      "matchingFixtures": 37,
+      "samples": [
+        {
+          "fixtureId": 1212910,
+          "sourceId": "match_fmb_es1_2024-25_20240819_real_valladolid_espanyol",
+          "kickoff": 1724086800000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1208506,
+          "sourceId": "match_fmb_es1_2024-25_20240825_real_madrid_real_valladolid",
+          "kickoff": 1724598000000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1208520,
+          "sourceId": "match_fmb_es1_2024-25_20240828_real_valladolid_leganes",
+          "kickoff": 1724864400000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_racing_santander_es",
+      "sourceName": "Racing Santander",
+      "teamId": 4665,
+      "localName": "Racing Santander",
+      "matchingFixtures": 9,
+      "samples": [
+        {
+          "fixtureId": 1570339,
+          "sourceId": "match_fmb_es1_2026-27_20260816_racing_santander_villarreal",
+          "kickoff": 1786892400000,
+          "homeGoals": 2,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1570348,
+          "sourceId": "match_fmb_es1_2026-27_20260823_getafe_racing_santander",
+          "kickoff": 1787506200000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1570359,
+          "sourceId": "match_fmb_es1_2026-27_20260828_racing_santander_elche",
+          "kickoff": 1787936400000,
+          "homeGoals": 3,
+          "awayGoals": 2
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_a_coruna_es",
+      "sourceName": "Deportivo A Coruña",
+      "teamId": 544,
+      "localName": "Deportivo La Coruna",
+      "matchingFixtures": 9,
+      "samples": [
+        {
+          "fixtureId": 1570337,
+          "sourceId": "match_fmb_es1_2026-27_20260817_deportivo_a_coruna_elche",
+          "kickoff": 1786993200000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1570349,
+          "sourceId": "match_fmb_es1_2026-27_20260824_malaga_deportivo_a_coruna",
+          "kickoff": 1787599800000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1570356,
+          "sourceId": "match_fmb_es1_2026-27_20260830_deportivo_a_coruna_valencia",
+          "kickoff": 1788111000000,
+          "homeGoals": 3,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 140,
+      "sourceId": "team_malaga_es",
+      "sourceName": "Málaga",
+      "teamId": 535,
+      "localName": "Malaga",
+      "matchingFixtures": 8,
+      "samples": [
+        {
+          "fixtureId": 1570349,
+          "sourceId": "match_fmb_es1_2026-27_20260824_malaga_deportivo_a_coruna",
+          "kickoff": 1787599800000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1570360,
+          "sourceId": "match_fmb_es1_2026-27_20260830_real_madrid_malaga",
+          "kickoff": 1788102000000,
+          "homeGoals": 4,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1570369,
+          "sourceId": "match_fmb_es1_2026-27_20260906_malaga_levante",
+          "kickoff": 1788712200000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_sheffield_united_eng",
+      "sourceName": "Sheffield United",
+      "teamId": 62,
+      "localName": "Sheffield Utd",
+      "matchingFixtures": 28,
+      "samples": [
+        {
+          "fixtureId": 1035128,
+          "sourceId": "match_fmb_epl_2023-24_20231028_arsenal_sheffield_united",
+          "kickoff": 1698501600000,
+          "homeGoals": 5,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1035145,
+          "sourceId": "match_fmb_epl_2023-24_20231104_sheffield_united_wolverhampton_wanderers",
+          "kickoff": 1699110000000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1035150,
+          "sourceId": "match_fmb_epl_2023-24_20231112_brighton_hove_albion_sheffield_united",
+          "kickoff": 1699797600000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_luton_town_eng",
+      "sourceName": "Luton Town",
+      "teamId": 1359,
+      "localName": "Luton",
+      "matchingFixtures": 27,
+      "samples": [
+        {
+          "fixtureId": 1035129,
+          "sourceId": "match_fmb_epl_2023-24_20231029_aston_villa_luton_town",
+          "kickoff": 1698588000000,
+          "homeGoals": 3,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1035141,
+          "sourceId": "match_fmb_epl_2023-24_20231105_luton_town_liverpool",
+          "kickoff": 1699201800000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1035154,
+          "sourceId": "match_fmb_epl_2023-24_20231111_manchester_united_luton_town",
+          "kickoff": 1699714800000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_ipswich_town_eng",
+      "sourceName": "Ipswich Town",
+      "teamId": 57,
+      "localName": "Ipswich",
+      "matchingFixtures": 40,
+      "samples": [
+        {
+          "fixtureId": 1208022,
+          "sourceId": "match_fmb_epl_2024-25_20240817_ipswich_town_liverpool",
+          "kickoff": 1723894200000,
+          "homeGoals": 0,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1208037,
+          "sourceId": "match_fmb_epl_2024-25_20240824_manchester_city_ipswich_town",
+          "kickoff": 1724508000000,
+          "homeGoals": 4,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208053,
+          "sourceId": "match_fmb_epl_2024-25_20240914_brighton_hove_albion_ipswich_town",
+          "kickoff": 1726322400000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_southampton_eng",
+      "sourceName": "Southampton",
+      "teamId": 41,
+      "localName": "Southampton",
+      "matchingFixtures": 34,
+      "samples": [
+        {
+          "fixtureId": 1208025,
+          "sourceId": "match_fmb_epl_2024-25_20240817_newcastle_united_southampton",
+          "kickoff": 1723903200000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1208038,
+          "sourceId": "match_fmb_epl_2024-25_20240824_southampton_nottingham_forest",
+          "kickoff": 1724508000000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208042,
+          "sourceId": "match_fmb_epl_2024-25_20240831_brentford_southampton",
+          "kickoff": 1725112800000,
+          "homeGoals": 3,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_leicester_city_eng",
+      "sourceName": "Leicester City",
+      "teamId": 46,
+      "localName": "Leicester",
+      "matchingFixtures": 31,
+      "samples": [
+        {
+          "fixtureId": 1208030,
+          "sourceId": "match_fmb_epl_2024-25_20240819_leicester_city_tottenham_hotspur",
+          "kickoff": 1724094000000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208035,
+          "sourceId": "match_fmb_epl_2024-25_20240824_fulham_leicester_city",
+          "kickoff": 1724508000000,
+          "homeGoals": 2,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1208046,
+          "sourceId": "match_fmb_epl_2024-25_20240831_leicester_city_aston_villa",
+          "kickoff": 1725112800000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_coventry_city_eng",
+      "sourceName": "Coventry City",
+      "teamId": 1346,
+      "localName": "Coventry",
+      "matchingFixtures": 7,
+      "samples": [
+        {
+          "fixtureId": 1557367,
+          "sourceId": "match_fmb_epl_2026-27_20260821_arsenal_coventry_city",
+          "kickoff": 1787338800000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1557380,
+          "sourceId": "match_fmb_epl_2026-27_20260829_coventry_city_hull_city",
+          "kickoff": 1788012000000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1557394,
+          "sourceId": "match_fmb_epl_2026-27_20260905_manchester_city_coventry_city",
+          "kickoff": 1788616800000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 39,
+      "sourceId": "team_hull_city_eng",
+      "sourceName": "Hull City",
+      "teamId": 64,
+      "localName": "Hull City",
+      "matchingFixtures": 6,
+      "samples": [
+        {
+          "fixtureId": 1557368,
+          "sourceId": "match_fmb_epl_2026-27_20260822_hull_city_manchester_united",
+          "kickoff": 1787398200000,
+          "homeGoals": 2,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1557380,
+          "sourceId": "match_fmb_epl_2026-27_20260829_coventry_city_hull_city",
+          "kickoff": 1788012000000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1557392,
+          "sourceId": "match_fmb_epl_2026-27_20260905_hull_city_aston_villa",
+          "kickoff": 1788625800000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_montpellier_fr",
+      "sourceName": "Montpellier",
+      "teamId": 82,
+      "localName": "Montpellier",
+      "matchingFixtures": 57,
+      "samples": [
+        {
+          "fixtureId": 1044960,
+          "sourceId": "match_fmb_fr1_2023-24_20231022_nantes_montpellier",
+          "kickoff": 1697979600000,
+          "homeGoals": 2,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1044969,
+          "sourceId": "match_fmb_fr1_2023-24_20231029_montpellier_toulouse",
+          "kickoff": 1698588000000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1044971,
+          "sourceId": "match_fmb_fr1_2023-24_20231103_paris_saint_germain_montpellier",
+          "kickoff": 1699041600000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_reims_fr",
+      "sourceName": "Reims",
+      "teamId": 93,
+      "localName": "Reims",
+      "matchingFixtures": 54,
+      "samples": [
+        {
+          "fixtureId": 1044954,
+          "sourceId": "match_fmb_fr1_2023-24_20231022_toulouse_reims",
+          "kickoff": 1697979600000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1044966,
+          "sourceId": "match_fmb_fr1_2023-24_20231028_reims_lorient",
+          "kickoff": 1698505200000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1044979,
+          "sourceId": "match_fmb_fr1_2023-24_20231105_nantes_reims",
+          "kickoff": 1699192800000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_clermont_foot_fr",
+      "sourceName": "Clermont Foot",
+      "teamId": 99,
+      "localName": "Clermont Foot",
+      "matchingFixtures": 25,
+      "samples": [
+        {
+          "fixtureId": 1044958,
+          "sourceId": "match_fmb_fr1_2023-24_20231022_lyon_clermont_foot",
+          "kickoff": 1698000300000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1044965,
+          "sourceId": "match_fmb_fr1_2023-24_20231027_clermont_foot_nice",
+          "kickoff": 1698433200000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1044972,
+          "sourceId": "match_fmb_fr1_2023-24_20231105_strasbourg_clermont_foot",
+          "kickoff": 1699192800000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_saint_etienne_fr",
+      "sourceName": "Saint-Étienne",
+      "teamId": 1063,
+      "localName": "Saint Etienne",
+      "matchingFixtures": 33,
+      "samples": [
+        {
+          "fixtureId": 1213751,
+          "sourceId": "match_fmb_fr1_2024-25_20240817_monaco_saint_etienne",
+          "kickoff": 1723921200000,
+          "homeGoals": 1,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1213759,
+          "sourceId": "match_fmb_fr1_2024-25_20240824_saint_etienne_le_havre",
+          "kickoff": 1724526000000,
+          "homeGoals": 0,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1213767,
+          "sourceId": "match_fmb_fr1_2024-25_20240831_brest_saint_etienne",
+          "kickoff": 1725116400000,
+          "homeGoals": 4,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_le_mans_fr",
+      "sourceName": "Le Mans",
+      "teamId": 1298,
+      "localName": "Le Mans",
+      "matchingFixtures": 7,
+      "samples": [
+        {
+          "fixtureId": 1552731,
+          "sourceId": "match_fmb_fr1_2026-27_20260822_le_mans_brest",
+          "kickoff": 1787424300000,
+          "homeGoals": 2,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1552744,
+          "sourceId": "match_fmb_fr1_2026-27_20260830_rennes_le_mans",
+          "kickoff": 1788102900000,
+          "homeGoals": 3,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1552752,
+          "sourceId": "match_fmb_fr1_2026-27_20260905_nice_le_mans",
+          "kickoff": 1788633900000,
+          "homeGoals": 1,
+          "awayGoals": 1
+        }
+      ]
+    },
+    {
+      "league": 61,
+      "sourceId": "team_troyes_fr",
+      "sourceName": "Troyes",
+      "teamId": 110,
+      "localName": "Estac Troyes",
+      "matchingFixtures": 6,
+      "samples": [
+        {
+          "fixtureId": 1552740,
+          "sourceId": "match_fmb_fr1_2026-27_20260829_lorient_troyes",
+          "kickoff": 1788029100000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1552755,
+          "sourceId": "match_fmb_fr1_2026-27_20260906_troyes_strasbourg",
+          "kickoff": 1788699600000,
+          "homeGoals": 2,
+          "awayGoals": 6
+        },
+        {
+          "fixtureId": 1552760,
+          "sourceId": "match_fmb_fr1_2026-27_20260913_lille_troyes",
+          "kickoff": 1789304400000,
+          "homeGoals": 2,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 78,
+      "sourceId": "team_darmstadt_de",
+      "sourceName": "Darmstadt",
+      "teamId": 181,
+      "localName": "SV Darmstadt 98",
+      "matchingFixtures": 21,
+      "samples": [
+        {
+          "fixtureId": 1048953,
+          "sourceId": "match_fmb_de1_2023-24_20231028_bayern_munchen_darmstadt",
+          "kickoff": 1698499800000,
+          "homeGoals": 8,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1048970,
+          "sourceId": "match_fmb_de1_2023-24_20231103_darmstadt_bochum",
+          "kickoff": 1699039800000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1048979,
+          "sourceId": "match_fmb_de1_2023-24_20231111_darmstadt_mainz_05",
+          "kickoff": 1699713000000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 78,
+      "sourceId": "team_holstein_kiel_de",
+      "sourceName": "Holstein Kiel",
+      "teamId": 191,
+      "localName": "Holstein Kiel",
+      "matchingFixtures": 31,
+      "samples": [
+        {
+          "fixtureId": 1223978,
+          "sourceId": "match_fmb_de1_2024-25_20240824_hoffenheim_holstein_kiel",
+          "kickoff": 1724506200000,
+          "homeGoals": 3,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1224001,
+          "sourceId": "match_fmb_de1_2024-25_20240914_holstein_kiel_bayern_munchen",
+          "kickoff": 1726331400000,
+          "homeGoals": 1,
+          "awayGoals": 6
+        },
+        {
+          "fixtureId": 1224009,
+          "sourceId": "match_fmb_de1_2024-25_20240921_bochum_holstein_kiel",
+          "kickoff": 1726925400000,
+          "homeGoals": 2,
+          "awayGoals": 2
+        }
+      ]
+    },
+    {
+      "league": 78,
+      "sourceId": "team_paderborn_de",
+      "sourceName": "Paderborn",
+      "teamId": 185,
+      "localName": "SC Paderborn 07",
+      "matchingFixtures": 6,
+      "samples": [
+        {
+          "fixtureId": 1575146,
+          "sourceId": "match_fmb_de1_2026-27_20260829_mainz_05_paderborn",
+          "kickoff": 1788010200000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1575157,
+          "sourceId": "match_fmb_de1_2026-27_20260905_paderborn_freiburg",
+          "kickoff": 1788615000000,
+          "homeGoals": 0,
+          "awayGoals": 1
+        },
+        {
+          "fixtureId": 1575158,
+          "sourceId": "match_fmb_de1_2026-27_20260912_borussia_dortmund_paderborn",
+          "kickoff": 1789219800000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        }
+      ]
+    },
+    {
+      "league": 78,
+      "sourceId": "team_schalke_04_de",
+      "sourceName": "Schalke 04",
+      "teamId": 174,
+      "localName": "FC Schalke 04",
+      "matchingFixtures": 6,
+      "samples": [
+        {
+          "fixtureId": 1575141,
+          "sourceId": "match_fmb_de1_2026-27_20260830_augsburg_schalke_04",
+          "kickoff": 1788103800000,
+          "homeGoals": 3,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1575156,
+          "sourceId": "match_fmb_de1_2026-27_20260905_schalke_04_bayern_munchen",
+          "kickoff": 1788625800000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        },
+        {
+          "fixtureId": 1575164,
+          "sourceId": "match_fmb_de1_2026-27_20260911_union_berlin_schalke_04",
+          "kickoff": 1789151400000,
+          "homeGoals": 1,
+          "awayGoals": 3
+        }
+      ]
+    },
+    {
+      "league": 78,
+      "sourceId": "team_elversberg_de",
+      "sourceName": "Elversberg",
+      "teamId": 1660,
+      "localName": "SV Elversberg",
+      "matchingFixtures": 5,
+      "samples": [
+        {
+          "fixtureId": 1575153,
+          "sourceId": "match_fmb_de1_2026-27_20260905_borussia_monchengladbach_elversberg",
+          "kickoff": 1788615000000,
+          "homeGoals": 3,
+          "awayGoals": 4
+        },
+        {
+          "fixtureId": 1575166,
+          "sourceId": "match_fmb_de1_2026-27_20260913_elversberg_bayern_munchen",
+          "kickoff": 1789313400000,
+          "homeGoals": 1,
+          "awayGoals": 2
+        },
+        {
+          "fixtureId": 1575173,
+          "sourceId": "match_fmb_de1_2026-27_20260920_schalke_04_elversberg",
+          "kickoff": 1789918200000,
+          "homeGoals": 0,
+          "awayGoals": 0
+        }
+      ]
+    }
+  ]
+}

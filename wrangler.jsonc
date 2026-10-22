@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "luxtips",
+  "main": "src/cloudflare-entry.mjs",
+  "account_id": "d8f0f66327f248f01e25aaca1d60a1e8",
+  "compatibility_date": "2026-10-18",
+  "workers_dev": true,
+  "preview_urls": false,
+  "keep_vars": true,
+  "limits": { "cpu_ms": 30000 },
+  "browser": { "binding": "FOOTBALL_BROWSER" },
+  "durable_objects": { "bindings": [{ "name": "FOOTBALL_RELAY", "class_name": "FootballRelay" }] },
+  "migrations": [{ "tag": "v1-football-relay", "new_sqlite_classes": ["FootballRelay"] }],
+  "containers": [{ "class_name": "FootballRelay", "scheduling_policy": "durable_object" }],
+  "vars": {
+    "LEAGUES": "94,39,140,78,135,61,88,2,3,848",
+    "DAILY_BUDGET": "6000",
+    "OPENFOOT_MODE": "live",
+    "OPENFOOT_DAILY_BUDGET": "500",
+    "PREDICTION_CONTEXT_MODE": "live",
+    "FOOTBALL_API_TRANSPORT": "container"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "luxtips-analysis",
+    "database_id": "efc001a1-1d87-4a21-b94d-372980392f1c",
+    "migrations_dir": "migrations"
+  }],
+  "triggers": { "crons": ["* * * * *"] },
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 }
+}

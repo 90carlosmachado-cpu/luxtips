@@ -1,0 +1,2356 @@
+{
+  "reviewedAt": "2026-10-22",
+  "method": "Repeated agreement of league, season, exact kickoff, side and full-time score; at least 3 fixtures and no competing team ID. Names reviewed separately. Unresolved teams use exact-name matching only.",
+  "links": [
+    {
+      "league": 39,
+      "sourceId": "team_liverpool_eng",
+      "teamId": 40,
+      "sourceName": "Liverpool",
+      "localName": "Liverpool",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250815_liverpool_afc_bournemouth",
+            "fixtureId": 1378969
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250825_newcastle_united_liverpool",
+            "fixtureId": 1378987
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_liverpool_arsenal",
+            "fixtureId": 1378993
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_afc_bournemouth_eng",
+      "teamId": 35,
+      "sourceName": "AFC Bournemouth",
+      "localName": "Bournemouth",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250815_liverpool_afc_bournemouth",
+            "fixtureId": 1378969
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_tottenham_hotspur_afc_bournemouth",
+            "fixtureId": 1378997
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250913_afc_bournemouth_brighton_hove_albion",
+            "fixtureId": 1379000
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_aston_villa_eng",
+      "teamId": 66,
+      "sourceName": "Aston Villa",
+      "localName": "Aston Villa",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_aston_villa_newcastle_united",
+            "fixtureId": 1378970
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_aston_villa_crystal_palace",
+            "fixtureId": 1378989
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250921_sunderland_aston_villa",
+            "fixtureId": 1379016
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_newcastle_united_eng",
+      "teamId": 34,
+      "sourceName": "Newcastle United",
+      "localName": "Newcastle",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 34,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_aston_villa_newcastle_united",
+            "fixtureId": 1378970
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250825_newcastle_united_liverpool",
+            "fixtureId": 1378987
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_leeds_united_newcastle_united",
+            "fixtureId": 1378992
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_brighton_and_hove_albion_eng",
+      "teamId": 51,
+      "sourceName": "Brighton & Hove Albion",
+      "localName": "Brighton",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 29,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_brighton_hove_albion_fulham",
+            "fixtureId": 1378971
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_everton_brighton_hove_albion",
+            "fixtureId": 1378984
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_brighton_hove_albion_manchester_city",
+            "fixtureId": 1378990
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_fulham_eng",
+      "teamId": 36,
+      "sourceName": "Fulham",
+      "localName": "Fulham",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_brighton_hove_albion_fulham",
+            "fixtureId": 1378971
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_fulham_manchester_united",
+            "fixtureId": 1378985
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_chelsea_fulham",
+            "fixtureId": 1378991
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_wolverhampton_wanderers_eng",
+      "teamId": 39,
+      "sourceName": "Wolverhampton Wanderers",
+      "localName": "Wolves",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_wolverhampton_wanderers_manchester_city",
+            "fixtureId": 1378975
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_wolverhampton_wanderers_everton",
+            "fixtureId": 1378998
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250920_wolverhampton_wanderers_leeds_united",
+            "fixtureId": 1379018
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_manchester_city_eng",
+      "teamId": 50,
+      "sourceName": "Manchester City",
+      "localName": "Manchester City",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250816_wolverhampton_wanderers_manchester_city",
+            "fixtureId": 1378975
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_manchester_city_tottenham_hotspur",
+            "fixtureId": 1378986
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_brighton_hove_albion_manchester_city",
+            "fixtureId": 1378990
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_chelsea_eng",
+      "teamId": 49,
+      "sourceName": "Chelsea",
+      "localName": "Chelsea",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 35,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_chelsea_crystal_palace",
+            "fixtureId": 1378976
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250822_west_ham_united_chelsea",
+            "fixtureId": 1378988
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_chelsea_fulham",
+            "fixtureId": 1378991
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_crystal_palace_eng",
+      "teamId": 52,
+      "sourceName": "Crystal Palace",
+      "localName": "Crystal Palace",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 29,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_chelsea_crystal_palace",
+            "fixtureId": 1378976
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_crystal_palace_nottingham_forest",
+            "fixtureId": 1378983
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_aston_villa_crystal_palace",
+            "fixtureId": 1378989
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_nottingham_forest_eng",
+      "teamId": 65,
+      "sourceName": "Nottingham Forest",
+      "localName": "Nottingham Forest",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_nottingham_forest_brentford",
+            "fixtureId": 1378972
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_crystal_palace_nottingham_forest",
+            "fixtureId": 1378983
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_nottingham_forest_west_ham_united",
+            "fixtureId": 1378995
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_brentford_eng",
+      "teamId": 55,
+      "sourceName": "Brentford",
+      "localName": "Brentford",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_nottingham_forest_brentford",
+            "fixtureId": 1378972
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_sunderland_brentford",
+            "fixtureId": 1378996
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250913_brentford_chelsea",
+            "fixtureId": 1379001
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_manchester_united_eng",
+      "teamId": 33,
+      "sourceName": "Manchester United",
+      "localName": "Manchester United",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_manchester_united_arsenal",
+            "fixtureId": 1378977
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_fulham_manchester_united",
+            "fixtureId": 1378985
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_manchester_united_burnley",
+            "fixtureId": 1378994
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_arsenal_eng",
+      "teamId": 42,
+      "sourceName": "Arsenal",
+      "localName": "Arsenal",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250817_manchester_united_arsenal",
+            "fixtureId": 1378977
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_arsenal_leeds_united",
+            "fixtureId": 1378979
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_liverpool_arsenal",
+            "fixtureId": 1378993
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_leeds_united_eng",
+      "teamId": 63,
+      "sourceName": "Leeds United",
+      "localName": "Leeds",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250818_leeds_united_everton",
+            "fixtureId": 1378978
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_arsenal_leeds_united",
+            "fixtureId": 1378979
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_leeds_united_newcastle_united",
+            "fixtureId": 1378992
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_everton_eng",
+      "teamId": 45,
+      "sourceName": "Everton",
+      "localName": "Everton",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250818_leeds_united_everton",
+            "fixtureId": 1378978
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250824_everton_brighton_hove_albion",
+            "fixtureId": 1378984
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_wolverhampton_wanderers_everton",
+            "fixtureId": 1378998
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_west_ham_united_eng",
+      "teamId": 48,
+      "sourceName": "West Ham United",
+      "localName": "West Ham",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250822_west_ham_united_chelsea",
+            "fixtureId": 1378988
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250831_nottingham_forest_west_ham_united",
+            "fixtureId": 1378995
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250913_west_ham_united_tottenham_hotspur",
+            "fixtureId": 1379008
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_tottenham_eng",
+      "teamId": 47,
+      "sourceName": "Tottenham Hotspur",
+      "localName": "Tottenham",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 34,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_manchester_city_tottenham_hotspur",
+            "fixtureId": 1378986
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_tottenham_hotspur_afc_bournemouth",
+            "fixtureId": 1378997
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250913_west_ham_united_tottenham_hotspur",
+            "fixtureId": 1379008
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_burnley_eng",
+      "teamId": 44,
+      "sourceName": "Burnley",
+      "localName": "Burnley",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_burnley_sunderland",
+            "fixtureId": 1378982
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_manchester_united_burnley",
+            "fixtureId": 1378994
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250914_burnley_liverpool",
+            "fixtureId": 1379002
+          }
+        ]
+      }
+    },
+    {
+      "league": 39,
+      "sourceId": "team_sunderland_eng",
+      "teamId": 746,
+      "sourceName": "Sunderland",
+      "localName": "Sunderland",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250823_burnley_sunderland",
+            "fixtureId": 1378982
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250830_sunderland_brentford",
+            "fixtureId": 1378996
+          },
+          {
+            "sourceId": "match_fmb_epl_2025-26_20250921_sunderland_aston_villa",
+            "fixtureId": 1379016
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_girona_es",
+      "teamId": 547,
+      "sourceName": "Girona",
+      "localName": "Girona",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250815_girona_rayo_vallecano",
+            "fixtureId": 1390824
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_villarreal_girona",
+            "fixtureId": 1390838
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_girona_sevilla",
+            "fixtureId": 1390844
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_rayo_vallecano_es",
+      "teamId": 728,
+      "sourceName": "Rayo Vallecano",
+      "localName": "Rayo Vallecano",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250815_girona_rayo_vallecano",
+            "fixtureId": 1390824
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250825_athletic_club_rayo_vallecano",
+            "fixtureId": 1390829
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_rayo_vallecano_barcelona",
+            "fixtureId": 1390845
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_villarreal_es",
+      "teamId": 533,
+      "sourceName": "Villarreal",
+      "localName": "Villarreal",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250815_villarreal_real_oviedo",
+            "fixtureId": 1390828
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_villarreal_girona",
+            "fixtureId": 1390838
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_celta_vigo_villarreal",
+            "fixtureId": 1390841
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_real_oviedo_es",
+      "teamId": 718,
+      "sourceName": "Real Oviedo",
+      "localName": "Oviedo",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250815_villarreal_real_oviedo",
+            "fixtureId": 1390828
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_real_oviedo_real_madrid",
+            "fixtureId": 1390836
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_real_oviedo_real_sociedad",
+            "fixtureId": 1390847
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_mallorca_es",
+      "teamId": 798,
+      "sourceName": "Mallorca",
+      "localName": "Mallorca",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_mallorca_barcelona",
+            "fixtureId": 1390825
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_mallorca_celta_vigo",
+            "fixtureId": 1390833
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_real_madrid_mallorca",
+            "fixtureId": 1390846
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_barcelona_es",
+      "teamId": 529,
+      "sourceName": "Barcelona",
+      "localName": "Barcelona",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_mallorca_barcelona",
+            "fixtureId": 1390825
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_levante_barcelona",
+            "fixtureId": 1390832
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_rayo_vallecano_barcelona",
+            "fixtureId": 1390845
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_alaves_es",
+      "teamId": 542,
+      "sourceName": "Deportivo Alavés",
+      "localName": "Alaves",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_deportivo_alaves_levante",
+            "fixtureId": 1390819
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250822_real_betis_deportivo_alaves",
+            "fixtureId": 1390831
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_deportivo_alaves_atletico_madrid",
+            "fixtureId": 1390839
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_levante_es",
+      "teamId": 539,
+      "sourceName": "Levante",
+      "localName": "Levante",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_deportivo_alaves_levante",
+            "fixtureId": 1390819
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_levante_barcelona",
+            "fixtureId": 1390832
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250829_elche_levante",
+            "fixtureId": 1390842
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_valencia_es",
+      "teamId": 532,
+      "sourceName": "Valencia",
+      "localName": "Valencia",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_valencia_real_sociedad",
+            "fixtureId": 1390827
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_osasuna_valencia",
+            "fixtureId": 1390834
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250829_valencia_getafe",
+            "fixtureId": 1390848
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_real_sociedad_es",
+      "teamId": 548,
+      "sourceName": "Real Sociedad",
+      "localName": "Real Sociedad",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250816_valencia_real_sociedad",
+            "fixtureId": 1390827
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_real_sociedad_espanyol",
+            "fixtureId": 1390835
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_real_oviedo_real_sociedad",
+            "fixtureId": 1390847
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_celta_vigo_es",
+      "teamId": 538,
+      "sourceName": "Celta Vigo",
+      "localName": "Celta Vigo",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_celta_vigo_getafe",
+            "fixtureId": 1390821
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_mallorca_celta_vigo",
+            "fixtureId": 1390833
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250827_celta_vigo_real_betis",
+            "fixtureId": 1390871
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_getafe_es",
+      "teamId": 546,
+      "sourceName": "Getafe",
+      "localName": "Getafe",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_celta_vigo_getafe",
+            "fixtureId": 1390821
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250825_sevilla_getafe",
+            "fixtureId": 1390837
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250829_valencia_getafe",
+            "fixtureId": 1390848
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_athletic_club_es",
+      "teamId": 531,
+      "sourceName": "Athletic Club",
+      "localName": "Athletic Club",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_athletic_club_sevilla",
+            "fixtureId": 1390820
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250825_athletic_club_rayo_vallecano",
+            "fixtureId": 1390829
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_real_betis_athletic_club",
+            "fixtureId": 1390840
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_sevilla_es",
+      "teamId": 536,
+      "sourceName": "Sevilla",
+      "localName": "Sevilla",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_athletic_club_sevilla",
+            "fixtureId": 1390820
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250825_sevilla_getafe",
+            "fixtureId": 1390837
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_girona_sevilla",
+            "fixtureId": 1390844
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_espanyol_es",
+      "teamId": 540,
+      "sourceName": "Espanyol",
+      "localName": "Espanyol",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_espanyol_atletico_madrid",
+            "fixtureId": 1390823
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_real_sociedad_espanyol",
+            "fixtureId": 1390835
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_espanyol_osasuna",
+            "fixtureId": 1390843
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_atletico_madrid_es",
+      "teamId": 530,
+      "sourceName": "Atlético Madrid",
+      "localName": "Atletico Madrid",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250817_espanyol_atletico_madrid",
+            "fixtureId": 1390823
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_atletico_madrid_elche",
+            "fixtureId": 1390830
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_deportivo_alaves_atletico_madrid",
+            "fixtureId": 1390839
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_elche_es",
+      "teamId": 797,
+      "sourceName": "Elche",
+      "localName": "Elche",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250818_elche_real_betis",
+            "fixtureId": 1390822
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250823_atletico_madrid_elche",
+            "fixtureId": 1390830
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250829_elche_levante",
+            "fixtureId": 1390842
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_real_betis_es",
+      "teamId": 543,
+      "sourceName": "Real Betis",
+      "localName": "Real Betis",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250818_elche_real_betis",
+            "fixtureId": 1390822
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250822_real_betis_deportivo_alaves",
+            "fixtureId": 1390831
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250827_celta_vigo_real_betis",
+            "fixtureId": 1390871
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_real_madrid_es",
+      "teamId": 541,
+      "sourceName": "Real Madrid",
+      "localName": "Real Madrid",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250819_real_madrid_osasuna",
+            "fixtureId": 1390826
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_real_oviedo_real_madrid",
+            "fixtureId": 1390836
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250830_real_madrid_mallorca",
+            "fixtureId": 1390846
+          }
+        ]
+      }
+    },
+    {
+      "league": 140,
+      "sourceId": "team_osasuna_es",
+      "teamId": 727,
+      "sourceName": "Osasuna",
+      "localName": "Osasuna",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250819_real_madrid_osasuna",
+            "fixtureId": 1390826
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250824_osasuna_valencia",
+            "fixtureId": 1390834
+          },
+          {
+            "sourceId": "match_fmb_es1_2025-26_20250831_espanyol_osasuna",
+            "fixtureId": 1390843
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_bayern_munich_de",
+      "teamId": 157,
+      "sourceName": "Bayern München",
+      "localName": "Bayern München",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250822_bayern_munchen_rb_leipzig",
+            "fixtureId": 1388308
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_augsburg_bayern_munchen",
+            "fixtureId": 1388317
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_bayern_munchen_hamburger_sv",
+            "fixtureId": 1388327
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_rb_leipzig_de",
+      "teamId": 173,
+      "sourceName": "RB Leipzig",
+      "localName": "RB Leipzig",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250822_bayern_munchen_rb_leipzig",
+            "fixtureId": 1388308
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_rb_leipzig_fc_heidenheim",
+            "fixtureId": 1388322
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_mainz_05_rb_leipzig",
+            "fixtureId": 1388331
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_bayer_leverkusen_de",
+      "teamId": 168,
+      "sourceName": "Bayer Leverkusen",
+      "localName": "Bayer Leverkusen",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_bayer_leverkusen_hoffenheim",
+            "fixtureId": 1388309
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_werder_bremen_bayer_leverkusen",
+            "fixtureId": 1388324
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250912_bayer_leverkusen_eintracht_frankfurt",
+            "fixtureId": 1388326
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_hoffenheim_de",
+      "teamId": 167,
+      "sourceName": "Hoffenheim",
+      "localName": "1899 Hoffenheim",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 27,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_bayer_leverkusen_hoffenheim",
+            "fixtureId": 1388309
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_hoffenheim_eintracht_frankfurt",
+            "fixtureId": 1388321
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_union_berlin_hoffenheim",
+            "fixtureId": 1388333
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_eintracht_frankfurt_de",
+      "teamId": 169,
+      "sourceName": "Eintracht Frankfurt",
+      "localName": "Eintracht Frankfurt",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_eintracht_frankfurt_werder_bremen",
+            "fixtureId": 1388311
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_hoffenheim_eintracht_frankfurt",
+            "fixtureId": 1388321
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250912_bayer_leverkusen_eintracht_frankfurt",
+            "fixtureId": 1388326
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_werder_bremen_de",
+      "teamId": 162,
+      "sourceName": "Werder Bremen",
+      "localName": "Werder Bremen",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_eintracht_frankfurt_werder_bremen",
+            "fixtureId": 1388311
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_werder_bremen_bayer_leverkusen",
+            "fixtureId": 1388324
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250914_borussia_monchengladbach_werder_bremen",
+            "fixtureId": 1388328
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_union_berlin_de",
+      "teamId": 182,
+      "sourceName": "Union Berlin",
+      "localName": "Union Berlin",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_union_berlin_vfb_stuttgart",
+            "fixtureId": 1388316
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_borussia_dortmund_union_berlin",
+            "fixtureId": 1388318
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_union_berlin_hoffenheim",
+            "fixtureId": 1388333
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_stuttgart_de",
+      "teamId": 172,
+      "sourceName": "VfB Stuttgart",
+      "localName": "VfB Stuttgart",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_union_berlin_vfb_stuttgart",
+            "fixtureId": 1388316
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_vfb_stuttgart_borussia_monchengladbach",
+            "fixtureId": 1388323
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_freiburg_vfb_stuttgart",
+            "fixtureId": 1388329
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_st_pauli_de",
+      "teamId": 186,
+      "sourceName": "St. Pauli",
+      "localName": "FC St. Pauli",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 34,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_st_pauli_borussia_dortmund",
+            "fixtureId": 1388315
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250829_hamburger_sv_st_pauli",
+            "fixtureId": 1388320
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250914_st_pauli_augsburg",
+            "fixtureId": 1388332
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_borussia_dortmund_de",
+      "teamId": 165,
+      "sourceName": "Borussia Dortmund",
+      "localName": "Borussia Dortmund",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250823_st_pauli_borussia_dortmund",
+            "fixtureId": 1388315
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_borussia_dortmund_union_berlin",
+            "fixtureId": 1388318
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_fc_heidenheim_borussia_dortmund",
+            "fixtureId": 1388330
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_mainz_05_de",
+      "teamId": 164,
+      "sourceName": "Mainz 05",
+      "localName": "FSV Mainz 05",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 28,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250824_mainz_05_1_fc_koln",
+            "fixtureId": 1388314
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_wolfsburg_mainz_05",
+            "fixtureId": 1388325
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_mainz_05_rb_leipzig",
+            "fixtureId": 1388331
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_koln_de",
+      "teamId": 192,
+      "sourceName": "1. FC Köln",
+      "localName": "1. FC Köln",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250824_mainz_05_1_fc_koln",
+            "fixtureId": 1388314
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_1_fc_koln_freiburg",
+            "fixtureId": 1388319
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_wolfsburg_1_fc_koln",
+            "fixtureId": 1388334
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_borussia_m_gladbach_de",
+      "teamId": 163,
+      "sourceName": "Borussia Mönchengladbach",
+      "localName": "Borussia Mönchengladbach",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 28,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250824_borussia_monchengladbach_hamburger_sv",
+            "fixtureId": 1388310
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_vfb_stuttgart_borussia_monchengladbach",
+            "fixtureId": 1388323
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250914_borussia_monchengladbach_werder_bremen",
+            "fixtureId": 1388328
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_hamburger_de",
+      "teamId": 175,
+      "sourceName": "Hamburger SV",
+      "localName": "Hamburger SV",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250824_borussia_monchengladbach_hamburger_sv",
+            "fixtureId": 1388310
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250829_hamburger_sv_st_pauli",
+            "fixtureId": 1388320
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_bayern_munchen_hamburger_sv",
+            "fixtureId": 1388327
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_fc_heidenheim_de",
+      "teamId": 180,
+      "sourceName": "FC Heidenheim",
+      "localName": "1. FC Heidenheim",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 28,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_rb_leipzig_fc_heidenheim",
+            "fixtureId": 1388322
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_fc_heidenheim_borussia_dortmund",
+            "fixtureId": 1388330
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250920_hamburger_sv_fc_heidenheim",
+            "fixtureId": 1388339
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_augsburg_de",
+      "teamId": 170,
+      "sourceName": "Augsburg",
+      "localName": "FC Augsburg",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 28,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250830_augsburg_bayern_munchen",
+            "fixtureId": 1388317
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250914_st_pauli_augsburg",
+            "fixtureId": 1388332
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250927_fc_heidenheim_augsburg",
+            "fixtureId": 1388348
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_wolfsburg_de",
+      "teamId": 161,
+      "sourceName": "Wolfsburg",
+      "localName": "VfL Wolfsburg",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_wolfsburg_mainz_05",
+            "fixtureId": 1388325
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_wolfsburg_1_fc_koln",
+            "fixtureId": 1388334
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250921_borussia_dortmund_wolfsburg",
+            "fixtureId": 1388337
+          }
+        ]
+      }
+    },
+    {
+      "league": 78,
+      "sourceId": "team_freiburg_de",
+      "teamId": 160,
+      "sourceName": "Freiburg",
+      "localName": "SC Freiburg",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250831_1_fc_koln_freiburg",
+            "fixtureId": 1388319
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250913_freiburg_vfb_stuttgart",
+            "fixtureId": 1388329
+          },
+          {
+            "sourceId": "match_fmb_de1_2025-26_20250920_werder_bremen_freiburg",
+            "fixtureId": 1388343
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_genoa_it",
+      "teamId": 495,
+      "sourceName": "Genoa",
+      "localName": "Genoa",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_genoa_lecce",
+            "fixtureId": 1377867
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_genoa_juventus",
+            "fixtureId": 1377876
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250915_como_genoa",
+            "fixtureId": 1377886
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_lecce_it",
+      "teamId": 867,
+      "sourceName": "Lecce",
+      "localName": "Lecce",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_genoa_lecce",
+            "fixtureId": 1377867
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250829_lecce_milan",
+            "fixtureId": 1377879
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_atalanta_lecce",
+            "fixtureId": 1377884
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_sassuolo_it",
+      "teamId": 488,
+      "sourceName": "Sassuolo",
+      "localName": "Sassuolo",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_sassuolo_napoli",
+            "fixtureId": 1377872
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250829_cremonese_sassuolo",
+            "fixtureId": 1377875
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_sassuolo_lazio",
+            "fixtureId": 1377892
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_napoli_it",
+      "teamId": 492,
+      "sourceName": "Napoli",
+      "localName": "Napoli",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_sassuolo_napoli",
+            "fixtureId": 1377872
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_napoli_cagliari",
+            "fixtureId": 1377880
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_fiorentina_napoli",
+            "fixtureId": 1377887
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_milan_it",
+      "teamId": 489,
+      "sourceName": "Milan",
+      "localName": "AC Milan",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_milan_cremonese",
+            "fixtureId": 1377870
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250829_lecce_milan",
+            "fixtureId": 1377879
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_milan_bologna",
+            "fixtureId": 1377889
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_cremonese_it",
+      "teamId": 520,
+      "sourceName": "Cremonese",
+      "localName": "Cremonese",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_milan_cremonese",
+            "fixtureId": 1377870
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250829_cremonese_sassuolo",
+            "fixtureId": 1377875
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250915_hellas_verona_cremonese",
+            "fixtureId": 1377893
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_roma_it",
+      "teamId": 497,
+      "sourceName": "Roma",
+      "localName": "AS Roma",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_roma_bologna",
+            "fixtureId": 1377871
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_pisa_roma",
+            "fixtureId": 1377882
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_roma_torino",
+            "fixtureId": 1377891
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_bologna_it",
+      "teamId": 500,
+      "sourceName": "Bologna",
+      "localName": "Bologna",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250823_roma_bologna",
+            "fixtureId": 1377871
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_bologna_como",
+            "fixtureId": 1377874
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_milan_bologna",
+            "fixtureId": 1377889
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_cagliari_it",
+      "teamId": 490,
+      "sourceName": "Cagliari",
+      "localName": "Cagliari",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_cagliari_fiorentina",
+            "fixtureId": 1377865
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_napoli_cagliari",
+            "fixtureId": 1377880
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_cagliari_parma",
+            "fixtureId": 1377885
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_fiorentina_it",
+      "teamId": 502,
+      "sourceName": "Fiorentina",
+      "localName": "Fiorentina",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_cagliari_fiorentina",
+            "fixtureId": 1377865
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_torino_fiorentina",
+            "fixtureId": 1377883
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_fiorentina_napoli",
+            "fixtureId": 1377887
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_como_it",
+      "teamId": 895,
+      "sourceName": "Como",
+      "localName": "Como",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 35,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_como_lazio",
+            "fixtureId": 1377866
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_bologna_como",
+            "fixtureId": 1377874
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250915_como_genoa",
+            "fixtureId": 1377886
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_lazio_it",
+      "teamId": 487,
+      "sourceName": "Lazio",
+      "localName": "Lazio",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_como_lazio",
+            "fixtureId": 1377866
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_lazio_hellas_verona",
+            "fixtureId": 1377878
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_sassuolo_lazio",
+            "fixtureId": 1377892
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_atalanta_it",
+      "teamId": 499,
+      "sourceName": "Atalanta",
+      "localName": "Atalanta",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_atalanta_pisa",
+            "fixtureId": 1377864
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_parma_atalanta",
+            "fixtureId": 1377881
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_atalanta_lecce",
+            "fixtureId": 1377884
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_pisa_it",
+      "teamId": 801,
+      "sourceName": "Pisa",
+      "localName": "Pisa",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_atalanta_pisa",
+            "fixtureId": 1377864
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_pisa_roma",
+            "fixtureId": 1377882
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_pisa_udinese",
+            "fixtureId": 1377890
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_juventus_it",
+      "teamId": 496,
+      "sourceName": "Juventus",
+      "localName": "Juventus",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 36,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_juventus_parma",
+            "fixtureId": 1377869
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_genoa_juventus",
+            "fixtureId": 1377876
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_juventus_inter",
+            "fixtureId": 1377888
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_parma_it",
+      "teamId": 523,
+      "sourceName": "Parma",
+      "localName": "Parma",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250824_juventus_parma",
+            "fixtureId": 1377869
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250830_parma_atalanta",
+            "fixtureId": 1377881
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_cagliari_parma",
+            "fixtureId": 1377885
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_udinese_it",
+      "teamId": 494,
+      "sourceName": "Udinese",
+      "localName": "Udinese",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250825_udinese_hellas_verona",
+            "fixtureId": 1377873
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_inter_udinese",
+            "fixtureId": 1377877
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_pisa_udinese",
+            "fixtureId": 1377890
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_hellas_verona_it",
+      "teamId": 504,
+      "sourceName": "Hellas Verona",
+      "localName": "Hellas Verona",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 35,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250825_udinese_hellas_verona",
+            "fixtureId": 1377873
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_lazio_hellas_verona",
+            "fixtureId": 1377878
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250915_hellas_verona_cremonese",
+            "fixtureId": 1377893
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_inter_it",
+      "teamId": 505,
+      "sourceName": "Inter",
+      "localName": "Inter",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 38,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250825_inter_torino",
+            "fixtureId": 1377868
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_inter_udinese",
+            "fixtureId": 1377877
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250913_juventus_inter",
+            "fixtureId": 1377888
+          }
+        ]
+      }
+    },
+    {
+      "league": 135,
+      "sourceId": "team_torino_it",
+      "teamId": 503,
+      "sourceName": "Torino",
+      "localName": "Torino",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 37,
+        "samples": [
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250825_inter_torino",
+            "fixtureId": 1377868
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250831_torino_fiorentina",
+            "fixtureId": 1377883
+          },
+          {
+            "sourceId": "match_fmb_it1_2025-26_20250914_roma_torino",
+            "fixtureId": 1377891
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_rennes_fr",
+      "teamId": 94,
+      "sourceName": "Rennes",
+      "localName": "Rennes",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250815_rennes_marseille",
+            "fixtureId": 1387706
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_lorient_rennes",
+            "fixtureId": 1387709
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_angers_rennes",
+            "fixtureId": 1387716
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_marseille_fr",
+      "teamId": 81,
+      "sourceName": "Marseille",
+      "localName": "Marseille",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250815_rennes_marseille",
+            "fixtureId": 1387706
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_marseille_paris_fc",
+            "fixtureId": 1387711
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_lyon_marseille",
+            "fixtureId": 1387720
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_lens_fr",
+      "teamId": 116,
+      "sourceName": "Lens",
+      "localName": "Lens",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250816_lens_lyon",
+            "fixtureId": 1387701
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_le_havre_lens",
+            "fixtureId": 1387707
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250829_lens_brest",
+            "fixtureId": 1387718
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_lyon_fr",
+      "teamId": 80,
+      "sourceName": "Lyon",
+      "localName": "Lyon",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 33,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250816_lens_lyon",
+            "fixtureId": 1387701
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_lyon_metz",
+            "fixtureId": 1387710
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_lyon_marseille",
+            "fixtureId": 1387720
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_monaco_fr",
+      "teamId": 91,
+      "sourceName": "Monaco",
+      "localName": "Monaco",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250816_monaco_le_havre",
+            "fixtureId": 1387703
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_lille_monaco",
+            "fixtureId": 1387708
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250913_auxerre_monaco",
+            "fixtureId": 1387725
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_le_havre_fr",
+      "teamId": 111,
+      "sourceName": "Le Havre",
+      "localName": "Le Havre",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250816_monaco_le_havre",
+            "fixtureId": 1387703
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_le_havre_lens",
+            "fixtureId": 1387707
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_le_havre_nice",
+            "fixtureId": 1387717
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_nice_fr",
+      "teamId": 84,
+      "sourceName": "Nice",
+      "localName": "Nice",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250816_nice_toulouse",
+            "fixtureId": 1387705
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_nice_auxerre",
+            "fixtureId": 1387712
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_le_havre_nice",
+            "fixtureId": 1387717
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_brest_fr",
+      "teamId": 106,
+      "sourceName": "Brest",
+      "localName": "Stade Brestois 29",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 34,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250817_brest_lille",
+            "fixtureId": 1387700
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_toulouse_brest",
+            "fixtureId": 1387715
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250829_lens_brest",
+            "fixtureId": 1387718
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_lille_fr",
+      "teamId": 79,
+      "sourceName": "Lille",
+      "localName": "Lille",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250817_brest_lille",
+            "fixtureId": 1387700
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_lille_monaco",
+            "fixtureId": 1387708
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250830_lorient_lille",
+            "fixtureId": 1387719
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_metz_fr",
+      "teamId": 112,
+      "sourceName": "Metz",
+      "localName": "Metz",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250817_metz_strasbourg",
+            "fixtureId": 1387702
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_lyon_metz",
+            "fixtureId": 1387710
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250914_metz_angers",
+            "fixtureId": 1387729
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_strasbourg_fr",
+      "teamId": 95,
+      "sourceName": "Strasbourg",
+      "localName": "Strasbourg",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 32,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250817_metz_strasbourg",
+            "fixtureId": 1387702
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_strasbourg_nantes",
+            "fixtureId": 1387714
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250914_strasbourg_le_havre",
+            "fixtureId": 1387733
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_paris_saint_germain_fr",
+      "teamId": 85,
+      "sourceName": "Paris Saint-Germain",
+      "localName": "Paris Saint Germain",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 34,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250817_nantes_paris_saint_germain",
+            "fixtureId": 1387704
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250822_paris_saint_germain_angers",
+            "fixtureId": 1387713
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250830_toulouse_paris_saint_germain",
+            "fixtureId": 1387724
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_angers_fr",
+      "teamId": 77,
+      "sourceName": "Angers",
+      "localName": "Angers",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250822_paris_saint_germain_angers",
+            "fixtureId": 1387713
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250831_angers_rennes",
+            "fixtureId": 1387716
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250914_metz_angers",
+            "fixtureId": 1387729
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_paris_fr",
+      "teamId": 114,
+      "sourceName": "Paris FC",
+      "localName": "Paris FC",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 30,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_marseille_paris_fc",
+            "fixtureId": 1387711
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250914_brest_paris_fc",
+            "fixtureId": 1387726
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250921_paris_fc_strasbourg",
+            "fixtureId": 1387742
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_auxerre_fr",
+      "teamId": 108,
+      "sourceName": "Auxerre",
+      "localName": "Auxerre",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 29,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250823_nice_auxerre",
+            "fixtureId": 1387712
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250830_nantes_auxerre",
+            "fixtureId": 1387722
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250913_auxerre_monaco",
+            "fixtureId": 1387725
+          }
+        ]
+      }
+    },
+    {
+      "league": 61,
+      "sourceId": "team_lorient_fr",
+      "teamId": 97,
+      "sourceName": "Lorient",
+      "localName": "Lorient",
+      "evidence": {
+        "season": "2025/26",
+        "matchingFixtures": 31,
+        "samples": [
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250824_lorient_rennes",
+            "fixtureId": 1387709
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250830_lorient_lille",
+            "fixtureId": 1387719
+          },
+          {
+            "sourceId": "match_fmb_fr1_2025-26_20250912_marseille_lorient",
+            "fixtureId": 1387728
+          }
+        ]
+      }
+    }
+  ]
+}
