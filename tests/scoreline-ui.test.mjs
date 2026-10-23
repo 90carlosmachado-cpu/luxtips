@@ -15,8 +15,9 @@ test('one actual modal score appears in both card types, including draws despite
  assert.equal(luxg.topScores[0].home,1);assert.equal(luxg.topScores[0].away,1);
  const g={fixture,prediction:{luxg},winnerTip:{odd:1.5},winnerAnalysis:{mostLikelyScore:luxg.topScores[0],quote:null,value:{},modelProbability:.65}};
  for(const rendered of [ui.card(g),ui.winnerCard({...g,prediction:undefined})]){
-  assert.equal((rendered.match(/Resultado mais provável:/g)||[]).length,1);
-  assert.ok(rendered.includes('<strong>1–1</strong>'));
+  assert.equal((rendered.match(/Resultado exato mais provável:/g)||[]).length,1);
+  assert.ok(rendered.includes('<strong>1–1 · 11,2%</strong>'));
+  assert.ok(!rendered.includes('1–1 · 65'));
   assert.ok(!rendered.includes('topScores'));
  }
 });

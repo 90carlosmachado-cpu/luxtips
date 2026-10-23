@@ -10,7 +10,7 @@ export function winnerUI(html){
  const render=`      function scoreline(g) {
         const s=g.prediction?.luxg?.topScores?.[0]??g.winnerAnalysis?.mostLikelyScore;
         const valid=s&&Number.isInteger(s.home)&&s.home>=0&&Number.isInteger(s.away)&&s.away>=0&&Number.isFinite(s.probability)&&s.probability>0&&s.probability<=1;
-        return '<p class="scoreline">Resultado mais provável: <strong>'+(valid?s.home+'–'+s.away:'Indisponível')+'</strong></p>';
+        return '<p class="scoreline">Resultado exato mais provável: <strong>'+(valid?s.home+'–'+s.away+' · '+(100*s.probability).toFixed(1).replace('.',',')+'%':'Indisponível')+'</strong></p>';
       }
       function winnerCard(g) {
         const a=g.winnerAnalysis,q=a.quote,f=g.fixture;

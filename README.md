@@ -140,3 +140,7 @@ com modelo 50,01% e odd 1,62. A referência/odd de 09:53:15 Lisboa expirou às
 15:53:15; sem modelo >=60%, a análise deixou de entrar. O registo D1 permaneceu.
 EV bruto -18,98%; após reserva -21,28%. A nova regra impede esse cartão mesmo
 com referência fresca. Validação: 112 testes, check e build Wrangler concluídos.
+
+O resultado exato mais provável mostra a sua própria probabilidade (por exemplo,
+2–1 · 9,4%), distinta da probabilidade agregada de vitória. Não são alteradas
+as distribuições nem escolhidos placares artificiais para variar a apresentação.
