@@ -54,11 +54,11 @@ test('unpriced favorites cannot occupy publication slots ahead of a qualified al
   db.sql.exec('CREATE TABLE published_picks(day TEXT,fixture_id INTEGER,kickoff INTEGER,market TEXT,alternative INTEGER,published_at INTEGER,recorded_at INTEGER,recovered INTEGER,data TEXT,PRIMARY KEY(day,fixture_id));CREATE TABLE published_alternatives(day TEXT PRIMARY KEY,fixture_id INTEGER,kickoff INTEGER,market TEXT,published_at INTEGER,recorded_at INTEGER,data TEXT);');
   db.sql.exec(readFileSync(new URL('../migrations/0002_publication_archive.sql',import.meta.url),'utf8'));
   const game=(id,p)=>({fixture:{id,ts:now+3*3600000,home:id,away:id+10,homeName:'H'+id,awayName:'A'+id,status:'NS',finished:false},
-   prediction:{probabilities:{H:p,D:.15,A:1-p-.15,U35:.8},contextAdjustment:{uncertainty:{spread:{H:.02,D:.01,A:.01}}}},
-   winnerTip:{market:'H',probability:p,majority:true,sourceUpdatedAt:now,risks:[]},odds:{H:{odd:1.25,at:now,bookmaker:'B'}}});
+   sourceUpdatedAt:now,prediction:{sample:20,cutoff:now,probabilities:{H:p,D:.15,A:1-p-.15,U35:.8},contextAdjustment:{uncertainty:{spread:{H:.02,D:.01,A:.01,U35:.02}}}},
+   winnerTip:{market:'H',probability:p,majority:true,sourceUpdatedAt:now,risks:[]},odds:{H:{fixtureId:id,odd:1.25,at:now,observedAt:now,source:'API-Football',verifiedReceipt:true,market:'H',selection:'H',bookmaker:'B'}}});
   const favorites=[game(1,.75),game(2,.7),game(3,.65)],alternative=game(4,.55);
   alternative.prediction.probabilities.U35=scenario==='low_probability'?.69:.8;
-  alternative.odds.U35={odd:scenario==='negative_ev'?1.25:1.4,at:scenario==='stale'?now-6*3600000:now,bookmaker:'B'};
+  alternative.odds.U35={fixtureId:4,odd:scenario==='negative_ev'?1.25:1.4,at:scenario==='stale'?now-6*3600000:now,observedAt:now,source:'API-Football',verifiedReceipt:true,market:'U35',selection:'U35',bookmaker:'B'};
   await publishDailyPicks(db,[...favorites,alternative],now);
   const saved=db.sql.prepare('SELECT fixture_id,market FROM openfoot_current_picks').all();
   assert.equal(saved.length,scenario==='valid'?1:0,scenario);

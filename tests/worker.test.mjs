@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import worker from '../src/worker.mjs';
 import legacy from '../src/legacy-worker.mjs';
-test('public HTML and validation responses remain identical to the deployed snapshot', async () => {
+test('wrapper preserves the generated HTML and non-live routes', async () => {
   for (const path of ['/', '/index.html', '/api/validation', '/missing']) {
     const req = new Request('https://luxtips.test' + path);
     const a = await legacy.fetch(req, {}, {}), b = await worker.fetch(req, {}, {});

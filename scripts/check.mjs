@@ -16,4 +16,4 @@ for (const p of ['src', 'scripts', 'tests']) await visit(p);
 const baseline = await readFile('recovered/worker.mjs', 'utf8');
 const recovered = await readFile('src/legacy-worker.mjs', 'utf8');
 assert.equal(recovered, patchedLegacy(baseline));
-console.log('Sintaxe válida; apenas o hook OpenFoot autorizado difere do bundle recuperado.');
+console.log('Sintaxe válida; bundle gerado coincide com as adaptações auditáveis do original recuperado.');

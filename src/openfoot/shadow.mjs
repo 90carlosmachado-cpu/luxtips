@@ -1,5 +1,6 @@
-import { fit2, predict2 } from '../legacy-worker.mjs';
+import { predict2 } from '../legacy-worker.mjs';
 import { competitionFor } from './config.mjs';
+import {fitStrength} from './strength.mjs';
 
 export const SHADOW_VERSION = 'openfoot-xg-shadow-v1';
 export const SHADOW_OPTIONS = Object.freeze({ xgWeight: 0.5, minimumMatches: 12, minimumCoverage: 0.7 });
@@ -55,8 +56,8 @@ export function shadowPrediction(history, observations, fixture, cutoff, options
   });
   // Keep the deployed mixture and its hyperparameters fixed: only historical
   // training targets change. The controlled baseline uses identical history/time.
-  const candidate = predict2(fit2(blended, cutoff), fixture);
-  const control = predict2(fit2(eligible, cutoff), fixture);
+  const candidate = predict2(fitStrength(blended, cutoff,options.prior??8), fixture);
+  const control = predict2(fitStrength(eligible, cutoff,options.prior??8), fixture);
   const { homeGoals, awayGoals, probabilities, luxg, components } = candidate;
   return { status: 'ready', version: SHADOW_VERSION, experimental: true, publicationEligible: false,
     cutoff, fixtureId: fixture.id, league: fixture.league, teams,

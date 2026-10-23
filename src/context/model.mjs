@@ -1,6 +1,7 @@
+import {assessMarket} from './policy.mjs';
 import {grid,mixtureProjection,extraGoalMarkets} from '../legacy-worker.mjs';
 import {availabilityFeatures,marketReference} from './features.mjs';
-export const CONTEXT_VERSION='luxtips-events-xg-live-v2';
+export const CONTEXT_VERSION='luxtips-events-xg-prior4-live-v3';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export function contextPrediction(history,fixture,base,sources,quotes,now){
  if(now>=fixture.ts||fixture.finished||fixture.status!=='NS')return base;
@@ -35,15 +36,5 @@ export function contextPrediction(history,fixture,base,sources,quotes,now){
  };
 }
 export function selectionAssessment(g,now){
- const p=g.prediction,tip=g.displayTip||g.winnerTip;
- if(!p)return {eligible:false,reason:'missing_prediction'};
- if(!tip)return {eligible:false,reason:p.sample<12?'insufficient_effective_sample':'winner_unavailable'};
- const q=g.odds?.[tip.market];
- if(!q||!Number.isFinite(q.odd)||q.odd<1.25||!Number.isFinite(q.at)||q.at>now||now-q.at>=6*3600000)return {eligible:false,reason:'missing_recent_real_odds'};
- const spread=p.contextAdjustment?.uncertainty?.spread;
- const reserve=spread?.[tip.market]??0;
- const conservativeProbability=Math.max(0,tip.probability-reserve),expectedReturn=conservativeProbability*q.odd-1;
- return {eligible:expectedReturn>=.03,reason:expectedReturn>=.03?'positive_expected_return_after_model_disagreement':'insufficient_expected_return',
-  probability:tip.probability,conservativeProbability,modelDisagreement:reserve,odd:q.odd,expectedReturn,minimumExpectedReturn:.03,
-  uncertaintyKind:'component disagreement; does not account for all model error'};
+ return assessMarket(g,(g.displayTip||g.winnerTip)?.market,now);
 }

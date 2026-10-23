@@ -6,10 +6,10 @@ import {marketCandidates,publishMarketPicks} from '../src/context/selection.mjs'
 import {selectionAssessment,contextPrediction} from '../src/context/model.mjs';
 import {enrichPrediction} from '../src/openfoot/live.mjs';
 import {fit2,predict2,applyPricing} from '../src/legacy-worker.mjs';
-const now=Date.parse('2026-10-22T12:00:00Z'),DAY=86400000;
+const now=Date.now(),DAY=86400000;
 function game(id=1){return {fixture:{id,ts:now+3600000,home:id,away:id+100,homeName:'Casa',awayName:'Fora',status:'NS',finished:false},sourceUpdatedAt:now,
- prediction:{sample:20,probabilities:{H:.4,D:.3,A:.3,U35:.8},risks:[],contextAdjustment:{uncertainty:{spread:{H:.25,D:.2,A:.2,U35:.01}}}},winnerTip:null,
- odds:{U35:{odd:1.4,at:now,bookmaker:'B'}}};}
+ prediction:{sample:20,cutoff:now,probabilities:{H:.4,D:.3,A:.3,U35:.8},risks:[],contextAdjustment:{uncertainty:{spread:{H:.25,D:.2,A:.2,U35:.01}}}},winnerTip:null,
+ odds:{U35:{fixtureId:id,odd:1.4,at:now,observedAt:now,source:'API-Football',verifiedReceipt:true,market:'U35',selection:'U35',bookmaker:'B'}}};}
 test('balanced fixture can publish an independently qualified goals market despite large 1X2 disagreement',()=>{
  const g=game();const candidates=marketCandidates(g,now);assert.equal(candidates.length,1);assert.equal(candidates[0].market,'U35');
  assert.equal(selectionAssessment({...g,displayTip:{market:'U35',probability:.8}},now).modelDisagreement,.01);

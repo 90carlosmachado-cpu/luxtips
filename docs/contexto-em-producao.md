@@ -1,103 +1,72 @@
-# Contexto em produção — 22-10-2026
+# Contexto e operação do LuxTips
 
-Ativação pedida explicitamente pelo utilizador, sem fase comparativa.
-Versão final: `luxtips-events-xg-live-v2`. Nenhum compromisso de maior taxa de acerto.
+## Estado de publicação
 
-O utilizador delimitou o âmbito final: expulsões, evolução do marcador,
-lesões/onzes, xG sem penáltis e por bolas paradas. Pressão, progressão de bola e
-qualidade pós-remate são objeto de auditoria de cobertura. Descanso e efeitos
-numéricos individuais de jogadores deixaram de integrar a versão ativa.
+Modelo publicado: `luxtips-events-xg-prior4-live-v3`, release
+`2026-10-23-strength-reschedule-v8`, publicada em 23-10-2026, 07:48 UTC. Ver
+[revisao-robustez.md](revisao-robustez.md) para alterações, protocolo e validação.
+Mistura temporal e peso máximo do xG mantidos. Regularização da força base/xG
+reduzida de 8 para 4 nas cinco ligas com xG, por pedido explícito do utilizador.
+Outras ligas e modelos de detalhe mantêm prior 8. A melhoria retrospetiva é
+modesta e não demonstra rentabilidade futura. Avaliação prospetiva própria da v3,
+sem reutilizar métricas nem reescrever publicações das versões anteriores.
 
-O cálculo conserva força ofensiva/defensiva, adversários, fator casa, mistura
-temporal e xG. Jogos com expulsões confirmadas são excluídos do ajuste de força.
-Uma amostra recente completa permite ajustar separadamente xG de jogo corrido
-e de bolas paradas, retirando penáltis. O efeito do marcador usa taxas empíricas
-por estado empatado/a ganhar/a perder e exposição em minutos, com fatores
-limitados a 0,75–1,25. Os dois modelos sem penáltis são somados, acrescentando a
-taxa observada de golos de penálti da liga para voltar à previsão de golos totais.
-O detalhe entra com peso amostraEfetiva/(amostraEfetiva+40), limitado a 35%.
-São aproximações observacionais não calibradas prospetivamente, ativadas por
-pedido explícito. Não confundir estes limites com coeficientes demonstrados.
+Jogos reagendados com a mesma identidade deixam de ficar presos à cache antiga:
+recalculam para o novo início e voltam a consultar fontes correspondentes a esse
+início. Publicações/snapshots existentes são preservados. Mudanças de identidade
+continuam excluídas com motivo interno.
 
-O detalhe exige >=30 jogos completos na liga, >=12 jogos limpos por equipa,
-amostra efetiva >=12 e observação recente até 45 dias. O xG total usa agora peso por equipa: até 50%, multiplicado pela
-fração de amostra até 12 jogos e cobertura até 70%, com redução para dados
-mais antigos que 45 dias e exclusão após 90 dias. Só observações com identidade,
-resultado e relógios reconciliados entram. A ausência numa equipa não desativa
-o xG da outra; jogos sem observações não recebem xG inventado. Os acontecimentos têm de reconciliar o
-marcador final e os penáltis têm de corresponder a remates identificados. A ordem
-dentro do mesmo minuto permanece desconhecida salvo um remate de golo
-inequivocamente associado ao acontecimento. A parte ambígua fica sem correção.
-Os jogos com dados incompletos conservam o modelo de xG total disponível.
+## Dados e cálculo mantidos
 
-Lesões e onzes são informação contextual com relógio de origem, visível na
-estrutura já usada pelo site. Um onze confirmado prevalece sobre um boletim
-contraditório. Não há nesta versão quantificação causal do impacto individual
-de uma ausência, nem probabilidades inventadas de disponibilidade.
+Dez competições; só Premier League, La Liga, Bundesliga, Serie A e Ligue 1 usam
+OpenFootAPI/FotMob. Correspondências entre fornecedores exigem identidade e
+resultados reconciliados, sem associações aproximadas ou xG inventado.
 
-Odds: conservar casa, mercado, seleção, relógio do fornecedor e primeira recolha.
-O consenso 1X2 retira a margem dentro de cada casa e instante; não juntar
-cotações de casas diferentes para retirar uma margem fictícia. A primeira e
-última cotação observada não são apresentadas como abertura/fecho oficiais.
-A publicação exige odd >=1,25, odds reais recentes, os limiares de probabilidade
-existentes, e pelo menos 3% de retorno esperado depois de descontar a maior
-divergência entre os componentes temporais. Esta reserva não mede todo o erro
-nem constitui intervalo estatístico de confiança.
+Mantém força ofensiva/defensiva, adversários, fator casa e mistura temporal.
+XG total tem peso por equipa até 50%, multiplicado pela fração de amostra até
+12 jogos e cobertura até 70%. Reduz-se após 45 dias e exclui-se após 90 dias.
+Dados insuficientes de uma equipa não anulam automaticamente o xG da outra.
 
-Recolha: API-Football existente, cache com relógio explícito,
-máximo de 10 pedidos por execução e 1500/dia, dentro do orçamento global de
-6000/dia, inferior ao Pro de 7500/dia. Nenhuma nova subscrição de dados ou chave.
-Workers Paid foi ativado pelo utilizador. O transporte final é um Container
-Cloudflare `lite`, ligado ao Durable Object `FootballRelay`. A chave é fornecida
-apenas no ambiente de execução do Node, sem a incluir no código, imagem ou URL.
-O relay só aceita os endpoints desportivos necessários, não segue redirecionamentos,
-preserva os cabeçalhos reais de limites e desliga após 60 segundos de inatividade.
-A imagem gerida `cloudflare/debian-trixie` evita Docker local e dependências novas.
-Gate global com intervalo de 1,2 segundos e lease da sequência completa; backoff
-do fornecedor respeitado. Consumo de Containers segundo as franquias do Paid e
-eventuais excedentes. O ensaio Browser Run não é o transporte ativo.
-Cron por minuto: dados, contexto e cinco cálculos sequenciais. Nenhum pedido
-público inicia tarefas em background que dependam do limite HTTP de 30 segundos.
-A auditoria avançada fica limitada a uma tentativa diária para não atrasar onzes.
-Falhas individuais de endpoints avançam a fila e voltam no ciclo seguinte;
-limites partilhados preservam o cursor e respeitam backoff. XG mantém orçamento e cobertura:
->=12 jogos, >=70% do histórico de três anos, observação recente até 45 dias.
-Uma importação manual separada recolhe os últimos 20 jogos disponíveis de cada
-equipa atual, com remates e acontecimentos. Os totais originais são preservados;
-detalhes novos são acrescentados a `openfoot_match_details`, sem reescrever
-observações anteriores ou fingir que foram recolhidos no passado. Novos jogos
-recolhem xG e acontecimentos pelo importador normal.
+Detalhes: >=30 jogos completos na liga, >=12 jogos limpos por equipa, amostra
+efetiva >=12 e dados recentes até 45 dias. Usam-se xG sem penáltis, jogo corrido,
+bolas paradas e evolução do marcador. Partidas com expulsões confirmadas são
+excluídas do ajuste de força. Estados empatado/a ganhar/a perder usam exposição
+em minutos e fatores empíricos limitados a 0,75–1,25. Acrescenta-se a taxa observada
+de golos de penálti da liga. O detalhe tem peso amostra/(amostra+40), até 35%.
+São aproximações observacionais, sem eficácia prospetiva demonstrada.
 
-Limitações que permanecem: encaixe tático completo, pressão/progressões,
-post-shot xG, meteorologia e estado real
-do relvado, viagens/altitude, qualidade causal de jogadores, cenários
-probabilísticos fiáveis de minutos e regras específicas de eliminatórias.
-Não se afirma ter implementado integralmente o sistema ideal do texto.
-Ausência de dados permanece explícita nos riscos e metadados.
+Lesões/onzes são contexto; não têm efeito individual arbitrário nas probabilidades.
+Um onze confirmado prevalece sobre boletins contraditórios. Pressão/progressões,
+qualidade pós-remate, meteorologia, impacto causal de jogadores e cenários de
+minutos não estão implementados. Posse, passes, remates e defesas não substituem
+essas métricas. Ausência de dados permanece explícita.
 
-Tabelas aditivas `openfoot_context_*` e `openfoot_market_quotes`, com
-triggers de imutabilidade e limites pré-jogo. Recalcular caches/previsões
-operacionais está autorizado; conservar os ledgers de publicação originais.
-A recolha comparativa de xG é desativada em modo live.
+## Operação preservada
 
-Estado protegido: `GET /api/admin/openfoot?context=1`. A auditoria por liga em
-`openfoot_coverage_audit` distingue campos numéricos reais de ausências, erros
-de acesso e aproximações. Uma resposta limitada por quota não prova ausência de
-uma métrica. Remates, posse, passes e defesas não equivalem às métricas avançadas.
+Cloudflare Paid, CPU até 30000 ms. Cron por minuto; leituras públicas sem trabalhos
+de manutenção. API-Football usa Container privado `FootballRelay`, imagem gerida
+`cloudflare/debian-trixie`, chave apenas no ambiente de execução. Desliga após
+60 s de inatividade. Gate global D1, espaçamento de 1,2 s e backoff. Não regressar
+a fetch direto ou Browser Run sem verificar as limitações de saída já encontradas.
 
-Métricas próprias
-Brier/log loss apenas para previsões realmente registadas antes do início,
-sem comparação de modelos. Não herdar métricas do modelo antigo como evidência
-do modelo contextual. Reversão: desativar `PREDICTION_CONTEXT_MODE` e
-`OPENFOOT_MODE`, preservando todos os dados.
+Quotas: API-Football 6000/dia, contexto até 1500/dia e OpenFoot 500/dia. XG nos
+minutos 7/37. Nenhuma nova subscrição, serviço ou aumento de recursos/limites.
+Os consumos faturados não foram aferidos nesta revisão local.
 
-## Seleção independente de mercados — correção autorizada
+## Seleção, odds e avaliação
 
-`context/selection.mjs` avalia cada mercado de forma independente do favorito
-1X2. Mantém 60% para vitórias, 70% para alternativas, amostra efetiva >=12, odd
->=1,25, odds de idade <6h e EV conservador >=3%. A divergência é agora calculada
-para o próprio mercado, incluindo mercados adicionais de golos. A seleção usa
-a maior probabilidade conservadora, depois EV, com até três jogos por dia e
-uma seleção por jogo. Várias alternativas são permitidas; handicaps continuam
-excluídos por não haver validação da convenção de sinal das odds do fornecedor.
-Publicações existentes permanecem imutáveis. Nenhuma garantia de maior acerto.
+A revisão local centraliza critérios, remove o veto global e implementa recolha
+paginada com estados explícitos. Mantém 60%/70%, amostra 12, odd 1,25, idade <6h,
+EV conservador >=3%, até três jogos/dia e uma seleção/jogo. O prazo de espera de
+15 min é por dia; não bloqueia outros dias nem reescreve publicações existentes.
+
+Odds têm casa, mercado, seleção, relógio do fornecedor e instante de observação.
+Primeira/última cotação observada não são abertura/fecho oficiais. Odds derivadas
+de probabilidades não são preços de casas. A divergência específica do mercado
+não é intervalo de confiança nem garantia de acerto.
+
+Protocolo estatístico antecipado, calibração, comparação passiva, ROI teórico,
+limites e exclusões estão documentados em [revisao-robustez.md](revisao-robustez.md).
+Os ledgers `openfoot_context_forecasts`, fontes e publicações mantêm imutabilidade.
+O relatório atual é protegido em `GET /api/admin/openfoot?context=1`. Os resultados
+antigos não são atribuídos ao modelo atual. Não há comparação técnica na página.

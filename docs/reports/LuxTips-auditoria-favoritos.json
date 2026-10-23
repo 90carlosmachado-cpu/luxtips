@@ -1,0 +1,492 @@
+{
+  "at": "2026-10-23T08:27:59.522Z",
+  "sourceHash": "d50790073cfe2b0c64cac1dabe222beed420788f900635fe390d3f686e0ee69d",
+  "method": "Frozen prior4/xG50 research predictions. Favorite = larger H/A probability, fixed sample12 and 60% subsets. 5000 resamples of whole UTC days, fixed seed. No parameter search.",
+  "limitations": [
+    "Exploratory reconstruction using previously downloaded historical sources; source availability at historical cutoff cannot be established.",
+    "Base strength plus adaptive xG component, not a backtest of full production v3 with contextual detail adjustments.",
+    "2025 and 2026 were already inspected in prior research. No new untouched validation set.",
+    "No historical bookmaker-odds benchmark or ROI: historical pre-match receipt clocks are absent."
+  ],
+  "years": {
+    "2025": {
+      "all": {
+        "n": 1755,
+        "days": 182,
+        "meanProbability": 0.50314691606109,
+        "observedWinRate": 0.5230769230769231,
+        "underestimation": 0.01993000701583314,
+        "biasInterval95": [
+          -0.0035580788699883883,
+          0.04299378791029644
+        ],
+        "brier": 0.2355682716511384,
+        "logLoss": 0.6634451065443807
+      },
+      "sample12": {
+        "n": 1557,
+        "days": 174,
+        "meanProbability": 0.5038891280610021,
+        "observedWinRate": 0.5317919075144508,
+        "underestimation": 0.027902779453448767,
+        "biasInterval95": [
+          0.0008774585651633421,
+          0.05464117019908533
+        ],
+        "brier": 0.23669612467008042,
+        "logLoss": 0.6658315561606818
+      },
+      "winner60sample12": {
+        "n": 269,
+        "days": 111,
+        "meanProbability": 0.6742802975218279,
+        "observedWinRate": 0.758364312267658,
+        "underestimation": 0.08408401474583005,
+        "biasInterval95": [
+          0.030714281353822023,
+          0.13391184570136075
+        ],
+        "brier": 0.19061808325906163,
+        "logLoss": 0.57042186591388
+      },
+      "bins": [
+        {
+          "low": 0,
+          "high": 0.4,
+          "n": 237,
+          "days": 108,
+          "meanProbability": 0.38291245457468887,
+          "observedWinRate": 0.4219409282700422,
+          "underestimation": 0.03902847369535334,
+          "biasInterval95": [
+            -0.02280195946176315,
+            0.10258430058674362
+          ],
+          "brier": 0.24436163149349277,
+          "logLoss": 0.6818323757094158
+        },
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 617,
+          "days": 157,
+          "meanProbability": 0.44727274316500215,
+          "observedWinRate": 0.4586709886547812,
+          "underestimation": 0.011398245489779024,
+          "biasInterval95": [
+            -0.029122253824319252,
+            0.0525878540556887
+          ],
+          "brier": 0.24780726559390553,
+          "logLoss": 0.6887656005427725
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 434,
+          "days": 131,
+          "meanProbability": 0.5448305025129028,
+          "observedWinRate": 0.5552995391705069,
+          "underestimation": 0.010469036657604125,
+          "biasInterval95": [
+            -0.03491706342904518,
+            0.05551028905160892
+          ],
+          "brier": 0.24527376078163726,
+          "logLoss": 0.6836258120583518
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 191,
+          "days": 101,
+          "meanProbability": 0.6403663126297634,
+          "observedWinRate": 0.743455497382199,
+          "underestimation": 0.10308918475243556,
+          "biasInterval95": [
+            0.03661149283662289,
+            0.16530977452183485
+          ],
+          "brier": 0.20065794721818506,
+          "logLoss": 0.5919127729743857
+        },
+        {
+          "low": 0.7,
+          "high": 0.8,
+          "n": 65,
+          "days": 50,
+          "meanProbability": 0.7423054528930972,
+          "observedWinRate": 0.7846153846153846,
+          "underestimation": 0.042309931722287364,
+          "biasInterval95": [
+            -0.05853752144514116,
+            0.1352037068904339
+          ],
+          "brier": 0.1704512783135988,
+          "logLoss": 0.5247459126659013
+        },
+        {
+          "low": 0.8,
+          "high": 0.9,
+          "n": 13,
+          "days": 13,
+          "meanProbability": 0.832429221771975,
+          "observedWinRate": 0.8461538461538461,
+          "underestimation": 0.013724624381871164,
+          "biasInterval95": null,
+          "brier": 0.14394333751002303,
+          "logLoss": 0.4830506130340343
+        },
+        {
+          "low": 0.9,
+          "high": 1,
+          "n": 0
+        }
+      ],
+      "byLeague": {
+        "39": {
+          "n": 48,
+          "days": 43,
+          "meanProbability": 0.6557642881487696,
+          "observedWinRate": 0.6666666666666666,
+          "underestimation": 0.010902378517896993,
+          "biasInterval95": [
+            -0.12292435271219691,
+            0.13894598057954952
+          ],
+          "brier": 0.221095988586592,
+          "logLoss": 0.6333797581799975
+        },
+        "61": {
+          "n": 52,
+          "days": 47,
+          "meanProbability": 0.6763938406273552,
+          "observedWinRate": 0.7307692307692307,
+          "underestimation": 0.054375390141875535,
+          "biasInterval95": [
+            -0.07434253089391729,
+            0.17874270450017987
+          ],
+          "brier": 0.1948788427545247,
+          "logLoss": 0.5764777496347976
+        },
+        "78": {
+          "n": 63,
+          "days": 48,
+          "meanProbability": 0.6901430417474584,
+          "observedWinRate": 0.7936507936507936,
+          "underestimation": 0.10350775190333517,
+          "biasInterval95": [
+            -0.00866238701595403,
+            0.20796162120732556
+          ],
+          "brier": 0.18893941427857494,
+          "logLoss": 0.5741377914897027
+        },
+        "135": {
+          "n": 53,
+          "days": 41,
+          "meanProbability": 0.65703348237073,
+          "observedWinRate": 0.7358490566037735,
+          "underestimation": 0.07881557423304353,
+          "biasInterval95": [
+            -0.029251887718011346,
+            0.18118721721168896
+          ],
+          "brier": 0.20123577188022046,
+          "logLoss": 0.5934232284346019
+        },
+        "140": {
+          "n": 53,
+          "days": 46,
+          "meanProbability": 0.6873669489409394,
+          "observedWinRate": 0.8490566037735849,
+          "underestimation": 0.16168965483264552,
+          "biasInterval95": [
+            0.05704881605837221,
+            0.24763657424488186
+          ],
+          "brier": 0.15021279456781111,
+          "logLoss": 0.48004336955281546
+        }
+      }
+    },
+    "2026": {
+      "all": {
+        "n": 346,
+        "days": 40,
+        "meanProbability": 0.49704997405037665,
+        "observedWinRate": 0.5520231213872833,
+        "underestimation": 0.054973147336906614,
+        "biasInterval95": [
+          -0.01266071307992319,
+          0.12284411021979144
+        ],
+        "brier": 0.23367088234507843,
+        "logLoss": 0.659291623295198
+      },
+      "sample12": {
+        "n": 249,
+        "days": 38,
+        "meanProbability": 0.4922973406347121,
+        "observedWinRate": 0.5662650602409639,
+        "underestimation": 0.07396771960625181,
+        "biasInterval95": [
+          0.00422336222106166,
+          0.14175477082858734
+        ],
+        "brier": 0.2363463244029947,
+        "logLoss": 0.6645324462708756
+      },
+      "winner60sample12": {
+        "n": 37,
+        "days": 21,
+        "meanProbability": 0.6644189725889452,
+        "observedWinRate": 0.8378378378378378,
+        "underestimation": 0.1734188652488926,
+        "biasInterval95": [
+          0.07366481408071548,
+          0.2642293990582253
+        ],
+        "brier": 0.16354339528790202,
+        "logLoss": 0.5113279345263931
+      },
+      "bins": [
+        {
+          "low": 0,
+          "high": 0.4,
+          "n": 47,
+          "days": 21,
+          "meanProbability": 0.3846012011607608,
+          "observedWinRate": 0.40425531914893614,
+          "underestimation": 0.019654117988175346,
+          "biasInterval95": [
+            -0.11137668915868482,
+            0.15821557239192918
+          ],
+          "brier": 0.2409015482886386,
+          "logLoss": 0.6748030893642629
+        },
+        {
+          "low": 0.4,
+          "high": 0.5,
+          "n": 106,
+          "days": 29,
+          "meanProbability": 0.4508841875053138,
+          "observedWinRate": 0.5283018867924528,
+          "underestimation": 0.07741769928713904,
+          "biasInterval95": [
+            -0.038353300557484225,
+            0.20950223357236025
+          ],
+          "brier": 0.256858898106169,
+          "logLoss": 0.7070262894446876
+        },
+        {
+          "low": 0.5,
+          "high": 0.6,
+          "n": 59,
+          "days": 22,
+          "meanProbability": 0.5445517881717505,
+          "observedWinRate": 0.5932203389830508,
+          "underestimation": 0.04866855081130028,
+          "biasInterval95": [
+            -0.04197087155956923,
+            0.15616061587849409
+          ],
+          "brier": 0.2415205624046331,
+          "logLoss": 0.6760832824188843
+        },
+        {
+          "low": 0.6,
+          "high": 0.7,
+          "n": 27,
+          "days": 16,
+          "meanProbability": 0.636282661843813,
+          "observedWinRate": 0.8148148148148148,
+          "underestimation": 0.17853215297100178,
+          "biasInterval95": null,
+          "brier": 0.18272698931358858,
+          "logLoss": 0.555193843091323
+        },
+        {
+          "low": 0.7,
+          "high": 0.8,
+          "n": 9,
+          "days": 7,
+          "meanProbability": 0.727707500246394,
+          "observedWinRate": 0.8888888888888888,
+          "underestimation": 0.16118138864249487,
+          "biasInterval95": null,
+          "brier": 0.12181193608796446,
+          "logLoss": 0.41907378849259264
+        },
+        {
+          "low": 0.8,
+          "high": 0.9,
+          "n": 1,
+          "days": 1,
+          "meanProbability": 0.8545026137904721,
+          "observedWinRate": 1,
+          "underestimation": 0.1454973862095279,
+          "biasInterval95": null,
+          "brier": 0.02116948939380452,
+          "logLoss": 0.15723571757748678
+        },
+        {
+          "low": 0.9,
+          "high": 1,
+          "n": 0
+        }
+      ],
+      "byLeague": {
+        "39": {
+          "n": 4,
+          "days": 4,
+          "meanProbability": 0.6241718699199788,
+          "observedWinRate": 1,
+          "underestimation": 0.37582813008002125,
+          "biasInterval95": null,
+          "brier": 0.14158692970075662,
+          "logLoss": 0.471759639380425
+        },
+        "61": {
+          "n": 4,
+          "days": 4,
+          "meanProbability": 0.6164072971374739,
+          "observedWinRate": 0.25,
+          "underestimation": -0.3664072971374739,
+          "biasInterval95": null,
+          "brier": 0.32075989898884516,
+          "logLoss": 0.8375969867717656
+        },
+        "78": {
+          "n": 9,
+          "days": 9,
+          "meanProbability": 0.6966137978960067,
+          "observedWinRate": 0.7777777777777778,
+          "underestimation": 0.08116397988177104,
+          "biasInterval95": null,
+          "brier": 0.17914215764518943,
+          "logLoss": 0.5406603374453408
+        },
+        "135": {
+          "n": 7,
+          "days": 6,
+          "meanProbability": 0.6640233212769081,
+          "observedWinRate": 1,
+          "underestimation": 0.3359766787230919,
+          "biasInterval95": null,
+          "brier": 0.11488556922170394,
+          "logLoss": 0.4116333433506368
+        },
+        "140": {
+          "n": 13,
+          "days": 12,
+          "meanProbability": 0.6694998375045187,
+          "observedWinRate": 0.9230769230769231,
+          "underestimation": 0.25357708557240444,
+          "biasInterval95": null,
+          "brier": 0.1373261467334874,
+          "logLoss": 0.4564869717234812
+        }
+      }
+    }
+  },
+  "operation": {
+    "odds": [
+      {
+        "id": 1552796,
+        "game": "Marseille–Le Havre",
+        "cutoff": 1792744052996,
+        "m": "H",
+        "p": 0.6180778058984944,
+        "sample": 16.52280855946404,
+        "spread": 0.02621461175028872,
+        "odd": 1.6,
+        "bookmaker": "1xBet",
+        "source": "API-Football",
+        "quoteAt": 1792731022000,
+        "observedAt": 1792743887049,
+        "ageHours": 3.6331527777777777,
+        "requiredOdd": 1.7402670248525078,
+        "return": -0.053018889362870913,
+        "status": "ready"
+      },
+      {
+        "id": 1575198,
+        "game": "SC Freiburg–Bayern München",
+        "cutoff": 1792744056400,
+        "m": "A",
+        "p": 0.6202386623327416,
+        "sample": 17.54968820123972,
+        "spread": 0.01800462139577297,
+        "odd": 1.42,
+        "bookmaker": "1xBet",
+        "source": "API-Football",
+        "quoteAt": 1792733301000,
+        "observedAt": 1792743895570,
+        "ageHours": 3.000097222222222,
+        "requiredOdd": 1.7102985384178946,
+        "return": -0.14482766186950458,
+        "status": "ready"
+      }
+    ],
+    "settledV3": 0,
+    "integrity": {
+      "at": 1792744139624,
+      "originalRecords": 27,
+      "originalsIntact": true,
+      "errors": []
+    },
+    "history": [
+      {
+        "fixture": "Leipzig–Elversberg",
+        "limitedTeam": "Elversberg",
+        "raw": 8,
+        "redExcluded": 1,
+        "usable": 7,
+        "effective": 4.753488591294479
+      },
+      {
+        "fixture": "Atlético–Deportivo",
+        "limitedTeam": "Deportivo",
+        "raw": 9,
+        "redExcluded": 3,
+        "usable": 6,
+        "effective": 5.117096381088144
+      },
+      {
+        "fixture": "Toulouse–Troyes",
+        "limitedTeam": "Troyes",
+        "raw": 7,
+        "redExcluded": 0,
+        "usable": 7,
+        "effective": 6.106447639906266
+      },
+      {
+        "fixture": "Sporting–Académico de Viseu",
+        "limitedTeam": "Académico de Viseu",
+        "raw": 8,
+        "redExcluded": 0,
+        "usable": 8,
+        "effective": 6.642782613716593
+      }
+    ],
+    "runtime": {
+      "recalculated": 64,
+      "successfulCalculationBatches": 14,
+      "failures": 0,
+      "originalPublicationsPreserved": true,
+      "currentPicks": 7,
+      "thresholdChanges": 0,
+      "modelChanges": 0,
+      "productionCodeChanges": 0,
+      "temporaryAccessRevoked": true,
+      "healthReady": true
+    },
+    "dataJobs": 46,
+    "historyJobs": 30,
+    "source": "Production D1 and existing authenticated maintenance endpoint. Supplier spacing, quota, pagination and original quote clocks retained."
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "release": "2026-10-23-strength-reschedule-v8",
+  "model": "luxtips-events-xg-prior4-live-v3",
+  "publishedAt": "2026-10-23T07:48:36.783Z",
+  "version": "e2123062-1636-4279-973c-7a493d05512a",
+  "checks": {
+    "tests": 85,
+    "passed": 85,
+    "staticChecks": true,
+    "build": true,
+    "scannedFiles": 105,
+    "secretsExposed": 0
+  },
+  "bundle": {
+    "characters": 510006,
+    "fnv1a64": "b07205a7117cb14a",
+    "remoteEqualsBuild": true
+  },
+  "policy": {
+    "minimumWinnerProbability": 0.6,
+    "minimumAlternativeProbability": 0.7,
+    "minimumOdd": 1.25,
+    "maximumQuoteAgeHours": 6,
+    "minimumExpectedReturn": 0.03,
+    "minimumEffectiveSample": 12,
+    "maxGamesPerDay": 3,
+    "oneSelectionPerGame": true,
+    "timeZone": "Europe/Lisbon",
+    "pendingWaitMinutes": 15
+  },
+  "runtime": {
+    "recalculatedFixtures": 64,
+    "prior4Fixtures": 47,
+    "prior8Fixtures": 17,
+    "validProspectiveSnapshots": 64,
+    "postKickoffSnapshots": 0,
+    "rescheduledToulouseRecovered": true,
+    "toulouseXgActive": true,
+    "healthy": true,
+    "operationsAccessRevoked": true,
+    "adminRoutes401": true,
+    "lastSuccess": 1792742479651,
+    "failures": []
+  },
+  "newSubscriptions": 0,
+  "migrations": 0,
+  "gitCommitOrPush": false,
+  "verifiedAt": "2026-10-23T08:03:45.009Z",
+  "currentCycle": {
+    "verifiedAt": "2026-10-23T08:11:56.1690116Z",
+    "ready": true,
+    "archivedOriginals": 8,
+    "originalRecordsPreserved": 20,
+    "originalIntegrityVerified": true,
+    "publishedTotal": 7,
+    "byDay": [
+      {
+        "day": "2026-10-23",
+        "count": 2
+      },
+      {
+        "day": "2026-10-24",
+        "count": 3
+      },
+      {
+        "day": "2026-10-25",
+        "count": 2
+      }
+    ],
+    "picks": [
+      {
+        "fixtureId": 1575196,
+        "day": "2026-10-23",
+        "market": "U45",
+        "label": "Menos de 4,5 golos",
+        "odd": 1.52,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1552198,
+        "day": "2026-10-23",
+        "market": "HU25",
+        "label": "GO Ahead Eagles marca menos de 3 golos",
+        "odd": 1.61,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1550159,
+        "day": "2026-10-24",
+        "market": "U45",
+        "label": "Menos de 4,5 golos",
+        "odd": 1.3,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1557438,
+        "day": "2026-10-24",
+        "market": "HO05",
+        "label": "Aston Villa marca pelo menos 1 golo",
+        "odd": 1.4,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1557437,
+        "day": "2026-10-24",
+        "market": "U35",
+        "label": "Menos de 3,5 golos",
+        "odd": 1.4,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1552206,
+        "day": "2026-10-25",
+        "market": "U45",
+        "label": "Menos de 4,5 golos",
+        "odd": 1.33,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      },
+      {
+        "fixtureId": 1550166,
+        "day": "2026-10-25",
+        "market": "O15",
+        "label": "Mais de 1,5 golos",
+        "odd": 1.3,
+        "model": "luxtips-events-xg-prior4-live-v3"
+      }
+    ]
+  }
+}

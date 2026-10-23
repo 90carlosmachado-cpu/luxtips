@@ -2,7 +2,9 @@ import {liveEnvironment} from '../openfoot/live.mjs';
 import {contextSources} from './collect.mjs';
 import {contextPrediction} from './model.mjs';
 import {detailedPrediction,historyWithoutKnownRedCards} from './details-model.mjs';
-import {fit2,predict2,competitionEvidence} from '../legacy-worker.mjs';
+import {competitionEvidence} from '../legacy-worker.mjs';
+import {fitLiveStrength,predictLiveStrength} from '../openfoot/strength.mjs';
+import {competitionFor} from '../openfoot/config.mjs';
 export function predictionEnvironment(env){
  const enriched=liveEnvironment(env);
  if(env.PREDICTION_CONTEXT_MODE!=='live')return enriched;
@@ -15,7 +17,7 @@ export function predictionEnvironment(env){
     detailCache.set(fixture.league,rows.results.map(r=>JSON.parse(r.data)));
    }
    const details=detailCache.get(fixture.league),clean=historyWithoutKnownRedCards(history,details,now);
-   if(clean.length!==history.length)p=competitionEvidence(predict2(fit2(clean,now),fixture),fixture.league);
+   if(competitionFor(fixture.league)||clean.length!==history.length)p=competitionEvidence(predictLiveStrength(fitLiveStrength(clean,now,fixture.league),fixture),fixture.league);
    if(typeof enriched.__openfootEnrich==='function')p=await enriched.__openfootEnrich(clean,fixture,p,now);
    p=detailedPrediction(history,details,fixture,p,now);
    return contextPrediction(history,fixture,p,await contextSources(env.DB,fixture,now),[],now);
