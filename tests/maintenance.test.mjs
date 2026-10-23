@@ -47,7 +47,7 @@ test('public reads do not start network or recalculation jobs that can be cancel
  assert.equal(response.status,200);assert.equal(jobs,0);assert.deepEqual((await response.json()).games,[]);db.sql.close();
 });
 
-test('unpriced favorites cannot occupy publication slots ahead of a qualified alternative; thresholds stay intact',async()=>{
+test('winner-only legacy entry rejects unpriced favorites and never falls back to goals markets',async()=>{
  const now=Date.now();
  for(const scenario of ['valid','low_probability','stale','negative_ev']){
   const db=testDatabase();
@@ -61,7 +61,7 @@ test('unpriced favorites cannot occupy publication slots ahead of a qualified al
   alternative.odds.U35={fixtureId:4,odd:scenario==='negative_ev'?1.25:1.4,at:scenario==='stale'?now-6*3600000:now,observedAt:now,source:'API-Football',verifiedReceipt:true,market:'U35',selection:'U35',bookmaker:'B'};
   await publishDailyPicks(db,[...favorites,alternative],now);
   const saved=db.sql.prepare('SELECT fixture_id,market FROM openfoot_current_picks').all();
-  assert.equal(saved.length,scenario==='valid'?1:0,scenario);
+  assert.equal(saved.length,0,scenario);
   if(saved.length){assert.equal(saved[0].fixture_id,4);assert.equal(saved[0].market,'U35');}
   db.sql.close();
  }

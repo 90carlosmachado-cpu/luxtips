@@ -32,6 +32,20 @@ export function selectQuotes(quotes,now){
  }
  return odds;
 }
+// Keep full bookmaker triplets separately from executable best prices. Never
+// manufacture verified receipts from legacy raw caches.
+export function retainedQuotes(quotes,now){
+ const unique=new Map();
+ for(const q of quotes){
+  if(!q.verifiedReceipt||!Number.isFinite(q.at)||!Number.isFinite(q.observedAt)||q.at>q.observedAt||q.observedAt>now||now-q.at>=POLICY.oddsMaxAge)continue;
+  if(['H','D','A'].includes(q.code)){
+   const key=[q.fixtureId,q.bookmaker,q.code,q.at].join('|'),old=unique.get(key);
+   if(!old||q.observedAt<old.observedAt)unique.set(key,q);
+  }
+ }
+ for(const q of Object.values(selectQuotes(quotes,now)))unique.set([q.fixtureId,q.bookmaker,q.code,q.at].join('|'),q);
+ return [...unique.values()];
+}
 export async function cachedOdds(db,f,now){
  const rows=await db.prepare("SELECT key,data FROM cache WHERE key IN (?,?,?) ORDER BY key").bind('api:odds-reviewed?fixture='+f.id,'api:odds-complete?fixture='+f.id,'api:odds?fixture='+f.id).all();
  let quotes=[];
@@ -70,13 +84,11 @@ export async function collectFixtureOdds(env,f,now=Date.now(),request=api){
   const observedAt=r.fetchedAt;
   if(observedAt>=f.ts||Date.now()>=f.ts)return {status:'not_prematch',odds:old.odds};
   const incoming=extractQuotes(r.data,f,observedAt,true),quotes=[...(page>1?prior.quotes||[]:[]),...incoming];
-  // Retain the actual observed candidates used by selection, not every duplicate
-  // bookmaker row. Every published snapshot also retains its exact quote.
-  await saveQuotes(db,f,Object.values(selectQuotes(incoming,completedAt)));
+  // Preserve bookmaker 1X2 observations as well as executable candidates.
+  // Published snapshots still retain their exact selected quote.
+  await saveQuotes(db,f,retainedQuotes(incoming,completedAt));
   const odds=selectQuotes(quotes,completedAt),complete=page===total;
-  const forecast=await db.prepare('SELECT data FROM cache WHERE key=?').bind('forecast:'+f.id).first();
-  const prediction=forecast?JSON.parse(forecast.data).prediction:null;
-  const relevant=MARKETS.filter(m=>!prediction||prediction.probabilities?.[m]>=(['H','A'].includes(m)?.6:.7));
+  const relevant=['H','A'];
   const missing=relevant.filter(m=>!odds[m]);
   const missingKey=missing.join(','),repeat=complete&&prior.missingKey===missingKey&&(prior.probes||0)>0;
   const expired=quotes.length>0&&!Object.keys(odds).length;
@@ -85,7 +97,7 @@ export async function collectFixtureOdds(env,f,now=Date.now(),request=api){
   const expiries=Object.values(odds).map(q=>q.at+POLICY.oddsMaxAge).filter(t=>t>completedAt);
   state={at:now,kickoff:f.ts,status,nextPage:complete?1:page+1,totalPages:total,quotes:complete?[]:quotes,missing,missingKey,probes:complete?(repeat?(prior.probes||0)+1:1):prior.probes||0,
    nextAt:Math.min(completedAt+delay,...expiries),complete};
-  const merged=Object.values({...old.odds,...odds});
+  const merged=retainedQuotes([...old.quotes,...quotes],completedAt);
   await db.prepare('INSERT INTO cache(key,data,expires) VALUES(?,?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data,expires=excluded.expires').bind('api:odds-reviewed?fixture='+f.id,JSON.stringify({fetchedAt:completedAt,quotes:merged}),completedAt+3*HOUR).run();
   return {status,odds:selectQuotes(merged,completedAt),records:incoming.length};
  }catch(e){

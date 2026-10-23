@@ -1,4 +1,5 @@
 import legacy from './legacy-worker.mjs';
+import {winnerResponse} from './context/winners.mjs';
 import { runOpenFoot, openFootStatus } from './openfoot/sync.mjs';
 import { shadowReport } from './openfoot/report.mjs';
 import {predictionEnvironment} from './context/environment.mjs';
@@ -10,7 +11,7 @@ import {refreshData} from './context/data-refresh.mjs';
 import {operationsAuthorized} from './context/operations.mjs';
 import {api} from './legacy-worker.mjs';
 import {maintenance} from './context/maintenance.mjs';
-const RELEASE='2026-10-23-strength-reschedule-v8';
+const RELEASE='2026-10-23-winner-focus-v9';
 
 async function authorized(req, token) {
   if (!token) return false;
@@ -30,6 +31,11 @@ async function manualImportRunning(env){
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
+    if(url.pathname==='/api/games'&&env.PREDICTION_CONTEXT_MODE==='live'){
+      if(req.method!=='GET')return Response.json({error:'Método não permitido'},{status:405,headers:{Allow:'GET'}});
+      try{return Response.json(await winnerResponse(env.DB),{headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});}
+      catch{return Response.json({error:'Previsões temporariamente indisponíveis.'},{status:503,headers:{'Cache-Control':'no-store'}});}
+    }
     if(url.pathname==='/api/admin/recalculate'){
       if(!await authorized(req,env.ADMIN_TOKEN)&&!await operationsAuthorized(req,env.DB))return Response.json({error:'Não autorizado'},{status:401});
       if(req.method!=='POST')return Response.json({error:'Método não permitido'},{status:405});
@@ -65,14 +71,6 @@ export default {
       const response=await legacy.fetch(req, url.pathname==='/api/games'&&env.PREDICTION_CONTEXT_MODE==='live'?{...runtime,__contextPauseLegacy:true}:runtime, ctx);
       if(url.pathname==='/api/history'&&env.PREDICTION_CONTEXT_MODE==='live'&&response.ok){
         const body=await response.json();return Response.json({activeModel:CONTEXT_VERSION,publishedSelections:body.publishedSelections||[]},{status:response.status,headers:response.headers});
-      }
-      if(url.pathname==='/api/games'&&env.PREDICTION_CONTEXT_MODE==='live'&&response.ok){
-        const body=await response.json();
-        const pending=await env.DB.prepare("SELECT count(*) n FROM fixtures f LEFT JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? AND json_extract(f.data,'$.status')='NS' AND CASE WHEN c.data IS NULL OR NOT json_valid(c.data) THEN 1 WHEN COALESCE(json_extract(c.data,'$.prediction.version'),'')<>? OR COALESCE(json_extract(c.data,'$.selectionContract'),'')<>'selection-inputs-v2' THEN 1 ELSE 0 END=1").bind(Date.now(),body.window.end,CONTEXT_VERSION).first();
-        const statusRows=await env.DB.prepare("SELECT key,data FROM openfoot_state WHERE key IN (?,?,?)").bind(...body.window.days.map(day=>'publication_day:'+day)).all();
-        const states=Object.fromEntries(statusRows.results.map(r=>[r.key.slice('publication_day:'.length),JSON.parse(r.data)]));
-        const days=Object.fromEntries(body.window.days.map(day=>[day,{updating:!states[day]||Date.now()-states[day].at>600000||states[day].pending.length>0}]));
-        return Response.json({...body,analysis:{days},imports:{...body.imports,legacyPending:body.imports?.pending||0,pending:pending?.n||0},selectionPolicy:{...body.selectionPolicy,selectionVersion:'independent-markets-v1',maxAlternativePerDay:3,minimumExpectedReturn:.03,uncertaintyReserve:'market-specific component disagreement; not a statistical confidence interval'},validation:{model:CONTEXT_VERSION,holdoutMatches:0,status:'Avaliação prospetiva própria em curso'}},{status:response.status,headers:response.headers});
       }
       return response;
     }

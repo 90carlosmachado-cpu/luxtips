@@ -93,3 +93,20 @@
   intervalos globais incluem zero e há regressão ligeira na Premier League.
   Sem promoção. Ver `docs/calibracao-favoritos.md`; não ajustar coeficientes
   para fazer aparecer seleções, não reduzir a reserva ou alterar critérios.
+
+- Melhoria local de 23-10-2026 autorizada: objetivo exclusivo H/A (vitórias 1X2).
+  Runtime/legacy e cron passam WINNER_MARKETS ao publisher; helpers genéricos
+  preservam testes da política histórica. Não publicar automaticamente.
+- Política de publicação winner-1x2-v1: até três vitórias/dia, mesmos critérios
+  de amostra, preço, probabilidade e EV. Análises informativas não ocupam vagas.
+  Alternativas antigas mantêm-se imutáveis no histórico e não consomem a nova
+  capacidade de vitórias; nunca duplicar um jogo já publicado sem arquivo explícito.
+- Não confundir v9 (release/interface/política) com novo modelo estatístico.
+  CONTEXT_VERSION mantém v3; probabilidades e parâmetros não foram promovidos.
+- Cache de odds conserva trios H/D/A completos por casa e timestamp, além do
+  preço selecionado. Não promover raw caches sem verifiedReceipt. Novos
+  snapshots de avaliação guardam comparação prospetiva emparelhada com mercado.
+
+- V9 publicada com autorização explícita em 23-10-2026, 09:59 UTC; versão
+  `e5b8b8de-ed6d-4290-b785-aee15587ac5f`. Sincronização GitHub autorizada
+  depois da verificação em produção. Ver `docs/vitorias-1x2.md`.

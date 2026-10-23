@@ -15,6 +15,7 @@ export function evaluationRecord(g,history,historySources,sources,details,record
  const known=historySources.length===history.length&&historySources.length>0&&Object.values(clocks).every(t=>Number.isFinite(t)&&t<=cutoff)&&
   (!g.prediction.xgEnrichment?.active||typeof g.prediction.xgEnrichment.inputDigest==='string');
  return {contract:CONTRACT,policy:EVALUATION_POLICY,recordedAt,cutoff,inputHash,clocks,historyCount:used.length,
+  marketReference:g.prediction.contextAdjustment?.market??null,
   validAtCapture:known&&Number.isFinite(cutoff)&&cutoff<=recordedAt&&recordedAt<g.fixture.ts,
   reference:{version:'league-event-frequency-v1',cutoff,n:used.length,probabilities},
   rule:'Earliest valid recorded forecast in the final 24h; one per fixture/kickoff/version. Published picks use their immutable publication snapshot.'};
@@ -43,7 +44,7 @@ function contribute(scope,market,league,p,reference,y){
 function finishGroups(scope){for(const container of Object.values(scope))for(const [key,g] of Object.entries(container))container[key]={model:finish(g.model),comparison:{n:g.pairedN,model:finish(g.pairedModel),reference:finish(g.reference),complete:g.pairedN===g.model.n}};return scope;}
 function referenceFor(g,market){const r=g.evaluation.reference;return r?.version==='league-event-frequency-v1'&&r.cutoff===g.evaluation.cutoff&&r.n>0?r.probabilities?.[market]:null;}
 export function evaluateRows(rows,published,version=CONTEXT_VERSION){
- const all=groups(),picks=groups(),seen=new Set(),seenPublished=new Set(),excluded={invalidForecast:0,wrongVersion:0,outsideEvaluationHorizon:0,missingPublishedContract:0};
+ const all=groups(),marketComparison=groups(),picks=groups(),seen=new Set(),seenPublished=new Set(),excluded={invalidForecast:0,wrongVersion:0,outsideEvaluationHorizon:0,missingPublishedContract:0};
  let fixtures=0,publishedCount=0,roiN=0,net=0;
  for(const row of [...rows].sort((a,b)=>a.createdAt-b.createdAt||a.data.fixture.id-b.data.fixture.id)){
   if(row.data.prediction?.version!==version){excluded.wrongVersion++;continue;}
@@ -51,7 +52,11 @@ export function evaluateRows(rows,published,version=CONTEXT_VERSION){
   const g=row.data,key=[g.fixture.id,g.fixture.ts,version].join(':');
   if(row.createdAt<g.fixture.ts-DAY){excluded.outsideEvaluationHorizon++;continue;}
   if(seen.has(key))continue;seen.add(key);fixtures++;
-  for(const market of [...MARKETS,'D']){const p=g.prediction.probabilities[market],reference=referenceFor(g,market);if(Number.isFinite(p)&&p>=0&&p<=1)contribute(all,market,g.fixture.league,p,reference,outcome(market,row.current.hg,row.current.ag));}
+  for(const market of [...MARKETS,'D']){const p=g.prediction.probabilities[market],reference=referenceFor(g,market);if(Number.isFinite(p)&&p>=0&&p<=1){
+    const y=outcome(market,row.current.hg,row.current.ag);contribute(all,market,g.fixture.league,p,reference,y);
+    const r=g.evaluation.marketReference,q=r?.probabilities?.[market];
+    if(r?.status==='available'&&r.books>0&&Number.isFinite(r.at)&&Number.isFinite(r.observedAt)&&r.at<=r.observedAt&&r.observedAt<=g.evaluation.cutoff&&g.evaluation.cutoff-r.at<POLICY.oddsMaxAge&&Number.isFinite(q)&&q>=0&&q<=1)contribute(marketComparison,market,g.fixture.league,p,q,y);
+   }}
  }
  for(const row of [...published].sort((a,b)=>a.publishedAt-b.publishedAt)){
   const g=row.data,key=[g.fixture.id,g.fixture.ts,g.prediction?.version].join(':');
@@ -65,7 +70,7 @@ export function evaluateRows(rows,published,version=CONTEXT_VERSION){
   const q=g.odds?.[market];
   if(q?.source==='API-Football'&&q.verifiedReceipt===true&&q.fixtureId===g.fixture.id&&q.market===market&&q.selection===market&&Number.isFinite(q.odd)&&Number.isFinite(q.observedAt)&&Number.isFinite(q.at)&&q.at<=q.observedAt&&q.observedAt<=row.publishedAt&&row.publishedAt-q.at<POLICY.oddsMaxAge&&q.odd>=1.25&&tip.odd===q.odd&&tip.bookmaker===q.bookmaker){roiN++;net+=y?q.odd-1:-1;}
  }
- return {version,policy:EVALUATION_POLICY,contract:CONTRACT,allForecasts:{fixtures,...finishGroups(all)},publishedSelections:{fixtures:publishedCount,...finishGroups(picks)},
+ return {version,policy:EVALUATION_POLICY,contract:CONTRACT,allForecasts:{fixtures,...finishGroups(all)},marketComparison:finishGroups(marketComparison),publishedSelections:{fixtures:publishedCount,...finishGroups(picks)},
   roi:{n:roiN,netUnits:roiN?net:null,returnPerUnit:roiN?net/roiN:null,kind:'theoretical-one-unit-at-recorded-price',executedBets:null},excluded,
   notes:['Binary Brier and binary Log Loss per market; calibration in 10 fixed bins with sample counts.','Reference is the observed league event frequency, recorded with the forecast; it never changes public recommendations.','No retrospective reconstruction or threshold tuning; old versions and unverified source clocks are excluded.']};
 }

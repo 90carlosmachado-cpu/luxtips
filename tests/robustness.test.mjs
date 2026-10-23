@@ -108,7 +108,7 @@ test('missing markets receive one bounded probe then a three hour negative cache
 test('quotes observed during the request are not mistaken for future quotes relative to the job start time',async()=>{
  const db=database(),clock=Date.now()-100,g=game(1);g.fixture.ts=clock+DAY;store(db,g);
  const result=await collectFixtureOdds({DB:db},g.fixture,clock,async()=>{return {data:payload(1,clock,[goals]),fetchedAt:Date.now(),paging:{current:1,total:1}};});
- assert.equal(result.status,'ready');assert.ok(result.odds.U35.observedAt>clock);db.sql.close();
+ assert.equal(result.status,'incomplete_response');assert.ok(result.odds.U35.observedAt>clock);db.sql.close();
 });
 test('a recently fetched quotation close to expiry is scheduled before the three hour cache and is classified as expired afterwards',async()=>{
  const db=database(),clock=Date.now(),g=game(1);g.fixture.ts=clock+DAY;store(db,g);
@@ -185,11 +185,11 @@ test('SQL evaluation reads immutable snapshots and raw publication ledgers, incl
 test('the interface has no obsolete daily-alternative/favorite research and distinguishes updating versus completed days without technical errors',async()=>{
  const response=await worker.fetch(new Request('https://test/'),{},{}),html=await response.text();
  for(const text of ['um mercado alternativo por dia','três favoritos','v.winnerModel','d.modelComparison','${esc(e.message)}'])assert.ok(!html.includes(text),text);
- assert.ok(html.includes('analysisByDay[chosenDay]?.updating'));assert.ok(html.includes('Análise concluída'));assert.ok(html.includes('Análise em atualização'));assert.ok(html.includes('várias alternativas possíveis'));
- assert.ok(html.includes('(b.displayTip || b.winnerTip).probability'));for(const [,script] of html.matchAll(/<script>([\s\S]*?)<\/script>/g))assert.doesNotThrow(()=>new Script(script));
+ assert.ok(html.includes('analysisByDay[chosenDay]?.updating'));assert.ok(html.includes('Análise concluída'));assert.ok(html.includes('Análise em atualização'));assert.ok(html.includes('recomendações de vitória por dia'));
+ assert.ok(html.includes('winnerCard'));for(const [,script] of html.matchAll(/<script>([\s\S]*?)<\/script>/g))assert.doesNotThrow(()=>new Script(script));
  const validation=await worker.fetch(new Request('https://test/api/validation'),{PREDICTION_CONTEXT_MODE:'live'},{});assert.equal((await validation.json()).winnerModel,undefined);
 });
-test('the actual client script renders both empty states and multiple published alternatives with no winnerTip',async()=>{
+test('the actual client renders empty states and hides legacy alternatives from the winner page',async()=>{
  const html=await(await worker.fetch(new Request('https://test/'),{},{})).text();const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];
  const uiNow=Date.parse(lisbonDay(now)+'T10:00:00Z');
  for(const scenario of ['updating','complete','alternatives']){
@@ -199,7 +199,7 @@ test('the actual client script renders both empty states and multiple published 
   class Clock extends Date{constructor(...args){super(...(args.length?args:[uiNow]));}static now(){return uiNow;}}
   await new Script(script).runInNewContext({document:doc,location:{hostname:"luxtips.90carlosmachado.workers.dev"},Date:Clock,AbortSignal,setInterval(){},fetch:async url=>({ok:true,json:async()=>url==='/api/games'?{games,competitions:[],analysis:{days:{[lisbonDay(now)]:{updating:scenario==='updating'}}}}:{ready:true,sync:{at:now,ok:true}}})});
   const cards=elements.get('#cards').innerHTML;
-  assert.ok(cards.includes(scenario==='updating'?'Análise em atualização':scenario==='complete'?'Análise concluída':'Menos de 3,5 golos'),cards);
-  if(scenario==='alternatives')assert.equal((cards.match(/class="card/g)||[]).length,2);
+  assert.ok(cards.includes(scenario==='updating'?'Análise em atualização':scenario==='complete'?'Análise concluída':'Análise concluída'),cards);
+  if(scenario==='alternatives'){assert.ok(!cards.includes('Menos de 3,5 golos'));assert.equal((cards.match(/class="card/g)||[]).length,0);}
  }
 });

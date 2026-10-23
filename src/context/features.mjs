@@ -62,17 +62,25 @@ export function availabilityFeatures(injuries,lineups,players,fixture,team){
   goalkeeperLoss,replacementMethod:'same-position observed scoring rate; minutes shrinkage; max 0.30 goals; keeper conceded-rate max +/-0.15'};
 }
 export function marketReference(quotes,fixture,now){
- const books=new Map();
+ const books=new Map(),conflicts=new Set();
  for(const q of quotes||[]){
-  if(q.fixtureId!==fixture.id||q.market!=='1X2'||!['H','D','A'].includes(q.selection)||!finite(q.odd)||q.odd<=1||!finite(q.observedAt)||q.observedAt>now||q.observedAt>=fixture.ts||!finite(q.providerAt)||q.providerAt>q.observedAt||now-q.providerAt>6*3600000)continue;
+  if(q.fixtureId!==fixture.id||q.market!=='1X2'||!['H','D','A'].includes(q.selection)||!finite(q.odd)||q.odd<=1||typeof q.bookmaker!=='string'||!q.bookmaker||!finite(q.observedAt)||q.observedAt>now||q.observedAt>=fixture.ts||!finite(q.providerAt)||q.providerAt>q.observedAt||q.providerAt>=fixture.ts||now-q.providerAt>=6*3600000)continue;
   const key=q.bookmaker+':'+q.providerAt;
-  if(!books.has(key))books.set(key,{bookmaker:q.bookmaker,at:q.providerAt,odds:{}});
-  books.get(key).odds[q.selection]=q.odd;
+  if(!books.has(key))books.set(key,{bookmaker:q.bookmaker,at:q.providerAt,observedAt:q.observedAt,odds:{}});
+  const b=books.get(key);
+  if(b.odds[q.selection]!==undefined&&b.odds[q.selection]!==q.odd)conflicts.add(key);
+  b.odds[q.selection]=q.odd;b.observedAt=Math.max(b.observedAt,q.observedAt);
  }
- const complete=[...books.values()].filter(b=>['H','D','A'].every(k=>finite(b.odds[k])));
+ // One latest complete snapshot per bookmaker, not one vote per cached fetch.
+ const latest=new Map();
+ for(const [key,b] of books){
+  if(conflicts.has(key)||!['H','D','A'].every(k=>finite(b.odds[k])))continue;
+  if(!latest.has(b.bookmaker)||b.at>latest.get(b.bookmaker).at)latest.set(b.bookmaker,b);
+ }
+ const complete=[...latest.values()];
  if(!complete.length)return {status:'unavailable',probabilities:null,books:0};
  const rows=complete.map(b=>{const sum=['H','D','A'].reduce((s,k)=>s+1/b.odds[k],0);return {...b,overround:sum-1,p:Object.fromEntries(['H','D','A'].map(k=>[k,(1/b.odds[k])/sum]))};});
- return {status:'available',books:rows.length,probabilities:Object.fromEntries(['H','D','A'].map(k=>[k,rows.reduce((s,b)=>s+b.p[k],0)/rows.length])),quotes:rows.map(({p,...b})=>b)};
+ return {status:'available',books:rows.length,at:Math.min(...rows.map(b=>b.at)),observedAt:Math.max(...rows.map(b=>b.observedAt)),method:'mean-of-bookmaker-proportional-devig',probabilities:Object.fromEntries(['H','D','A'].map(k=>[k,rows.reduce((s,b)=>s+b.p[k],0)/rows.length])),quotes:rows.map(({p,...b})=>b)};
 }
 export function restAdjustment(history,fixture,now){
  // Learn the rest signal from the available pre-cutoff results. Counts are

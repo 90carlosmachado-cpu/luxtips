@@ -5,7 +5,7 @@ import {liveEnvironment} from '../openfoot/live.mjs';
 import {contextSources} from './collect.mjs';
 import {contextPrediction,selectionAssessment,CONTEXT_VERSION} from './model.mjs';
 import {detailedPrediction,historyWithoutKnownRedCards} from './details-model.mjs';
-import {publishMarketPicks} from './selection.mjs';
+import {publishMarketPicks,WINNER_MARKETS} from './selection.mjs';
 import {fitLiveStrength,predictLiveStrength} from '../openfoot/strength.mjs';
 const DAY=86400000;
 export function bookmakerQuotes(payload,fixture,observedAt){
@@ -62,7 +62,7 @@ export async function refreshContextForecasts(env,now=Date.now(),options={}){
    const sourceStale=!sourceUpdatedAt||now-sourceUpdatedAt>2*3600000;
    const odds=prices.odds;
    const usedIds=new Set(h.map(f=>f.id));
-   const input=JSON.stringify({fixture:f,sourceUpdatedAt,history:knownHistory.filter(r=>usedIds.has(JSON.parse(r.data).id)),xg:p.xgEnrichment?.inputDigest,details:details.filter(d=>d.league===f.league),sources,odds,oddsCollection:prices.state?.status,bucket:Math.floor(now/1800000)});
+   const input=JSON.stringify({fixture:f,sourceUpdatedAt,history:knownHistory.filter(r=>usedIds.has(JSON.parse(r.data).id)),xg:p.xgEnrichment?.inputDigest,details:details.filter(d=>d.league===f.league),sources,odds,marketReference:p.contextAdjustment.market,oddsCollection:prices.state?.status,bucket:Math.floor(now/1800000)});
    const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
    const signature=[...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('');
    if(original.prediction?.version===p.version&&original.prediction?.contextAdjustment?.inputSignature===signature){
@@ -102,7 +102,7 @@ export async function refreshContextForecasts(env,now=Date.now(),options={}){
   const poolRows=await db.prepare("SELECT c.data,f.data fixture_data FROM fixtures f LEFT JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff").bind(now,w.end).all();
   const rowsForLeagues=poolRows.results.filter(r=>leagues.includes(JSON.parse(r.fixture_data).league));
   const pool=publicGames(rowsForLeagues.filter(r=>r.data),now).games.filter(g=>g.prediction?.version===CONTEXT_VERSION);
-  summary.publication=await publishMarketPicks(db,pool,Date.now(),{rows:rowsForLeagues});
+  summary.publication=await publishMarketPicks(db,pool,Date.now(),{rows:rowsForLeagues,markets:WINNER_MARKETS});
   const days=Object.values(summary.publication.days||{});
   summary.publicationHeld=days.length>0&&days.every(d=>d.status==='waiting');
   await db.prepare("DELETE FROM cache WHERE key='public:games:v1'").run();

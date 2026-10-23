@@ -47,6 +47,6 @@ export function patchedLegacy(baseline) {
   const start=result.indexOf('function quoteFor('),end=result.indexOf('function pricedTip(',start);
   result=result.slice(0,start)+'function quoteFor(g,market,now){return assessMarket(g,market,now).eligible?g.odds[market]:null;}\n'+result.slice(end);
   const a=result.indexOf('async function publishDailyPicks('),b=result.indexOf('async function publishedGames(',a);
-  result=result.slice(0,a)+'async function publishDailyPicks(db,games,now=Date.now()){return (await import("./context/selection.mjs")).publishMarketPicks(db,games,now); }\n'+result.slice(b);
+  result=result.slice(0,a)+'async function publishDailyPicks(db,games,now=Date.now()){return (await import("./context/selection.mjs")).publishMarketPicks(db,games,now,{markets:["H","A"]}); }\n'+result.slice(b);
   return currentUI(result);
 }

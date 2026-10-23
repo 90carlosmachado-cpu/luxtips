@@ -1,5 +1,12 @@
 # LuxTips
 
+## Foco exclusivo em vitórias 1X2
+
+V9 publicada com autorização explícita em 23-10-2026, 09:59 UTC.
+Código, testes e documentação da v9 incluídos nesta revisão.
+Ver [âmbito, validação e transição](docs/vitorias-1x2.md). A descrição da v8
+abaixo conserva o estado anteriormente publicado.
+
 Prognósticos em Cloudflare Workers/D1, API-Football e OpenFootAPI/FotMob.
 Dez competições; xG nas cinco principais. Cartões simples: jogo, seleção,
 odd registada e estado.

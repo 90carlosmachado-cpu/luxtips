@@ -1,4 +1,5 @@
 import {runInNewContext} from 'node:vm';
+import {winnerUI} from './winner-ui.mjs';
 function between(html,start,end,replacement){
  const a=html.indexOf(start),b=html.indexOf(end,a);
  if(a<0||b<0)throw Error('ui_anchor_missing');
@@ -34,5 +35,5 @@ export function currentUI(bundle){
         $('#validationBody').innerHTML = '<p>A avaliação do modelo atual está em curso. Os resultados de versões anteriores não demonstram a precisão desta versão.</p><p class="small">Até três jogos por dia, uma seleção por jogo e várias alternativas possíveis. Odds registadas de pelo menos 1,25. Nenhuma seleção é publicada para preencher vagas.</p>';
       }
 `);
- return bundle.slice(0,start)+'var index_default = '+JSON.stringify(html)+bundle.slice(end);
+ return bundle.slice(0,start)+'var index_default = '+JSON.stringify(winnerUI(html))+bundle.slice(end);
 }
