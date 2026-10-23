@@ -11,7 +11,7 @@ import {refreshData} from './context/data-refresh.mjs';
 import {operationsAuthorized} from './context/operations.mjs';
 import {api} from './legacy-worker.mjs';
 import {maintenance} from './context/maintenance.mjs';
-const RELEASE='2026-10-23-analysis-price-retention-v10';
+const RELEASE='2026-10-23-elo020-v11';
 
 async function authorized(req, token) {
   if (!token) return false;

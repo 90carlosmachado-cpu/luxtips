@@ -115,3 +115,9 @@
   aviso e EV atual nulo; último recibo D1 é apenas informativo, nunca inserir
   em odds de execução. Publicada em 23-10-2026, 11:36 UTC, versão
   `4ab45c3d-6976-46c5-b6c0-9451c81d4bb1`. Modelo v3 e critérios intactos.
+
+- V11 autorizada explicitamente em 23-10-2026: ativar Elo 0,2 nas dez ligas,
+  arquivar as publicações de 23–25/10 e executar novo ciclo/publicar. Modelo
+  `luxtips-events-xg-elo020-live-v4`; restantes critérios preservados.
+  Elo no componente xG usa resultados reais, nunca resultados sintéticos.
+  Esta ativação não prova melhoria estatística. Ver `docs/elo-em-producao.md`.

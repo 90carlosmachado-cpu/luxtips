@@ -1,7 +1,7 @@
 import {assessMarket} from './policy.mjs';
 import {grid,mixtureProjection,extraGoalMarkets} from '../legacy-worker.mjs';
 import {availabilityFeatures,marketReference} from './features.mjs';
-export const CONTEXT_VERSION='luxtips-events-xg-prior4-live-v3';
+export const CONTEXT_VERSION='luxtips-events-xg-elo020-live-v4';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export function contextPrediction(history,fixture,base,sources,quotes,now){
  if(now>=fixture.ts||fixture.finished||fixture.status!=='NS')return base;

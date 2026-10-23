@@ -2,6 +2,10 @@
 
 ## Foco exclusivo em vitórias 1X2
 
+V11 ativa Elo com peso 0,2 nas dez competições, por pedido explícito. Modelo
+`luxtips-events-xg-elo020-live-v4`; filtros de publicação preservados.
+Ver [motor, arquivo e verificação da ativação](docs/elo-em-producao.md).
+
 V9 publicada com autorização explícita em 23-10-2026, 09:59 UTC.
 Inclui a correção v10: análises mantêm-se visíveis com odds expiradas,
 assinaladas sem recomendação e sem EV atual.

@@ -56,8 +56,14 @@ export function shadowPrediction(history, observations, fixture, cutoff, options
   });
   // Keep the deployed mixture and its hyperparameters fixed: only historical
   // training targets change. The controlled baseline uses identical history/time.
-  const candidate = predict2(fitStrength(blended, cutoff,options.prior??8), fixture);
-  const control = predict2(fitStrength(eligible, cutoff,options.prior??8), fixture);
+  const controlStates=fitStrength(eligible,cutoff,options.prior??8,options.eloWeight??0);
+  const candidateStates=fitStrength(blended,cutoff,options.prior??8,options.eloWeight??0);
+  // Elo learns actual match outcomes, never the synthetic goals/xG targets.
+  for(let i=0;i<candidateStates.length;i++)for(const [id,team] of Object.entries(candidateStates[i].state.teams)){
+    team.elo=controlStates[i].state.teams[id]?.elo??1500;
+  }
+  const candidate=predict2(candidateStates,fixture);
+  const control=predict2(controlStates,fixture);
   const { homeGoals, awayGoals, probabilities, luxg, components } = candidate;
   return { status: 'ready', version: SHADOW_VERSION, experimental: true, publicationEligible: false,
     cutoff, fixtureId: fixture.id, league: fixture.league, teams,
