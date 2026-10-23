@@ -2,7 +2,7 @@ import {forecastWindow,publicGames} from '../legacy-worker.mjs';
 import {POLICY,quoteStatus,assessMarket,lisbonDay} from './policy.mjs';
 import {CONTEXT_VERSION} from './model.mjs';
 
-export const WINNER_ANALYSIS_VERSION='winner-analysis-v2';
+export const WINNER_ANALYSIS_VERSION='winner-analysis-v3';
 const winner=p=>p.H>=p.A?'H':'A';
 const distribution=p=>p&&['H','D','A'].every(k=>Number.isFinite(p[k])&&p[k]>=0&&p[k]<=1)&&Math.abs(p.H+p.D+p.A-1)<1e-6;
 export function winnerAnalysis(g,now){
@@ -11,7 +11,7 @@ export function winnerAnalysis(g,now){
  const ref=p.contextAdjustment?.market;
  const marketValid=ref?.status==='available'&&ref.books>0&&distribution(ref.probabilities)&&Number.isFinite(ref.at)&&Number.isFinite(ref.observedAt)&&ref.at<=ref.observedAt&&ref.observedAt<=p.cutoff&&ref.observedAt<f.ts&&ref.at<=now&&now-ref.at<POLICY.oddsMaxAge;
  const modelSide=winner(p.probabilities),marketSide=marketValid?winner(ref.probabilities):null;
- const side=p.probabilities[modelSide]>=.6?modelSide:marketSide&&ref.probabilities[marketSide]>=.6?marketSide:null;
+ const side=p.probabilities[modelSide]>=.6?modelSide:null;
  if(!side)return null;
  const current=g.odds?.[side],fallback=g.lastKnownOdds?.[side];
  const usable=q=>q&&q.fixtureId===f.id&&typeof q.bookmaker==='string'&&q.bookmaker&&['ready','quote_expired'].includes(quoteStatus(q,side,now,f.ts));
@@ -20,7 +20,11 @@ export function winnerAnalysis(g,now){
  // A known subminimum current price still respects the user's minimum odd.
  if(current&&current.fixtureId===f.id&&current.source==='API-Football'&&current.verifiedReceipt&&Number.isFinite(current.odd)&&current.odd<POLICY.minimumOdd)return null;
  const priceState=q?(q===current?quoteStatus(q,side,now,f.ts):'awaiting_recalculation'):'awaiting_quote';
- const assessment=assessMarket(g,side,now),probability=p.probabilities[side],priceReady=priceState==='ready';
+ const probability=p.probabilities[side],reserve=p.contextAdjustment?.uncertainty?.spread?.[side];
+ // A historical receipt is not executable, but must not resurrect a known
+ // negative-value analysis merely because its price expired.
+ if(q&&(probability*q.odd<1||(Number.isFinite(reserve)&&reserve>=0&&reserve<=1&&(probability-reserve)*q.odd<1)))return null;
+ const assessment=assessMarket(g,side,now),priceReady=priceState==='ready';
  const eligible=priceReady&&assessment.eligible;
  return {version:WINNER_ANALYSIS_VERSION,market:side,label:(side==='H'?f.homeName:f.awayName)+' vence',
   basis:probability>=.6?'model':'market-reference',modelProbability:probability,

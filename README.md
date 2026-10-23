@@ -127,3 +127,16 @@ Os cartões de recomendações e análises mostram um único **resultado mais pr
 obtido do primeiro `luxg.topScores` da previsão correspondente (casa–fora).
 Não é condicionado à seleção nem forçado pelo Over 2,5. Sem distribuição disponível,
 mostra “Indisponível”; publicações e probabilidades originais permanecem intactas.
+
+Visibilidade revista a pedido do utilizador em 23/10: análises informativas exigem
+vitória >=60% no próprio modelo; o favoritismo de mercado já não substitui esse
+mínimo. Quando existe recibo verificado, um EV negativo (incluindo a reserva de
+divergência) exclui o cartão, mesmo que o recibo tenha expirado. EV não negativo
+abaixo dos 3% pode continuar informativo, sem recomendação. Sem preço verificável,
+o EV mantém-se desconhecido. Publicações imutáveis e respetivo histórico preservados.
+
+Diagnóstico GO Ahead Eagles–Telstar: aparecia via referência de mercado 60,67%,
+com modelo 50,01% e odd 1,62. A referência/odd de 09:53:15 Lisboa expirou às
+15:53:15; sem modelo >=60%, a análise deixou de entrar. O registo D1 permaneceu.
+EV bruto -18,98%; após reserva -21,28%. A nova regra impede esse cartão mesmo
+com referência fresca. Validação: 112 testes, check e build Wrangler concluídos.

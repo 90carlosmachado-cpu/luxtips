@@ -16,7 +16,7 @@ const now=Date.now(),DAY=86400000;
 function db(){const d=testDatabase();d.sql.exec('ALTER TABLE fixtures ADD COLUMN updated_at INTEGER;CREATE TABLE published_picks(day TEXT,fixture_id INTEGER,kickoff INTEGER,market TEXT,alternative INTEGER,published_at INTEGER,recorded_at INTEGER,recovered INTEGER,data TEXT,PRIMARY KEY(day,fixture_id));CREATE TABLE published_alternatives(day TEXT PRIMARY KEY,fixture_id INTEGER,kickoff INTEGER,market TEXT,published_at INTEGER,recorded_at INTEGER,data TEXT);');for(const m of ['0002_publication_archive.sql','0003_context_live.sql','0004_match_details.sql'])d.sql.exec(readFileSync(new URL('../migrations/'+m,import.meta.url),'utf8'));return d;}
 function quote(id,code,odd,bookmaker='Book',at=now-1000){return {fixtureId:id,code,market:code,selection:code,source:'API-Football',verifiedReceipt:true,bookmaker,odd,at,providerAt:at,observedAt:now,providerMarket:'Match Winner',providerSelection:{H:'Home',D:'Draw',A:'Away'}[code]};}
 function game(id=1){return {selectionContract:'selection-inputs-v2',fixture:{id,ts:now+DAY,league:39,home:id,away:id+100,homeName:'Casa',awayName:'Fora',status:'NS',finished:false},sourceUpdatedAt:now,
- prediction:{version:CONTEXT_VERSION,cutoff:now,sample:20,probabilities:{H:.65,D:.2,A:.15,U45:.95},risks:[],contextAdjustment:{uncertainty:{spread:{H:.02,D:.01,A:.01,U45:.01}}}},odds:{H:quote(id,'H',1.5),U45:{...quote(id,'U45',1.4),providerMarket:'Goals Over/Under',providerSelection:'Under 4.5'}}};}
+ prediction:{version:CONTEXT_VERSION,cutoff:now,sample:20,probabilities:{H:.65,D:.2,A:.15,U45:.95},risks:[],contextAdjustment:{uncertainty:{spread:{H:.02,D:.01,A:.01,U45:.01}}}},odds:{H:quote(id,'H',1.6),U45:{...quote(id,'U45',1.4),providerMarket:'Goals Over/Under',providerSelection:'Under 4.5'}}};}
 function store(d,g){d.sql.prepare('INSERT INTO fixtures VALUES(?,?,?,?,?,?)').run(g.fixture.id,g.fixture.league,g.fixture.ts,0,JSON.stringify(g.fixture),now);d.sql.prepare('INSERT INTO cache VALUES(?,?,?)').run('forecast:'+g.fixture.id,JSON.stringify(g),g.fixture.ts+DAY);}
 function reference(f,hs=[1.5,1.6]){return marketReference(hs.flatMap((h,i)=>['H','D','A'].map((k,j)=>({...quote(f.id,k,[h,4,6][j],'Book'+i),market:'1X2',selection:k}))),f,now);}
 function payload(id,books){return [{fixture:{id},update:new Date(now-1000).toISOString(),bookmakers:books.map((values,i)=>({name:'Book'+i,bets:[{name:'Match Winner',values:['Home','Draw','Away'].map((value,j)=>({value,odd:String(values[j])}))}]}))}];}
@@ -48,16 +48,22 @@ test('collection preserves complete reference books across pages, retries and a 
  assert.equal(r.books,2);assert.equal(prices.odds.H.odd,1.6);
  assert.equal(d.sql.prepare('SELECT count(*) n FROM openfoot_market_quotes').get().n,6);d.sql.close();
 });
-test('negative-value model favourite remains an informational victory with its real quote and exact reason',()=>{
- const g=game(),before=structuredClone(g),a=winnerAnalysis(g,now);assert.equal(a.status,'analysis-only');assert.equal(a.market,'H');assert.equal(a.quote.odd,1.5);assert.equal(a.value.reason,'insufficient_expected_return');assert.equal(a.value.eligible,false);assert.ok(a.value.minimumOdd>1.6);assert.deepEqual(g,before);
+test('negative EV is hidden for current and expired quotes, including after disagreement reserve',()=>{
+ const g=game();g.odds.H.odd=1.5;assert.equal(winnerAnalysis(g,now),null);
+ g.odds.H.at=now-POLICY.oddsMaxAge;assert.equal(winnerAnalysis(g,now),null);
+ g.odds.H=quote(1,'H',1.55);assert.ok(.65*1.55>1);assert.equal(winnerAnalysis(g,now),null);
 });
-test('market favourite can be visible below model60 but cannot become a value recommendation',()=>{
- const g=game();g.prediction.probabilities={H:.58,D:.25,A:.17};g.prediction.contextAdjustment.market=reference(g.fixture);
- const a=winnerAnalysis(g,now);assert.equal(a.basis,'market-reference');assert.equal(a.modelProbability,.58);assert.ok(a.marketProbability>=.6);assert.equal(a.value.eligible,false);assert.equal(a.value.reason,'insufficient_probability');
+test('nonnegative EV below the recommendation threshold stays informational',()=>{
+ const g=game(),before=structuredClone(g),a=winnerAnalysis(g,now);
+ assert.equal(a.status,'analysis-only');assert.equal(a.quote.odd,1.6);assert.equal(a.value.eligible,false);assert.ok(a.value.expectedReturn>=0);assert.deepEqual(g,before);
+});
+test('market reference cannot admit a model favourite below60 even with positive EV',()=>{
+ const g=game();g.prediction.probabilities={H:.58,D:.25,A:.17};g.prediction.contextAdjustment.market=reference(g.fixture);g.odds.H.odd=2;
+ assert.equal(winnerAnalysis(g,now),null);
 });
 test('away winners and disagreement are explicit; unknown or stale reference cannot manufacture a favourite',()=>{
  const g=game();g.prediction.probabilities={H:.3,D:.2,A:.5};g.odds.H=quote(1,'H',1.5);g.prediction.contextAdjustment.market=reference(g.fixture);
- assert.equal(winnerAnalysis(g,now).disagreement,true);
+ assert.equal(winnerAnalysis(g,now),null);
  g.prediction.contextAdjustment.market.at=now-POLICY.oddsMaxAge;assert.equal(winnerAnalysis(g,now),null);
  g.prediction.probabilities={H:.15,D:.2,A:.65};g.odds.A=quote(1,'A',1.7);const a=winnerAnalysis(g,now);assert.equal(a.market,'A');assert.equal(a.label,'Fora vence');assert.equal(a.value.eligible,true);
 });
