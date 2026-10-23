@@ -122,3 +122,8 @@ Segredos apenas no Cloudflare/ficheiros locais ignorados. Preservar D1, os quatr
 segredos e bindings, incluindo `containers: [{class_name:'FootballRelay'}]` em
 uploads manuais. Não fazer commit/push/deploy sem autorização. Para reverter,
 usar a versão anterior do Worker, preservando os dados e ledgers.
+
+Os cartões de recomendações e análises mostram um único **resultado mais provável**,
+obtido do primeiro `luxg.topScores` da previsão correspondente (casa–fora).
+Não é condicionado à seleção nem forçado pelo Over 2,5. Sem distribuição disponível,
+mostra “Indisponível”; publicações e probabilidades originais permanecem intactas.

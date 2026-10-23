@@ -31,6 +31,7 @@ export function winnerAnalysis(g,now){
   value:{eligible,reason:priceReady?assessment.reason:priceState,expectedReturn:priceReady?(assessment.expectedReturn??null):null,
    rawExpectedReturn:priceReady?probability*q.odd-1:null,reserve:assessment.modelDisagreement??null,
    minimumOdd:Number.isFinite(assessment.modelDisagreement)&&probability>assessment.modelDisagreement?1.03/(probability-assessment.modelDisagreement):null},
+  mostLikelyScore:p.luxg?.topScores?.[0]??null,
   modelVersion:p.version,cutoff:p.cutoff,sample:p.sample,
   status:eligible?'value-candidate':'analysis-only',
   note:eligible?'Candidata a recomendação; publicação depende dos lugares disponíveis.':'Vitória provável; não é uma recomendação de aposta.'};
