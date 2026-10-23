@@ -3,7 +3,8 @@
 ## Foco exclusivo em vitórias 1X2
 
 V9 publicada com autorização explícita em 23-10-2026, 09:59 UTC.
-Código, testes e documentação da v9 incluídos nesta revisão.
+Inclui a correção v10: análises mantêm-se visíveis com odds expiradas,
+assinaladas sem recomendação e sem EV atual.
 Ver [âmbito, validação e transição](docs/vitorias-1x2.md). A descrição da v8
 abaixo conserva o estado anteriormente publicado.
 

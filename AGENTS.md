@@ -110,3 +110,8 @@
 - V9 publicada com autorização explícita em 23-10-2026, 09:59 UTC; versão
   `e5b8b8de-ed6d-4290-b785-aee15587ac5f`. Sincronização GitHub autorizada
   depois da verificação em produção. Ver `docs/vitorias-1x2.md`.
+
+- V10: análise informativa não desaparece por preço ausente/expirado. Mostrar
+  aviso e EV atual nulo; último recibo D1 é apenas informativo, nunca inserir
+  em odds de execução. Publicada em 23-10-2026, 11:36 UTC, versão
+  `4ab45c3d-6976-46c5-b6c0-9451c81d4bb1`. Modelo v3 e critérios intactos.

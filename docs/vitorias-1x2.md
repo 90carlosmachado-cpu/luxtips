@@ -114,3 +114,25 @@ A referência sem margem continua dependente das próximas recolhas verificadas
 de trios completos; não foram inventados recibos para preencher caches antigas.
 A rede do executor devolveu 403 ao domínio público; a inspeção pelo navegador
 confirmou o acesso e renderização reais.
+
+## V10 — análise independente da frescura da odd
+
+Correção pedida pelo utilizador: uma análise válida do modelo deixa de desaparecer
+quando a cotação expira ou é retirada da cache da previsão. A API conserva a
+probabilidade, marca a odd como expirada/em espera e devolve EV atual nulo e
+elegibilidade falsa. O ecrã aplica a mesma regra ao envelhecimento entre pedidos.
+O preço histórico é recuperado apenas de recibos API-Football com identidade e
+relógios válidos em openfoot_market_quotes; nunca é injetado na seleção/publicação.
+Sem recibo válido, mostra cotação em falta, não inventa preço. Preços atuais
+conhecidos abaixo de 1,25 continuam excluídos. O início do jogo e a validade
+dos dados desportivos continuam a limitar as análises não publicadas.
+
+Sem alteração do modelo, reserva, limiares ou máximo de recomendações diárias.
+107 testes aprovados, incluindo cache sem preço, último recibo, clocks inválidos
+e renderização de preço ausente/expirado sem recomendação.
+
+V10 publicada com autorização de execução do utilizador em 23-10-2026, 11:36 UTC
+(12:36 Lisboa), versão `4ab45c3d-6976-46c5-b6c0-9451c81d4bb1`, 100% do tráfego.
+Bindings, namespace DO, quatro segredos e cron preservados. Verificação real
+no Edge confirmou análises de amanhã e referência de mercado já disponível
+para Arsenal, Dortmund, Utrecht e Como. Sem alterações nos parâmetros do modelo.

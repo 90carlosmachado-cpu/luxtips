@@ -61,9 +61,10 @@ test('away winners and disagreement are explicit; unknown or stale reference can
  g.prediction.contextAdjustment.market.at=now-POLICY.oddsMaxAge;assert.equal(winnerAnalysis(g,now),null);
  g.prediction.probabilities={H:.15,D:.2,A:.65};g.odds.A=quote(1,'A',1.7);const a=winnerAnalysis(g,now);assert.equal(a.market,'A');assert.equal(a.label,'Fora vence');assert.equal(a.value.eligible,true);
 });
-test('analysis rejects inadequate samples, malformed distributions, source/quote clocks, identities and post-kickoff inputs',()=>{
- const changes=[g=>g.prediction.sample=11,g=>g.prediction.version='old',g=>g.prediction.probabilities.D=.4,g=>g.sourceUpdatedAt=now+1,g=>g.prediction.cutoff=now+1,g=>g.fixture.ts=now,g=>g.odds.H.fixtureId=99,g=>g.odds.H.odd=1.24,g=>g.odds.H.at=now-POLICY.oddsMaxAge,g=>g.odds.H.observedAt=now+1,g=>g.odds.H.verifiedReceipt=false];
+test('analysis rejects inadequate model inputs while unusable prices never become recommendations',()=>{
+ const changes=[g=>g.prediction.sample=11,g=>g.prediction.version='old',g=>g.prediction.probabilities.D=.4,g=>g.sourceUpdatedAt=now+1,g=>g.prediction.cutoff=now+1,g=>g.fixture.ts=now,g=>g.odds.H.odd=1.24];
  for(const change of changes){const g=game();change(g);assert.equal(winnerAnalysis(g,now),null);}
+ for(const change of [g=>g.odds.H.fixtureId=99,g=>g.odds.H.observedAt=now+1,g=>g.odds.H.verifiedReceipt=false]){const g=game();change(g);const a=winnerAnalysis(g,now);assert.equal(a.quote,null);assert.equal(a.value.eligible,false);assert.equal(a.value.expectedReturn,null);}
 });
 test('winner-only runtime publication chooses a qualified victory instead of a higher probability goals market',async()=>{
  for(const publish of [(d,gs)=>publishMarketPicks(d,gs,now,{markets:WINNER_MARKETS}), (d,gs)=>publishDailyPicks(d,gs,now)]){
@@ -103,8 +104,8 @@ test('real browser script distinguishes a published winner, model-only analysis 
  const elements=new Map(),element=()=>({innerHTML:'',textContent:'',value:'',options:[],append(o){this.options.push(o);},addEventListener(){},classList:{toggle(){}},setAttribute(){}});
  const document={querySelector(k){if(!elements.has(k))elements.set(k,element());return elements.get(k);},querySelectorAll(){return [];},createElement:element,addEventListener(){}};
  class Clock extends Date{constructor(...a){super(...(a.length?a:[clock]));}static now(){return clock;}}
- await new Script(script).runInNewContext({document,location:{hostname:'luxtips.90carlosmachado.workers.dev'},Date:Clock,AbortSignal,setInterval(){},fetch:async url=>({ok:true,json:async()=>url==='/api/games'?{games:[published,old],winnerAnalyses:[{fixture:{...g.fixture,id:3},winnerAnalysis:analysis}],competitions:[],analysis:{days:{}}}:{ready:true,sync:{at:clock,ok:true}}})});
- const cards=elements.get('#cards').innerHTML;assert.ok(cards.includes('class="card pick"'));assert.ok(cards.includes('&lt;img src=x'));assert.ok(cards.includes('Sem recomendação de aposta'));assert.ok(cards.includes('&lt;script&gt;bad'));assert.ok(!cards.includes('<script>bad'));assert.ok(!cards.includes('Menos de 4,5 golos'));assert.ok(!cards.includes('<img src=x'));
+ await new Script(script).runInNewContext({document,location:{hostname:'luxtips.90carlosmachado.workers.dev'},Date:Clock,AbortSignal,setInterval(){},fetch:async url=>({ok:true,json:async()=>url==='/api/games'?{games:[published,old],winnerAnalyses:[{fixture:{...g.fixture,id:3},winnerAnalysis:analysis},{fixture:{...g.fixture,id:4},winnerAnalysis:{...analysis,quote:null,quoteStatus:'awaiting_quote'}},{fixture:{...g.fixture,id:5},winnerAnalysis:{...analysis,quote:{...analysis.quote,at:clock-7*3600000},quoteStatus:'quote_expired'}}],competitions:[],analysis:{days:{}}}:{ready:true,sync:{at:clock,ok:true}}})});
+ const cards=elements.get('#cards').innerHTML;assert.ok(cards.includes('class="card pick"'));assert.ok(cards.includes('&lt;img src=x'));assert.ok(cards.includes('Sem recomendação de aposta'));assert.ok(cards.includes('Odd desatualizada'));assert.ok(cards.includes('Sem cotação verificada'));assert.ok(cards.includes('&lt;script&gt;bad'));assert.ok(!cards.includes('<script>bad'));assert.ok(!cards.includes('Menos de 4,5 golos'));assert.ok(!cards.includes('<img src=x'));
 });
 
 test('concurrent winner publication keeps three winner slots despite legacy alternatives and preserves settled snapshots',async()=>{
@@ -115,4 +116,17 @@ test('concurrent winner publication keeps three winner slots despite legacy alte
  const immutable=d.sql.prepare('SELECT data FROM openfoot_pick_revisions WHERE fixture_id=1').get().data;
  const current={...gs[0].fixture,finished:true,status:'FT',hg:2,ag:0};d.sql.prepare('UPDATE fixtures SET finished=1,data=? WHERE id=1').run(JSON.stringify(current));
  const response=await winnerResponse(d,now),saved=response.games.find(g=>g.fixture.id===1);assert.equal(saved.result.hit,1);assert.equal(saved.currentFixture.status,'FT');assert.deepEqual(saved.prediction,JSON.parse(immutable).prediction);assert.equal(d.sql.prepare('SELECT data FROM openfoot_pick_revisions WHERE fixture_id=1').get().data,immutable);d.sql.close();
+});
+
+
+test('expiry retains the football analysis and original price but cannot supply current EV or a recommendation',()=>{
+ const g=game();g.odds.H.odd=2;g.odds.H.at=now-POLICY.oddsMaxAge;g.odds.H.providerAt=g.odds.H.at;
+ const a=winnerAnalysis(g,now);assert.equal(a.modelProbability,.65);assert.equal(a.quote.odd,2);assert.equal(a.quote.at,g.odds.H.at);assert.equal(a.quoteStatus,'quote_expired');assert.equal(a.value.eligible,false);assert.equal(a.value.expectedReturn,null);assert.equal(a.value.rawExpectedReturn,null);
+ delete g.odds.H;const missing=winnerAnalysis(g,now);assert.equal(missing.quote,null);assert.equal(missing.quoteStatus,'awaiting_quote');assert.equal(missing.modelProbability,.65);
+});
+test('last verified database quote survives forecast-cache price removal without becoming an executable recommendation',async()=>{
+ const d=db(),g=game();delete g.odds.H;store(d,g);
+ d.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,g.fixture.ts,'LastBook','Match Winner','Home',1.8,now-7*3600000,now-6*3600000);
+ const r=await winnerResponse(d,now),a=r.winnerAnalyses[0].winnerAnalysis;assert.equal(a.quote.odd,1.8);assert.equal(a.quote.bookmaker,'LastBook');assert.equal(a.value.eligible,false);assert.equal(a.quoteStatus,'awaiting_recalculation');assert.equal(a.value.expectedReturn,null);
+ const before=d.sql.prepare('SELECT data FROM cache').get().data;await winnerResponse(d,now);assert.equal(d.sql.prepare('SELECT data FROM cache').get().data,before);d.sql.close();
 });
