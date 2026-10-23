@@ -20,10 +20,8 @@ export function winnerAnalysis(g,now){
  // A known subminimum current price still respects the user's minimum odd.
  if(current&&current.fixtureId===f.id&&current.source==='API-Football'&&current.verifiedReceipt&&Number.isFinite(current.odd)&&current.odd<POLICY.minimumOdd)return null;
  const priceState=q?(q===current?quoteStatus(q,side,now,f.ts):'awaiting_recalculation'):'awaiting_quote';
- const probability=p.probabilities[side],reserve=p.contextAdjustment?.uncertainty?.spread?.[side];
- // A historical receipt is not executable, but must not resurrect a known
- // negative-value analysis merely because its price expired.
- if(q&&(probability*q.odd<1||(Number.isFinite(reserve)&&reserve>=0&&reserve<=1&&(probability-reserve)*q.odd<1)))return null;
+ const probability=p.probabilities[side];
+ // Football analysis is independent of price value; recommendations still use assessMarket.
  const assessment=assessMarket(g,side,now),priceReady=priceState==='ready';
  const eligible=priceReady&&assessment.eligible;
  return {version:WINNER_ANALYSIS_VERSION,market:side,label:(side==='H'?f.homeName:f.awayName)+' vence',

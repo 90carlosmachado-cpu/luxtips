@@ -130,9 +130,9 @@ mostra “Indisponível”; publicações e probabilidades originais permanecem 
 
 Visibilidade revista a pedido do utilizador em 23/10: análises informativas exigem
 vitória >=60% no próprio modelo; o favoritismo de mercado já não substitui esse
-mínimo. Quando existe recibo verificado, um EV negativo (incluindo a reserva de
-divergência) exclui o cartão, mesmo que o recibo tenha expirado. EV não negativo
-abaixo dos 3% pode continuar informativo, sem recomendação. Sem preço verificável,
+mínimo. O EV não filtra análises informativas: um favorito com EV negativo
+continua visível, explicitamente sem recomendação de aposta. Recomendações
+continuam a exigir EV conservador >=3%. Sem preço verificável,
 o EV mantém-se desconhecido. Publicações imutáveis e respetivo histórico preservados.
 
 Diagnóstico GO Ahead Eagles–Telstar: aparecia via referência de mercado 60,67%,

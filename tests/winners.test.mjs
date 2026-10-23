@@ -48,10 +48,11 @@ test('collection preserves complete reference books across pages, retries and a 
  assert.equal(r.books,2);assert.equal(prices.odds.H.odd,1.6);
  assert.equal(d.sql.prepare('SELECT count(*) n FROM openfoot_market_quotes').get().n,6);d.sql.close();
 });
-test('negative EV is hidden for current and expired quotes, including after disagreement reserve',()=>{
- const g=game();g.odds.H.odd=1.5;assert.equal(winnerAnalysis(g,now),null);
- g.odds.H.at=now-POLICY.oddsMaxAge;assert.equal(winnerAnalysis(g,now),null);
- g.odds.H=quote(1,'H',1.55);assert.ok(.65*1.55>1);assert.equal(winnerAnalysis(g,now),null);
+test('negative EV stays informational for fresh and expired quotes and never becomes recommended',()=>{
+ const g=game();g.odds.H.odd=1.5;
+ let a=winnerAnalysis(g,now);assert.ok(a);assert.equal(a.status,'analysis-only');assert.ok(a.value.expectedReturn<0);assert.equal(a.value.eligible,false);
+ g.odds.H.at=now-POLICY.oddsMaxAge;a=winnerAnalysis(g,now);assert.ok(a);assert.equal(a.quoteStatus,'quote_expired');assert.equal(a.value.expectedReturn,null);assert.equal(a.value.eligible,false);
+ g.odds.H=quote(1,'H',1.55);a=winnerAnalysis(g,now);assert.ok(a.value.rawExpectedReturn>0);assert.ok(a.value.expectedReturn<0);assert.equal(a.value.eligible,false);
 });
 test('nonnegative EV below the recommendation threshold stays informational',()=>{
  const g=game(),before=structuredClone(g),a=winnerAnalysis(g,now);
