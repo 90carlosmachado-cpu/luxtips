@@ -2,11 +2,12 @@ import {informationSnapshot} from '../lux/information-snapshot.mjs';
 import {INFORMATION_EXPERIMENT,validateInformationCapture,evaluateInformationRows} from '../lux/information-evaluation.mjs';
 import {CONTEXT_VERSION} from './model.mjs';
 const DAY=86400000;
+const RECORDER_REVISION='fulltime-statuses-v2';
 export function informationWindow(env,fixture,now){return env.INFORMATION_COMPARISON_MODE==='shadow'&&[39,140,78,135,61].includes(fixture?.league)&&fixture.status==='NS'&&!fixture.finished&&fixture.ts>now&&fixture.ts-now<=DAY;}
 export function informationCaptureNeeded(env,original,fixture,now){
  if(!informationWindow(env,fixture,now))return false;
  const a=original?.evaluation?.informationComparison;
- return a?.experiment!==INFORMATION_EXPERIMENT||original.fixture?.ts!==fixture.ts||original.prediction?.version!==CONTEXT_VERSION;
+ return a?.experiment!==INFORMATION_EXPERIMENT||original.fixture?.ts!==fixture.ts||original.prediction?.version!==CONTEXT_VERSION||a.status==='capture_failed'&&a.recorderRevision!==RECORDER_REVISION;
 }
 export async function prepareInformationComparison(env,g,history,historySources,recordedAt){
  if(env.INFORMATION_COMPARISON_MODE!=='shadow')return {status:'disabled'};
@@ -19,11 +20,11 @@ export async function prepareInformationComparison(env,g,history,historySources,
    ORDER BY created_at LIMIT 10`).bind(g.fixture.id,g.fixture.ts,CONTEXT_VERSION,INFORMATION_EXPERIMENT).all();
   let informationSeen=false,priceSeen=false;
   for(const r of existing.results){try{const row={data:JSON.parse(r.data),createdAt:r.created_at},v=await validateInformationCapture(row,CONTEXT_VERSION);if(v.valid){informationSeen=true;if(v.snapshot.candidate.priceState==='ready')priceSeen=true;}}catch{}}
-  if(informationSeen&&priceSeen)return {experiment:INFORMATION_EXPERIMENT,status:'already_recorded'};
+  if(informationSeen&&priceSeen)return {experiment:INFORMATION_EXPERIMENT,recorderRevision:RECORDER_REVISION,status:'already_recorded'};
   const snapshot=await informationSnapshot(g,history,historySources,recordedAt,'asymmetric6');
-  if(informationSeen&&snapshot.candidate.priceState!=='ready')return {experiment:INFORMATION_EXPERIMENT,status:'awaiting_price'};
-  return {experiment:INFORMATION_EXPERIMENT,status:'recorded',snapshot};
- }catch{return {experiment:INFORMATION_EXPERIMENT,status:'capture_failed',reason:'capture_contract_or_storage_unavailable'};}
+  if(informationSeen&&snapshot.candidate.priceState!=='ready')return {experiment:INFORMATION_EXPERIMENT,recorderRevision:RECORDER_REVISION,status:'awaiting_price'};
+  return {experiment:INFORMATION_EXPERIMENT,recorderRevision:RECORDER_REVISION,status:'recorded',snapshot};
+ }catch(error){const known=['invalid_prospective_capture_clock','unverified_original_forecast','unvalidated_information_league','invalid_fit_history','duplicate_fit_history','invalid_history_source','invalid_history_source_clock','history_source_mismatch','fit_profile_mismatch'];return {experiment:INFORMATION_EXPERIMENT,recorderRevision:RECORDER_REVISION,status:'capture_failed',reason:known.includes(error.message)?error.message:'capture_contract_or_storage_unavailable'};}
 }
 export async function currentInformationComparison(db,{limit=500,now=Date.now()}={}){
  if(!Number.isInteger(limit)||limit<1||limit>2000)throw Error('invalid_comparison_limit');

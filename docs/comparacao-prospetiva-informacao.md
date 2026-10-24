@@ -2,7 +2,11 @@
 
 ## Estado em 24-10-2026
 
-Publicação e ativação passiva autorizadas pelo utilizador em 24-10-2026. A configuração do repositório passa explicitamente `INFORMATION_COMPARISON_MODE=shadow`; sem essa variável o código mantém-se desligado. A verificação da ativação remota será registada após a publicação. Não há resultados prospetivos desta experiência antes da ativação e conclusão de jogos novos.
+Publicação e ativação passiva autorizadas pelo utilizador em 24-10-2026 e realizadas às 09:42:54 de Lisboa (08:42:54 UTC). `INFORMATION_COMPARISON_MODE=shadow` foi confirmada no Worker; sem essa variável o código mantém-se desligado. Não há resultados de eficácia prospetiva antes da conclusão de jogos novos.
+
+Commit da integração: `7945f79d5c14b23b28a91cdc5daaebadd23da292`. Worker ativo a 100%: `c91037f9-2628-446c-b75a-64509efcc9ca`. SHA256 do módulo publicado e da compilação local: `e3bca34d74e24665e1d6cc7516c92bd86006e3313bad0a3d31eda32b99723ff1`.
+
+Verificação após publicação: API pública HTTP 200, modelo `luxtips-events-xg-elo020-live-v4`, política `winner-1x2-v1`, probabilidade mínima 60%, odd mínima 1,25, EV mínimo 3% e até três jogos por dia. Cron por minuto, quatro segredos, D1, Browser, namespace do relay, migração `v1-football-relay` e CPU 30.000 ms preservados. Nenhuma migração D1 foi aplicada.
 
 O motor, probabilidades, limiares públicos, odds, ranking e publicações mantêm o comportamento atual. A integração acrescenta metadados de avaliação quando se ativa expressamente o modo passivo. Não liga os motores supervisionado/independente rejeitados na investigação anterior.
 
@@ -24,6 +28,8 @@ O ciclo `refreshContextForecasts` tem um gancho explícito, condicionado a `INFO
 Guarda um snapshot da primeira previsão válida, mesmo que falte preço. Guarda separadamente a primeira observação com odd válida, se chegar depois. A segunda não substitui as probabilidades da primeira. A escolha do registo com preço depende da disponibilidade e validade da odd, sem exigir que o EV seja positivo ou que a probabilidade posterior seja maior.
 
 Cada snapshot contém identidade do jogo e início, versão, probabilidades, amostra original, informação das duas equipas, decisões antiga/nova, bloqueios, odds originais, referência de mercado, divergência dos componentes, relógios das fontes e digest SHA256. O contrato original da previsão tem de estar verificado, e o perfil reconstruído tem de corresponder à amostra e às contagens realmente usadas pelo motor.
+
+Verificação do primeiro ciclo real: três capturas válidas e duas falhas na Bundesliga revelaram que o histórico do motor também contém rótulos AET/PEN. O normalizador já utiliza `score.fulltime` nesses jogos, não golos do prolongamento ou desempate. A revisão do gravador aceita esses mesmos resultados de 90 minutos para reproduzir fielmente o fit, regista `statusCounts` e mantém a definição FT original dos helpers de investigação. As falhas anteriores ficam preservadas; a revisão permite nova tentativa sem reescrever linhas.
 
 O primeiro registo pode indicar falta de dados, preço expirado ou ausência de valor; esses casos são preservados. Não há aposta executada nem prognóstico público criado pela experiência.
 
@@ -68,7 +74,7 @@ Os testes usam resultados sintéticos e SQLite em memória. Verificam que uma pe
 
 O teste do ciclo completo verifica igualdade das probabilidades, `winnerTip` e avaliação de seleção com o modo passivo ligado e desligado. Também verifica retenção da cache, ativação sobre uma cache anterior, isolamento de falhas de armazenamento e leitura dos registos imutáveis.
 
-Verificação concluída: **128 testes passaram na versão isolada para publicação** e 145 no workspace completo com os protótipos locais. `npm run check` passou nos dois conjuntos e a compilação `wrangler deploy --dry-run` terminou sem publicar. O bundle contém a comparação passiva e não contém os motores independente/supervisionado de investigação.
+Verificação inicial: 128 testes na versão isolada e 145 no workspace completo. A revisão de compatibilidade AET/PEN acrescenta um teste de regressão, incluindo a verificação de que golos de prolongamento não entram no histórico normalizado. `npm run check` e a compilação `wrangler deploy --dry-run` verificam também a revisão. O bundle contém a comparação passiva e não contém os motores independente/supervisionado de investigação.
 
 Estes testes demonstram o funcionamento do mecanismo, não eficácia preditiva ou rentabilidade real. Essa eficácia só poderá ser avaliada com jogos novos depois da ativação.
 

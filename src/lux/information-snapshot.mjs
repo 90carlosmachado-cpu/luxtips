@@ -11,7 +11,7 @@ export async function informationSnapshot(game,cleanHistory,historySources,recor
  if(evaluation?.contract!=='prospective-inputs-v1'||evaluation.validAtCapture!==true||evaluation.cutoff!==cutoff||!Number.isFinite(evaluation.recordedAt)||evaluation.recordedAt<cutoff||evaluation.recordedAt>recordedAt||!/^[a-f0-9]{64}$/.test(evaluation.inputHash)||!['fixture','history','context','detail','xg'].every(k=>Number.isFinite(evaluation.clocks?.[k])&&evaluation.clocks[k]<=cutoff))throw Error('unverified_original_forecast');
  if(![39,140,78,135,61].includes(f.league))throw Error('unvalidated_information_league');
  const history=cleanHistory.filter(x=>x.finished&&x.ts+7200000<cutoff&&x.ts>cutoff-3*365*DAY);
- if(!history.length||history.some(x=>x.league!==f.league||x.status!=='FT'||!Number.isInteger(x.hg)||!Number.isInteger(x.ag)||x.hg<0||x.ag<0))throw Error('invalid_fit_history');
+ if(!history.length||history.some(x=>x.league!==f.league||!['FT','AET','PEN'].includes(x.status)||!Number.isInteger(x.hg)||!Number.isInteger(x.ag)||x.hg<0||x.ag<0))throw Error('invalid_fit_history');
  const ids=new Set(history.map(x=>x.id));if(ids.size!==history.length)throw Error('duplicate_fit_history');
  const sources=new Map();
  for(const r of historySources){let data;try{data=typeof r.data==='string'?JSON.parse(r.data):r.data;}catch{throw Error('invalid_history_source');}
@@ -20,7 +20,7 @@ export async function informationSnapshot(game,cleanHistory,historySources,recor
   sources.set(data.id,{data,updatedAt:r.updated_at});
  }
  for(const x of history){const s=sources.get(x.id);if(!s||['id','league','home','away','ts','hg','ag','finished','status'].some(k=>s.data[k]!==x[k]))throw Error('history_source_mismatch');}
- const home=teamInformation(history,f.home,cutoff),away=teamInformation(history,f.away,cutoff),sample=Math.min(home.components[0].weightMass,away.components[0].weightMass);
+ const home=teamInformation(history,f.home,cutoff,undefined,{allowExtendedFulltime:true}),away=teamInformation(history,f.away,cutoff,undefined,{allowExtendedFulltime:true}),sample=Math.min(home.components[0].weightMass,away.components[0].weightMass);
  if(!Number.isFinite(p.sample)||Math.abs(sample-p.sample)>1e-8||home.rawMatches!==p.teams?.home?.n||away.rawMatches!==p.teams?.away?.n)throw Error('fit_profile_mismatch');
  const evidence={home,away,incoming:[f.home,f.away].map(id=>incomingTeamStatus(history,f,id,cutoff))},leagueAgeDays=(cutoff-Math.max(...history.map(x=>x.ts)))/DAY;
  const input={...g,evidence,leagueAgeDays,sampleMatches:true};

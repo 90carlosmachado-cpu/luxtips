@@ -6,6 +6,7 @@ import {prepareInformationComparison,informationCaptureNeeded,currentInformation
 import {refreshContextForecasts} from '../src/context/refresh.mjs';
 import {CONTEXT_VERSION} from '../src/context/model.mjs';
 import {testDatabase} from './sqlite.mjs';
+import {normalize} from '../src/legacy-worker.mjs';
 const now=Date.now(),cutoff=now-100;
 const history=(awayN=6)=>[...Array.from({length:45},(_,i)=>({id:i+1,league:140,season:2026,ts:now-(i+2)*DAY,home:10,away:101,hg:2,ag:1,status:'FT',finished:true})),...Array.from({length:awayN},(_,i)=>({id:100+i,league:140,season:2026,ts:now-(i+2)*DAY,home:102,away:20,hg:2,ag:1,status:'FT',finished:true}))];
 async function captured({id=1001,awayN=6,recordedAt=now,probabilities={H:.7,D:.2,A:.1},odd=1.7,withQuote=true}={}){
@@ -39,6 +40,21 @@ test('tampered digest, rehashed decisions, source clocks and model versions are 
  const clock=structuredClone(row);clock.data.evaluation.informationComparison.snapshot.sourceClocks.xg=now+1;
  assert.equal((await validateInformationCapture(clock,CONTEXT_VERSION)).reason,'invalid_source_clock');
  assert.equal((await validateInformationCapture(row,'another-model')).reason,'wrong_model_version');
+});
+test('live fulltime history accepts AET/PEN labels without importing extra-time goals or changing FT research defaults',async()=>{
+ const {row,h}=await captured();
+ for(const status of ['AET','PEN']){
+  const raw={fixture:{id:h[0].id,date:new Date(h[0].ts).toISOString(),status:{short:status}},league:{id:140,season:2026},teams:{home:{id:10},away:{id:101}},goals:{home:9,away:8},score:{fulltime:{home:2,away:1}}};
+  const mixed=[normalize(raw),...h.slice(1)],g=structuredClone(row.data);
+  assert.equal(mixed[0].hg,2);assert.equal(mixed[0].ag,1);
+  assert.equal(teamInformation(mixed,10,cutoff).rawMatches,44);
+  const sources=mixed.map(f=>({data:JSON.stringify(f),updated_at:now-1000}));
+  const snapshot=await informationSnapshot(g,mixed,sources,now,'asymmetric6');assert.equal(snapshot.evidence.home.rawMatches,45);assert.equal(snapshot.evidence.home.statusCounts[status],1);
+  g.evaluation.informationComparison={experiment:INFORMATION_EXPERIMENT,status:'recorded',snapshot};assert.equal((await validateInformationCapture({data:g,createdAt:now},CONTEXT_VERSION)).valid,true);
+ }
+ const failed={...row.data,evaluation:{...row.data.evaluation,informationComparison:{experiment:INFORMATION_EXPERIMENT,status:'capture_failed'}}};
+ assert.equal(informationCaptureNeeded({INFORMATION_COMPARISON_MODE:'shadow'},failed,failed.fixture,now),true);
+ failed.evaluation.informationComparison.recorderRevision='fulltime-statuses-v2';assert.equal(informationCaptureNeeded({INFORMATION_COMPARISON_MODE:'shadow'},failed,failed.fixture,now),false);
 });
 test('reschedules, pending games and pre-kickoff settlement cannot generate performance',async()=>{
  const row=(await captured()).row;
