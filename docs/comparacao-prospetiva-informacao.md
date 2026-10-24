@@ -4,9 +4,19 @@
 
 Publicação e ativação passiva autorizadas pelo utilizador em 24-10-2026 e realizadas às 09:42:54 de Lisboa (08:42:54 UTC). `INFORMATION_COMPARISON_MODE=shadow` foi confirmada no Worker; sem essa variável o código mantém-se desligado. Não há resultados de eficácia prospetiva antes da conclusão de jogos novos.
 
-Commit da integração: `7945f79d5c14b23b28a91cdc5daaebadd23da292`. Worker ativo a 100%: `c91037f9-2628-446c-b75a-64509efcc9ca`. SHA256 do módulo publicado e da compilação local: `e3bca34d74e24665e1d6cc7516c92bd86006e3313bad0a3d31eda32b99723ff1`.
+Commit inicial da integração: `7945f79d5c14b23b28a91cdc5daaebadd23da292`. Revisão de compatibilidade: `f1baf9779abad093ec1a035e324e7163c5b4170b`, publicada às 09:50:51 de Lisboa. Worker atual a 100%: `98f0d52f-f80f-42b2-a918-b38ab506d670`. SHA256 do módulo atual publicado e da compilação local: `df29d2e03f196bf492d41f05602268ef8cc2b9e749f1edcccaf6b7538123b2ca`.
 
 Verificação após publicação: API pública HTTP 200, modelo `luxtips-events-xg-elo020-live-v4`, política `winner-1x2-v1`, probabilidade mínima 60%, odd mínima 1,25, EV mínimo 3% e até três jogos por dia. Cron por minuto, quatro segredos, D1, Browser, namespace do relay, migração `v1-football-relay` e CPU 30.000 ms preservados. Nenhuma migração D1 foi aplicada.
+
+Capturas reais antes do início verificadas com o validador, sem reconstrução de jogos passados:
+
+| Jogo | Revisão | Verificação |
+|---|---|---|
+| Como–Sassuolo, id 1550159 | Inicial | Digest, contrato e decisões válidos; odd disponível |
+| Atlético–Deportivo, id 1570425 | fulltime-statuses-v2 | Digest, contrato e decisões válidos; candidata recuperada pela regra de informação; odd disponível |
+| Lens–Paris FC, id 1552795 | fulltime-statuses-v2 | Digest, contrato e decisões válidos; liga com histórico AET |
+
+Os snapshots permanecem no ledger. Nenhum destes jogos estava terminado na verificação; não são apresentados acertos, ROI ou melhoria de precisão. Para verificar o digest fora do Worker, exportar o JSON original em texto, preservando a precisão dos números; não reserializar os objetos por ferramentas que possam arredondar valores.
 
 O motor, probabilidades, limiares públicos, odds, ranking e publicações mantêm o comportamento atual. A integração acrescenta metadados de avaliação quando se ativa expressamente o modo passivo. Não liga os motores supervisionado/independente rejeitados na investigação anterior.
 
@@ -74,7 +84,7 @@ Os testes usam resultados sintéticos e SQLite em memória. Verificam que uma pe
 
 O teste do ciclo completo verifica igualdade das probabilidades, `winnerTip` e avaliação de seleção com o modo passivo ligado e desligado. Também verifica retenção da cache, ativação sobre uma cache anterior, isolamento de falhas de armazenamento e leitura dos registos imutáveis.
 
-Verificação inicial: 128 testes na versão isolada e 145 no workspace completo. A revisão de compatibilidade AET/PEN acrescenta um teste de regressão, incluindo a verificação de que golos de prolongamento não entram no histórico normalizado. `npm run check` e a compilação `wrangler deploy --dry-run` verificam também a revisão. O bundle contém a comparação passiva e não contém os motores independente/supervisionado de investigação.
+Verificação inicial: 128 testes na versão isolada e 145 no workspace completo. A revisão de compatibilidade passou **129 testes na versão isolada**, incluindo o teste de regressão de que golos de prolongamento não entram no histórico normalizado. `npm run check` e a compilação `wrangler deploy --dry-run` também passaram nessa revisão. O bundle contém a comparação passiva e não contém os motores independente/supervisionado de investigação.
 
 Estes testes demonstram o funcionamento do mecanismo, não eficácia preditiva ou rentabilidade real. Essa eficácia só poderá ser avaliada com jogos novos depois da ativação.
 
