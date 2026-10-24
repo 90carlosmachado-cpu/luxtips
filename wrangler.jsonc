@@ -18,6 +18,7 @@
     "OPENFOOT_MODE": "live",
     "OPENFOOT_DAILY_BUDGET": "500",
     "PREDICTION_CONTEXT_MODE": "live",
+    "INFORMATION_COMPARISON_MODE": "shadow",
     "FOOTBALL_API_TRANSPORT": "container"
   },
   "d1_databases": [{

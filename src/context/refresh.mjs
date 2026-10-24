@@ -7,6 +7,7 @@ import {contextPrediction,selectionAssessment,CONTEXT_VERSION} from './model.mjs
 import {detailedPrediction,historyWithoutKnownRedCards} from './details-model.mjs';
 import {publishMarketPicks,WINNER_MARKETS} from './selection.mjs';
 import {fitLiveStrength,predictLiveStrength} from '../openfoot/strength.mjs';
+import {informationWindow,informationCaptureNeeded,prepareInformationComparison} from './information-comparison.mjs';
 const DAY=86400000;
 export function bookmakerQuotes(payload,fixture,observedAt){
  return extractQuotes(Array.isArray(payload)?payload:payload?.items,fixture,observedAt).filter(q=>['H','D','A'].includes(q.code)).map(q=>({...q,market:'1X2',selection:q.code}));
@@ -65,7 +66,7 @@ export async function refreshContextForecasts(env,now=Date.now(),options={}){
    const input=JSON.stringify({fixture:f,sourceUpdatedAt,history:knownHistory.filter(r=>usedIds.has(JSON.parse(r.data).id)),xg:p.xgEnrichment?.inputDigest,details:details.filter(d=>d.league===f.league),sources,odds,marketReference:p.contextAdjustment.market,oddsCollection:prices.state?.status,bucket:Math.floor(now/1800000)});
    const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(input));
    const signature=[...new Uint8Array(digest)].map(n=>n.toString(16).padStart(2,'0')).join('');
-   if(original.prediction?.version===p.version&&original.prediction?.contextAdjustment?.inputSignature===signature){
+   if(original.prediction?.version===p.version&&original.prediction?.contextAdjustment?.inputSignature===signature&&!informationCaptureNeeded(env,original,f,now)){
     games.push(original);summary.retained++;if(original.prediction.xgEnrichment?.active)summary.withXg++;if(original.prediction.contextAdjustment?.active)summary.withContext++;continue;
    }
    p.contextAdjustment.inputSignature=signature;
@@ -88,6 +89,10 @@ export async function refreshContextForecasts(env,now=Date.now(),options={}){
    // Persist source clocks and the actual pre-match prediction together.
    const recordedAt=Date.now();if(recordedAt>=f.ts)continue;
    g.evaluation=evaluationRecord(g,h,knownHistory.filter(r=>usedIds.has(JSON.parse(r.data).id)),sources,details,recordedAt,signature);
+   if(informationWindow(env,f,recordedAt)){
+    g.evaluation.informationComparison=await prepareInformationComparison(env,g,h,knownHistory.filter(r=>usedIds.has(JSON.parse(r.data).id)),recordedAt);
+    if(Date.now()>=f.ts)continue;
+   }
    const data=JSON.stringify(g),version=p.version+'@'+f.ts+':'+recordedAt;
    await db.batch([
     db.prepare('INSERT OR IGNORE INTO openfoot_context_forecasts(fixture_id,kickoff,created_at,version,data) VALUES(?,?,?,?,?)').bind(f.id,f.ts,recordedAt,p.version,data),

@@ -121,3 +121,10 @@
   `luxtips-events-xg-elo020-live-v4`; restantes critérios preservados.
   Elo no componente xG usa resultados reais, nunca resultados sintéticos.
   Esta ativação não prova melhoria estatística. Ver `docs/elo-em-producao.md`.
+
+- Comparação prospetiva autorizada em 24-10-2026: `INFORMATION_COMPARISON_MODE=shadow`
+  ativa apenas instrumentação em cinco ligas, mantendo probabilidades e seleção.
+  Código em `context/information-comparison.mjs` e nos módulos de informação de
+  `src/lux/`; primeiro registo de previsão e primeiro preço válido separados.
+  Usa o ledger imutável existente, sem migração ou reescrita. Não ativar motores
+  de investigação por esta autorização. Ver `docs/comparacao-prospetiva-informacao.md`.
