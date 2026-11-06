@@ -1,5 +1,5 @@
 {
-  "version": "2fbe3451-79c5-4bc1-b480-f586aa9da8a3",
+  "version": "52523417-2e45-4fa7-8e8c-b249fa509f5f",
   "retrievedAt": "2026-11-06",
   "main": "integration.js",
   "source": "Cloudflare GET content/v2",
@@ -7,7 +7,7 @@
     "stable-dom.mjs": "b833d0bd2a57ff2ec87c88c732c5d053c2d04b8fa7d5cbb5999bd09425cbf7ca",
     "push.mjs": "4f72cf2e8703a682cf5b760cbe188b7e4b69631e9e877f2b6fa59e30e978d8ae",
     "daily-list.mjs": "4f85d2e079def2605e8d4cb3da2419927f6ec276ef991e81e00516f8222d1861",
-    "production-worker.mjs": "86b6520337a75103f6748b55ce82648ce038388e55f3d4fc4de9b232dc50aafe",
+    "production-worker.mjs": "19a9454e41a1fa5404e73707b9b87dbe766800c81a9840cdb7a61081477b27f4",
     "football-list.mjs": "9285f221fb6d1d5d869ecd4ecd35df434b13cfe647c440a7e7d0a125b039ccf9",
     "refresh-policy.mjs": "1c89ee55066283a00d04355e2823974a93ddb70353ac5e64b10b27127fefac8d",
     "list-presentation.mjs": "efffc3a9cf9a6beb5274a0c575284c14560c3f4ca9773ec7bb1bb6e0213b62e8",
@@ -22,9 +22,9 @@
     "assets.mjs": "81cb2cb4d23357ded26cdc8d9466e2ecfb545a10ea3974541c16b3b69337421b",
     "front-office.mjs": "f8218a2a22b699ee5a7909c83838f387a5672d5b211f986d010371942364524a",
     "webpush.mjs": "63252f1ce1b81cba874c86befe282756794d49eb6b5b4365056c7ebfd92c9830",
-    "daily-ranking.mjs": "3d076fc4a9c304cc1602ab3c8ee3c6777eef1d11a72f91f4fa51f0cb6c9ea34a",
+    "daily-ranking.mjs": "0cef5ee27550cd690bfa2cae93ac6d6cc78c8bdbf7467c919e8bd70dde9bcca0",
     "integration.js": "bdaf8b104b15a9b6c8782e87639f44c356673b77a3c371706cce4cf9144d9c1d"
   },
   "note": "Hashes dos 18 m\u00f3dulos recuperados. N\u00e3o inclui dados D1 ou valores de segredos.",
-  "previousVersion": "17e31c8a-d9d9-4eda-b4ca-60e5ae6d4964"
+  "previousVersion": "2fbe3451-79c5-4bc1-b480-f586aa9da8a3"
 }

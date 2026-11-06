@@ -61,3 +61,33 @@ export async function replaceDailyPick(db,old,g,tip,day,data,now,leaseToken) {
   const results=await db.batch([archive,insert,list]);
   return results[0].meta?.changes===1&&results[1].meta?.changes===1;
 }
+
+// Retire a confirmed below-minimum Betano selection before the day freezes.
+// Missing/expired prices do not count as a negative decision. This clears both
+// capacity and the displayed membership under the publication lease.
+export async function releaseBelowMinimumSlots(db,saved,now,leaseToken){
+ const removed=[];const clock="ROUND((julianday('now')-2440587.5)*86400000)";
+ for(const row of saved){
+  if(!['H','A'].includes(row.market)||row.kickoff<=now||dayLocked(row.day,now)||row.published_at>=now)continue;
+  const limit=freezeAt(row.day),reason='betano-below-minimum-before-0800-v1',listKey='daily_list:'+LIST_VERSION+':football:'+row.day;
+  const archive=db.prepare(`INSERT INTO openfoot_publication_archives(day,fixture_id,archived_at,reason)
+   SELECT day,fixture_id,?,? FROM openfoot_current_picks p
+   WHERE p.day=? AND p.fixture_id=? AND p.published_at=? AND p.kickoff>${clock} AND ${clock}<?
+   AND EXISTS(SELECT 1 FROM openfoot_locks WHERE key='publication' AND until=? AND until>${clock})
+   AND NOT EXISTS(SELECT 1 FROM openfoot_state s,json_each(s.data,'$.items') i WHERE s.key=? AND
+     (json_extract(s.data,'$.asOf')>? OR(json_extract(i.value,'$.gameId')=p.fixture_id AND json_extract(i.value,'$.lockedAt') IS NOT NULL)))
+   AND (SELECT q.odd FROM openfoot_market_quotes q WHERE q.fixture_id=p.fixture_id AND q.kickoff=p.kickoff
+     AND q.bookmaker='Betano' AND q.market='Match Winner' AND q.selection=CASE p.market WHEN 'H' THEN 'Home' ELSE 'Away' END
+     AND q.odd>1 AND q.provider_at<=q.observed_at AND q.observed_at<=${clock} AND q.observed_at<p.kickoff
+     ORDER BY q.provider_at DESC,q.observed_at DESC LIMIT 1)<1.20
+   AND (SELECT q.provider_at FROM openfoot_market_quotes q WHERE q.fixture_id=p.fixture_id AND q.kickoff=p.kickoff
+     AND q.bookmaker='Betano' AND q.market='Match Winner' AND q.selection=CASE p.market WHEN 'H' THEN 'Home' ELSE 'Away' END
+     AND q.odd>1 AND q.provider_at<=q.observed_at AND q.observed_at<=${clock} AND q.observed_at<p.kickoff
+     ORDER BY q.provider_at DESC,q.observed_at DESC LIMIT 1)>${clock}-21600000`)
+    .bind(now,reason,row.day,row.fixture_id,row.published_at,limit,leaseToken,listKey,now);
+  const list=db.prepare(`UPDATE openfoot_state SET data=json_set(data,'$.items',json((SELECT json_group_array(json(value)) FROM json_each(data,'$.items') WHERE json_extract(value,'$.gameId')<>?)),'$.asOf',?)
+   WHERE key=? AND EXISTS(SELECT 1 FROM openfoot_publication_archives WHERE day=? AND fixture_id=? AND archived_at=? AND reason=?)`)
+    .bind(row.fixture_id,now,listKey,row.day,row.fixture_id,now,reason);
+  const result=await db.batch([archive,list]);if(result[0].meta?.changes)removed.push(row.fixture_id);
+ }return removed;
+}

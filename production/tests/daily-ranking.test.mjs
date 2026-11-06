@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {testDatabase} from './sqlite.mjs';
-import {worstReplaceable,replaceDailyPick,freezeAt} from '../daily-ranking.mjs';
+import {worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots,freezeAt} from '../daily-ranking.mjs';
 import {listDay,reconcileDay,readDailyLists,LIST_VERSION,lisbonClock} from '../daily-list.mjs';
 import {syncFootballList,footballCurrentFeed,footballHistoryFeed} from '../football-list.mjs';
 
@@ -14,7 +14,7 @@ const section=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 function runtime(clock){
   class ClockDate extends Date {static now(){return clock.now;}}
   const context=vm.createContext({Date:ClockDate,Intl,JSON,Math,Number,Map,Set,Object,Array,Infinity,
-    worstReplaceable,replaceDailyPick,__name:x=>x});
+    worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots,__name:x=>x});
   vm.runInContext([
     section('function quoteStatus(','var init_policy'),
     section('function pendingReason(','var init_readiness'),
@@ -138,4 +138,22 @@ test('display and history replace the archived card and freeze exactly three, ev
 test('replacements stay within the same day',async()=>{
   const s=setup();await s.publish([s.game(1,.71),s.game(2,.75),s.game(3,.8)]);s.clock.now+=60000;
   await s.publish([s.game(4,.95,'2026-11-06')]);assert.deepEqual(s.ids(),[1,2,3,4]);
+});
+
+test('before08 a hidden below-minimum Betano pick frees capacity for a lower-scoring eligible game',async()=>{
+ const s=setup();await s.publish([s.game(1,.90),s.game(2,.82),s.game(3,.79)]);await syncFootballList(s.db,s.body(),s.clock.now);s.clock.now+=60000;
+ const g=s.game(1,.90);g.odds.H.odd=1.18;s.store(g);s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,g.fixture.ts,'Betano','Match Winner','Home',1.18,s.clock.now-1000,s.clock.now-500);
+ await s.publish([s.game(4,.72)]);assert.deepEqual(s.ids(),[2,3,4]);const list=(await readDailyLists(s.db,'openfoot_state','football')).find(l=>l.day==='2026-11-05');assert.deepEqual(list.items.map(i=>i.gameId).sort(),[2,3]);await syncFootballList(s.db,s.body(),s.clock.now);const feed=await footballCurrentFeed(s.db,s.body(),s.clock.now);assert.deepEqual(feed.games.map(g=>g.fixture.id).sort(),[2,3,4]);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM openfoot_pick_revisions WHERE fixture_id=1').get().n,1);assert.equal(s.db.sql.prepare("SELECT reason FROM openfoot_publication_archives WHERE fixture_id=1").get().reason,'betano-below-minimum-before-0800-v1');
+});
+test('after08 below-minimum Betano prices never release a frozen selection',async()=>{
+ const s=setup();await s.publish([s.game(1,.9),s.game(2,.8),s.game(3,.75)]);await syncFootballList(s.db,s.body(),s.clock.now);s.clock.now=Date.parse('2026-11-05T08:00:01Z');const g=s.game(1,.9);g.odds.H.odd=1.18;s.store(g);s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,g.fixture.ts,'Betano','Match Winner','Home',1.18,s.clock.now-1000,s.clock.now-500);await s.publish([s.game(4,.85)]);assert.deepEqual(s.ids(),[1,2,3]);
+});
+test('missing or expired price alone cannot retire a published game before08',async()=>{
+ for(const expired of [false,true]){const s=setup();await s.publish([s.game(1,.9),s.game(2,.8),s.game(3,.75)]);s.clock.now+=60000;if(expired){const f=s.game(1,.9).fixture;s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,f.ts,'Betano','Match Winner','Home',1.18,s.clock.now-21600001,s.clock.now-1000);}await s.publish([s.game(4,.72)]);assert.deepEqual(s.ids(),[1,2,3]);}
+});
+test('database clock prevents releasing a below-minimum slot across08 even if JS started earlier',async()=>{
+ const s=setup();await s.publish([s.game(1,.9),s.game(2,.8),s.game(3,.75)]);const before=Date.parse('2026-11-05T07:59:59.999Z');s.clock.now=Date.parse('2026-11-05T08:00:00Z');const f=s.game(1,.9).fixture;s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,f.ts,'Betano','Match Winner','Home',1.18,before-1000,before-500);const lease=before+120000;s.db.sql.prepare("INSERT INTO openfoot_locks VALUES('publication',?) ON CONFLICT(key) DO UPDATE SET until=excluded.until").run(lease);const rows=s.db.sql.prepare('SELECT * FROM openfoot_current_picks').all();assert.deepEqual(await releaseBelowMinimumSlots(s.db,rows,before,lease),[]);assert.deepEqual(s.ids(),[1,2,3]);
+});
+test('latest recovered Betano price supersedes an older below-minimum quote',async()=>{
+ const s=setup();await s.publish([s.game(1,.9),s.game(2,.8),s.game(3,.75)]);s.clock.now+=60000;const f=s.game(1,.9).fixture;for(const [odd,age]of[[1.18,2000],[1.25,1000]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(1,f.ts,'Betano','Match Winner','Home',odd,s.clock.now-age,s.clock.now-age+100);await s.publish([s.game(4,.72)]);assert.deepEqual(s.ids(),[1,2,3]);
 });

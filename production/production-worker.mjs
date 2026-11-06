@@ -1,5 +1,5 @@
 import {extractComboQuotes,isComboQuote} from './combo-archive.mjs';
-import {worstReplaceable,replaceDailyPick} from './daily-ranking.mjs';
+import {worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots} from './daily-ranking.mjs';
 import {oddsRetryDelay,oddsNextAttempt,priorityOddsFixture,priorityOddsRows} from './refresh-policy.mjs';
 var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -533,6 +533,7 @@ async function publishAvailable(db, games, now, options) {
   const readiness = await dayReadiness(db, rows, now, w.days);
   if (rows.length) games = publicGames(rows.filter((r) => r.data), now).games.filter((g) => g.prediction?.version === CONTEXT_VERSION && g.selectionContract === "selection-inputs-v2");
   const saved = await db.prepare("SELECT day,fixture_id,recovered,market,kickoff,published_at,data FROM openfoot_current_picks WHERE day>=? AND day<=? UNION ALL SELECT day,fixture_id,0 recovered,market,kickoff,published_at,data FROM openfoot_current_alternatives WHERE day>=? AND day<=?").bind(w.days[0], w.days[2], w.days[0], w.days[2]).all();
+  if(winnerOnly){const released=await releaseBelowMinimumSlots(db,saved.results,Math.max(now,Date.now()),options.publicationToken);saved.results=saved.results.filter(r=>!released.includes(r.fixture_id));}
   const decisions = games.map((g) => ({ fixtureId: g.fixture.id, day: lisbonDay(g.fixture.ts), reason: readiness[lisbonDay(g.fixture.ts)]?.status === "waiting" ? "waiting_for_day_pool" : "assessed", markets: Object.fromEntries(MARKETS.map((m) => [m, markets.includes(m) ? selectionAssessment({ ...g, displayTip: { market: m } }, now).reason : "outside_publication_policy"])) }));
   const existing = new Set(saved.results.map((r) => r.fixture_id));
   const usedSlots = /* @__PURE__ */ __name((day) => saved.results.filter((r) => r.day === day && (!winnerOnly || WINNER_MARKETS.includes(r.market))).length, "usedSlots");
