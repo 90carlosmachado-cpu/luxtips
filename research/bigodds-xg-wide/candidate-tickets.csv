@@ -1,0 +1,164 @@
+variant,decision_day,book,ticket_odd,ticket_won,fixture,match_day,home,away,market,odd,score,hit
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.21,0-2,1
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1550161,2026-10-25,Inter,Fiorentina,1,1.41,2-1,1
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1552795,2026-10-24,Lens,Paris FC,1X,1.48,2-1,1
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1557445,2026-10-25,Manchester United,Bournemouth,O25,1.7,0-3,1
+best_xg_overlapping,2026-10-24,1xBet,11.03270584152,1,1550159,2026-10-24,Como,Sassuolo,U35,1.81,2-0,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.22,0-2,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1550161,2026-10-25,Inter,Fiorentina,1,1.37,2-1,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.4,4-2,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1557445,2026-10-25,Manchester United,Bournemouth,O25,1.71,0-3,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.28,2-0,1
+best_xg_overlapping,2026-10-25,1xBet,13.891086803865598,1,1552800,2026-10-26,Paris Saint Germain,Lyon,U35,1.91,2-0,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1550176,2026-10-28,Venezia,Inter,2,1.35,0-2,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1550174,2026-10-27,Sassuolo,Lazio,X2,1.37,2-6,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1550168,2026-10-27,AS Roma,Cagliari,1,1.37,4-2,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1550175,2026-10-27,Torino,Como,2,1.75,1-3,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1552800,2026-10-26,Paris Saint Germain,Lyon,1,1.38,2-0,1
+best_xg_overlapping,2026-10-26,Betano,11.93236828875,0,1570431,2026-10-26,Sevilla,Osasuna,X2,1.95,2-0,0
+best_xg_overlapping,2026-10-27,1xBet,8.145274464,1,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+best_xg_overlapping,2026-10-27,1xBet,8.145274464,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1
+best_xg_overlapping,2026-10-27,1xBet,8.145274464,1,1550175,2026-10-27,Torino,Como,O25,1.71,1-3,1
+best_xg_overlapping,2026-10-27,1xBet,8.145274464,1,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1
+best_xg_overlapping,2026-10-27,1xBet,8.145274464,1,1550171,2026-10-28,Genoa,Juventus,U25,1.8,2-0,1
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1550173,2026-10-28,Parma,Udinese,X2,1.46,0-0,1
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,2,1.26,1-5,1
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1550167,2026-10-28,AC Milan,Bologna,1X,1.2,2-4,0
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1552802,2026-10-30,Lille,Lens,1X,1.48,1-0,1
+best_xg_overlapping,2026-10-28,1xBet,8.04236622336,0,1550171,2026-10-28,Genoa,Juventus,U25,1.81,2-0,1
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1550177,2026-10-31,AC Milan,Inter,X2,1.33,3-1,0
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1550169,2026-10-29,Fiorentina,Atalanta,X2,1.68,2-2,1
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,2,1.26,1-5,1
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1550186,2026-10-31,Udinese,AS Roma,2,1.63,2-5,1
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1552802,2026-10-30,Lille,Lens,X2,1.58,1-0,0
+best_xg_overlapping,2026-10-29,1xBet,13.921222920191997,0,1550179,2026-10-31,Bologna,Monza,O25,1.92,2-1,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1550184,2026-11-01,Lecce,Genoa,U35,1.22,1-2,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1552808,2026-11-01,Strasbourg,Auxerre,O15,1.2,5-1,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1570441,2026-10-31,Rayo Vallecano,Celta Vigo,U35,1.28,3-0,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.25,2-0,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.27,3-1,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1550177,2026-10-31,AC Milan,Inter,O15,1.21,3-1,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1550179,2026-10-31,Bologna,Monza,O15,1.28,2-1,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1550182,2026-11-01,Juventus,Napoli,U35,1.34,2-0,1
+best_xg_overlapping,2026-10-30,Betano,8.520086521774079,1,1557448,2026-10-31,Bournemouth,Leeds,U35,1.38,2-0,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1550184,2026-11-01,Lecce,Genoa,U35,1.2,1-2,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.24,3-1,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1550181,2026-11-01,Frosinone,Torino,1X,1.42,2-0,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1550179,2026-10-31,Bologna,Monza,O15,1.26,2-1,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1557448,2026-10-31,Bournemouth,Leeds,U35,1.38,2-0,1
+best_xg_overlapping,2026-10-31,1xBet,8.107580829616126,1,1557453,2026-11-01,Liverpool,Arsenal,U35,1.36,0-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.26,3-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1550181,2026-11-01,Frosinone,Torino,1X,1.33,2-0,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1550182,2026-11-01,Juventus,Napoli,U35,1.3,2-0,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.29,2-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1557453,2026-11-01,Liverpool,Arsenal,U35,1.33,0-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.22,2-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1570433,2026-11-01,Athletic Club,Real Sociedad,O15,1.24,2-1,1
+best_xg_overlapping,2026-11-01,BetVictor,8.368548181261632,1,1550178,2026-11-02,Atalanta,Parma,U35,1.48,0-3,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1552199,2026-10-24,Utrecht,PEC Zwolle,1X,1.2,1-1,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.21,0-2,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1552793,2026-10-25,Auxerre,Le Mans,1X,1.35,1-1,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1552205,2026-10-25,Sparta Rotterdam,Ajax,2,1.51,1-2,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1550161,2026-10-25,Inter,Fiorentina,1,1.41,2-1,1
+no_unders_overlapping,2026-10-24,1xBet,8.533894729535998,1,1550162,2026-10-24,Lazio,Parma,1,1.44,2-1,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1552205,2026-10-25,Sparta Rotterdam,Ajax,2,1.46,1-2,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1550161,2026-10-25,Inter,Fiorentina,1,1.36,2-1,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1552800,2026-10-26,Paris Saint Germain,Lyon,1,1.45,2-0,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1550163,2026-10-25,Lecce,Juventus,2,1.52,0-2,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.37,4-2,1
+no_unders_overlapping,2026-10-25,Dafabet,8.453626078080005,1,1575524,2026-10-26,Santa Clara,Benfica,2,1.41,1-2,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.25,2-0,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1552800,2026-10-26,Paris Saint Germain,Lyon,1,1.42,2-0,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1550173,2026-10-28,Parma,Udinese,1X,1.6,0-0,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1
+no_unders_overlapping,2026-10-26,1xBet,8.973776563199998,1,1575524,2026-10-26,Santa Clara,Benfica,2,1.38,1-2,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550172,2026-10-28,Monza,Napoli,X2,1.24,1-4,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550170,2026-10-29,Frosinone,Lecce,1X,1.23,5-1,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550173,2026-10-28,Parma,Udinese,1X,1.58,0-0,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1
+no_unders_overlapping,2026-10-27,1xBet,10.90478484874368,1,1550175,2026-10-27,Torino,Como,O25,1.71,1-3,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550167,2026-10-28,AC Milan,Bologna,1X,1.2,2-4,0
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550172,2026-10-28,Monza,Napoli,X2,1.24,1-4,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,2,1.26,1-5,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550170,2026-10-29,Frosinone,Lecce,1X,1.23,5-1,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1552802,2026-10-30,Lille,Lens,1X,1.48,1-0,1
+no_unders_overlapping,2026-10-28,1xBet,9.882692249213953,0,1550173,2026-10-28,Parma,Udinese,1X,1.51,0-0,1
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.42,2-2,1
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1550177,2026-10-31,AC Milan,Inter,X2,1.33,3-1,0
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,2,1.26,1-5,1
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1552809,2026-10-31,Estac Troyes,Le Mans,1X,1.42,2-0,1
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1550186,2026-10-31,Udinese,AS Roma,2,1.63,2-5,1
+no_unders_overlapping,2026-10-29,1xBet,9.198202160952,0,1552211,2026-10-31,Cambuur,GO Ahead Eagles,1X,1.67,4-0,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1550177,2026-10-31,AC Milan,Inter,O15,1.21,3-1,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1550186,2026-10-31,Udinese,AS Roma,O15,1.2,2-5,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.25,2-0,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1552808,2026-11-01,Strasbourg,Auxerre,O15,1.2,5-1,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.27,2-0,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1557452,2026-10-31,Hull City,Ipswich,O15,1.29,2-2,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1575528,2026-11-01,Arouca,Nacional,1X,1.26,1-0,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1552212,2026-11-01,PEC Zwolle,ADO Den Haag,O15,1.21,1-0,0
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1575205,2026-11-01,Eintracht Frankfurt,Hamburger SV,1X,1.2,3-1,1
+no_unders_overlapping,2026-10-30,Betano,8.4865626269424,0,1575204,2026-10-31,Bayer Leverkusen,VfB Stuttgart,1X,1.3,2-4,0
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.28,2-2,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.27,2-1,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1550179,2026-10-31,Bologna,Monza,O15,1.25,2-1,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1557448,2026-10-31,Bournemouth,Leeds,O15,1.27,2-0,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.31,3-1,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.26,3-1,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1552211,2026-10-31,Cambuur,GO Ahead Eagles,O25,1.46,4-0,1
+no_unders_overlapping,2026-10-31,Pinnacle,8.9553922569216,1,1552215,2026-11-01,Groningen,Sparta Rotterdam,O25,1.44,2-3,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1635640,2026-11-03,Bodo/Glimt,Lille,1X,1.28,0-0,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.21,2-1,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1635677,2026-11-03,Lask Linz,Slovan Bratislava,O25,1.41,4-0,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1570433,2026-11-01,Athletic Club,Real Sociedad,1X,1.35,2-1,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1575534,2026-11-01,Maritimo,Santa Clara,X2,1.28,0-2,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.22,3-1,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1575527,2026-11-01,Academico Viseu,Rio Ave,1X,1.22,2-1,1
+no_unders_overlapping,2026-11-01,Marathonbet,8.368817948688381,1,1635695,2026-11-03,Manchester United,AS Roma,1X,1.49,3-2,1
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1557455,2026-11-02,Newcastle,Everton,O15,1.2,0-1,0
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.54,0-0,1
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.35,2-1,1
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1636324,2026-11-04,Rennes,Olympiakos Piraeus,O15,1.23,0-0,0
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1552803,2026-11-02,Lorient,Stade Brestois 29,1X,1.44,0-2,0
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1575529,2026-11-02,Benfica,Alverca,O25,1.38,1-0,0
+no_unders_overlapping,2026-11-02,1xBet,9.939625686144,0,1550185,2026-11-02,Sassuolo,Fiorentina,1X,1.63,2-4,0
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1552199,2026-10-24,Utrecht,PEC Zwolle,1X,1.2,1-1,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.21,0-2,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1552793,2026-10-25,Auxerre,Le Mans,1X,1.35,1-1,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1552205,2026-10-25,Sparta Rotterdam,Ajax,2,1.51,1-2,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1550161,2026-10-25,Inter,Fiorentina,1,1.41,2-1,1
+no_unders_sequential,2026-10-24,1xBet,8.533894729535998,1,1550162,2026-10-24,Lazio,Parma,1,1.44,2-1,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.25,2-0,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1552800,2026-10-26,Paris Saint Germain,Lyon,1,1.42,2-0,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1550173,2026-10-28,Parma,Udinese,1X,1.6,0-0,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1
+no_unders_sequential,2026-10-26,1xBet,8.973776563199998,1,1575524,2026-10-26,Santa Clara,Benfica,2,1.38,1-2,1
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.42,2-2,1
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1550177,2026-10-31,AC Milan,Inter,X2,1.33,3-1,0
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,2,1.26,1-5,1
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1552809,2026-10-31,Estac Troyes,Le Mans,1X,1.42,2-0,1
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1550186,2026-10-31,Udinese,AS Roma,2,1.63,2-5,1
+no_unders_sequential,2026-10-29,1xBet,9.198202160952,0,1552211,2026-10-31,Cambuur,GO Ahead Eagles,1X,1.67,4-0,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1635640,2026-11-03,Bodo/Glimt,Lille,1X,1.28,0-0,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.21,2-1,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1635677,2026-11-03,Lask Linz,Slovan Bratislava,O25,1.41,4-0,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1570433,2026-11-01,Athletic Club,Real Sociedad,1X,1.35,2-1,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1575534,2026-11-01,Maritimo,Santa Clara,X2,1.28,0-2,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.22,3-1,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1575527,2026-11-01,Academico Viseu,Rio Ave,1X,1.22,2-1,1
+no_unders_sequential,2026-11-01,Marathonbet,8.368817948688381,1,1635695,2026-11-03,Manchester United,AS Roma,1X,1.49,3-2,1

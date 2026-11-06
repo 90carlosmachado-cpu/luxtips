@@ -1,0 +1,3 @@
+Requer Python3 e NumPy. Extrair mantendo as três pastas. Na raiz: python bigodds-xg-comparison/compare.py ; python -m unittest discover -s bigodds-xg-comparison -p test_compare.py -v ; python bigodds-xg-comparison/report.py
+
+Abrir bigodds-xg-comparison/BigOdds-comparacao-xG.html para resumo e todos os jogos. results.json: comparação e sensibilidade. tickets.csv: seleções completas. Inputs originais incluídos, com hashes. Não modifica produção nem depende de credenciais.

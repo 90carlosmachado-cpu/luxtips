@@ -1,0 +1,27 @@
+{
+  "version": "8a39a26a-2b74-4308-a83b-49bdebe3f13d",
+  "retrievedAt": "2026-11-06",
+  "main": "integration.js",
+  "source": "Cloudflare GET content/v2",
+  "modules": {
+    "stable-dom.mjs": "b833d0bd2a57ff2ec87c88c732c5d053c2d04b8fa7d5cbb5999bd09425cbf7ca",
+    "push.mjs": "4f72cf2e8703a682cf5b760cbe188b7e4b69631e9e877f2b6fa59e30e978d8ae",
+    "daily-list.mjs": "4f85d2e079def2605e8d4cb3da2419927f6ec276ef991e81e00516f8222d1861",
+    "production-worker.mjs": "13166b9770203e5ec82b93c4354747b4c38ed64dc98a04d20d82ebf0e2d879d8",
+    "football-list.mjs": "4c6f4335a4cded7a2aeb444ff54845d16a2faac5623ad990c0c1ec21f406225b",
+    "refresh-policy.mjs": "adf66ec5b706d78afbc6ff680f64a902a4ecc23d4ff9225e943493d7908fe741",
+    "list-presentation.mjs": "efffc3a9cf9a6beb5274a0c575284c14560c3f4ca9773ec7bb1bb6e0213b62e8",
+    "pwa.mjs": "490f67d30ff637a54c892766f8bb0deb0860680817ce3645c8aa5396a3b18a0d",
+    "quote-gate.mjs": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263",
+    "bigodds-model.mjs": "529e38fe8bf9c5633bcb32ca89cd4814bd7a5c2daed72176538096e7aae2a7d1",
+    "bigodds-view.mjs": "69b492fe883d473725f8fe7dcd866cb8d08af80c9251362831e8bb425b741c1c",
+    "og-image.mjs": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d",
+    "bigodds.mjs": "1d3bec5f48a32bf166a305fff9568d469c155a972852f0a0685ba4f1439c4f27",
+    "assets.mjs": "81cb2cb4d23357ded26cdc8d9466e2ecfb545a10ea3974541c16b3b69337421b",
+    "front-office.mjs": "5f8ff2ab65617318c2d71b1a906b3895e6f6c8dbd5b54e397779661db674714d",
+    "webpush.mjs": "63252f1ce1b81cba874c86befe282756794d49eb6b5b4365056c7ebfd92c9830",
+    "daily-ranking.mjs": "3d076fc4a9c304cc1602ab3c8ee3c6777eef1d11a72f91f4fa51f0cb6c9ea34a",
+    "integration.js": "bdaf8b104b15a9b6c8782e87639f44c356673b77a3c371706cce4cf9144d9c1d"
+  },
+  "note": "Hashes dos 18 m\u00f3dulos recuperados. N\u00e3o inclui dados D1 ou valores de segredos."
+}

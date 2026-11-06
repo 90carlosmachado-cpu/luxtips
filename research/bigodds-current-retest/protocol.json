@@ -1,0 +1,50 @@
+{
+  "scope": "2026/27 archived quote period 24 October\u20134 November only; not the entire season",
+  "models": [
+    [
+      "goals4",
+      2
+    ],
+    [
+      "goals8_elo20",
+      3
+    ],
+    [
+      "goals8_xg25",
+      5
+    ]
+  ],
+  "counts": [
+    [
+      5,
+      12
+    ],
+    [
+      5,
+      7
+    ],
+    [
+      8,
+      12
+    ],
+    [
+      9,
+      9
+    ]
+  ],
+  "windows": [
+    2,
+    3
+  ],
+  "odds": [
+    8,
+    15
+  ],
+  "probabilities": "50% reconstructed historical candidate +50% same market reference as earlier replay",
+  "combo_prices": "Unchanged estimates from previous engine; not recalculated to favor a candidate. Real quotes for base markets.",
+  "historical_availability": "Candidate forecasts are ex-post event-time reconstructions, not original archived predictions. Raw results assumed available kickoff+2h.",
+  "selection": "Each policy chooses highest estimated joint probability without using outcomes; no rule chosen because it wins current-period tickets.",
+  "development": "Candidate parameters fixed in previous historical study; goals4 was selected on 2024, Elo20 and xG25 are fixed controls.",
+  "out_of_sample": "Current period already inspected extensively; this is exploratory and cannot prove independent validation.",
+  "production_changes": false
+}

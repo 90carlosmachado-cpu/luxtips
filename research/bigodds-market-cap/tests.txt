@@ -1,0 +1,9 @@
+test_baselines_reproduced (test_simulation.Tests.test_baselines_reproduced) ... ok
+test_market_cap_and_constraints (test_simulation.Tests.test_market_cap_and_constraints) ... ok
+test_selection_does_not_use_target_outcome (test_simulation.Tests.test_selection_does_not_use_target_outcome) ... ok
+test_sequential_no_reuse_or_overlapping_active_tickets (test_simulation.Tests.test_sequential_no_reuse_or_overlapping_active_tickets) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.005s
+
+OK

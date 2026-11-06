@@ -1,0 +1,123 @@
+{
+  "note": "Metadados de referência sem valores de segredos. Nenhuma publicação foi efetuada nesta sincronização.",
+  "version": "8a39a26a-2b74-4308-a83b-49bdebe3f13d",
+  "settings": {
+    "placement": {},
+    "compatibility_date": "2026-10-18",
+    "compatibility_flags": [],
+    "usage_model": "standard",
+    "tags": [],
+    "tail_consumers": [],
+    "logpush": false,
+    "limits": {
+      "cpu_ms": 30000
+    },
+    "observability": {
+      "enabled": true,
+      "head_sampling_rate": 0.1,
+      "redact_query_string": true,
+      "logs": {
+        "enabled": true,
+        "head_sampling_rate": 0.1,
+        "persist": true,
+        "invocation_logs": true
+      },
+      "traces": {
+        "enabled": false,
+        "persist": true,
+        "head_sampling_rate": 0.1
+      }
+    },
+    "annotations": {
+      "workers/message": "Big Odds: xG90 prior2 + market50, no unders, explicit one-off rebuild command",
+      "workers/triggered_by": "upload"
+    },
+    "bindings": [
+      {
+        "type": "secret_text",
+        "name": "ADMIN_TOKEN"
+      },
+      {
+        "type": "secret_text",
+        "name": "API_FOOTBALL_KEY"
+      },
+      {
+        "type": "secret_text",
+        "name": "AUTH_PASSWORD"
+      },
+      {
+        "name": "DAILY_BUDGET",
+        "text": "6000",
+        "type": "plain_text"
+      },
+      {
+        "database_id": "efc001a1-1d87-4a21-b94d-372980392f1c",
+        "id": "efc001a1-1d87-4a21-b94d-372980392f1c",
+        "name": "DB",
+        "type": "d1"
+      },
+      {
+        "name": "FOOTBALL_API_TRANSPORT",
+        "text": "container",
+        "type": "plain_text"
+      },
+      {
+        "name": "FOOTBALL_BROWSER",
+        "type": "browser",
+        "version": 2
+      },
+      {
+        "class_name": "FootballRelay",
+        "name": "FOOTBALL_RELAY",
+        "namespace_id": "ac8c8ed3480545988694a93be24ec030",
+        "type": "durable_object_namespace"
+      },
+      {
+        "name": "INFORMATION_COMPARISON_MODE",
+        "text": "shadow",
+        "type": "plain_text"
+      },
+      {
+        "name": "LEAGUES",
+        "text": "94,39,140,78,135,61,88,2,3,848",
+        "type": "plain_text"
+      },
+      {
+        "environment": "production",
+        "name": "NBA_SIM",
+        "service": "luxtips-nba-sim",
+        "type": "service"
+      },
+      {
+        "type": "secret_text",
+        "name": "OPENFOOT_API_KEY"
+      },
+      {
+        "name": "OPENFOOT_DAILY_BUDGET",
+        "text": "500",
+        "type": "plain_text"
+      },
+      {
+        "name": "OPENFOOT_MODE",
+        "text": "live",
+        "type": "plain_text"
+      },
+      {
+        "name": "PREDICTION_CONTEXT_MODE",
+        "text": "live",
+        "type": "plain_text"
+      },
+      {
+        "type": "secret_text",
+        "name": "PWA_VAPID_JWK"
+      }
+    ]
+  },
+  "schedules": [
+    {
+      "cron": "* * * * *",
+      "created_on": "2026-10-22T16:43:51.986636Z",
+      "modified_on": "2026-10-22T16:53:07.773088Z"
+    }
+  ]
+}

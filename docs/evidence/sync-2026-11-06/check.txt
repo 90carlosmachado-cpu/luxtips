@@ -1,0 +1,7 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> check
+> node scripts/check.mjs && node scripts/check-production.mjs
+
+Sintaxe válida; bundle gerado coincide com as adaptações auditáveis do original recuperado.
+18 módulos de produção com hashes íntegros e sintaxe válida; entrada atual confirmada.

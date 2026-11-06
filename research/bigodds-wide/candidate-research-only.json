@@ -1,0 +1,31 @@
+{
+  "purpose": "Research only; selected after inspecting the full historical period, NOT validated or deployed. Freeze before new-period evaluation.",
+  "rule": {
+    "source": "goals4",
+    "span": 2,
+    "markets": "all",
+    "p_min": 0.5,
+    "odd_min": 1.2,
+    "sample_min": 0,
+    "rank": "probability",
+    "n_min": 5,
+    "n_max": 12,
+    "odd_band": [
+      8,
+      15
+    ]
+  },
+  "historical": {
+    "n": 11,
+    "wins": 6,
+    "rate": 0.5454545454545454,
+    "mean_odd": 9.602332822402648,
+    "mean_legs": 6.636363636363637,
+    "estimated_price_tickets": 0,
+    "profit_units": 44.28093276617825
+  },
+  "nonoverlap": {
+    "n": 6,
+    "wins": 2
+  }
+}

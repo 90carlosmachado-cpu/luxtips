@@ -1,0 +1,47 @@
+{
+  "id": "bigodds-goals4-all-2d-v1",
+  "status": "frozen_research_candidate_not_validated",
+  "frozen_at_utc": "2026-11-05T17:07:56.298138+00:00",
+  "rule": {
+    "source": "goals4",
+    "span": 2,
+    "markets": "all",
+    "p_min": 0.5,
+    "odd_min": 1.2,
+    "sample_min": 0,
+    "rank": "probability",
+    "n_min": 5,
+    "n_max": 12,
+    "odd_band": [
+      8,
+      15
+    ]
+  },
+  "markets": [
+    "1",
+    "2",
+    "1X",
+    "X2",
+    "O15",
+    "U15",
+    "O25",
+    "U25",
+    "O35",
+    "U35",
+    "BY",
+    "BN",
+    "1+O15",
+    "2+O15",
+    "1X+O15",
+    "X2+O15"
+  ],
+  "builder": "Greedy best market per fixture by probability; sort by probability descending then fixed data index; evaluate admissible prefixes of5–12, choose greatest product probability across single bookmakers; same source and logic as original research.",
+  "model": "goals4 with180day half-life and role-specific goals/shrinkage4; no Elo or xG; raw historical result completion assumed kickoff+2h",
+  "price_policy": "Quotes known before decision and younger than6h; combo prices estimated by the existing frozen method; execution odds not guaranteed current",
+  "historical_selection": "Chosen after observing full24Oct–4Nov period;6/11, not independently validated",
+  "cycle": "Reconstruction at2026-11-05 08:00 Europe/Lisbon; targets5–6Nov; no current outcomes read",
+  "candidate_code_sha256": {
+    "build.py": "6f08b84418ae93a34a86c0cecfa461e701fb241f1d6fc91256681de02a127a93",
+    "base.py": "f91f098eefcfc60b1c1a0d82f7d8e4c1b4c4c1b5929843372f7f119577ff9569"
+  }
+}

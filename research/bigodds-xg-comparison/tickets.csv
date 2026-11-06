@@ -1,0 +1,220 @@
+variant,decision_day,book,total_odd,ticket_won,fixture,match_day,home,away,market,odd,score,leg_hit,estimated_price,xg_active
+goals4,2026-10-24,Betano,9.817558994580482,0,1575523,2026-10-25,Rio Ave,Famalicao,X2,1.29,0-4,1,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1557438,2026-10-24,Aston Villa,Manchester City,X2,1.21,2-1,0,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1550157,2026-10-25,Atalanta,Frosinone,1X,1.3,4-4,1,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1552200,2026-10-24,Willem II,Cambuur,X2,1.55,1-6,1,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1550161,2026-10-25,Inter,Fiorentina,1,1.36,2-1,1,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1557445,2026-10-25,Manchester United,Bournemouth,1X,1.39,0-3,0,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1552798,2026-10-25,Rennes,Strasbourg,1X,1.29,3-0,1,False,False
+goals4,2026-10-24,Betano,9.817558994580482,0,1557439,2026-10-24,Chelsea,Tottenham,1X,1.28,0-2,0,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.22,0-2,1,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1550161,2026-10-25,Inter,Fiorentina,1,1.37,2-1,1,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.28,2-0,1,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1557442,2026-10-25,Hull City,Brentford,1X,2.24,1-1,1,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1,False,False
+goals4,2026-10-25,1xBet,11.636512505856004,1,1557445,2026-10-25,Manchester United,Bournemouth,O25,1.71,0-3,1,False,False
+goals4,2026-10-26,1xBet,9.145315199999999,0,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,False
+goals4,2026-10-26,1xBet,9.145315199999999,0,1570431,2026-10-26,Sevilla,Osasuna,1X,1.25,2-0,1,False,False
+goals4,2026-10-26,1xBet,9.145315199999999,0,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1,False,False
+goals4,2026-10-26,1xBet,9.145315199999999,0,1552800,2026-10-26,Paris Saint Germain,Lyon,U35,1.94,2-0,1,False,False
+goals4,2026-10-26,1xBet,9.145315199999999,0,1550174,2026-10-27,Sassuolo,Lazio,U25,2.24,2-6,0,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550174,2026-10-27,Sassuolo,Lazio,X2,1.37,2-6,1,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550173,2026-10-28,Parma,Udinese,X2,1.44,0-0,1,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.35,4-2,1,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550176,2026-10-28,Venezia,Inter,2,1.35,0-2,1,False,False
+goals4,2026-10-27,Betano,10.176499411200004,1,1550167,2026-10-28,AC Milan,Bologna,X2,2.32,2-4,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550170,2026-10-29,Frosinone,Lecce,1X,1.23,5-1,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550173,2026-10-28,Parma,Udinese,X2,1.46,0-0,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550167,2026-10-28,AC Milan,Bologna,1X,1.2,2-4,0,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550172,2026-10-28,Monza,Napoli,X2,1.24,1-4,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1,False,False
+goals4,2026-10-28,1xBet,9.2746492487424,0,1550171,2026-10-28,Genoa,Juventus,U25,1.81,2-0,1,False,False
+goals4,2026-10-29,1xBet,14.039121600000001,0,1550169,2026-10-29,Fiorentina,Atalanta,X2,1.68,2-2,1,False,False
+goals4,2026-10-29,1xBet,14.039121600000001,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,U35,2.05,1-5,0,False,False
+goals4,2026-10-29,1xBet,14.039121600000001,0,1552802,2026-10-30,Lille,Lens,X2,1.58,1-0,0,False,False
+goals4,2026-10-29,1xBet,14.039121600000001,0,1552806,2026-10-30,Nice,Rennes,X2,1.5,5-2,0,False,False
+goals4,2026-10-29,1xBet,14.039121600000001,0,1550170,2026-10-29,Frosinone,Lecce,1,1.72,5-1,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1570441,2026-10-31,Rayo Vallecano,Celta Vigo,U35,1.25,3-0,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.25,2-0,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.73,0-2,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.25,2-2,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1550179,2026-10-31,Bologna,Monza,O15,1.25,2-1,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1550177,2026-10-31,AC Milan,Inter,O15,1.2,3-1,1,False,False
+goals4,2026-10-30,Bet365,8.409421875000001,1,1557448,2026-10-31,Bournemouth,Leeds,U35,1.36,2-0,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.26,3-1,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.76,0-2,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.28,2-2,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1550179,2026-10-31,Bologna,Monza,O15,1.25,2-1,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1557448,2026-10-31,Bournemouth,Leeds,U35,1.38,2-0,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.31,3-1,1,False,False
+goals4,2026-10-31,Pinnacle,8.53110365184,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1550184,2026-11-01,Lecce,Genoa,U35,1.22,1-2,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1552808,2026-11-01,Strasbourg,Auxerre,O15,1.2,5-1,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.27,3-1,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.53,0-0,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1550181,2026-11-01,Frosinone,Torino,1X,1.38,2-0,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.32,2-1,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1,False,False
+goals4,2026-11-01,Betano,8.270316558282238,1,1575534,2026-11-01,Maritimo,Santa Clara,U35,1.2,0-2,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.49,0-0,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.35,2-1,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1550178,2026-11-02,Atalanta,Parma,U35,1.5,0-3,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1552803,2026-11-02,Lorient,Stade Brestois 29,O15,1.32,0-2,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1557455,2026-11-02,Newcastle,Everton,U35,1.42,0-1,1,False,False
+goals4,2026-11-02,Marathonbet,8.257078764000003,1,1550185,2026-11-02,Sassuolo,Fiorentina,BY,1.46,2-4,1,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635640,2026-11-03,Bodo/Glimt,Lille,1X,1.27,0-0,1,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635677,2026-11-03,Lask Linz,Slovan Bratislava,O25,1.36,4-0,1,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635695,2026-11-03,Manchester United,AS Roma,1X,1.42,3-2,1,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635723,2026-11-03,Shakhtar Donetsk,Sporting CP,O15,1.2,0-1,0,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635622,2026-11-03,Atletico Madrid,Bayern München,O25,1.43,0-2,0,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1635707,2026-11-04,PSV Eindhoven,Club Brugge KV,O25,1.35,1-2,1,False,False
+goals4,2026-11-03,1xBet,8.068083236928002,0,1636324,2026-11-04,Rennes,Olympiakos Piraeus,U35,1.42,0-0,1,False,False
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1552199,2026-10-24,Utrecht,PEC Zwolle,1X,1.2,1-1,1,False,False
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1550166,2026-10-25,Udinese,AC Milan,X2,1.21,0-2,1,False,True
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1550157,2026-10-25,Atalanta,Frosinone,U35,1.87,4-4,0,False,False
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1552795,2026-10-24,Lens,Paris FC,1X,1.48,2-1,1,False,True
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1552793,2026-10-25,Auxerre,Le Mans,1X,1.35,1-1,1,False,False
+goals4_xg25_available,2026-10-24,1xBet,12.152110924800004,0,1557442,2026-10-25,Hull City,Brentford,1X,2.24,1-1,1,False,False
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.22,0-2,1,False,True
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1557442,2026-10-25,Hull City,Brentford,1X,2.24,1-1,1,False,False
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.28,2-0,1,False,True
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1550161,2026-10-25,Inter,Fiorentina,1,1.37,2-1,1,False,True
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1,False,True
+goals4_xg25_available,2026-10-25,1xBet,11.636512505855995,1,1557445,2026-10-25,Manchester United,Bournemouth,O25,1.71,0-3,1,False,True
+goals4_xg25_available,2026-10-26,1xBet,9.145315199999999,0,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,True
+goals4_xg25_available,2026-10-26,1xBet,9.145315199999999,0,1570431,2026-10-26,Sevilla,Osasuna,1X,1.25,2-0,1,False,True
+goals4_xg25_available,2026-10-26,1xBet,9.145315199999999,0,1552800,2026-10-26,Paris Saint Germain,Lyon,U35,1.94,2-0,1,False,True
+goals4_xg25_available,2026-10-26,1xBet,9.145315199999999,0,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1,False,True
+goals4_xg25_available,2026-10-26,1xBet,9.145315199999999,0,1550174,2026-10-27,Sassuolo,Lazio,U25,2.24,2-6,0,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550174,2026-10-27,Sassuolo,Lazio,X2,1.37,2-6,1,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550173,2026-10-28,Parma,Udinese,X2,1.44,0-0,1,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550176,2026-10-28,Venezia,Inter,2,1.35,0-2,1,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.35,4-2,1,False,True
+goals4_xg25_available,2026-10-27,Betano,10.176499411200004,1,1550167,2026-10-28,AC Milan,Bologna,X2,2.32,2-4,1,False,True
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550170,2026-10-29,Frosinone,Lecce,1X,1.23,5-1,1,False,False
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550173,2026-10-28,Parma,Udinese,X2,1.46,0-0,1,False,True
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1,False,True
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550167,2026-10-28,AC Milan,Bologna,1X,1.2,2-4,0,False,True
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550172,2026-10-28,Monza,Napoli,X2,1.24,1-4,1,False,False
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1,False,True
+goals4_xg25_available,2026-10-28,1xBet,9.2746492487424,0,1550171,2026-10-28,Genoa,Juventus,U25,1.81,2-0,1,False,True
+goals4_xg25_available,2026-10-29,1xBet,14.039121600000001,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,U35,2.05,1-5,0,False,True
+goals4_xg25_available,2026-10-29,1xBet,14.039121600000001,0,1550169,2026-10-29,Fiorentina,Atalanta,X2,1.68,2-2,1,False,True
+goals4_xg25_available,2026-10-29,1xBet,14.039121600000001,0,1552802,2026-10-30,Lille,Lens,X2,1.58,1-0,0,False,True
+goals4_xg25_available,2026-10-29,1xBet,14.039121600000001,0,1552806,2026-10-30,Nice,Rennes,X2,1.5,5-2,0,False,True
+goals4_xg25_available,2026-10-29,1xBet,14.039121600000001,0,1550170,2026-10-29,Frosinone,Lecce,1,1.72,5-1,1,False,False
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1570441,2026-10-31,Rayo Vallecano,Celta Vigo,U35,1.25,3-0,1,False,True
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1,False,True
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.25,2-0,1,False,False
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.73,0-2,1,False,False
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1550177,2026-10-31,AC Milan,Inter,O15,1.2,3-1,1,False,True
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.25,2-2,1,False,False
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.3,3-1,1,False,False
+goals4_xg25_available,2026-10-30,Bet365,8.03841796875,1,1550179,2026-10-31,Bologna,Monza,O15,1.25,2-1,1,False,True
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1550184,2026-11-01,Lecce,Genoa,U35,1.2,1-2,1,False,True
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1,False,True
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.26,2-0,1,False,False
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.81,0-2,1,False,False
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.24,3-1,1,False,True
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.25,2-2,1,False,False
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.3,3-1,1,False,False
+goals4_xg25_available,2026-10-31,1xBet,8.476875257759998,1,1550179,2026-10-31,Bologna,Monza,O15,1.26,2-1,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1550184,2026-11-01,Lecce,Genoa,U35,1.2,1-2,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.25,3-1,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.54,0-0,1,False,False
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.35,2-1,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.24,2-1,1,False,True
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1575527,2026-11-01,Academico Viseu,Rio Ave,U35,1.36,2-1,1,False,False
+goals4_xg25_available,2026-11-01,1xBet,9.792329500800005,1,1550181,2026-11-01,Frosinone,Torino,1X,1.4,2-0,1,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1550185,2026-11-02,Sassuolo,Fiorentina,O15,1.2,2-4,1,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.53,0-0,1,False,False
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.32,2-1,1,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1557455,2026-11-02,Newcastle,Everton,O15,1.24,0-1,0,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1550178,2026-11-02,Atalanta,Parma,U35,1.55,0-3,1,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1552803,2026-11-02,Lorient,Stade Brestois 29,O15,1.37,0-2,1,False,True
+goals4_xg25_available,2026-11-02,Betano,8.678795735808002,0,1575529,2026-11-02,Benfica,Alverca,O25,1.36,1-0,0,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635640,2026-11-03,Bodo/Glimt,Lille,1X,1.27,0-0,1,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635677,2026-11-03,Lask Linz,Slovan Bratislava,O25,1.36,4-0,1,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635695,2026-11-03,Manchester United,AS Roma,1X,1.42,3-2,1,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635723,2026-11-03,Shakhtar Donetsk,Sporting CP,O15,1.2,0-1,0,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635622,2026-11-03,Atletico Madrid,Bayern München,O25,1.43,0-2,0,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1635707,2026-11-04,PSV Eindhoven,Club Brugge KV,O25,1.35,1-2,1,False,False
+goals4_xg25_available,2026-11-03,1xBet,8.068083236928002,0,1636324,2026-11-04,Rennes,Olympiakos Piraeus,U35,1.42,0-0,1,False,False
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1552199,2026-10-24,Utrecht,PEC Zwolle,1X,1.2,1-1,1,False,False
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1550166,2026-10-25,Udinese,AC Milan,X2,1.21,0-2,1,False,True
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1550157,2026-10-25,Atalanta,Frosinone,U35,1.87,4-4,0,False,False
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1552795,2026-10-24,Lens,Paris FC,1X,1.48,2-1,1,False,True
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1552793,2026-10-25,Auxerre,Le Mans,1X,1.35,1-1,1,False,False
+goals4_xg25_retrospective,2026-10-24,1xBet,12.152110924800004,0,1557442,2026-10-25,Hull City,Brentford,1X,2.24,1-1,1,False,False
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1550166,2026-10-25,Udinese,AC Milan,X2,1.22,0-2,1,False,True
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1557442,2026-10-25,Hull City,Brentford,1X,2.24,1-1,1,False,False
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1550161,2026-10-25,Inter,Fiorentina,1,1.37,2-1,1,False,True
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1570431,2026-10-26,Sevilla,Osasuna,1X,1.28,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1552792,2026-10-25,Angers,Lorient,X2,1.42,0-0,1,False,True
+goals4_xg25_retrospective,2026-10-25,1xBet,11.636512505855999,1,1557445,2026-10-25,Manchester United,Bournemouth,O25,1.71,0-3,1,False,True
+goals4_xg25_retrospective,2026-10-26,1xBet,9.145315199999999,0,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,True
+goals4_xg25_retrospective,2026-10-26,1xBet,9.145315199999999,0,1570431,2026-10-26,Sevilla,Osasuna,1X,1.25,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-26,1xBet,9.145315199999999,0,1552800,2026-10-26,Paris Saint Germain,Lyon,U35,1.94,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-26,1xBet,9.145315199999999,0,1550168,2026-10-27,AS Roma,Cagliari,1,1.38,4-2,1,False,True
+goals4_xg25_retrospective,2026-10-26,1xBet,9.145315199999999,0,1550174,2026-10-27,Sassuolo,Lazio,U25,2.24,2-6,0,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550175,2026-10-27,Torino,Como,X2,1.22,1-3,1,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550174,2026-10-27,Sassuolo,Lazio,X2,1.37,2-6,1,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550173,2026-10-28,Parma,Udinese,X2,1.44,0-0,1,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550176,2026-10-28,Venezia,Inter,2,1.35,0-2,1,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550168,2026-10-27,AS Roma,Cagliari,1,1.35,4-2,1,False,True
+goals4_xg25_retrospective,2026-10-27,Betano,10.176499411200004,1,1550167,2026-10-28,AC Milan,Bologna,X2,2.32,2-4,1,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550170,2026-10-29,Frosinone,Lecce,1X,1.23,5-1,1,False,False
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550173,2026-10-28,Parma,Udinese,X2,1.46,0-0,1,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550176,2026-10-28,Venezia,Inter,2,1.36,0-2,1,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550167,2026-10-28,AC Milan,Bologna,1X,1.2,2-4,0,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550172,2026-10-28,Monza,Napoli,X2,1.24,1-4,1,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550169,2026-10-29,Fiorentina,Atalanta,1X,1.41,2-2,1,False,True
+goals4_xg25_retrospective,2026-10-28,1xBet,9.2746492487424,0,1550171,2026-10-28,Genoa,Juventus,U25,1.81,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-29,1xBet,14.039121600000001,0,1550169,2026-10-29,Fiorentina,Atalanta,X2,1.68,2-2,1,False,True
+goals4_xg25_retrospective,2026-10-29,1xBet,14.039121600000001,0,1552801,2026-10-30,Le Havre,Paris Saint Germain,U35,2.05,1-5,0,False,True
+goals4_xg25_retrospective,2026-10-29,1xBet,14.039121600000001,0,1552802,2026-10-30,Lille,Lens,X2,1.58,1-0,0,False,True
+goals4_xg25_retrospective,2026-10-29,1xBet,14.039121600000001,0,1552806,2026-10-30,Nice,Rennes,X2,1.5,5-2,0,False,True
+goals4_xg25_retrospective,2026-10-29,1xBet,14.039121600000001,0,1550170,2026-10-29,Frosinone,Lecce,1,1.72,5-1,1,False,False
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1570441,2026-10-31,Rayo Vallecano,Celta Vigo,U35,1.25,3-0,1,False,True
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.25,2-0,1,False,False
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.73,0-2,1,False,False
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1550177,2026-10-31,AC Milan,Inter,O15,1.2,3-1,1,False,True
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.25,2-2,1,False,False
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.3,3-1,1,False,False
+goals4_xg25_retrospective,2026-10-30,Bet365,8.03841796875,1,1550179,2026-10-31,Bologna,Monza,O15,1.25,2-1,1,False,True
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1550184,2026-11-01,Lecce,Genoa,U35,1.2,1-2,1,False,True
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1557449,2026-10-31,Brentford,Nottingham Forest,O15,1.22,2-0,1,False,True
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1552809,2026-10-31,Estac Troyes,Le Mans,O15,1.26,2-0,1,False,False
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1575210,2026-10-31,FC Schalke 04,RB Leipzig,U35,1.81,0-2,1,False,False
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.24,3-1,1,False,True
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1557452,2026-10-31,Hull City,Ipswich,O15,1.25,2-2,1,False,False
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1557451,2026-10-31,Coventry,Sunderland,O15,1.3,3-1,1,False,False
+goals4_xg25_retrospective,2026-10-31,1xBet,8.947812772079999,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1550184,2026-11-01,Lecce,Genoa,U35,1.2,1-2,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1552807,2026-11-01,Paris FC,Monaco,O15,1.25,3-1,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.54,0-0,1,False,False
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1550182,2026-11-01,Juventus,Napoli,U35,1.33,2-0,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.35,2-1,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1550183,2026-11-01,Lazio,Cagliari,O15,1.24,2-1,1,False,True
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1575527,2026-11-01,Academico Viseu,Rio Ave,U35,1.36,2-1,1,False,False
+goals4_xg25_retrospective,2026-11-01,1xBet,9.792329500800005,1,1550181,2026-11-01,Frosinone,Torino,1X,1.4,2-0,1,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1550185,2026-11-02,Sassuolo,Fiorentina,O15,1.2,2-4,1,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1575533,2026-11-02,GIL Vicente,Vitória SC,1X,1.53,0-0,1,False,False
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1570436,2026-11-02,Deportivo La Coruna,Osasuna,1X,1.32,2-1,1,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1557455,2026-11-02,Newcastle,Everton,O15,1.24,0-1,0,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1552803,2026-11-02,Lorient,Stade Brestois 29,O15,1.37,0-2,1,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1550178,2026-11-02,Atalanta,Parma,U35,1.55,0-3,1,False,True
+goals4_xg25_retrospective,2026-11-02,Betano,8.678795735808002,0,1575529,2026-11-02,Benfica,Alverca,O25,1.36,1-0,0,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635640,2026-11-03,Bodo/Glimt,Lille,1X,1.27,0-0,1,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635677,2026-11-03,Lask Linz,Slovan Bratislava,O25,1.36,4-0,1,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635695,2026-11-03,Manchester United,AS Roma,1X,1.42,3-2,1,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635723,2026-11-03,Shakhtar Donetsk,Sporting CP,O15,1.2,0-1,0,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635622,2026-11-03,Atletico Madrid,Bayern München,O25,1.43,0-2,0,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1635707,2026-11-04,PSV Eindhoven,Club Brugge KV,O25,1.35,1-2,1,False,False
+goals4_xg25_retrospective,2026-11-03,1xBet,8.068083236928002,0,1636324,2026-11-04,Rennes,Olympiakos Piraeus,U35,1.42,0-0,1,False,False

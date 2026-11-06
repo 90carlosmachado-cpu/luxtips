@@ -1,0 +1,85 @@
+{
+  "matched_no_xg": {
+    "all": {
+      "n": 9,
+      "wins": 5,
+      "rate": 0.5555555555555556,
+      "mean_odd": 10.027825202727492,
+      "legs": 60,
+      "xg_legs": 0,
+      "xg_share": 0.0
+    },
+    "skipped": null
+  },
+  "sequential_xg_full": {
+    "all": {
+      "n": 4,
+      "wins": 2,
+      "rate": 0.5,
+      "mean_odd": 9.95580052605102,
+      "legs": 27,
+      "xg_legs": 27,
+      "xg_share": 1.0
+    },
+    "skipped": [
+      {
+        "day": "2026-10-25",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-10-27",
+        "reason": "no_eligible_ticket"
+      },
+      {
+        "day": "2026-10-29",
+        "reason": "no_eligible_ticket"
+      },
+      {
+        "day": "2026-10-31",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-11-01",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-11-02",
+        "reason": "no_eligible_ticket"
+      }
+    ]
+  },
+  "sequential_control_full": {
+    "all": {
+      "n": 6,
+      "wins": 3,
+      "rate": 0.5,
+      "mean_odd": 8.976802130265119,
+      "legs": 41,
+      "xg_legs": 0,
+      "xg_share": 0.0
+    },
+    "skipped": [
+      {
+        "day": "2026-10-26",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-10-28",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-10-29",
+        "reason": "no_eligible_ticket"
+      },
+      {
+        "day": "2026-10-31",
+        "reason": "active_at_08h"
+      },
+      {
+        "day": "2026-11-02",
+        "reason": "active_at_08h"
+      }
+    ]
+  }
+}
+xg candidate [["2026-10-24", 1, 11.03, 6], ["2026-10-25", 1, 13.89, 7], ["2026-10-26", 0, 11.93, 6], ["2026-10-27", 1, 8.15, 5], ["2026-10-28", 0, 8.04, 6], ["2026-10-29", 0, 13.92, 6], ["2026-10-30", 1, 8.52, 9], ["2026-10-31", 1, 8.11, 8], ["2026-11-01", 1, 8.37, 8]]

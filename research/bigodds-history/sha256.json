@@ -1,0 +1,19 @@
+{
+  "previsoes-modelo-escolhido.csv": "a6bbc0ced8d0fdba8f7efbcfd03f3fe465e44afa97ae3196f7a7aacfc309fef1",
+  "fixtures-2026.json": "636a62a738398a0de3af18e292e618bad95927fb9af6b0bfe2bcb459f29f6676",
+  "fixtures-2025.json": "fc5f266f3d07613ea2f54474b89c557bdf7d1e57325b8a004d8a4f63e806d446",
+  "protocol.json": "fa80d5456bf8af665f52df039888ba70701d2686798424377496f24eedc6d4a4",
+  "predictions.json": "2e7a1c90b2c4431e898a41a9ad0a868c4e226011df077eb0b26065e38909d067",
+  "choice-from-2024.json": "74674b754f9455151802899e9366da1ed148b5297b66393a1d0dfffdc5e9711a",
+  "details.json": "e0b75455b74e83bfcdc1fde2aa542147132e69df77957dbf92d3ada78a52be39",
+  "results.json": "d5e8a42e36fac66ff025049b01096a2bfba0fd823fcf5146b300c56dfb9898d3",
+  "summary-log.jsonl": "7f547b28e7bb8b0a60a39298509c2b040738ae8bd78f47b19757adee7bc053ee",
+  "BigOdds-estudo-historico.html": "320eac0718bc13fcee8bc9efa326d70961f4ff951538c8e989b751ac7c3c2a6d",
+  "execution-log.jsonl": "647cf5fb5ca1f2e80e553768c7fe39f2d54f4b308b420201e9b8d6e1a8c13493",
+  "fixtures-2023.json": "b17e4b988a55a96d74ed25ad384f6229461588669b7a95bacc77e7457389431e",
+  "report.py": "d993b36ce298bc483be1e73146f3f120e894209da9f1b50d990069cd2590fb92",
+  "study.py": "4a975cb565fb08b881987a0cca8011b7f1d5e4ed90e281cd0e09887a5586d5d8",
+  "summarize.py": "33fe05c17bf640c463b94ece4fead0b70f69bb078e839fe2bc80194484a0fa62",
+  "test_study.py": "bbd83fa4a785adf7086b356928f70c37b8e64ca74bf23f458b866df5bb08c028",
+  "fixtures-2024.json": "877d4e0d718308e343172b13e73fa7090329fad185916ba1afd75d585d93ddba"
+}

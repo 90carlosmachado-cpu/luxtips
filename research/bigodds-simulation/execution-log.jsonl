@@ -1,0 +1,12 @@
+{"name": "4 markets — real odds", "legs": 4, "price_haircut": 1, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.136712300000001, "profit_units": -4, "roi": -1.0}
+{"name": "4 markets — real odds", "legs": 5, "price_haircut": 1, "minimum_probability": 0.5, "played": 6, "wins": 0, "hit_rate": 0.0, "average_odd": 10.358485294749999, "profit_units": -6, "roi": -1.0}
+{"name": "4 markets — real odds", "legs": 6, "price_haircut": 1, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.11005300244, "profit_units": -4, "roi": -1.0}
+{"name": "8 markets — estimated combos", "legs": 4, "price_haircut": 1, "minimum_probability": 0.5, "played": 6, "wins": 0, "hit_rate": 0.0, "average_odd": 10.204425316273543, "profit_units": -6, "roi": -1.0}
+{"name": "8 markets — estimated combos", "legs": 5, "price_haircut": 1, "minimum_probability": 0.5, "played": 6, "wins": 0, "hit_rate": 0.0, "average_odd": 10.118311387000285, "profit_units": -6, "roi": -1.0}
+{"name": "8 markets — estimated combos", "legs": 6, "price_haircut": 1, "minimum_probability": 0.5, "played": 5, "wins": 0, "hit_rate": 0.0, "average_odd": 10.19573647749256, "profit_units": -5, "roi": -1.0}
+{"name": "8 markets — combos -10%", "legs": 4, "price_haircut": 0.9, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.136712300000001, "profit_units": -4, "roi": -1.0}
+{"name": "8 markets — combos -10%", "legs": 5, "price_haircut": 0.9, "minimum_probability": 0.5, "played": 6, "wins": 0, "hit_rate": 0.0, "average_odd": 10.358485294749999, "profit_units": -6, "roi": -1.0}
+{"name": "8 markets — combos -10%", "legs": 6, "price_haircut": 0.9, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.11005300244, "profit_units": -4, "roi": -1.0}
+{"name": "8 markets — combos -20%", "legs": 4, "price_haircut": 0.8, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.136712300000001, "profit_units": -4, "roi": -1.0}
+{"name": "8 markets — combos -20%", "legs": 5, "price_haircut": 0.8, "minimum_probability": 0.5, "played": 6, "wins": 0, "hit_rate": 0.0, "average_odd": 10.358485294749999, "profit_units": -6, "roi": -1.0}
+{"name": "8 markets — combos -20%", "legs": 6, "price_haircut": 0.8, "minimum_probability": 0.5, "played": 4, "wins": 0, "hit_rate": 0.0, "average_odd": 10.11005300244, "profit_units": -4, "roi": -1.0}

@@ -1,0 +1,38 @@
+{
+  "publishedAt": "2026-11-06T10:38:39.269891Z",
+  "version": "8a39a26a-2b74-4308-a83b-49bdebe3f13d",
+  "policy": "bigodds-xg90-prior2-market50-no-unders-v1",
+  "authorized": "User explicitly requested substitution, removal of active ticket and an exceptional fresh cycle",
+  "researchCandidate": "bigodds-xg-wide/candidate-no-unders-research.json",
+  "validation": {
+    "softwareTests": 54,
+    "pythonFixtureWindowsMatched": 278,
+    "researchTicketsReproduced": 10,
+    "researchWinsReproduced": 6,
+    "modulesMatched": 18,
+    "bindingsPreserved": true,
+    "mobileWidth": 390,
+    "desktopWidth": 1440,
+    "overflow": false
+  },
+  "archive": {
+    "ticketId": "1fadadd9-ba67-4503-92c7-7ae5d1118b8b",
+    "display": "Substituído",
+    "historyPreserved": true
+  },
+  "newTicket": {
+    "id": "e162a89f-dcd0-47e1-92b1-1d35077d0ba8",
+    "createdAt": 1793961548056,
+    "legs": 10,
+    "odd": 8.427782799360001,
+    "bookmaker": "Bet365",
+    "xgLegs": 7,
+    "fallbackLegs": 3,
+    "dates": [
+      "2026-11-07",
+      "2026-11-08"
+    ]
+  },
+  "normalSchedule": "08h Europe/Lisbon, one active ticket; exceptional run consumed exactly once",
+  "limitations": "Retrospective performance remains exploratory; live outcomes not yet available. Current historical xG coverage is partial."
+}

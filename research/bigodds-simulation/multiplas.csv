@@ -1,0 +1,124 @@
+cenario,dia,casa,odd_total,probabilidade_estimada,jogo,mercado,odd_selecao,odd_estimada,resultado,acerto_selecao,acerto_multipla
+4 markets — real odds,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Napoli - AS Roma,X2,1.47,False,3-3,True,False
+4 markets — real odds,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Utrecht - PEC Zwolle,1,1.68,False,1-1,False,False
+4 markets — real odds,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Lens - Paris FC,1X,1.48,False,2-1,True,False
+4 markets — real odds,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Arsenal - Everton,1,1.5,False,2-0,True,False
+4 markets — real odds,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Chelsea - Tottenham,1,1.84,False,0-2,False,False
+4 markets — real odds,2026-10-25,1xBet,10.2296304,0.10839945390054823,PSV Eindhoven - Feyenoord,1,2.06,False,1-1,False,False
+4 markets — real odds,2026-10-25,1xBet,10.2296304,0.10839945390054823,Rennes - Strasbourg,X2,2.09,False,3-0,False,False
+4 markets — real odds,2026-10-25,1xBet,10.2296304,0.10839945390054823,Crystal Palace - Newcastle,1X,1.65,False,0-2,False,False
+4 markets — real odds,2026-10-25,1xBet,10.2296304,0.10839945390054823,SC Freiburg - Bayern München,2,1.44,False,1-3,True,False
+4 markets — real odds,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Heerenveen - NEC Nijmegen,X2,1.76,False,1-0,False,False
+4 markets — real odds,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Brentford - Nottingham Forest,1X,1.36,False,2-0,True,False
+4 markets — real odds,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Manchester City - Brighton,1,1.78,False,0-1,False,False
+4 markets — real odds,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Tottenham - Crystal Palace,X2,2.35,False,2-0,False,False
+4 markets — real odds,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Juventus - Napoli,1X,1.4,False,2-0,True,False
+4 markets — real odds,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Groningen - Sparta Rotterdam,1,1.78,False,2-3,False,False
+4 markets — real odds,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Strasbourg - Auxerre,1,1.87,False,5-1,True,False
+4 markets — real odds,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Athletic Club - Real Sociedad,1,2.15,False,2-1,True,False
+4 markets — real odds,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Atalanta - Parma,1,1.56,False,0-3,False,False
+4 markets — real odds,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Sassuolo - Fiorentina,1X,1.63,False,2-4,False,False
+4 markets — real odds,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Lorient - Stade Brestois 29,X2,1.58,False,0-2,True,False
+4 markets — real odds,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Newcastle - Everton,X2,1.65,False,0-1,True,False
+4 markets — real odds,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,GIL Vicente - Vitória SC,1X,1.54,False,0-0,True,False
+4 markets — real odds,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Atletico Madrid - Bayern München,X2,1.5,False,0-2,True,False
+4 markets — real odds,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Barcelona - Aston Villa,1,1.27,False,3-0,True,False
+4 markets — real odds,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Feyenoord - Inter,1X,1.92,False,0-3,False,False
+4 markets — real odds,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Manchester United - AS Roma,X2,1.73,False,3-2,False,False
+4 markets — real odds,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Villarreal - Paris Saint Germain,2,1.76,False,0-6,True,False
+4 markets — real odds,2026-11-04,1xBet,10.285704,0.08911214154832013,Borussia Dortmund - Real Betis,1,1.8,False,2-1,True,False
+4 markets — real odds,2026-11-04,1xBet,10.285704,0.08911214154832013,FC Porto - Napoli,1,1.98,False,4-1,True,False
+4 markets — real odds,2026-11-04,1xBet,10.285704,0.08911214154832013,Lens - Como,1X,1.85,False,1-9,False,False
+4 markets — real odds,2026-11-04,1xBet,10.285704,0.08911214154832013,RB Leipzig - Manchester City,2,1.56,False,2-3,True,False
+8 markets — estimated combos,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Napoli - AS Roma,X2,1.47,False,3-3,True,False
+8 markets — estimated combos,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Utrecht - PEC Zwolle,1,1.68,False,1-1,False,False
+8 markets — estimated combos,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Lens - Paris FC,1X,1.48,False,2-1,True,False
+8 markets — estimated combos,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Arsenal - Everton,1,1.5,False,2-0,True,False
+8 markets — estimated combos,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Chelsea - Tottenham,1,1.84,False,0-2,False,False
+8 markets — estimated combos,2026-10-25,1xBet,10.2296304,0.10839945390054823,PSV Eindhoven - Feyenoord,1,2.06,False,1-1,False,False
+8 markets — estimated combos,2026-10-25,1xBet,10.2296304,0.10839945390054823,Rennes - Strasbourg,X2,2.09,False,3-0,False,False
+8 markets — estimated combos,2026-10-25,1xBet,10.2296304,0.10839945390054823,Crystal Palace - Newcastle,1X,1.65,False,0-2,False,False
+8 markets — estimated combos,2026-10-25,1xBet,10.2296304,0.10839945390054823,SC Freiburg - Bayern München,2,1.44,False,1-3,True,False
+8 markets — estimated combos,2026-10-31,1xBet,10.106764266802161,0.121674594579153,Heerenveen - NEC Nijmegen,X2,1.76,False,1-0,False,False
+8 markets — estimated combos,2026-10-31,1xBet,10.106764266802161,0.121674594579153,Bournemouth - Leeds,1X+O1.5,1.7646877121573386,True,2-0,True,False
+8 markets — estimated combos,2026-10-31,1xBet,10.106764266802161,0.121674594579153,Tottenham - Crystal Palace,X2,2.35,False,2-0,False,False
+8 markets — estimated combos,2026-10-31,1xBet,10.106764266802161,0.121674594579153,FC Porto - Estoril,1+O1.5,1.3847256740597296,True,4-0,True,False
+8 markets — estimated combos,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Juventus - Napoli,1X,1.4,False,2-0,True,False
+8 markets — estimated combos,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Groningen - Sparta Rotterdam,1,1.78,False,2-3,False,False
+8 markets — estimated combos,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Strasbourg - Auxerre,1,1.87,False,5-1,True,False
+8 markets — estimated combos,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Athletic Club - Real Sociedad,1,2.15,False,2-1,True,False
+8 markets — estimated combos,2026-11-02,Betano,10.059830552621218,0.09613426104733923,Atalanta - Parma,1,1.55,False,0-3,False,False
+8 markets — estimated combos,2026-11-02,Betano,10.059830552621218,0.09613426104733923,Sassuolo - Fiorentina,1X,1.6,False,2-4,False,False
+8 markets — estimated combos,2026-11-02,Betano,10.059830552621218,0.09613426104733923,Lorient - Stade Brestois 29,1X+O1.5,2.010727032951101,True,0-2,False,False
+8 markets — estimated combos,2026-11-02,Betano,10.059830552621218,0.09613426104733923,Benfica - Alverca,1+O1.5,1.31854342400309,True,1-0,False,False
+8 markets — estimated combos,2026-11-02,Betano,10.059830552621218,0.09613426104733923,GIL Vicente - Vitória SC,1X,1.53,False,0-0,True,False
+8 markets — estimated combos,2026-11-03,Marathonbet,10.314479725541128,0.10848984340783371,Atletico Madrid - Bayern München,X2+O1.5,1.7643605021849285,True,0-2,True,False
+8 markets — estimated combos,2026-11-03,Marathonbet,10.314479725541128,0.10848984340783371,Feyenoord - Inter,1X,1.92,False,0-3,False,False
+8 markets — estimated combos,2026-11-03,Marathonbet,10.314479725541128,0.10848984340783371,Manchester United - AS Roma,X2,1.73,False,3-2,False,False
+8 markets — estimated combos,2026-11-03,Marathonbet,10.314479725541128,0.10848984340783371,Villarreal - Paris Saint Germain,2,1.76,False,0-6,True,False
+8 markets — estimated combos,2026-11-04,1xBet,10.285704,0.08911214154832013,Borussia Dortmund - Real Betis,1,1.8,False,2-1,True,False
+8 markets — estimated combos,2026-11-04,1xBet,10.285704,0.08911214154832013,FC Porto - Napoli,1,1.98,False,4-1,True,False
+8 markets — estimated combos,2026-11-04,1xBet,10.285704,0.08911214154832013,Lens - Como,1X,1.85,False,1-9,False,False
+8 markets — estimated combos,2026-11-04,1xBet,10.285704,0.08911214154832013,RB Leipzig - Manchester City,2,1.56,False,2-3,True,False
+8 markets — combos -10%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Napoli - AS Roma,X2,1.47,False,3-3,True,False
+8 markets — combos -10%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Utrecht - PEC Zwolle,1,1.68,False,1-1,False,False
+8 markets — combos -10%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Lens - Paris FC,1X,1.48,False,2-1,True,False
+8 markets — combos -10%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Arsenal - Everton,1,1.5,False,2-0,True,False
+8 markets — combos -10%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Chelsea - Tottenham,1,1.84,False,0-2,False,False
+8 markets — combos -10%,2026-10-25,1xBet,10.2296304,0.10839945390054823,PSV Eindhoven - Feyenoord,1,2.06,False,1-1,False,False
+8 markets — combos -10%,2026-10-25,1xBet,10.2296304,0.10839945390054823,Rennes - Strasbourg,X2,2.09,False,3-0,False,False
+8 markets — combos -10%,2026-10-25,1xBet,10.2296304,0.10839945390054823,Crystal Palace - Newcastle,1X,1.65,False,0-2,False,False
+8 markets — combos -10%,2026-10-25,1xBet,10.2296304,0.10839945390054823,SC Freiburg - Bayern München,2,1.44,False,1-3,True,False
+8 markets — combos -10%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Heerenveen - NEC Nijmegen,X2,1.76,False,1-0,False,False
+8 markets — combos -10%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Brentford - Nottingham Forest,1X,1.36,False,2-0,True,False
+8 markets — combos -10%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Manchester City - Brighton,1,1.78,False,0-1,False,False
+8 markets — combos -10%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Tottenham - Crystal Palace,X2,2.35,False,2-0,False,False
+8 markets — combos -10%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Juventus - Napoli,1X,1.4,False,2-0,True,False
+8 markets — combos -10%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Groningen - Sparta Rotterdam,1,1.78,False,2-3,False,False
+8 markets — combos -10%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Strasbourg - Auxerre,1,1.87,False,5-1,True,False
+8 markets — combos -10%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Athletic Club - Real Sociedad,1,2.15,False,2-1,True,False
+8 markets — combos -10%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Atalanta - Parma,1,1.56,False,0-3,False,False
+8 markets — combos -10%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Sassuolo - Fiorentina,1X,1.63,False,2-4,False,False
+8 markets — combos -10%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Lorient - Stade Brestois 29,X2,1.58,False,0-2,True,False
+8 markets — combos -10%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Newcastle - Everton,X2,1.65,False,0-1,True,False
+8 markets — combos -10%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,GIL Vicente - Vitória SC,1X,1.54,False,0-0,True,False
+8 markets — combos -10%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Atletico Madrid - Bayern München,X2,1.5,False,0-2,True,False
+8 markets — combos -10%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Barcelona - Aston Villa,1,1.27,False,3-0,True,False
+8 markets — combos -10%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Feyenoord - Inter,1X,1.92,False,0-3,False,False
+8 markets — combos -10%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Manchester United - AS Roma,X2,1.73,False,3-2,False,False
+8 markets — combos -10%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Villarreal - Paris Saint Germain,2,1.76,False,0-6,True,False
+8 markets — combos -10%,2026-11-04,1xBet,10.285704,0.08911214154832013,Borussia Dortmund - Real Betis,1,1.8,False,2-1,True,False
+8 markets — combos -10%,2026-11-04,1xBet,10.285704,0.08911214154832013,FC Porto - Napoli,1,1.98,False,4-1,True,False
+8 markets — combos -10%,2026-11-04,1xBet,10.285704,0.08911214154832013,Lens - Como,1X,1.85,False,1-9,False,False
+8 markets — combos -10%,2026-11-04,1xBet,10.285704,0.08911214154832013,RB Leipzig - Manchester City,2,1.56,False,2-3,True,False
+8 markets — combos -20%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Napoli - AS Roma,X2,1.47,False,3-3,True,False
+8 markets — combos -20%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Utrecht - PEC Zwolle,1,1.68,False,1-1,False,False
+8 markets — combos -20%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Lens - Paris FC,1X,1.48,False,2-1,True,False
+8 markets — combos -20%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Arsenal - Everton,1,1.5,False,2-0,True,False
+8 markets — combos -20%,2026-10-24,1xBet,10.087822079999997,0.10607717099529936,Chelsea - Tottenham,1,1.84,False,0-2,False,False
+8 markets — combos -20%,2026-10-25,1xBet,10.2296304,0.10839945390054823,PSV Eindhoven - Feyenoord,1,2.06,False,1-1,False,False
+8 markets — combos -20%,2026-10-25,1xBet,10.2296304,0.10839945390054823,Rennes - Strasbourg,X2,2.09,False,3-0,False,False
+8 markets — combos -20%,2026-10-25,1xBet,10.2296304,0.10839945390054823,Crystal Palace - Newcastle,1X,1.65,False,0-2,False,False
+8 markets — combos -20%,2026-10-25,1xBet,10.2296304,0.10839945390054823,SC Freiburg - Bayern München,2,1.44,False,1-3,True,False
+8 markets — combos -20%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Heerenveen - NEC Nijmegen,X2,1.76,False,1-0,False,False
+8 markets — combos -20%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Brentford - Nottingham Forest,1X,1.36,False,2-0,True,False
+8 markets — combos -20%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Manchester City - Brighton,1,1.78,False,0-1,False,False
+8 markets — combos -20%,2026-10-31,1xBet,10.012428800000002,0.12067449199566238,Tottenham - Crystal Palace,X2,2.35,False,2-0,False,False
+8 markets — combos -20%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Juventus - Napoli,1X,1.4,False,2-0,True,False
+8 markets — combos -20%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Groningen - Sparta Rotterdam,1,1.78,False,2-3,False,False
+8 markets — combos -20%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Strasbourg - Auxerre,1,1.87,False,5-1,True,False
+8 markets — combos -20%,2026-11-01,1xBet,10.019086000000003,0.10581766908346033,Athletic Club - Real Sociedad,1,2.15,False,2-1,True,False
+8 markets — combos -20%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Atalanta - Parma,1,1.56,False,0-3,False,False
+8 markets — combos -20%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Sassuolo - Fiorentina,1X,1.63,False,2-4,False,False
+8 markets — combos -20%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Lorient - Stade Brestois 29,X2,1.58,False,0-2,True,False
+8 markets — combos -20%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,Newcastle - Everton,X2,1.65,False,0-1,True,False
+8 markets — combos -20%,2026-11-02,1xBet,10.208782584000001,0.08398029406985133,GIL Vicente - Vitória SC,1X,1.54,False,0-0,True,False
+8 markets — combos -20%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Atletico Madrid - Bayern München,X2,1.5,False,0-2,True,False
+8 markets — combos -20%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Barcelona - Aston Villa,1,1.27,False,3-0,True,False
+8 markets — combos -20%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Feyenoord - Inter,1X,1.92,False,0-3,False,False
+8 markets — combos -20%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Manchester United - AS Roma,X2,1.73,False,3-2,False,False
+8 markets — combos -20%,2026-11-03,Marathonbet,11.136660480000002,0.08697129542161794,Villarreal - Paris Saint Germain,2,1.76,False,0-6,True,False
+8 markets — combos -20%,2026-11-04,1xBet,10.285704,0.08911214154832013,Borussia Dortmund - Real Betis,1,1.8,False,2-1,True,False
+8 markets — combos -20%,2026-11-04,1xBet,10.285704,0.08911214154832013,FC Porto - Napoli,1,1.98,False,4-1,True,False
+8 markets — combos -20%,2026-11-04,1xBet,10.285704,0.08911214154832013,Lens - Como,1X,1.85,False,1-9,False,False
+8 markets — combos -20%,2026-11-04,1xBet,10.285704,0.08911214154832013,RB Leipzig - Manchester City,2,1.56,False,2-3,True,False

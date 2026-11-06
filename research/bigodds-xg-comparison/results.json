@@ -1,0 +1,1542 @@
+{
+  "protocol": {
+    "rule": {
+      "source": "goals4",
+      "span": 2,
+      "markets": "all",
+      "p_min": 0.5,
+      "odd_min": 1.2,
+      "sample_min": 0,
+      "rank": "probability",
+      "n_min": 5,
+      "n_max": 12,
+      "odd_band": [
+        8,
+        15
+      ]
+    },
+    "weight": 0.25,
+    "prior": 4,
+    "minimum_weighted_xg_role_games": 4,
+    "minimum_weighted_xg_league_games": 20,
+    "availability_main": "xG completed before decision AND observed_at <= decision; decayed by match time, not import time",
+    "retrospective_sensitivity": "xG from earlier finished games ignoring import timestamp; not a verified historical availability replay",
+    "clock": "08h Europe/Lisbon on first day; old baseline result availability assumed kickoff+2h as original study",
+    "candidate_selection": "Original goals4 rule frozen after full-period search; no search or tuning here",
+    "overlap": "Original overlapping two-day windows retained for exact comparison; not current sequential/three-day production policy",
+    "prices": "Original archived odds and synthetic combo estimates held identical across variants; real-only sensitivity provided",
+    "production_changes": false
+  },
+  "summary": {
+    "goals4": {
+      "tickets": 11,
+      "wins": 6,
+      "rate": 0.5454545454545454,
+      "mean_odd": 9.602332822402648,
+      "mean_legs": 6.636363636363637,
+      "estimated_price_tickets": 0
+    },
+    "goals4_xg25_available": {
+      "tickets": 11,
+      "wins": 5,
+      "rate": 0.45454545454545453,
+      "mean_odd": 9.952610053694947,
+      "mean_legs": 6.636363636363637,
+      "estimated_price_tickets": 0
+    },
+    "goals4_xg25_retrospective": {
+      "tickets": 11,
+      "wins": 5,
+      "rate": 0.45454545454545453,
+      "mean_odd": 9.995422554996765,
+      "mean_legs": 6.636363636363637,
+      "estimated_price_tickets": 0
+    }
+  },
+  "coverage": {
+    "available": {
+      "fixture_windows": 278,
+      "xg_active": 146
+    },
+    "retrospective": {
+      "fixture_windows": 278,
+      "xg_active": 155
+    }
+  },
+  "per_day": [
+    {
+      "day": "2026-10-24",
+      "goals4": {
+        "won": 0,
+        "odd": 9.817558994580482,
+        "legs": 8,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 12.152110924800004,
+        "legs": 6,
+        "changed_selections": 14
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 12.152110924800004,
+        "legs": 6,
+        "changed_selections": 14
+      }
+    },
+    {
+      "day": "2026-10-25",
+      "goals4": {
+        "won": 1,
+        "odd": 11.636512505856004,
+        "legs": 6,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 1,
+        "odd": 11.636512505855995,
+        "legs": 6,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 1,
+        "odd": 11.636512505855999,
+        "legs": 6,
+        "changed_selections": 0
+      }
+    },
+    {
+      "day": "2026-10-26",
+      "goals4": {
+        "won": 0,
+        "odd": 9.145315199999999,
+        "legs": 5,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 9.145315199999999,
+        "legs": 5,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 9.145315199999999,
+        "legs": 5,
+        "changed_selections": 0
+      }
+    },
+    {
+      "day": "2026-10-27",
+      "goals4": {
+        "won": 1,
+        "odd": 10.176499411200004,
+        "legs": 6,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 1,
+        "odd": 10.176499411200004,
+        "legs": 6,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 1,
+        "odd": 10.176499411200004,
+        "legs": 6,
+        "changed_selections": 0
+      }
+    },
+    {
+      "day": "2026-10-28",
+      "goals4": {
+        "won": 0,
+        "odd": 9.2746492487424,
+        "legs": 7,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 9.2746492487424,
+        "legs": 7,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 9.2746492487424,
+        "legs": 7,
+        "changed_selections": 0
+      }
+    },
+    {
+      "day": "2026-10-29",
+      "goals4": {
+        "won": 0,
+        "odd": 14.039121600000001,
+        "legs": 5,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 14.039121600000001,
+        "legs": 5,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 14.039121600000001,
+        "legs": 5,
+        "changed_selections": 0
+      }
+    },
+    {
+      "day": "2026-10-30",
+      "goals4": {
+        "won": 1,
+        "odd": 8.409421875000001,
+        "legs": 8,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 1,
+        "odd": 8.03841796875,
+        "legs": 8,
+        "changed_selections": 2
+      },
+      "goals4_xg25_retrospective": {
+        "won": 1,
+        "odd": 8.03841796875,
+        "legs": 8,
+        "changed_selections": 2
+      }
+    },
+    {
+      "day": "2026-10-31",
+      "goals4": {
+        "won": 1,
+        "odd": 8.53110365184,
+        "legs": 7,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 1,
+        "odd": 8.476875257759998,
+        "legs": 8,
+        "changed_selections": 5
+      },
+      "goals4_xg25_retrospective": {
+        "won": 1,
+        "odd": 8.947812772079999,
+        "legs": 8,
+        "changed_selections": 5
+      }
+    },
+    {
+      "day": "2026-11-01",
+      "goals4": {
+        "won": 1,
+        "odd": 8.270316558282238,
+        "legs": 8,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 1,
+        "odd": 9.792329500800005,
+        "legs": 8,
+        "changed_selections": 4
+      },
+      "goals4_xg25_retrospective": {
+        "won": 1,
+        "odd": 9.792329500800005,
+        "legs": 8,
+        "changed_selections": 4
+      }
+    },
+    {
+      "day": "2026-11-02",
+      "goals4": {
+        "won": 1,
+        "odd": 8.257078764000003,
+        "legs": 6,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 8.678795735808002,
+        "legs": 7,
+        "changed_selections": 5
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 8.678795735808002,
+        "legs": 7,
+        "changed_selections": 5
+      }
+    },
+    {
+      "day": "2026-11-03",
+      "goals4": {
+        "won": 0,
+        "odd": 8.068083236928002,
+        "legs": 7,
+        "changed_selections": 0
+      },
+      "goals4_xg25_available": {
+        "won": 0,
+        "odd": 8.068083236928002,
+        "legs": 7,
+        "changed_selections": 0
+      },
+      "goals4_xg25_retrospective": {
+        "won": 0,
+        "odd": 8.068083236928002,
+        "legs": 7,
+        "changed_selections": 0
+      }
+    }
+  ],
+  "tickets": {
+    "goals4": [
+      {
+        "start": "2026-10-24",
+        "last": "2026-10-25",
+        "book": "Betano",
+        "odd": 9.817558994580482,
+        "p": 0.09704064025668915,
+        "legs": [
+          673,
+          142,
+          481,
+          315,
+          417,
+          609,
+          55,
+          295
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-25",
+        "last": "2026-10-26",
+        "book": "1xBet",
+        "odd": 11.636512505856004,
+        "p": 0.15132324652459112,
+        "legs": [
+          1007,
+          1068,
+          1297,
+          790,
+          815,
+          1134
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-26",
+        "last": "2026-10-27",
+        "book": "1xBet",
+        "odd": 9.145315199999999,
+        "p": 0.16085426107692452,
+        "legs": [
+          1405,
+          1567,
+          1379,
+          1593,
+          1359
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-27",
+        "last": "2026-10-28",
+        "book": "Betano",
+        "odd": 10.176499411200004,
+        "p": 0.11929645043513755,
+        "legs": [
+          1690,
+          1644,
+          1738,
+          1663,
+          1760,
+          1714
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-28",
+        "last": "2026-10-29",
+        "book": "1xBet",
+        "odd": 9.2746492487424,
+        "p": 0.049797444135799965,
+        "legs": [
+          2011,
+          1918,
+          1940,
+          1895,
+          1988,
+          2035,
+          1966
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-29",
+        "last": "2026-10-30",
+        "book": "1xBet",
+        "odd": 14.039121600000001,
+        "p": 0.0840079098944708,
+        "legs": [
+          2264,
+          2288,
+          2333,
+          2311,
+          2239
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-30",
+        "last": "2026-10-31",
+        "book": "Bet365",
+        "odd": 8.409421875000001,
+        "p": 0.21109836901923054,
+        "legs": [
+          4242,
+          5224,
+          3765,
+          3534,
+          4001,
+          3061,
+          5110,
+          3650
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-10-31",
+        "last": "2026-11-01",
+        "book": "Pinnacle",
+        "odd": 8.53110365184,
+        "p": 0.23008948688606493,
+        "legs": [
+          11750,
+          9655,
+          13044,
+          9184,
+          9773,
+          12924,
+          12345
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-11-01",
+        "last": "2026-11-02",
+        "book": "Betano",
+        "odd": 8.270316558282238,
+        "p": 0.20848332559329402,
+        "legs": [
+          17622,
+          17033,
+          17261,
+          14243,
+          16795,
+          15179,
+          14488,
+          13897
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-11-02",
+        "last": "2026-11-03",
+        "book": "Marathonbet",
+        "odd": 8.257078764000003,
+        "p": 0.18630505485021517,
+        "legs": [
+          18814,
+          18355,
+          18012,
+          18121,
+          18246,
+          18708
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 0
+      },
+      {
+        "start": "2026-11-03",
+        "last": "2026-11-04",
+        "book": "1xBet",
+        "odd": 8.068083236928002,
+        "p": 0.22950722233982196,
+        "legs": [
+          18956,
+          20456,
+          20568,
+          20108,
+          20226,
+          19764,
+          19079
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      }
+    ],
+    "goals4_xg25_available": [
+      {
+        "start": "2026-10-24",
+        "last": "2026-10-25",
+        "book": "1xBet",
+        "odd": 12.152110924800004,
+        "p": 0.1838804393905005,
+        "legs": [
+          244,
+          706,
+          474,
+          348,
+          2,
+          556
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 2
+      },
+      {
+        "start": "2026-10-25",
+        "last": "2026-10-26",
+        "book": "1xBet",
+        "odd": 11.636512505855995,
+        "p": 0.13720920149135213,
+        "legs": [
+          1007,
+          790,
+          1297,
+          1068,
+          815,
+          1134
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-10-26",
+        "last": "2026-10-27",
+        "book": "1xBet",
+        "odd": 9.145315199999999,
+        "p": 0.14801712977864087,
+        "legs": [
+          1405,
+          1567,
+          1593,
+          1379,
+          1359
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-10-27",
+        "last": "2026-10-28",
+        "book": "Betano",
+        "odd": 10.176499411200004,
+        "p": 0.10315855986482446,
+        "legs": [
+          1690,
+          1644,
+          1738,
+          1760,
+          1663,
+          1714
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 6
+      },
+      {
+        "start": "2026-10-28",
+        "last": "2026-10-29",
+        "book": "1xBet",
+        "odd": 9.2746492487424,
+        "p": 0.05356948466627081,
+        "legs": [
+          2011,
+          1918,
+          1940,
+          1895,
+          1988,
+          2035,
+          1966
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-10-29",
+        "last": "2026-10-30",
+        "book": "1xBet",
+        "odd": 14.039121600000001,
+        "p": 0.07412484617276376,
+        "legs": [
+          2288,
+          2264,
+          2333,
+          2311,
+          2239
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-10-30",
+        "last": "2026-10-31",
+        "book": "Bet365",
+        "odd": 8.03841796875,
+        "p": 0.20688688087324825,
+        "legs": [
+          4242,
+          3765,
+          5224,
+          3534,
+          5110,
+          4001,
+          3881,
+          3061
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-10-31",
+        "last": "2026-11-01",
+        "book": "1xBet",
+        "odd": 8.476875257759998,
+        "p": 0.2080280297215285,
+        "legs": [
+          12015,
+          12712,
+          10246,
+          9561,
+          11654,
+          12948,
+          12828,
+          9088
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-11-01",
+        "last": "2026-11-02",
+        "book": "1xBet",
+        "odd": 9.792329500800005,
+        "p": 0.17153995255094226,
+        "legs": [
+          17574,
+          17213,
+          14195,
+          14440,
+          15131,
+          16865,
+          13729,
+          16747
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 6
+      },
+      {
+        "start": "2026-11-02",
+        "last": "2026-11-03",
+        "book": "Betano",
+        "odd": 8.678795735808002,
+        "p": 0.15865582281985033,
+        "legs": [
+          18668,
+          18780,
+          18321,
+          18207,
+          17978,
+          18087,
+          18439
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-11-03",
+        "last": "2026-11-04",
+        "book": "1xBet",
+        "odd": 8.068083236928002,
+        "p": 0.22950722233982207,
+        "legs": [
+          18956,
+          20456,
+          20568,
+          20108,
+          20226,
+          19764,
+          19079
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      }
+    ],
+    "goals4_xg25_retrospective": [
+      {
+        "start": "2026-10-24",
+        "last": "2026-10-25",
+        "book": "1xBet",
+        "odd": 12.152110924800004,
+        "p": 0.18531985425773662,
+        "legs": [
+          244,
+          706,
+          474,
+          348,
+          2,
+          556
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 2
+      },
+      {
+        "start": "2026-10-25",
+        "last": "2026-10-26",
+        "book": "1xBet",
+        "odd": 11.636512505855999,
+        "p": 0.13877712993100055,
+        "legs": [
+          1007,
+          790,
+          1068,
+          1297,
+          815,
+          1134
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-10-26",
+        "last": "2026-10-27",
+        "book": "1xBet",
+        "odd": 9.145315199999999,
+        "p": 0.1480561343279242,
+        "legs": [
+          1405,
+          1567,
+          1593,
+          1379,
+          1359
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-10-27",
+        "last": "2026-10-28",
+        "book": "Betano",
+        "odd": 10.176499411200004,
+        "p": 0.10387622421264302,
+        "legs": [
+          1690,
+          1644,
+          1738,
+          1760,
+          1663,
+          1714
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 6
+      },
+      {
+        "start": "2026-10-28",
+        "last": "2026-10-29",
+        "book": "1xBet",
+        "odd": 9.2746492487424,
+        "p": 0.054586818775427884,
+        "legs": [
+          2011,
+          1918,
+          1940,
+          1895,
+          1988,
+          2035,
+          1966
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 6
+      },
+      {
+        "start": "2026-10-29",
+        "last": "2026-10-30",
+        "book": "1xBet",
+        "odd": 14.039121600000001,
+        "p": 0.07458336369670145,
+        "legs": [
+          2264,
+          2288,
+          2333,
+          2311,
+          2239
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-10-30",
+        "last": "2026-10-31",
+        "book": "Bet365",
+        "odd": 8.03841796875,
+        "p": 0.20484408356446196,
+        "legs": [
+          4242,
+          3765,
+          5224,
+          3534,
+          5110,
+          4001,
+          3881,
+          3061
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-10-31",
+        "last": "2026-11-01",
+        "book": "1xBet",
+        "odd": 8.947812772079999,
+        "p": 0.20776746287795378,
+        "legs": [
+          12015,
+          12712,
+          10246,
+          9561,
+          11654,
+          12948,
+          12828,
+          12249
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 4
+      },
+      {
+        "start": "2026-11-01",
+        "last": "2026-11-02",
+        "book": "1xBet",
+        "odd": 9.792329500800005,
+        "p": 0.17166294774833948,
+        "legs": [
+          17574,
+          17213,
+          14195,
+          14440,
+          15131,
+          16865,
+          13729,
+          16747
+        ],
+        "hit": 1,
+        "estimated": false,
+        "xg_active_legs": 6
+      },
+      {
+        "start": "2026-11-02",
+        "last": "2026-11-03",
+        "book": "Betano",
+        "odd": 8.678795735808002,
+        "p": 0.1565791673339271,
+        "legs": [
+          18668,
+          18780,
+          18321,
+          18207,
+          18087,
+          17978,
+          18439
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 5
+      },
+      {
+        "start": "2026-11-03",
+        "last": "2026-11-04",
+        "book": "1xBet",
+        "odd": 8.068083236928002,
+        "p": 0.22950722233982207,
+        "legs": [
+          18956,
+          20456,
+          20568,
+          20108,
+          20226,
+          19764,
+          19079
+        ],
+        "hit": 0,
+        "estimated": false,
+        "xg_active_legs": 0
+      }
+    ]
+  },
+  "real_only": {
+    "goals4": {
+      "summary": {
+        "tickets": 11,
+        "wins": 6,
+        "rate": 0.5454545454545454,
+        "mean_odd": 9.602332822402648,
+        "mean_legs": 6.636363636363637,
+        "estimated_price_tickets": 0
+      },
+      "tickets": [
+        {
+          "start": "2026-10-24",
+          "last": "2026-10-25",
+          "book": "Betano",
+          "odd": 9.817558994580482,
+          "p": 0.09704064025668915,
+          "legs": [
+            673,
+            142,
+            481,
+            315,
+            417,
+            609,
+            55,
+            295
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-25",
+          "last": "2026-10-26",
+          "book": "1xBet",
+          "odd": 11.636512505856004,
+          "p": 0.15132324652459112,
+          "legs": [
+            1007,
+            1068,
+            1297,
+            790,
+            815,
+            1134
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-26",
+          "last": "2026-10-27",
+          "book": "1xBet",
+          "odd": 9.145315199999999,
+          "p": 0.16085426107692452,
+          "legs": [
+            1405,
+            1567,
+            1379,
+            1593,
+            1359
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-27",
+          "last": "2026-10-28",
+          "book": "Betano",
+          "odd": 10.176499411200004,
+          "p": 0.11929645043513755,
+          "legs": [
+            1690,
+            1644,
+            1738,
+            1663,
+            1760,
+            1714
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-28",
+          "last": "2026-10-29",
+          "book": "1xBet",
+          "odd": 9.2746492487424,
+          "p": 0.049797444135799965,
+          "legs": [
+            2011,
+            1918,
+            1940,
+            1895,
+            1988,
+            2035,
+            1966
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-29",
+          "last": "2026-10-30",
+          "book": "1xBet",
+          "odd": 14.039121600000001,
+          "p": 0.0840079098944708,
+          "legs": [
+            2264,
+            2288,
+            2333,
+            2311,
+            2239
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-30",
+          "last": "2026-10-31",
+          "book": "Bet365",
+          "odd": 8.409421875000001,
+          "p": 0.21109836901923054,
+          "legs": [
+            4242,
+            5224,
+            3765,
+            3534,
+            4001,
+            3061,
+            5110,
+            3650
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-31",
+          "last": "2026-11-01",
+          "book": "Pinnacle",
+          "odd": 8.53110365184,
+          "p": 0.23008948688606493,
+          "legs": [
+            11750,
+            9655,
+            13044,
+            9184,
+            9773,
+            12924,
+            12345
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-01",
+          "last": "2026-11-02",
+          "book": "Betano",
+          "odd": 8.270316558282238,
+          "p": 0.20848332559329402,
+          "legs": [
+            17622,
+            17033,
+            17261,
+            14243,
+            16795,
+            15179,
+            14488,
+            13897
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-02",
+          "last": "2026-11-03",
+          "book": "Marathonbet",
+          "odd": 8.257078764000003,
+          "p": 0.18630505485021517,
+          "legs": [
+            18814,
+            18355,
+            18012,
+            18121,
+            18246,
+            18708
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-03",
+          "last": "2026-11-04",
+          "book": "1xBet",
+          "odd": 8.068083236928002,
+          "p": 0.22950722233982196,
+          "legs": [
+            18956,
+            20456,
+            20568,
+            20108,
+            20226,
+            19764,
+            19079
+          ],
+          "hit": 0,
+          "estimated": false
+        }
+      ]
+    },
+    "goals4_xg25_available": {
+      "summary": {
+        "tickets": 11,
+        "wins": 5,
+        "rate": 0.45454545454545453,
+        "mean_odd": 9.952610053694947,
+        "mean_legs": 6.636363636363637,
+        "estimated_price_tickets": 0
+      },
+      "tickets": [
+        {
+          "start": "2026-10-24",
+          "last": "2026-10-25",
+          "book": "1xBet",
+          "odd": 12.152110924800004,
+          "p": 0.1838804393905005,
+          "legs": [
+            244,
+            706,
+            474,
+            348,
+            2,
+            556
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-25",
+          "last": "2026-10-26",
+          "book": "1xBet",
+          "odd": 11.636512505855995,
+          "p": 0.13720920149135213,
+          "legs": [
+            1007,
+            790,
+            1297,
+            1068,
+            815,
+            1134
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-26",
+          "last": "2026-10-27",
+          "book": "1xBet",
+          "odd": 9.145315199999999,
+          "p": 0.14801712977864087,
+          "legs": [
+            1405,
+            1567,
+            1593,
+            1379,
+            1359
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-27",
+          "last": "2026-10-28",
+          "book": "Betano",
+          "odd": 10.176499411200004,
+          "p": 0.10315855986482446,
+          "legs": [
+            1690,
+            1644,
+            1738,
+            1760,
+            1663,
+            1714
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-28",
+          "last": "2026-10-29",
+          "book": "1xBet",
+          "odd": 9.2746492487424,
+          "p": 0.05356948466627081,
+          "legs": [
+            2011,
+            1918,
+            1940,
+            1895,
+            1988,
+            2035,
+            1966
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-29",
+          "last": "2026-10-30",
+          "book": "1xBet",
+          "odd": 14.039121600000001,
+          "p": 0.07412484617276376,
+          "legs": [
+            2288,
+            2264,
+            2333,
+            2311,
+            2239
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-30",
+          "last": "2026-10-31",
+          "book": "Bet365",
+          "odd": 8.03841796875,
+          "p": 0.20688688087324825,
+          "legs": [
+            4242,
+            3765,
+            5224,
+            3534,
+            5110,
+            4001,
+            3881,
+            3061
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-31",
+          "last": "2026-11-01",
+          "book": "1xBet",
+          "odd": 8.476875257759998,
+          "p": 0.2080280297215285,
+          "legs": [
+            12015,
+            12712,
+            10246,
+            9561,
+            11654,
+            12948,
+            12828,
+            9088
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-01",
+          "last": "2026-11-02",
+          "book": "1xBet",
+          "odd": 9.792329500800005,
+          "p": 0.17153995255094226,
+          "legs": [
+            17574,
+            17213,
+            14195,
+            14440,
+            15131,
+            16865,
+            13729,
+            16747
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-02",
+          "last": "2026-11-03",
+          "book": "Betano",
+          "odd": 8.678795735808002,
+          "p": 0.15865582281985033,
+          "legs": [
+            18668,
+            18780,
+            18321,
+            18207,
+            17978,
+            18087,
+            18439
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-03",
+          "last": "2026-11-04",
+          "book": "1xBet",
+          "odd": 8.068083236928002,
+          "p": 0.22950722233982207,
+          "legs": [
+            18956,
+            20456,
+            20568,
+            20108,
+            20226,
+            19764,
+            19079
+          ],
+          "hit": 0,
+          "estimated": false
+        }
+      ]
+    },
+    "goals4_xg25_retrospective": {
+      "summary": {
+        "tickets": 11,
+        "wins": 5,
+        "rate": 0.45454545454545453,
+        "mean_odd": 9.995422554996765,
+        "mean_legs": 6.636363636363637,
+        "estimated_price_tickets": 0
+      },
+      "tickets": [
+        {
+          "start": "2026-10-24",
+          "last": "2026-10-25",
+          "book": "1xBet",
+          "odd": 12.152110924800004,
+          "p": 0.18531985425773662,
+          "legs": [
+            244,
+            706,
+            474,
+            348,
+            2,
+            556
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-25",
+          "last": "2026-10-26",
+          "book": "1xBet",
+          "odd": 11.636512505855999,
+          "p": 0.13877712993100055,
+          "legs": [
+            1007,
+            790,
+            1068,
+            1297,
+            815,
+            1134
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-26",
+          "last": "2026-10-27",
+          "book": "1xBet",
+          "odd": 9.145315199999999,
+          "p": 0.1480561343279242,
+          "legs": [
+            1405,
+            1567,
+            1593,
+            1379,
+            1359
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-27",
+          "last": "2026-10-28",
+          "book": "Betano",
+          "odd": 10.176499411200004,
+          "p": 0.10387622421264302,
+          "legs": [
+            1690,
+            1644,
+            1738,
+            1760,
+            1663,
+            1714
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-28",
+          "last": "2026-10-29",
+          "book": "1xBet",
+          "odd": 9.2746492487424,
+          "p": 0.054586818775427884,
+          "legs": [
+            2011,
+            1918,
+            1940,
+            1895,
+            1988,
+            2035,
+            1966
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-29",
+          "last": "2026-10-30",
+          "book": "1xBet",
+          "odd": 14.039121600000001,
+          "p": 0.07458336369670145,
+          "legs": [
+            2264,
+            2288,
+            2333,
+            2311,
+            2239
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-30",
+          "last": "2026-10-31",
+          "book": "Bet365",
+          "odd": 8.03841796875,
+          "p": 0.20484408356446196,
+          "legs": [
+            4242,
+            3765,
+            5224,
+            3534,
+            5110,
+            4001,
+            3881,
+            3061
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-10-31",
+          "last": "2026-11-01",
+          "book": "1xBet",
+          "odd": 8.947812772079999,
+          "p": 0.20776746287795378,
+          "legs": [
+            12015,
+            12712,
+            10246,
+            9561,
+            11654,
+            12948,
+            12828,
+            12249
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-01",
+          "last": "2026-11-02",
+          "book": "1xBet",
+          "odd": 9.792329500800005,
+          "p": 0.17166294774833948,
+          "legs": [
+            17574,
+            17213,
+            14195,
+            14440,
+            15131,
+            16865,
+            13729,
+            16747
+          ],
+          "hit": 1,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-02",
+          "last": "2026-11-03",
+          "book": "Betano",
+          "odd": 8.678795735808002,
+          "p": 0.1565791673339271,
+          "legs": [
+            18668,
+            18780,
+            18321,
+            18207,
+            18087,
+            17978,
+            18439
+          ],
+          "hit": 0,
+          "estimated": false
+        },
+        {
+          "start": "2026-11-03",
+          "last": "2026-11-04",
+          "book": "1xBet",
+          "odd": 8.068083236928002,
+          "p": 0.22950722233982207,
+          "legs": [
+            18956,
+            20456,
+            20568,
+            20108,
+            20226,
+            19764,
+            19079
+          ],
+          "hit": 0,
+          "estimated": false
+        }
+      ]
+    }
+  }
+}

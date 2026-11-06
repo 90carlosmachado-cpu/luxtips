@@ -1,0 +1,352 @@
+{
+  "candidate_id": "bigodds-goals4-all-2d-v1",
+  "cutoff_utc": "2026-11-05T08:00:00Z",
+  "target_days": [
+    "2026-11-05",
+    "2026-11-06"
+  ],
+  "generated_at_utc": "2026-11-05T17:08:27.967553+00:00",
+  "mode": "offline retrospective morning reconstruction; not a new17h betting recommendation",
+  "used_current_results": false,
+  "source_fixtures": 42,
+  "eligible_leg_quotes": 4607,
+  "feasible_tickets": 18,
+  "ticket": {
+    "start": "2026-11-05",
+    "book": "1xBet",
+    "odd": 8.0108585736192,
+    "joint_model_probability": 0.3105935823129702,
+    "legs": [
+      2728,
+      955,
+      238,
+      1415,
+      3551,
+      2846,
+      2250
+    ],
+    "estimated_combo_count": 0,
+    "outcome": null
+  },
+  "other_feasible_tickets": [
+    {
+      "start": "2026-11-05",
+      "book": "1xBet",
+      "odd": 8.0108585736192,
+      "joint_model_probability": 0.3105935823129702,
+      "legs": [
+        2728,
+        955,
+        238,
+        1415,
+        3551,
+        2846,
+        2250
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "1xBet",
+      "odd": 11.775962103220223,
+      "joint_model_probability": 0.25036050436882756,
+      "legs": [
+        2728,
+        955,
+        238,
+        1415,
+        3551,
+        2846,
+        2250,
+        2608
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Bet365",
+      "odd": 10.564917350400002,
+      "joint_model_probability": 0.25036050436882756,
+      "legs": [
+        2744,
+        971,
+        254,
+        1431,
+        3567,
+        2862,
+        2265,
+        2624
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Bet365",
+      "odd": 13.734392555519998,
+      "joint_model_probability": 0.20089419953972695,
+      "legs": [
+        2744,
+        971,
+        254,
+        1431,
+        3567,
+        2862,
+        2265,
+        2624,
+        1669
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "BetVictor",
+      "odd": 10.181014593750003,
+      "joint_model_probability": 0.2398247859917116,
+      "legs": [
+        2760,
+        987,
+        270,
+        1447,
+        2878,
+        2281,
+        2640,
+        1685
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "BetVictor",
+      "odd": 14.253420431250003,
+      "joint_model_probability": 0.1924284802818755,
+      "legs": [
+        2760,
+        987,
+        270,
+        1447,
+        2878,
+        2281,
+        2640,
+        1685,
+        1921
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Betano",
+      "odd": 9.948571476480007,
+      "joint_model_probability": 0.26258979843311975,
+      "legs": [
+        2776,
+        1003,
+        286,
+        1463,
+        170,
+        3599,
+        2894,
+        2297
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Betano",
+      "odd": 14.922857214720013,
+      "joint_model_probability": 0.2116660424476493,
+      "legs": [
+        2776,
+        1003,
+        286,
+        1463,
+        170,
+        3599,
+        2894,
+        2297,
+        2656
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Betfair",
+      "odd": 9.365870452680003,
+      "joint_model_probability": 0.25036050436882756,
+      "legs": [
+        2792,
+        1019,
+        302,
+        1479,
+        3615,
+        2910,
+        2313,
+        2672
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Betfair",
+      "odd": 12.175631588484006,
+      "joint_model_probability": 0.20089419953972695,
+      "legs": [
+        2792,
+        1019,
+        302,
+        1479,
+        3615,
+        2910,
+        2313,
+        2672,
+        1717
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Dafabet",
+      "odd": 11.377096067999998,
+      "joint_model_probability": 0.09848400369488614,
+      "legs": [
+        316,
+        3983,
+        2205,
+        1492,
+        1967
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Marathonbet",
+      "odd": 8.515474270617599,
+      "joint_model_probability": 0.2815265573911471,
+      "legs": [
+        2810,
+        1037,
+        320,
+        2928,
+        2331,
+        2690,
+        1735
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Marathonbet",
+      "odd": 12.177128206983168,
+      "joint_model_probability": 0.22588877698253804,
+      "legs": [
+        2810,
+        1037,
+        320,
+        2928,
+        2331,
+        2690,
+        1735,
+        1971
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Pinnacle",
+      "odd": 8.948758899916797,
+      "joint_model_probability": 0.29142014671148375,
+      "legs": [
+        2824,
+        1051,
+        1511,
+        3647,
+        2942,
+        2345,
+        2704
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "Pinnacle",
+      "odd": 11.722874158891006,
+      "joint_model_probability": 0.23384126522251378,
+      "legs": [
+        2824,
+        1051,
+        1511,
+        3647,
+        2942,
+        2345,
+        2704,
+        1749
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "SBO",
+      "odd": 9.053384418,
+      "joint_model_probability": 0.2400055749484955,
+      "legs": [
+        346,
+        1997,
+        1056,
+        2592,
+        3775,
+        4368
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "William Hill",
+      "odd": 10.041175065600001,
+      "joint_model_probability": 0.2400055749484955,
+      "legs": [
+        350,
+        2001,
+        1062,
+        2596,
+        3781,
+        4374
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    },
+    {
+      "start": "2026-11-05",
+      "book": "William Hill",
+      "odd": 14.057645091840001,
+      "joint_model_probability": 0.18079127785191854,
+      "legs": [
+        350,
+        2001,
+        1062,
+        2596,
+        3781,
+        4374,
+        1883
+      ],
+      "estimated_combo_count": 0,
+      "outcome": null
+    }
+  ],
+  "settlement": null,
+  "production_changes": false
+}

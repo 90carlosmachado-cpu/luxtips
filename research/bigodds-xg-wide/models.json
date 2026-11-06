@@ -1,0 +1,2081 @@
+[
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 90,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 180,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 2,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 4,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0,
+    "min_xg_role": 0,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.1,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.25,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.5,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 0.75,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 2,
+    "market_mix": 0.5
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.25
+  },
+  {
+    "half_life": 365,
+    "prior": 8,
+    "xg_weight": 1.0,
+    "min_xg_role": 4,
+    "market_mix": 0.5
+  }
+]

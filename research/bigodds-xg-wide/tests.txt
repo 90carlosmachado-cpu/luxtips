@@ -1,0 +1,13 @@
+test_clocks_probabilities_and_non_xg_controls (test_research.ResearchTests.test_clocks_probabilities_and_non_xg_controls) ... ok
+test_complete_predefined_grid (test_research.ResearchTests.test_complete_predefined_grid) ... ok
+test_original_six_of_eleven_reproduced (test_research.ResearchTests.test_original_six_of_eleven_reproduced) ... ok
+test_purged_train_evaluation_and_summary (test_research.ResearchTests.test_purged_train_evaluation_and_summary) ... ok
+test_selection_never_depends_on_target_outcomes (test_research.ResearchTests.test_selection_never_depends_on_target_outcomes) ... ok
+test_sequential_no_simultaneous_ticket_or_reused_fixture (test_research.ResearchTests.test_sequential_no_simultaneous_ticket_or_reused_fixture) ... ok
+test_ticket_constraints_receipts_and_outcomes (test_research.ResearchTests.test_ticket_constraints_receipts_and_outcomes) ... ok
+test_vectorized_optimizer_matches_independent_slow_reference (test_research.ResearchTests.test_vectorized_optimizer_matches_independent_slow_reference) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.733s
+
+OK

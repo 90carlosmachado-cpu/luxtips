@@ -1,0 +1,279 @@
+tipo_lider,faixa,id_regra,inicio,odd_total,casa,jogo,mercado,odd,estimada,resultado,acerto_selecao,acerto_multipla
+training_selected,0,168,2026-10-24,2.058,Marathonbet,Arsenal - Everton,1,1.47,False,2-0,1,1
+training_selected,0,168,2026-10-24,2.058,Marathonbet,Lazio - Parma,1,1.4,False,2-1,1,1
+training_selected,0,168,2026-10-25,2.1168,Betano,SC Freiburg - Bayern München,2,1.44,False,1-3,1,1
+training_selected,0,168,2026-10-25,2.1168,Betano,Sparta Rotterdam - Ajax,2,1.47,False,1-2,1,1
+training_selected,0,168,2026-10-26,2.4494999999999996,1xBet,Paris Saint Germain - Lyon,1,1.42,False,2-0,1,1
+training_selected,0,168,2026-10-26,2.4494999999999996,1xBet,Santa Clara - Benfica,2,1.38,False,1-2,1,1
+training_selected,0,168,2026-10-26,2.4494999999999996,1xBet,Sevilla - Osasuna,1X,1.25,False,2-0,1,1
+training_selected,0,168,2026-10-27,2.25639,Betano,AS Roma - Cagliari,1,1.35,False,4-2,1,1
+training_selected,0,168,2026-10-27,2.25639,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+training_selected,0,168,2026-10-27,2.25639,Betano,Torino - Como,X2,1.22,False,1-3,1,1
+training_selected,0,168,2026-10-28,2.4621440000000003,1xBet,Venezia - Inter,2,1.36,False,0-2,1,1
+training_selected,0,168,2026-10-28,2.4621440000000003,1xBet,Parma - Udinese,X2,1.46,False,0-0,1,1
+training_selected,0,168,2026-10-28,2.4621440000000003,1xBet,Monza - Napoli,X2,1.24,False,1-4,1,1
+training_selected,0,168,2026-10-30,2.0021999999999998,Pinnacle,Villarreal - Espanyol,1,1.41,False,0-1,0,0
+training_selected,0,168,2026-10-30,2.0021999999999998,Pinnacle,Lille - Lens,U35,1.42,False,1-0,1,0
+training_selected,0,168,2026-10-31,2.08046583841746,Betano,FC Porto - Estoril,1+O15,1.4354478112662907,True,4-0,1,1
+training_selected,0,168,2026-10-31,2.08046583841746,Betano,Udinese - AS Roma,X2+O15,1.4493496887094501,True,2-5,1,1
+training_selected,0,168,2026-11-01,2.0164,Marathonbet,Lyon - Angers,1,1.42,False,2-0,1,1
+training_selected,0,168,2026-11-01,2.0164,Marathonbet,Liverpool - Arsenal,X2,1.42,False,0-1,1,1
+training_selected,0,168,2026-11-02,2.0448999999999997,Marathonbet,Newcastle - Everton,1X,1.43,False,0-1,0,0
+training_selected,0,168,2026-11-02,2.0448999999999997,Marathonbet,Lorient - Stade Brestois 29,1X,1.43,False,0-2,0,0
+training_selected,0,168,2026-11-03,2.014551670021435,Marathonbet,Manchester United - AS Roma,1X,1.42,False,3-2,1,1
+training_selected,0,168,2026-11-03,2.014551670021435,Marathonbet,Villarreal - Paris Saint Germain,X2+O15,1.4186983591700248,True,0-6,1,1
+training_selected,0,168,2026-11-04,2.0303999999999998,Pinnacle,Fenerbahçe - Liverpool,2,1.44,False,3-2,0,0
+training_selected,0,168,2026-11-04,2.0303999999999998,Pinnacle,Viking - Sabah FA,1,1.41,False,4-1,1,0
+training_selected,1,3628,2026-10-24,4.0571388,Pinnacle,Arsenal - Everton,1,1.48,False,2-0,1,1
+training_selected,1,3628,2026-10-24,4.0571388,Pinnacle,Lazio - Parma,1,1.42,False,2-1,1,1
+training_selected,1,3628,2026-10-24,4.0571388,Pinnacle,Inter - Fiorentina,1,1.35,False,2-1,1,1
+training_selected,1,3628,2026-10-24,4.0571388,Pinnacle,Sparta Rotterdam - Ajax,2,1.43,False,1-2,1,1
+training_selected,1,3628,2026-10-25,4.11881184,1xBet,Paris Saint Germain - Lyon,1,1.46,False,2-0,1,1
+training_selected,1,3628,2026-10-25,4.11881184,1xBet,SC Freiburg - Bayern München,2,1.44,False,1-3,1,1
+training_selected,1,3628,2026-10-25,4.11881184,1xBet,Inter - Fiorentina,1,1.37,False,2-1,1,1
+training_selected,1,3628,2026-10-25,4.11881184,1xBet,Sunderland - Leeds,X2,1.43,False,0-0,1,1
+training_selected,1,3628,2026-10-26,4.123978199999999,1xBet,Paris Saint Germain - Lyon,1,1.42,False,2-0,1,1
+training_selected,1,3628,2026-10-26,4.123978199999999,1xBet,AS Roma - Cagliari,1,1.38,False,4-2,1,1
+training_selected,1,3628,2026-10-26,4.123978199999999,1xBet,Santa Clara - Benfica,2,1.38,False,1-2,1,1
+training_selected,1,3628,2026-10-26,4.123978199999999,1xBet,Sevilla - Osasuna,1X,1.25,False,2-0,1,1
+training_selected,1,3628,2026-10-26,4.123978199999999,1xBet,Torino - Como,X2,1.22,False,1-3,1,1
+training_selected,1,3628,2026-10-27,4.386422160000002,Betano,Parma - Udinese,X2,1.44,False,0-0,1,1
+training_selected,1,3628,2026-10-27,4.386422160000002,Betano,AS Roma - Cagliari,1,1.35,False,4-2,1,1
+training_selected,1,3628,2026-10-27,4.386422160000002,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+training_selected,1,3628,2026-10-27,4.386422160000002,Betano,Torino - Como,X2,1.22,False,1-3,1,1
+training_selected,1,3628,2026-10-27,4.386422160000002,Betano,Venezia - Inter,2,1.35,False,0-2,1,1
+training_selected,1,3628,2026-10-28,4.2700963392,1xBet,Venezia - Inter,2,1.36,False,0-2,1,1
+training_selected,1,3628,2026-10-28,4.2700963392,1xBet,Fiorentina - Atalanta,1X,1.41,False,2-2,1,1
+training_selected,1,3628,2026-10-28,4.2700963392,1xBet,Parma - Udinese,X2,1.46,False,0-0,1,1
+training_selected,1,3628,2026-10-28,4.2700963392,1xBet,Monza - Napoli,X2,1.24,False,1-4,1,1
+training_selected,1,3628,2026-10-28,4.2700963392,1xBet,Frosinone - Lecce,1X,1.23,False,5-1,1,1
+training_selected,1,3628,2026-10-30,4.008009599999999,Pinnacle,Brentford - Nottingham Forest,U35,1.44,False,2-0,1,0
+training_selected,1,3628,2026-10-30,4.008009599999999,Pinnacle,Estac Troyes - Le Mans,U35,1.4,False,2-0,1,0
+training_selected,1,3628,2026-10-30,4.008009599999999,Pinnacle,Villarreal - Espanyol,1,1.41,False,0-1,0,0
+training_selected,1,3628,2026-10-30,4.008009599999999,Pinnacle,Bologna - Monza,U35,1.41,False,2-1,1,0
+training_selected,1,3628,2026-10-31,4.31904222682125,1xBet,Lazio - Cagliari,1,1.49,False,2-1,1,0
+training_selected,1,3628,2026-10-31,4.31904222682125,1xBet,Bayern München - Borussia Dortmund,1+O15,1.5022212159355803,True,2-2,0,0
+training_selected,1,3628,2026-10-31,4.31904222682125,1xBet,Lyon - Angers,1,1.44,False,2-0,1,0
+training_selected,1,3628,2026-10-31,4.31904222682125,1xBet,Como - Venezia,1,1.34,False,1-0,1,0
+training_selected,1,3628,2026-11-01,4.1218545736678855,1xBet,Lazio - Cagliari,1,1.49,False,2-1,1,0
+training_selected,1,3628,2026-11-01,4.1218545736678855,1xBet,Lyon - Angers,1,1.44,False,2-0,1,0
+training_selected,1,3628,2026-11-01,4.1218545736678855,1xBet,Como - Venezia,1,1.34,False,1-0,1,0
+training_selected,1,3628,2026-11-01,4.1218545736678855,1xBet,Atalanta - Parma,1X+O15,1.4336366871138873,True,0-3,0,0
+training_selected,1,3628,2026-11-02,4.267854083994519,1xBet,Sassuolo - Fiorentina,X2,1.46,False,2-4,1,0
+training_selected,1,3628,2026-11-02,4.267854083994519,1xBet,Lorient - Stade Brestois 29,1X,1.44,False,0-2,0,0
+training_selected,1,3628,2026-11-02,4.267854083994519,1xBet,Atalanta - Parma,1X+O15,1.4195744603551714,True,0-3,0,0
+training_selected,1,3628,2026-11-02,4.267854083994519,1xBet,Newcastle - Everton,1X,1.43,False,0-1,0,0
+training_selected,1,3628,2026-11-03,4.43257651869114,1xBet,Slavia Praha - Arsenal,2+O15,1.5009959071993335,True,1-2,1,1
+training_selected,1,3628,2026-11-03,4.43257651869114,1xBet,AEK Athens FC - Real Madrid,2+O15,1.47758128018663,True,2-3,1,1
+training_selected,1,3628,2026-11-03,4.43257651869114,1xBet,Lask Linz - Slovan Bratislava,1,1.42,False,4-0,1,1
+training_selected,1,3628,2026-11-03,4.43257651869114,1xBet,Barcelona - Aston Villa,1+O15,1.4074630713230298,True,3-0,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Inter - Fiorentina,1X,1.11,False,2-1,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Sparta Rotterdam - Ajax,X2,1.15,False,1-2,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Arsenal - Everton,1X,1.11,False,2-0,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Marseille - Le Havre,1X,1.19,False,4-3,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Udinese - AC Milan,X2,1.21,False,0-2,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Utrecht - PEC Zwolle,1X,1.2,False,1-1,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Lens - Paris FC,1X,1.48,False,2-1,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Auxerre - Le Mans,1X,1.35,False,1-1,1,1
+training_selected,2,35432,2026-10-24,10.957232523371909,1xBet,Hull City - Brentford,1X,2.24,False,1-1,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Sparta Rotterdam - Ajax,X2,1.14,False,1-2,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Marseille - Le Havre,1X,1.18,False,4-3,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Udinese - AC Milan,X2,1.22,False,0-2,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Paris Saint Germain - Lyon,1X,1.14,False,2-0,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Inter - Fiorentina,1,1.37,False,2-1,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Sevilla - Osasuna,1X,1.28,False,2-0,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Hull City - Brentford,1X,2.24,False,1-1,1,1
+training_selected,2,35432,2026-10-25,10.43562441525166,1xBet,Angers - Lorient,X2,1.42,False,0-0,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,AS Roma - Cagliari,1X,1.09,False,4-2,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,Torino - Como,X2,1.22,False,1-3,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,Parma - Udinese,X2,1.44,False,0-0,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,Venezia - Inter,2,1.35,False,0-2,1,1
+training_selected,2,35432,2026-10-27,8.216581006080004,Betano,AC Milan - Bologna,X2,2.32,False,2-4,1,1
+training_selected,2,35432,2026-10-29,8.628923519999999,1xBet,Fiorentina - Atalanta,X2,1.68,False,2-2,1,0
+training_selected,2,35432,2026-10-29,8.628923519999999,1xBet,Le Havre - Paris Saint Germain,2,1.26,False,1-5,1,0
+training_selected,2,35432,2026-10-29,8.628923519999999,1xBet,Lille - Lens,X2,1.58,False,1-0,0,0
+training_selected,2,35432,2026-10-29,8.628923519999999,1xBet,Nice - Rennes,X2,1.5,False,5-2,0,0
+training_selected,2,35432,2026-10-29,8.628923519999999,1xBet,Frosinone - Lecce,1,1.72,False,5-1,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Le Havre - Paris Saint Germain,X2,1.07,False,1-5,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Real Betis - Malaga,1X,1.09,False,2-1,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Udinese - AS Roma,X2,1.16,False,2-5,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Bayern München - Borussia Dortmund,1X,1.1,False,2-2,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Villarreal - Espanyol,1X,1.12,False,0-1,0,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Bayer Leverkusen - VfB Stuttgart,1X,1.3,False,2-4,0,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Manchester City - Brighton,1X,1.23,False,0-1,0,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,AC Milan - Inter,X2,1.33,False,3-1,0,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Hull City - Ipswich,1X,1.52,False,2-2,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Bournemouth - Leeds,1X,1.32,False,2-0,1,0
+training_selected,2,35432,2026-10-30,9.387944809010689,1xBet,Aston Villa - Fulham,1X,1.32,False,1-1,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Como - Venezia,1X,1.09,False,1-0,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Lyon - Angers,1X,1.12,False,2-0,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,PSV Eindhoven - Willem II,1,1.1,False,7-0,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Udinese - AS Roma,X2,1.18,False,2-5,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Bayern München - Borussia Dortmund,1X,1.11,False,2-2,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Frosinone - Torino,1X,1.4,False,2-0,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Lazio - Cagliari,1X,1.12,False,2-1,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Manchester City - Brighton,1X,1.24,False,0-1,0,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,AC Milan - Inter,X2,1.34,False,3-1,0,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Hull City - Ipswich,1X,1.52,False,2-2,1,0
+training_selected,2,35432,2026-10-31,8.28905999628437,Betano,Eintracht Frankfurt - Hamburger SV,1X,1.19,False,3-1,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Como - Venezia,1X,1.08,False,1-0,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Lyon - Angers,1X,1.1,False,2-0,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Atalanta - Parma,1X,1.14,False,0-3,0,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,GIL Vicente - Vitória SC,1X,1.54,False,0-0,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Frosinone - Torino,1X,1.4,False,2-0,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Deportivo La Coruna - Osasuna,1X,1.35,False,2-1,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Lazio - Cagliari,1X,1.1,False,2-1,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Eintracht Frankfurt - Hamburger SV,1X,1.18,False,3-1,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Excelsior - Twente,X2,1.15,False,0-9,1,0
+training_selected,2,35432,2026-11-01,8.473031908298497,1xBet,Lorient - Stade Brestois 29,1X,1.44,False,0-2,0,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Atalanta - Parma,1X,1.15,False,0-3,0,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,GIL Vicente - Vitória SC,1X,1.54,False,0-0,1,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Deportivo La Coruna - Osasuna,1X,1.35,False,2-1,1,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Lorient - Stade Brestois 29,1X,1.44,False,0-2,0,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Newcastle - Everton,1X,1.43,False,0-1,0,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Benfica - Alverca,1,1.16,False,1-0,1,0
+training_selected,2,35432,2026-11-02,9.308859015455996,1xBet,Sassuolo - Fiorentina,1X,1.63,False,2-4,0,0
+training_selected,2,35432,2026-11-03,8.0180318176,1xBet,Bodo/Glimt - Lille,1X,1.27,False,0-0,1,0
+training_selected,2,35432,2026-11-03,8.0180318176,1xBet,Manchester United - AS Roma,1X,1.42,False,3-2,1,0
+training_selected,2,35432,2026-11-03,8.0180318176,1xBet,Barcelona - Aston Villa,1X,1.07,False,3-0,1,0
+training_selected,2,35432,2026-11-03,8.0180318176,1xBet,Slavia Praha - Arsenal,X2,1.06,False,1-2,1,0
+training_selected,2,35432,2026-11-03,8.0180318176,1xBet,AEK Athens FC - Real Madrid,1X,3.92,False,2-3,0,0
+hindsight_only,0,14328,2026-10-24,2.01828,1xBet,Utrecht - PEC Zwolle,1X,1.2,False,1-1,1,1
+hindsight_only,0,14328,2026-10-24,2.01828,1xBet,Udinese - AC Milan,X2,1.21,False,0-2,1,1
+hindsight_only,0,14328,2026-10-24,2.01828,1xBet,Liverpool - Brighton,1X,1.39,False,2-0,1,1
+hindsight_only,0,14328,2026-10-25,2.0385000000000004,Pinnacle,Inter - Fiorentina,1,1.35,False,2-1,1,1
+hindsight_only,0,14328,2026-10-25,2.0385000000000004,Pinnacle,Hull City - Brentford,U35,1.51,False,1-1,1,1
+hindsight_only,0,14328,2026-10-26,2.590122,Betano,Santa Clara - Benfica,U35,1.38,False,1-2,1,1
+hindsight_only,0,14328,2026-10-26,2.590122,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+hindsight_only,0,14328,2026-10-26,2.590122,Betano,AS Roma - Cagliari,1,1.37,False,4-2,1,1
+hindsight_only,0,14328,2026-10-27,2.327232,1xBet,Venezia - Inter,2,1.36,False,0-2,1,1
+hindsight_only,0,14328,2026-10-27,2.327232,1xBet,Monza - Napoli,X2,1.24,False,1-4,1,1
+hindsight_only,0,14328,2026-10-27,2.327232,1xBet,AS Roma - Cagliari,1,1.38,False,4-2,1,1
+hindsight_only,0,14328,2026-10-28,2.3459999999999996,Betano,Venezia - Inter,2,1.38,False,0-2,1,1
+hindsight_only,0,14328,2026-10-28,2.3459999999999996,Betano,Fiorentina - Atalanta,X2,1.7,False,2-2,1,1
+hindsight_only,0,14328,2026-10-29,2.1168,1xBet,Le Havre - Paris Saint Germain,2,1.26,False,1-5,1,1
+hindsight_only,0,14328,2026-10-29,2.1168,1xBet,Fiorentina - Atalanta,X2,1.68,False,2-2,1,1
+hindsight_only,0,14328,2026-10-30,2.431,SBO,Hull City - Ipswich,1X,1.43,False,2-2,1,1
+hindsight_only,0,14328,2026-10-30,2.431,SBO,FC Schalke 04 - RB Leipzig,U35,1.7,False,0-2,1,1
+hindsight_only,0,14328,2026-10-31,2.431,SBO,Hull City - Ipswich,1X,1.43,False,2-2,1,1
+hindsight_only,0,14328,2026-10-31,2.431,SBO,FC Schalke 04 - RB Leipzig,U35,1.7,False,0-2,1,1
+hindsight_only,0,14328,2026-11-01,2.043768,Pinnacle,Benfica - Alverca,1,1.23,False,1-0,1,1
+hindsight_only,0,14328,2026-11-01,2.043768,Pinnacle,GIL Vicente - Vitória SC,U35,1.24,False,0-0,1,1
+hindsight_only,0,14328,2026-11-01,2.043768,Pinnacle,Juventus - Napoli,U35,1.34,False,2-0,1,1
+hindsight_only,0,14328,2026-11-02,2.6493750000000005,Pinnacle,GIL Vicente - Vitória SC,U35,1.25,False,0-0,1,1
+hindsight_only,0,14328,2026-11-02,2.6493750000000005,Pinnacle,Lorient - Stade Brestois 29,O15,1.35,False,0-2,1,1
+hindsight_only,0,14328,2026-11-02,2.6493750000000005,Pinnacle,Atalanta - Parma,U35,1.57,False,0-3,1,1
+hindsight_only,0,14328,2026-11-03,2.3166,1xBet,FC Porto - Napoli,1X,1.32,False,4-1,1,1
+hindsight_only,0,14328,2026-11-03,2.3166,1xBet,PSV Eindhoven - Club Brugge KV,O25,1.35,False,1-2,1,1
+hindsight_only,0,14328,2026-11-03,2.3166,1xBet,Slavia Praha - Arsenal,2,1.3,False,1-2,1,1
+hindsight_only,1,27892,2026-10-24,4.294972500000001,Betano,Coventry - Fulham,U35,1.45,False,0-1,1,1
+hindsight_only,1,27892,2026-10-24,4.294972500000001,Betano,NEC Nijmegen - Groningen,1X,1.47,False,2-2,1,1
+hindsight_only,1,27892,2026-10-24,4.294972500000001,Betano,Willem II - Cambuur,X2,1.55,False,1-6,1,1
+hindsight_only,1,27892,2026-10-24,4.294972500000001,Betano,Atalanta - Frosinone,1X,1.3,False,4-4,1,1
+hindsight_only,1,27892,2026-10-25,4.274268479999999,1xBet,Toulouse - Estac Troyes,1,1.57,False,0-0,0,0
+hindsight_only,1,27892,2026-10-25,4.274268479999999,1xBet,Liverpool - Brighton,1X,1.38,False,2-0,1,0
+hindsight_only,1,27892,2026-10-25,4.274268479999999,1xBet,SC Freiburg - Bayern München,2,1.44,False,1-3,1,0
+hindsight_only,1,27892,2026-10-25,4.274268479999999,1xBet,Inter - Fiorentina,1,1.37,False,2-1,1,0
+hindsight_only,1,27892,2026-10-26,4.370830875000002,Betano,Venezia - Inter,2,1.35,False,0-2,1,1
+hindsight_only,1,27892,2026-10-26,4.370830875000002,Betano,Monza - Napoli,X2,1.25,False,1-4,1,1
+hindsight_only,1,27892,2026-10-26,4.370830875000002,Betano,Santa Clara - Benfica,U35,1.38,False,1-2,1,1
+hindsight_only,1,27892,2026-10-26,4.370830875000002,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+hindsight_only,1,27892,2026-10-26,4.370830875000002,Betano,AS Roma - Cagliari,1,1.37,False,4-2,1,1
+hindsight_only,1,27892,2026-10-27,4.38642216,Betano,Venezia - Inter,2,1.35,False,0-2,1,1
+hindsight_only,1,27892,2026-10-27,4.38642216,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+hindsight_only,1,27892,2026-10-27,4.38642216,Betano,Parma - Udinese,X2,1.44,False,0-0,1,1
+hindsight_only,1,27892,2026-10-27,4.38642216,Betano,AS Roma - Cagliari,1,1.35,False,4-2,1,1
+hindsight_only,1,27892,2026-10-27,4.38642216,Betano,Torino - Como,X2,1.22,False,1-3,1,1
+hindsight_only,1,27892,2026-10-28,4.482086937600001,1xBet,Venezia - Inter,2,1.36,False,0-2,1,1
+hindsight_only,1,27892,2026-10-28,4.482086937600001,1xBet,Monza - Napoli,X2,1.24,False,1-4,1,1
+hindsight_only,1,27892,2026-10-28,4.482086937600001,1xBet,Lille - Lens,1X,1.48,False,1-0,1,1
+hindsight_only,1,27892,2026-10-28,4.482086937600001,1xBet,Parma - Udinese,X2,1.46,False,0-0,1,1
+hindsight_only,1,27892,2026-10-28,4.482086937600001,1xBet,Frosinone - Lecce,1X,1.23,False,5-1,1,1
+hindsight_only,1,27892,2026-10-30,4.144800000000001,Marathonbet,FC Schalke 04 - RB Leipzig,U35,1.76,False,0-2,1,1
+hindsight_only,1,27892,2026-10-30,4.144800000000001,Marathonbet,Hull City - Ipswich,1X,1.5,False,2-2,1,1
+hindsight_only,1,27892,2026-10-30,4.144800000000001,Marathonbet,Getafe - Sevilla,1X,1.57,False,3-1,1,1
+hindsight_only,1,27892,2026-10-31,4.313759999999999,Betano,FC Schalke 04 - RB Leipzig,U35,1.72,False,0-2,1,1
+hindsight_only,1,27892,2026-10-31,4.313759999999999,Betano,Hull City - Ipswich,1X,1.52,False,2-2,1,1
+hindsight_only,1,27892,2026-10-31,4.313759999999999,Betano,Borussia Mönchengladbach - SC Paderborn 07,U35,1.65,False,0-0,1,1
+hindsight_only,1,27892,2026-11-01,4.424301000000001,Betano,Academico Viseu - Rio Ave,1X,1.26,False,2-1,1,1
+hindsight_only,1,27892,2026-11-01,4.424301000000001,Betano,Athletic Club - Real Sociedad,U35,1.5,False,2-1,1,1
+hindsight_only,1,27892,2026-11-01,4.424301000000001,Betano,Atalanta - Parma,U35,1.53,False,0-3,1,1
+hindsight_only,1,27892,2026-11-01,4.424301000000001,Betano,GIL Vicente - Vitória SC,1X,1.53,False,0-0,1,1
+hindsight_only,1,27892,2026-11-02,4.5783738,1xBet,GIL Vicente - Vitória SC,1X,1.54,False,0-0,1,1
+hindsight_only,1,27892,2026-11-02,4.5783738,1xBet,Atalanta - Parma,U35,1.54,False,0-3,1,1
+hindsight_only,1,27892,2026-11-02,4.5783738,1xBet,Deportivo La Coruna - Osasuna,1X,1.35,False,2-1,1,1
+hindsight_only,1,27892,2026-11-02,4.5783738,1xBet,Rennes - Olympiakos Piraeus,U35,1.43,False,0-0,1,1
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Rio Ave - Famalicao,X2,1.29,False,0-4,1,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Aston Villa - Manchester City,X2,1.21,False,2-1,0,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Atalanta - Frosinone,1X,1.3,False,4-4,1,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Willem II - Cambuur,X2,1.55,False,1-6,1,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Inter - Fiorentina,1,1.36,False,2-1,1,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Manchester United - Bournemouth,1X,1.39,False,0-3,0,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Rennes - Strasbourg,1X,1.29,False,3-0,1,0
+hindsight_only,2,34640,2026-10-24,9.817558994580482,Betano,Chelsea - Tottenham,1X,1.28,False,0-2,0,0
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Udinese - AC Milan,X2,1.22,False,0-2,1,1
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Inter - Fiorentina,1,1.37,False,2-1,1,1
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Sevilla - Osasuna,1X,1.28,False,2-0,1,1
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Hull City - Brentford,1X,2.24,False,1-1,1,1
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Angers - Lorient,X2,1.42,False,0-0,1,1
+hindsight_only,2,34640,2026-10-25,11.636512505856004,1xBet,Manchester United - Bournemouth,O25,1.71,False,0-3,1,1
+hindsight_only,2,34640,2026-10-26,9.145315199999999,1xBet,Torino - Como,X2,1.22,False,1-3,1,0
+hindsight_only,2,34640,2026-10-26,9.145315199999999,1xBet,Sevilla - Osasuna,1X,1.25,False,2-0,1,0
+hindsight_only,2,34640,2026-10-26,9.145315199999999,1xBet,AS Roma - Cagliari,1,1.38,False,4-2,1,0
+hindsight_only,2,34640,2026-10-26,9.145315199999999,1xBet,Paris Saint Germain - Lyon,U35,1.94,False,2-0,1,0
+hindsight_only,2,34640,2026-10-26,9.145315199999999,1xBet,Sassuolo - Lazio,U25,2.24,False,2-6,0,0
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,Torino - Como,X2,1.22,False,1-3,1,1
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,Sassuolo - Lazio,X2,1.37,False,2-6,1,1
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,Parma - Udinese,X2,1.44,False,0-0,1,1
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,AS Roma - Cagliari,1,1.35,False,4-2,1,1
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,Venezia - Inter,2,1.35,False,0-2,1,1
+hindsight_only,2,34640,2026-10-27,10.176499411200004,Betano,AC Milan - Bologna,X2,2.32,False,2-4,1,1
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Frosinone - Lecce,1X,1.23,False,5-1,1,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Parma - Udinese,X2,1.46,False,0-0,1,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Venezia - Inter,2,1.36,False,0-2,1,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,AC Milan - Bologna,1X,1.2,False,2-4,0,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Monza - Napoli,X2,1.24,False,1-4,1,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Fiorentina - Atalanta,1X,1.41,False,2-2,1,0
+hindsight_only,2,34640,2026-10-28,9.2746492487424,1xBet,Genoa - Juventus,U25,1.81,False,2-0,1,0
+hindsight_only,2,34640,2026-10-29,14.039121600000001,1xBet,Fiorentina - Atalanta,X2,1.68,False,2-2,1,0
+hindsight_only,2,34640,2026-10-29,14.039121600000001,1xBet,Le Havre - Paris Saint Germain,U35,2.05,False,1-5,0,0
+hindsight_only,2,34640,2026-10-29,14.039121600000001,1xBet,Lille - Lens,X2,1.58,False,1-0,0,0
+hindsight_only,2,34640,2026-10-29,14.039121600000001,1xBet,Nice - Rennes,X2,1.5,False,5-2,0,0
+hindsight_only,2,34640,2026-10-29,14.039121600000001,1xBet,Frosinone - Lecce,1,1.72,False,5-1,1,0
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Rayo Vallecano - Celta Vigo,U35,1.25,False,3-0,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Estac Troyes - Le Mans,O15,1.25,False,2-0,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Brentford - Nottingham Forest,O15,1.22,False,2-0,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,FC Schalke 04 - RB Leipzig,U35,1.73,False,0-2,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Hull City - Ipswich,O15,1.25,False,2-2,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Bologna - Monza,O15,1.25,False,2-1,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,AC Milan - Inter,O15,1.2,False,3-1,1,1
+hindsight_only,2,34640,2026-10-30,8.409421875000001,Bet365,Bournemouth - Leeds,U35,1.36,False,2-0,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Paris FC - Monaco,O15,1.26,False,3-1,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,FC Schalke 04 - RB Leipzig,U35,1.76,False,0-2,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Hull City - Ipswich,O15,1.28,False,2-2,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Bologna - Monza,O15,1.25,False,2-1,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Bournemouth - Leeds,U35,1.38,False,2-0,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Coventry - Sunderland,O15,1.31,False,3-1,1,1
+hindsight_only,2,34640,2026-10-31,8.53110365184,Pinnacle,Juventus - Napoli,U35,1.33,False,2-0,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Lecce - Genoa,U35,1.22,False,1-2,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Strasbourg - Auxerre,O15,1.2,False,5-1,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Paris FC - Monaco,O15,1.27,False,3-1,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,GIL Vicente - Vitória SC,1X,1.53,False,0-0,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Frosinone - Torino,1X,1.38,False,2-0,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Deportivo La Coruna - Osasuna,1X,1.32,False,2-1,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Juventus - Napoli,U35,1.33,False,2-0,1,1
+hindsight_only,2,34640,2026-11-01,8.270316558282238,Betano,Maritimo - Santa Clara,U35,1.2,False,0-2,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,GIL Vicente - Vitória SC,1X,1.49,False,0-0,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,Deportivo La Coruna - Osasuna,1X,1.35,False,2-1,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,Atalanta - Parma,U35,1.5,False,0-3,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,Lorient - Stade Brestois 29,O15,1.32,False,0-2,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,Newcastle - Everton,U35,1.42,False,0-1,1,1
+hindsight_only,2,34640,2026-11-02,8.257078764000003,Marathonbet,Sassuolo - Fiorentina,BY,1.46,False,2-4,1,1
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Bodo/Glimt - Lille,1X,1.27,False,0-0,1,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Lask Linz - Slovan Bratislava,O25,1.36,False,4-0,1,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Manchester United - AS Roma,1X,1.42,False,3-2,1,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Shakhtar Donetsk - Sporting CP,O15,1.2,False,0-1,0,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Atletico Madrid - Bayern München,O25,1.43,False,0-2,0,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,PSV Eindhoven - Club Brugge KV,O25,1.35,False,1-2,1,0
+hindsight_only,2,34640,2026-11-03,8.068083236928002,1xBet,Rennes - Olympiakos Piraeus,U35,1.42,False,0-0,1,0

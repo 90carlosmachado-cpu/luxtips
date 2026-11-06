@@ -1,0 +1,17 @@
+{"source_done": "market", "policies": 10368, "seconds": 5.3}
+{"policies": 12000, "seconds": 5.9}
+{"source_done": "lux", "policies": 20736, "seconds": 13.0}
+{"policies": 24000, "seconds": 14.0}
+{"source_done": "lux_mix", "policies": 31104, "seconds": 17.2}
+{"policies": 36000, "seconds": 19.0}
+{"source_done": "goals4", "policies": 41472, "seconds": 21.2}
+{"policies": 48000, "seconds": 23.5}
+{"source_done": "goals4_mix", "policies": 51840, "seconds": 25.1}
+{"policies": 60000, "seconds": 28.1}
+{"source_done": "elo20", "policies": 62208, "seconds": 28.8}
+{"policies": 72000, "seconds": 32.6}
+{"source_done": "elo20_mix", "policies": 72576, "seconds": 32.7}
+{"source_done": "xg25", "policies": 82944, "seconds": 36.5}
+{"policies": 84000, "seconds": 37.0}
+{"source_done": "xg25_mix", "policies": 93312, "seconds": 42.1}
+{"finished": 93312, "training_selected": {"0": {"rule": {"source": "market", "span": 1, "markets": "all", "p_min": 0.65, "odd_min": 1.05, "sample_min": 0, "rank": "efficiency", "n_min": 2, "n_max": 4, "odd_band": [2, 4]}, "train": {"n": 5, "wins": 5, "rate": 1.0, "mean_odd": 2.2685668, "mean_legs": 2.6, "estimated_price_tickets": 0, "profit_units": 6.342834}, "evaluation": {"n": 6, "wins": 3, "rate": 0.5, "mean_odd": 2.0314862514064824, "mean_legs": 2.0, "estimated_price_tickets": 2, "profit_units": 0.11141750843889575}, "all": {"n": 11, "wins": 8, "rate": 0.7272727272727273, "mean_odd": 2.1392501371308086, "mean_legs": 2.272727272727273, "estimated_price_tickets": 2, "profit_units": 6.454251508438894}}, "1": {"rule": {"source": "market", "span": 2, "markets": "all", "p_min": 0.65, "odd_min": 1.05, "sample_min": 0, "rank": "efficiency", "n_min": 3, "n_max": 7, "odd_band": [4, 8]}, "train": {"n": 5, "wins": 5, "rate": 1.0, "mean_odd": 4.19128946784, "mean_legs": 4.6, "estimated_price_tickets": 0, "profit_units": 15.9564473392}, "evaluation": {"n": 5, "wins": 1, "rate": 0.2, "mean_odd": 4.229867400634959, "mean_legs": 4.0, "estimated_price_tickets": 4, "profit_units": -0.5674234813088601}, "all": {"n": 10, "wins": 6, "rate": 0.6, "mean_odd": 4.21057843423748, "mean_legs": 4.3, "estimated_price_tickets": 4, "profit_units": 15.38902385789114}}, "2": {"rule": {"source": "goals4", "span": 2, "markets": "side", "p_min": 0.5, "odd_min": 1.05, "sample_min": 0, "rank": "probability", "n_min": 5, "n_max": 12, "odd_band": [8, 15]}, "train": {"n": 3, "wins": 3, "rate": 1.0, "mean_odd": 9.869812648234523, "mean_legs": 7.666666666666667, "estimated_price_tickets": 0, "profit_units": 26.609437944703572}, "evaluation": {"n": 5, "wins": 0, "rate": 0.0, "mean_odd": 8.69538550932991, "mean_legs": 8.8, "estimated_price_tickets": 0, "profit_units": -5}, "all": {"n": 9, "wins": 3, "rate": 0.3333333333333333, "mean_odd": 9.079476556817013, "mean_legs": 8.0, "estimated_price_tickets": 0, "profit_units": 20.609437944703572}}}, "hindsight": {"0": {"n": 11, "wins": 11, "rate": 1.0, "mean_odd": 2.300788818181818, "mean_legs": 2.5454545454545454, "estimated_price_tickets": 0, "profit_units": 14.308677}, "1": {"n": 9, "wins": 8, "rate": 0.8888888888888888, "mean_odd": 4.363312861400001, "mean_legs": 4.111111111111111, "estimated_price_tickets": 0, "profit_units": 25.995547272600007}, "2": {"n": 11, "wins": 6, "rate": 0.5454545454545454, "mean_odd": 9.602332822402648, "mean_legs": 6.636363636363637, "estimated_price_tickets": 0, "profit_units": 44.28093276617825}}}

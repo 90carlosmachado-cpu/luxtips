@@ -1,5 +1,23 @@
 # LuxTips
 
+## Código atual em produção
+
+Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `8a39a26a-2b74-4308-a83b-49bdebe3f13d`.
+
+- **Entrada atual:** `production/integration.js`, selecionada em `wrangler.jsonc`.
+- **Código completo publicado:** 18 módulos em `production/`, incluindo o bundle recuperado, futebol, Big Odds, interface, PWA e notificações. O bundle não foi refatorado.
+- **Modelo Big Odds:** xG90, prior 2, mistura 50% com referência da casa, sem unders.
+- **Testes:** `npm test` executa os testes históricos e os da produção; `npm run check` e `npm run check:production` verificam o código.
+- **Compilação sem publicar:** `npm ci` e `npm run build:check`. Não existe deploy automático nesta sincronização.
+- **Documentação:** [algoritmo Big Odds](docs/bigodds-algoritmo.md), [estado da sincronização](docs/sincronizacao-2026-11-06.md) e [histórico das alterações](docs/bigodds-release-history.md).
+- **Correção ainda não publicada:** [reutilização de jogos retirados](pending/bigodds-withdrawn-reuse/README.md), guardada como patch. Não é carregada pela entrada atual.
+- **Investigação offline:** [simulações e arquivos de dados](research/README.md).
+
+O código anterior em `src/` e `recovered/` foi preservado como referência histórica. Não corresponde, isoladamente, ao Worker atual. A configuração aponta para o código publicado recuperado. Dados de jogos, boletins e resultados continuam no D1; credenciais permanecem nos secrets do Cloudflare, sem valores no GitHub.
+
+## Documentação histórica preservada
+
+
 ## Foco exclusivo em vitórias 1X2
 
 V11 ativa Elo com peso 0,2 nas dez competições, por pedido explícito. Modelo

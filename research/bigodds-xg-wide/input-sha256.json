@@ -1,0 +1,13 @@
+{
+  "bigodds-wide/base.py": "f91f098eefcfc60b1c1a0d82f7d8e4c1b4c4c1b5929843372f7f119577ff9569",
+  "bigodds-wide/legs.json": "1f71a90db019e4f9c32fcfb8c1e3e8488fe44283b4047a8ed9b89ea67c17252a",
+  "bigodds-wide/pool.json": "846af2847e5610de9614a1f1b43fcaf68808c75ac0b9d9ce32520c2ea03aa71a",
+  "bigodds-wide/model-sources.json": "a67f2ad99a9ab400587fc98230f2bfb2df4c0fdc5a180ad6bc3c7adb89ded261",
+  "bigodds-wide/results.json": "f3acc481bb769866deba584883788b9f63085e5fc54d09f11d315353ac53f219",
+  "bigodds-wide/quotes.json": "e47cd8c412163fb7727f7b851d15c11561e05f3461a2440d7aed57ebc387ebd0",
+  "bigodds-history/fixtures-2023.json": "b17e4b988a55a96d74ed25ad384f6229461588669b7a95bacc77e7457389431e",
+  "bigodds-history/fixtures-2024.json": "877d4e0d718308e343172b13e73fa7090329fad185916ba1afd75d585d93ddba",
+  "bigodds-history/fixtures-2025.json": "fc5f266f3d07613ea2f54474b89c557bdf7d1e57325b8a004d8a4f63e806d446",
+  "bigodds-history/fixtures-2026.json": "636a62a738398a0de3af18e292e618bad95927fb9af6b0bfe2bcb459f29f6676",
+  "bigodds-history/details.json": "e0b75455b74e83bfcdc1fde2aa542147132e69df77957dbf92d3ada78a52be39"
+}

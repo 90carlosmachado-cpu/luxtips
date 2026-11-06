@@ -1,0 +1,104 @@
+{
+  "sources": [
+    "market",
+    "lux",
+    "lux_mix",
+    "goals4",
+    "goals4_mix",
+    "elo20",
+    "elo20_mix",
+    "xg25",
+    "xg25_mix"
+  ],
+  "markets": [
+    "1",
+    "1+O15",
+    "1X",
+    "1X+O15",
+    "2",
+    "2+O15",
+    "BN",
+    "BY",
+    "O15",
+    "O25",
+    "O35",
+    "U15",
+    "U25",
+    "U35",
+    "X2",
+    "X2+O15"
+  ],
+  "market_sets": [
+    "all",
+    "real",
+    "side",
+    "dc",
+    "win",
+    "goals",
+    "btts",
+    "combo"
+  ],
+  "probability_cutoffs": [
+    0.5,
+    0.65,
+    0.8
+  ],
+  "minimum_individual_odds": [
+    1.05,
+    1.2
+  ],
+  "sample_minimum": [
+    0,
+    12
+  ],
+  "horizons": [
+    1,
+    2,
+    3
+  ],
+  "selection_counts": [
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      5,
+      12
+    ],
+    [
+      8,
+      12
+    ]
+  ],
+  "odds_bands": [
+    [
+      2,
+      4
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      8,
+      15
+    ]
+  ],
+  "ranking": [
+    "probability",
+    "edge",
+    "efficiency"
+  ],
+  "training": "last game <=2026-10-29",
+  "evaluation": "start >=2026-10-30; last game <=2026-11-04",
+  "caveat": "Both periods were inspected in earlier conversations. This is exploratory chronological separation, not fresh independent validation. Many equivalent policies and multiple comparisons.",
+  "training_selection": "At least3 training tickets; maximize Laplace-smoothed hit rate (wins+1)/(n+2), ties more training tickets then lower predefined policy id. Select separately per odds band, never by evaluation outcome.",
+  "hindsight_selection": "Separate diagnostic only: best full-period hit rate among rules with >=8 tickets; not a prospective result.",
+  "builder": "Greedy: best permitted market per fixture by ranking, then sorted prefixes up to12; highest estimated joint probability across admissible prefixes and single bookmakers. Not exhaustive combination enumeration.",
+  "real_prices": "Win,DC,totals,BTTS observed pre-decision. Four combos synthetic. All known at08:00 Lisbon first day; quotes<6h. One selection per fixture. Teams may repeat on different fixtures after relaxing former limits.",
+  "production_changes": false
+}

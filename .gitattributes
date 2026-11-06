@@ -1,0 +1,4 @@
+# Preserve exact bytes of recovered deployed modules, including existing EOF spacing.
+production/*.mjs -text whitespace=-blank-at-eof
+production/integration.js -text whitespace=-blank-at-eof
+research/**/*.csv text eol=lf

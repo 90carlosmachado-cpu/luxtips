@@ -1,0 +1,46 @@
+{
+  "status": "research_only_not_validated_not_deployed",
+  "frozen_at": "2026-11-06T10:18:45.291021+00:00",
+  "rule": {
+    "model": {
+      "half_life": 180,
+      "prior": 2,
+      "xg_weight": 0.1,
+      "min_xg_role": 4,
+      "market_mix": 0
+    },
+    "markets": "all_real",
+    "p_min": 0.5,
+    "odd_min": 1.2,
+    "sample_min": 0,
+    "ranking": "probability",
+    "xg_mode": "required",
+    "direction": "any",
+    "span": 3,
+    "n_min": 5,
+    "n_max": 12,
+    "odd_band": [
+      8,
+      15
+    ]
+  },
+  "historical": {
+    "n": 9,
+    "wins": 6,
+    "rate": 0.6666666666666666,
+    "mean_odd": 10.217915563815492,
+    "legs": 61,
+    "xg_legs": 61,
+    "xg_share": 1.0
+  },
+  "caveat": "Chosen on full inspected period; requires new unseen-period evaluation; sequential results are approximate with assumed final whistles.",
+  "sequential": {
+    "n": 4,
+    "wins": 2,
+    "rate": 0.5,
+    "mean_odd": 9.95580052605102,
+    "legs": 27,
+    "xg_legs": 27,
+    "xg_share": 1.0
+  }
+}

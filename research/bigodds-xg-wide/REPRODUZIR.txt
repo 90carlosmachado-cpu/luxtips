@@ -1,0 +1,9 @@
+Python3 + NumPy. Extrair mantendo pastas. Executar na raiz:
+python bigodds-xg-wide/build_models.py
+python bigodds-xg-wide/search.py
+python bigodds-xg-wide/audit.py
+python bigodds-xg-wide/alternatives.py
+python -m unittest discover -s bigodds-xg-wide -p test_research.py -v
+python bigodds-xg-wide/report.py
+
+models.npz é gerado pelo primeiro comando e não é distribuído, por ser reproduzível e redundante. all-policies.csv contém as1 026 432 avaliações; models.json mapeia os IDs. Não são necessários segredos ou acesso a produção. Os CSV intermédios por modelo também são gerados localmente. Abrir BigOdds-pesquisa-xG.html para a análise e os boletins completos.

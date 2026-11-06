@@ -128,3 +128,12 @@
   `src/lux/`; primeiro registo de previsão e primeiro preço válido separados.
   Usa o ledger imutável existente, sem migração ou reescrita. Não ativar motores
   de investigação por esta autorização. Ver `docs/comparacao-prospetiva-informacao.md`.
+
+## Sincronização de 6 de novembro de 2026
+
+- Entrada atual `production/integration.js` e 18 módulos recuperados diretamente do Cloudflare. `src/` e `recovered/` são agora referência histórica, não a entrada publicada.
+- Não regenerar ou refatorar `production/production-worker.mjs` a partir do código histórico: perderia alterações já publicadas.
+- `production/manifest.json` fixa a versão remota e os hashes dos módulos. Atualizar apenas após nova versão confirmada.
+- `pending/` contém patches não publicados; nunca os aplicar, importar ou publicar automaticamente.
+- Testes atuais: `npm run test:production`; testes históricos: `npm run test:legacy`; ambos: `npm test`. Compilação sem publicar: `npm run build:check`.
+- A autorização desta tarefa limita-se a commit e sincronização do GitHub. Não autoriza deploy, migrações ou novo ciclo.

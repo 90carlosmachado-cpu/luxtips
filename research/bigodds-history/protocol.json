@@ -1,0 +1,31 @@
+{
+  "models": [
+    "league",
+    "goals8",
+    "goals4",
+    "goals8_elo20",
+    "goals8_sot25",
+    "goals8_xg25"
+  ],
+  "probabilityKeys": [
+    "H",
+    "D",
+    "A",
+    "HX",
+    "XA",
+    "HO",
+    "AO",
+    "HXO",
+    "XAO"
+  ],
+  "development": "calendar 2024; warm-up 2023",
+  "evaluation": "calendar 2025; choice frozen after 2024",
+  "additional_audit": "2026-01-01 to 2026-10-21",
+  "clock": "08:00 Europe/Lisbon of first day; completed result assumed available kickoff+2h",
+  "historical_availability": "event-time reconstruction; actual source import/revision availability not verifiable",
+  "odds": "No contemporaneous historical prices. No ROI or valid 8\u201315-odd ticket claim. Ticket checks are probability-only diagnostics.",
+  "variants": "League rates control; role-specific goals with shrinkage8 or4; goals8+20% Elo; goals8+25% SOT; goals8+25% xG. No coefficients tuned after evaluation.",
+  "decay_half_life_days": 180,
+  "source_detail_rejections": 0,
+  "production_changes": false
+}

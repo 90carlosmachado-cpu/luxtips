@@ -1,0 +1,20 @@
+{
+  "leaders-tickets.csv": "4d886d5ad22fb21850d205a187f5b12c38e30830eca6656414786d668fcd6191",
+  "test_search.py": "f0d9ec7e9e0e561ab9869bc3758175abcb49dbef6badafe0e15c4dae74b706cf",
+  "protocol.json": "62612d4488f288ac421ad3e97879f844f159dddadc3e3cb3bf093ebd23674a9f",
+  "snapshots.json": "855903dda71e12c57687f3f6e730eff4feab8dae26328077f7d2e1696f649d3d",
+  "candidate-research-only.json": "10e62c9eca674774d07fe891ce386382230694fa42ca423a752ea40a28bbb552",
+  "search.py": "0fb37d2f78ff1eb62fddd5e5a975bf3da527520eff786eae46e4f9f4f9d28579",
+  "build.py": "8bd03f96c290e7a8a7f84835d44845b80a7a65a52cad02b9a97c60c736985e97",
+  "results.json": "f3acc481bb769866deba584883788b9f63085e5fc54d09f11d315353ac53f219",
+  "all-policies.jsonl": "970263eb60d9b3f3d4c3a1a2bcdc451aaaa4a7c321a64b02352c3829f7452201",
+  "base.py": "f91f098eefcfc60b1c1a0d82f7d8e4c1b4c4c1b5929843372f7f119577ff9569",
+  "search-log.jsonl": "dbebf6194baac75462fbf95b8486634d1d46fae1c7c61aaeca770a93df015951",
+  "quotes.json": "e47cd8c412163fb7727f7b851d15c11561e05f3461a2440d7aed57ebc387ebd0",
+  "build-log.jsonl": "a605ab1e31a47c0bb5a2f1a72830ff500a56a2267e0c5ad72b24b6ede436528d",
+  "report.py": "cee6fccd8607ca371d2078e560961e67cd199a47385e6372160035d598fc23ac",
+  "pool.json": "846af2847e5610de9614a1f1b43fcaf68808c75ac0b9d9ce32520c2ea03aa71a",
+  "BigOdds-pesquisa-alargada.html": "a1e7e5dca4022ea016a349fbe29994549ccc2449b53917b730e017bf619352f2",
+  "legs.json": "1f71a90db019e4f9c32fcfb8c1e3e8488fe44283b4047a8ed9b89ea67c17252a",
+  "model-sources.json": "a67f2ad99a9ab400587fc98230f2bfb2df4c0fdc5a180ad6bc3c7adb89ded261"
+}
