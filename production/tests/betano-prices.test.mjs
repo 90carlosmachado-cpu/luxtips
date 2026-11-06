@@ -8,3 +8,10 @@ test('08h membership freeze is independent of Betano price updates and missing q
 test('Big Odds total uses Betano current prices independently of immutable original odds',async()=>{const {db,quote}=setup();quote('Betano',1.3);const t={id:'same',odd:8.3,bookmaker:'Pinnacle',legs:[{fixtureId:1,kickoff,market:'1',odd:1.2}]};const shown=await withTicketBetano(db,t,after);assert.equal(shown.id,'same');assert.equal(shown.odd,8.3);assert.equal(shown.currentOdd,1.3);assert.equal(shown.displayBookmaker,'Betano');assert.equal(t.legs[0].currentQuote,undefined);db.sql.exec('DELETE FROM openfoot_market_quotes');assert.equal((await withTicketBetano(db,t,after)).currentOdd,null);});
 test('no future, wrong kickoff or in-play price is used',async()=>{const {db,quote}=setup();quote('Betano',2,after+1000);assert.equal(await betanoQuote(db,1,kickoff,'H',after),null);quote('Betano',2,after-1000,kickoff+1);assert.equal(await betanoQuote(db,1,kickoff,'H',after),null);quote('Betano',1.3,kickoff-1000);quote('Betano',9,kickoff+1000);const q=await betanoQuote(db,1,kickoff,'H',kickoff+5000);assert.equal(q.odd,1.3);assert.equal(q.status,'prematch_closed');});
 test('new Big Odds publications cannot use another bookmaker',async()=>{assert.equal((await publishBigOdds(null,{bookmaker:'Pinnacle',legs:[]})).status,'wrong_bookmaker');});
+
+test('void legs contribute odd 1 without requiring a price and original snapshots stay intact',async()=>{
+ const {withTicketBetano}=await import('../betano-prices.mjs');
+ const db={prepare(){throw Error('No quote lookup should be necessary for total when all void');}};
+ const ticket={odd:10,legs:[{fixtureId:1,kickoff:1000,market:'1',odd:2,status:'void'}]};
+ const r=await withTicketBetano(db,ticket,2000);assert.equal(r.currentOdd,1);assert.equal(ticket.odd,10);assert.equal(ticket.legs[0].odd,2);
+});

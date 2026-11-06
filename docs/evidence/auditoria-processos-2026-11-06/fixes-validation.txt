@@ -1,0 +1,4 @@
+Candidato local: 129 testes históricos + 93 produção = 222 aprovados; zero falhas.
+Sintaxe e integridade do candidato: aprovadas.
+Wrangler deploy --dry-run: aprovado.
+Manifesto publicado preservado. Sem alterações de produção.

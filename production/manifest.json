@@ -1,5 +1,5 @@
 {
-  "version": "655bd887-860b-4870-b5cf-b6df30a4ea32",
+  "version": "bd0f8795-2bba-4e93-a3d4-ceb92cb94fcd",
   "retrievedAt": "2026-11-06",
   "main": "integration.js",
   "source": "Cloudflare GET content/v2; módulos alterados verificados após publicação",
@@ -14,17 +14,17 @@
     "pwa.mjs": "07bf301200a6488bab91d8fcd41e6b87b141734631c0fc7dc164883e755cabd2",
     "quote-gate.mjs": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263",
     "bigodds-model.mjs": "b67a93e1a8ebdb8f0a7dac3a05c21a2b215c3a8fc5e8625a4363f21f37e0636c",
-    "bigodds-view.mjs": "3f430e19062c23266289c88eaa1a06702601edaf248c1db5b02ecb50c61fcdc2",
-    "betano-prices.mjs": "caa8888cd78bd2681b49ed2f6feb1fd54017d737e0e8aa2211ab66125dd7bf85",
+    "bigodds-view.mjs": "5cb8a7183e03670e8ad5c7ffde99b7b73df7491df8757880d2cf3dc7ee65624c",
+    "betano-prices.mjs": "e908372845448f716e0c0e7de0acbb786daba2bf2afb68bf06596fc566d2563f",
     "og-image.mjs": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d",
-    "bigodds.mjs": "37803645b07c468af8a7ca7b3748d313bee501a0282624c9777ca6e87bbdda39",
+    "bigodds.mjs": "64c8fc49b0c97212f5d29077dcd45fd6deaf8ea86b34628516963763723c37f5",
     "combo-archive.mjs": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384",
     "assets.mjs": "1f8fa314e88c632edd0f4b5403f36a465361316ce86de99a3d806aad7af67816",
     "front-office.mjs": "f8218a2a22b699ee5a7909c83838f387a5672d5b211f986d010371942364524a",
     "webpush.mjs": "63252f1ce1b81cba874c86befe282756794d49eb6b5b4365056c7ebfd92c9830",
     "daily-ranking.mjs": "0cef5ee27550cd690bfa2cae93ac6d6cc78c8bdbf7467c919e8bd70dde9bcca0",
-    "integration.js": "715c0916d490d028ad64eb07c2307880de38d9fad1d7b9fac2c764ec22fc500d"
+    "integration.js": "39ea5e9d30be5e45b3e56a780747d46c296d4b28457c4703427ed040581ebd3f"
   },
   "note": "Hashes dos 20 módulos; sem dados D1 ou segredos.",
-  "previousVersion": "52523417-2e45-4fa7-8e8c-b249fa509f5f"
+  "previousVersion": "655bd887-860b-4870-b5cf-b6df30a4ea32"
 }

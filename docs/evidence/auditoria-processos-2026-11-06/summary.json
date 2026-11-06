@@ -1,0 +1,18 @@
+{
+  "version": "655bd887-860b-4870-b5cf-b6df30a4ea32",
+  "tests": {
+    "legacy": 129,
+    "production": 84,
+    "failed": 0
+  },
+  "remoteModules": {
+    "checked": 20,
+    "matched": 20
+  },
+  "productionModified": false,
+  "findings": [
+    "bigodds_daily_window_after_slow_pipeline",
+    "rescheduled_leg_remains_pending",
+    "bigodds_fetch_without_timeout"
+  ]
+}

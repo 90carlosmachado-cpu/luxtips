@@ -1,0 +1,3 @@
+{"case":"08h pipeline delayed 87.4sec","slot":null,"effect":"no generation that day from next minute"}
+{"case":"rescheduled leg finished, remaining four legs won","status":"active","pending":1}
+{"case":"Big Odds network request never resolves","fetchCallsAfterTwoRefreshTicks":1,"hasTimeoutSignal":false}

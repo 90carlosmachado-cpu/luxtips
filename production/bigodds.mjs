@@ -56,12 +56,15 @@ export async function settleBigOdds(db,now=Date.now()){
  const updates=[];
  for(const row of pending.results){
   let f,s;try{f=JSON.parse(row.fixture);s=JSON.parse(row.snapshot);}catch{continue;}
-  if(!f||f.id!==s.fixtureId||f.ts!==s.kickoff||f.home!==s.home||f.away!==s.away)continue;
+  if(!f||f.id!==s.fixtureId||f.home!==s.home||f.away!==s.away)continue;
   let status=null,result=null;
-  if(['CANC','AWD','WO'].includes(f.status)){status='void';result={status:f.status};}
+  const moved=f.ts!==s.kickoff,deadline=s.kickoff+DAY;
+  if(moved&&(!Number.isFinite(f.ts)||f.ts<s.kickoff)){continue;}
+  if(now>=deadline&&((moved&&f.ts>deadline)||['PST','TBD'].includes(f.status))){status='void';result={status:'rescheduled_void',originalKickoff:s.kickoff,currentKickoff:f.ts,rule:'betano-postponement-24h',ruleSource:'https://support.betano.pt/hc/pt/articles/16445377804189'};}
+  else if(['CANC','AWD','WO'].includes(f.status)){status='void';result={status:f.status};}
   else if(f.finished===true&&['FT','AET','PEN'].includes(f.status)&&Number.isInteger(row.hg)&&Number.isInteger(row.ag)&&row.hg>=0&&row.ag>=0&&row.settled_at<=now){
    // Markets are for regular time. AET/PEN scores cannot settle a 90-min bet.
-   if(f.status!=='FT')continue;
+   if(f.status!=='FT'||moved&&(f.ts>=now||row.settled_at<f.ts))continue;
    if(f.hg!==row.hg||f.ag!==row.ag)continue;
    status=marketHit(s.market,row.hg,row.ag)?'won':'lost';result={home:row.hg,away:row.ag,status:'FT',sourceSettledAt:row.settled_at};
   }
@@ -112,11 +115,19 @@ export async function archiveActiveBigOdds(db,now,requestId){
 }
 export function dailySlot(now,scheduledAt=now){
  const clock=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Lisbon',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(scheduledAt);
- if(clock!=='08:00'||now<scheduledAt||now>=scheduledAt-scheduledAt%60000+60000)return null;
+ if(clock!=='08:00'||now<scheduledAt||now>=scheduledAt-scheduledAt%60000+15*60000)return null;
  return {day:lisbonDay(scheduledAt),at:scheduledAt-scheduledAt%60000};
 }
 export async function syncBigOdds(env,now=Date.now(),clock=Date.now,scheduledAt=now){
- const db=env.DB,slot=dailySlot(now,scheduledAt);
+ const db=env.DB;
+ let slot=dailySlot(now,scheduledAt);
+ if(!slot){
+  const prior=await db.prepare("SELECT data FROM openfoot_state WHERE key=?").bind('bigodds:daily0800:'+lisbonDay(now)).first();
+  if(prior){const p=JSON.parse(prior.data);if(['running','retryable'].includes(p.status)&&p.leaseUntil<=now){
+   slot=dailySlot(now,p.scheduledAt);
+   if(!slot&&now>=p.scheduledAt+15*60000)await db.prepare('UPDATE openfoot_state SET data=? WHERE key=? AND data=?').bind(JSON.stringify({...p,status:'daily_window_expired',at:now,leaseUntil:0}),'bigodds:daily0800:'+lisbonDay(now),prior.data).run();
+  }}
+ }
  const command=await db.prepare("DELETE FROM openfoot_state WHERE key='bigodds:manual_rebuild' RETURNING data").first();
  if(command){
   let request;try{request=JSON.parse(command.data);}catch{}
@@ -133,11 +144,28 @@ export async function syncBigOdds(env,now=Date.now(),clock=Date.now,scheduledAt=
  await settleBigOdds(db,now);
  if(!slot)return {status:'outside_daily_window'};
  const key='bigodds:daily0800:'+slot.day;
- const claim=await db.prepare("INSERT INTO openfoot_state(key,data) VALUES(?,?) ON CONFLICT(key) DO NOTHING").bind(key,JSON.stringify({at:now,scheduledAt:slot.at,status:activeAtBoundary?'skipped_active':'attempted',ticketId:activeAtBoundary?.id??null})).run();
+ const old=await db.prepare('SELECT data FROM openfoot_state WHERE key=?').bind(key).first();
+ const prior=old?JSON.parse(old.data):null;
+ if(prior&&['running','retryable'].includes(prior.status)&&prior.leaseUntil<=now&&(prior.attempts||0)>=3){
+  await db.prepare('UPDATE openfoot_state SET data=? WHERE key=? AND data=?').bind(JSON.stringify({...prior,status:'generation_failed',at:now,leaseUntil:0}),key,old.data).run();return {status:'daily_slot_consumed'};
+ }
+ if(prior&&(!['running','retryable'].includes(prior.status)||prior.leaseUntil>now))return {status:'daily_slot_consumed'};
+ const state={at:now,scheduledAt:slot.at,status:activeAtBoundary?'skipped_active':'running',ticketId:activeAtBoundary?.id??null,attempts:(prior?.attempts||0)+1,leaseUntil:now+120000};
+ const claim=old?await db.prepare('UPDATE openfoot_state SET data=? WHERE key=? AND data=?').bind(JSON.stringify(state),key,old.data).run():await db.prepare('INSERT INTO openfoot_state(key,data) VALUES(?,?) ON CONFLICT(key) DO NOTHING').bind(key,JSON.stringify(state)).run();
  if(!claim.meta.changes)return {status:'daily_slot_consumed'};
  if(activeAtBoundary)return {status:'skipped_active',ticketId:activeAtBoundary.id};
- if(await db.prepare("SELECT id FROM bigodds_tickets WHERE status='active'").first())return {status:'active_ticket'};
- return generateBigOdds(env,now,clock,slot);
+ let result;
+ try{
+  if(await db.prepare("SELECT id FROM bigodds_tickets WHERE status='active'").first())result={status:'active_ticket'};
+  else result=await generateBigOdds(env,slot.at,clock,slot);
+ }catch(e){
+  // A committed publication wins over a lost response; never publish twice.
+  const existing=await db.prepare("SELECT id FROM bigodds_tickets WHERE created_at>=? AND created_at<? ORDER BY created_at LIMIT 1").bind(slot.at,slot.at+15*60000).first();
+  result=existing?{status:'published',id:existing.id}:{status:state.attempts<3&&clock()<slot.at+15*60000?'retryable':'generation_failed',code:e.code||'generation_failed'};
+ }
+ const final={...state,...result,at:clock(),leaseUntil:result.status==='retryable'?clock()+30000:0};
+ await db.prepare('UPDATE openfoot_state SET data=? WHERE key=? AND data=?').bind(JSON.stringify(final),key,JSON.stringify(state)).run();
+ return result;
 }
 export async function generateBigOdds(env,now,clock=Date.now,slot=null){
  const db=env.DB;
@@ -171,7 +199,7 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
  const publishedAt=clock();
  if(slot&&!dailySlot(publishedAt,slot.at))return {status:'daily_window_expired'};
  const result=await publishBigOdds(db,ticket,publishedAt);
- if(slot)await db.prepare("UPDATE openfoot_state SET data=? WHERE key=?").bind(JSON.stringify({at:publishedAt,scheduledAt:slot.at,...result}),'bigodds:daily0800:'+slot.day).run();
+
  return result;
 }
 export async function bigOddsFeed(db,cursor=null,now=Date.now()){
@@ -185,7 +213,9 @@ export async function bigOddsFeed(db,cursor=null,now=Date.now()){
  const assemble=async r=>{
   const original=JSON.parse(r.data),legs=await db.prepare('SELECT fixture_id,status,settled_at,result FROM bigodds_all_legs WHERE ticket_id=?').bind(r.id).all();
   const outcomes=new Map(legs.results.map(l=>[l.fixture_id,l]));
-  return withTicketBetano(db,{...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})},now);
+  const schedules=original.legs.length?await db.prepare('SELECT id,kickoff FROM fixtures WHERE id IN ('+original.legs.map(()=>'?').join(',')+')').bind(...original.legs.map(l=>l.fixtureId)).all():{results:[]};
+  const actual=new Map(schedules.results.map(f=>[f.id,f.kickoff]));
+  return withTicketBetano(db,{...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,currentKickoff:actual.get(l.fixtureId)??l.kickoff,rescheduled:actual.has(l.fixtureId)&&actual.get(l.fixtureId)!==l.kickoff,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})},now);
  };
  const history=[];for(const r of page)history.push(await assemble(r));
  const summary=await db.prepare(`SELECT COUNT(*) tickets,COALESCE(SUM(status='won'),0) won,COALESCE(SUM(status='lost'),0) lost,COALESCE(SUM(status='void'),0) void,COALESCE(SUM(status='active'),0) active FROM bigodds_tickets WHERE created_at>=?`).bind(historyStartAt).first();

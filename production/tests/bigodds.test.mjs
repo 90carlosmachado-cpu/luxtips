@@ -137,7 +137,7 @@ test('browser client loads cards, escapes names, changes tabs, paginates and rep
  const nodes=new Map();const node=id=>{if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',classList:{toggle(){}},setAttribute(){}});return nodes.get(id);};
  const listeners={};const tabs=['current','history'].map(name=>({dataset:{bigTab:name},setAttribute(k,v){this[k]=v;}}));
  let fail=false,calls=0;
- const context=vm.createContext({console,Date,Intl,Map,Set,String,Number,JSON,Object,encodeURIComponent,setInterval(){},document:{querySelector:node,querySelectorAll:()=>tabs,addEventListener:(name,f)=>{listeners[name]=f;}},fetch:async()=>{calls++;if(fail)throw Error('offline');return {ok:true,json:async()=>({...feed,nextCursor:calls===1?feed.nextCursor:null})};}});
+ const context=vm.createContext({console,Date,Intl,Map,Set,String,Number,JSON,Object,encodeURIComponent,AbortController,setTimeout,clearTimeout,Promise,setInterval(){},document:{querySelector:node,querySelectorAll:()=>tabs,addEventListener:(name,f)=>{listeners[name]=f;}},fetch:async()=>{calls++;if(fail)throw Error('offline');return {ok:true,json:async()=>({...feed,nextCursor:calls===1?feed.nextCursor:null})};}});
  context.stableDom=(target,markup)=>{if(target.innerHTML!==markup)target.innerHTML=markup;};context.analysisDetails=()=>'';context.disclosureEvents=()=>{};
  vm.runInContext('('+bigOddsClient.toString()+')(stableDom,analysisDetails,disclosureEvents)',context);await new Promise(resolve=>setImmediate(resolve));
  assert.ok(node('#bigCurrent').innerHTML.includes('&lt;script&gt;'));assert.ok(!node('#bigCurrent').innerHTML.includes('<script>alert'));
@@ -159,7 +159,7 @@ test('actual integration routes replace NBA with Big Odds and preserve football 
 test('08h Lisbon only, including summer and DST transition days',()=>{
  for(const date of ['2026-11-06','2026-07-05','2026-03-29','2026-10-25']){
   const summer=['2026-07-05','2026-03-29'].includes(date),at=Date.parse(date+(summer?'T07:00:00Z':'T08:00:00Z'));
-  assert.equal(dailySlot(at-1),null);assert.equal(dailySlot(at).day,date);assert.equal(dailySlot(at+59999,at).day,date);assert.equal(dailySlot(at+60000,at),null);
+  assert.equal(dailySlot(at-1),null);assert.equal(dailySlot(at).day,date);assert.equal(dailySlot(at+59999,at).day,date);assert.equal(dailySlot(at+60000,at).day,date);assert.equal(dailySlot(at+15*60000,at),null);
  }
 });
 test('active at 08h consumes the day, even if it loses during or after the slot',async()=>{
@@ -182,13 +182,13 @@ test('no eligible ticket at 08h consumes that day; next day may attempt again',a
  assert.equal((await syncBigOdds({DB:s.db},at+DAY,()=>at+DAY)).status,'no_upcoming_fixtures');
  assert.equal(s.db.sql.prepare("SELECT COUNT(*) n FROM openfoot_state WHERE key LIKE 'bigodds:daily0800:%'").get().n,2);
 });
-test('scheduled generation uses D+2 and rejects D+3 and publication after the minute',async()=>{
+test('scheduled generation uses D+2 and rejects D+3 and publication after the recovery window',async()=>{
  const s=setup(),at=Date.parse('2026-11-06T08:00:00Z');
  for(let id=1;id<=8;id++){
   const f={...s.fixture(100+id),ts:Date.parse('2026-11-08T18:00:00Z')+id*1000};s.store(f);
   for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at-1000,at-500);
  }
- assert.equal((await syncBigOdds({DB:s.db},at,()=>at+60000)).status,'daily_window_expired');assert.equal((await bigOddsFeed(s.db)).summary.tickets,0);
+ assert.equal((await syncBigOdds({DB:s.db},at,()=>at+15*60000)).status,'daily_window_expired');assert.equal((await bigOddsFeed(s.db)).summary.tickets,0);
  const fresh=setup();for(let id=1;id<=8;id++){const f={...fresh.fixture(200+id),ts:Date.parse('2026-11-08T18:00:00Z')+id*1000};fresh.store(f);for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])fresh.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at-1000,at-500);}
  assert.equal((await syncBigOdds({DB:fresh.db},at,()=>at+10000)).status,'published');const current=(await bigOddsFeed(fresh.db)).current;assert.ok(current.legs.every(l=>lisbonDay(l.kickoff)==='2026-11-08'));assert.equal(current.policy.days,3);
 });
@@ -243,4 +243,71 @@ test('history restart hides prior tickets and metrics without changing the activ
 });
 test('invalid history restart fails closed and frontend clears previously loaded tickets after a restart',async()=>{
  const s=setup();s.db.sql.prepare("INSERT INTO openfoot_state VALUES('bigodds:history_reset',?)").run(JSON.stringify({startAt:'bad'}));await assert.rejects(bigOddsFeed(s.db),/invalid_history_reset/);const js=bigOddsClient.toString();assert.ok(js.includes('reset?[]:history'));assert.ok(js.includes('d.historyStartAt||0'));
+});
+test('delayed 08h event publishes from the 08h cutoff and records a terminal result',async()=>{
+ const s=setup(),at=Date.parse('2026-11-06T08:00:00Z');
+ for(let id=1;id<=8;id++){
+  const f={...s.fixture(600+id),ts:at+DAY+id*1000};s.store(f);
+  for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at-1000,at-500);
+  // Later odds must not influence the recovered selection.
+  for(const [selection,odd]of [['Over 1.5',1.01],['Under 1.5',50]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at+60000,at+61000);
+ }
+ const r=await syncBigOdds({DB:s.db},at+87400,()=>at+90000,at);assert.equal(r.status,'published');
+ const feed=await bigOddsFeed(s.db);assert.ok(feed.current.legs.every(l=>l.quoteAt<at&&l.model.cutoff===at));
+ const record=JSON.parse(s.db.sql.prepare("SELECT data FROM openfoot_state WHERE key='bigodds:daily0800:2026-11-06'").get().data);assert.equal(record.status,'published');assert.equal(record.attempts,1);
+ assert.equal((await syncBigOdds({DB:s.db},at+120000,()=>at+120000)).status,'outside_daily_window');
+});
+test('failed 08h attempt retries its original cutoff once lease permits; stale claims expire',async()=>{
+ const s=setup(),at=Date.parse('2026-11-06T08:00:00Z'),key='bigodds:daily0800:2026-11-06',original=s.db.prepare;let fail=true;
+ s.db.prepare=q=>{if(fail&&q.includes('SELECT data FROM fixtures f WHERE f.finished=0'))throw Error('test source unavailable');return original(q);};
+ assert.equal((await syncBigOdds({DB:s.db},at,()=>at)).status,'retryable');
+ assert.equal((await syncBigOdds({DB:s.db},at+1000,()=>at+1000,at)).status,'daily_slot_consumed');
+ fail=false;assert.equal((await syncBigOdds({DB:s.db},at+60000,()=>at+60000)).status,'no_upcoming_fixtures');
+ assert.equal(JSON.parse(s.db.sql.prepare('SELECT data FROM openfoot_state WHERE key=?').get(key).data).attempts,2);
+ s.db.sql.prepare('UPDATE openfoot_state SET data=? WHERE key=?').run(JSON.stringify({status:'running',scheduledAt:at,leaseUntil:at+120000,attempts:1}),key);
+ await syncBigOdds({DB:s.db},at+15*60000,()=>at+15*60000);
+ assert.equal(JSON.parse(s.db.sql.prepare('SELECT data FROM openfoot_state WHERE key=?').get(key).data).status,'daily_window_expired');
+});
+test('recovery attempts are bounded, including a process lost after a lease claim',async()=>{
+ const s=setup(),at=Date.parse('2026-11-06T08:00:00Z'),key='bigodds:daily0800:2026-11-06';
+ s.db.sql.prepare('INSERT INTO openfoot_state VALUES(?,?)').run(key,JSON.stringify({status:'running',scheduledAt:at,leaseUntil:at+120000,attempts:3}));
+ assert.equal((await syncBigOdds({DB:s.db},at+180000,()=>at+180000)).status,'daily_slot_consumed');
+});
+test('rescheduling within 24h settles the same fixture and preserves the original snapshot',async()=>{
+ const s=setup(),t=s.ticket(),r=await publishBigOdds(s.db,t,NOW),raw=s.db.sql.prepare('SELECT data FROM bigodds_tickets WHERE id=?').get(r.id).data;
+ const f={...s.fixture(1),ts:t.legs[0].kickoff+3600000};s.store(f);
+ let feed=await bigOddsFeed(s.db);assert.equal(feed.current.legs[0].currentKickoff,f.ts);assert.equal(feed.current.legs[0].kickoff,t.legs[0].kickoff);assert.equal(feed.current.legs[0].rescheduled,true);
+ s.finish(1,0,0,f.ts+7200000);await settleBigOdds(s.db,f.ts+7200000);
+ feed=await bigOddsFeed(s.db);assert.equal(feed.current,null);assert.equal(feed.history[0].status,'lost');assert.equal(feed.history[0].legs[0].status,'lost');
+ assert.equal(s.db.sql.prepare('SELECT data FROM bigodds_tickets WHERE id=?').get(r.id).data,raw);
+});
+test('rescheduling beyond 24h voids only that leg, permits closure and never reuses fixtures',async()=>{
+ const s=setup(),t=s.ticket();await publishBigOdds(s.db,t,NOW);
+ s.store({...s.fixture(1),ts:t.legs[0].kickoff+25*3600000});
+ for(let id=2;id<=5;id++)s.finish(id,2,1,NOW+3*DAY);
+ await settleBigOdds(s.db,NOW+3*DAY);const feed=await bigOddsFeed(s.db);assert.equal(feed.current,null);assert.equal(feed.history[0].status,'won');assert.equal(feed.history[0].legs[0].status,'void');assert.equal(feed.history[0].legs[0].result.rule,'betano-postponement-24h');
+ assert.equal((await publishBigOdds(s.db,t,NOW)).status,'blocked_or_inputs_changed');
+});
+test('postponed without a new time cannot remain pending beyond the 24h rule',async()=>{
+ const s=setup(),t=s.ticket();await publishBigOdds(s.db,t,NOW);s.store({...s.fixture(1),status:'PST'});
+ await settleBigOdds(s.db,t.legs[0].kickoff+DAY-1);assert.equal((await bigOddsFeed(s.db)).current.legs[0].status,'pending');
+ await settleBigOdds(s.db,t.legs[0].kickoff+DAY);assert.equal((await bigOddsFeed(s.db)).current.legs[0].status,'void');
+});
+test('Big Odds aborts stalled requests or bodies and recovers on the next timer tick',async()=>{
+ for(const stall of ['request','body']){
+  const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{innerHTML:'',textContent:'',classList:{toggle(){}},setAttribute(){}});return nodes.get(id);};
+  let tick,timeout,calls=0,signal;const data={at:NOW,current:null,history:[],summary:{won:0,lost:0},nextCursor:null,historyStartAt:0};
+  const context=vm.createContext({console,Date,Intl,Map,Set,String,Number,JSON,Object,Promise,encodeURIComponent,AbortController,setInterval(fn){tick=fn;},setTimeout(fn){timeout=fn;return 1;},clearTimeout(){},document:{querySelector:node,querySelectorAll:()=>[],addEventListener(){}},fetch:async(_,options)=>{calls++;signal=options.signal;if(calls===1)return stall==='request'?new Promise(()=>{}):{ok:true,json:()=>new Promise(()=>{})};return {ok:true,json:async()=>data};}});
+  context.stableDom=(n,h)=>{n.innerHTML=h;};context.analysisDetails=()=>'';context.disclosureEvents=()=>{};
+  vm.runInContext('('+bigOddsClient.toString()+')(stableDom,analysisDetails,disclosureEvents)',context);await new Promise(r=>setImmediate(r));timeout();await new Promise(r=>setImmediate(r));assert.equal(signal.aborted,true);assert.match(node('#status').textContent,/indisponível/);
+  tick();await new Promise(r=>setImmediate(r));assert.equal(calls,2);assert.match(node('#status').textContent,/Atualizado/);
+ }
+});
+test('actual cron integration runs Big Odds before slow football maintenance',async()=>{
+ const source=readFileSync(new URL('../integration.js',import.meta.url),'utf8'),start=source.indexOf('function withNba('),end=source.indexOf('// platform-integration/entry.mjs',start),order=[];
+ let release,task;const slow=new Promise(r=>{release=r;});
+ const context=vm.createContext({Date,Request,Response,Headers,URL,JSON,console,syncBigOdds:async()=>{order.push('big');},syncFootballList:async()=>{order.push('list');},notifyNewSelections:async()=>{order.push('notify');}});
+ vm.runInContext(source.slice(start,end),context);
+ const wrapped=context.withNba({scheduled(event,env,ctx){order.push('football');ctx.waitUntil(slow);},fetch:async()=>Response.json({games:[],winnerAnalyses:[]})});
+ wrapped.scheduled({scheduledTime:NOW},{DB:{}},{waitUntil(p){task=p;}});await new Promise(r=>setImmediate(r));assert.deepEqual(order,['big','football']);release();await task;assert.deepEqual(order,['big','football','list','notify']);
 });

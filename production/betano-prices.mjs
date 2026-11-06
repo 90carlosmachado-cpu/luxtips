@@ -25,7 +25,7 @@ export async function withFootballBetano(db,game,now){
  return {...next,priceBookmaker:BOOKMAKER,quoteStale:currentQuote?.status==='quote_expired',liveQuoteStatus:currentQuote?.status||'market_unavailable'};
 }
 export async function withTicketBetano(db,ticket,now){
- const legs=[];for(const l of ticket.legs)legs.push({...l,currentQuote:await betanoQuote(db,l.fixtureId,l.kickoff,l.market,now)});
- const complete=legs.every(l=>l.currentQuote),expired=legs.some(l=>l.currentQuote?.status==='quote_expired');
- return {...ticket,legs,displayBookmaker:BOOKMAKER,currentOdd:complete?legs.reduce((p,l)=>p*l.currentQuote.odd,1):null,currentOddStatus:!complete?'market_unavailable':expired?'quote_expired':legs.some(l=>l.kickoff<=now)?'prematch_closed':'ready'};
+ const legs=[];for(const l of ticket.legs)legs.push({...l,currentQuote:l.status==='void'?null:await betanoQuote(db,l.fixtureId,l.kickoff,l.market,now)});
+ const complete=legs.every(l=>l.status==='void'||l.currentQuote),expired=legs.some(l=>l.status!=='void'&&l.currentQuote?.status==='quote_expired');
+ return {...ticket,legs,displayBookmaker:BOOKMAKER,currentOdd:complete?legs.reduce((p,l)=>p*(l.status==='void'?1:l.currentQuote.odd),1):null,currentOddStatus:!complete?'market_unavailable':expired?'quote_expired':legs.some(l=>l.kickoff<=now)?'prematch_closed':'ready'};
 }
