@@ -1,5 +1,5 @@
 {
-  "version": "4afd058a-d21a-4952-b6e1-cce8a8b89e78",
+  "version": "e0ccf26d-8c18-4830-87b2-006da34fa02f",
   "retrievedAt": "2026-11-06",
   "main": "integration.js",
   "source": "Cloudflare GET content/v2",
@@ -14,9 +14,9 @@
     "pwa.mjs": "490f67d30ff637a54c892766f8bb0deb0860680817ce3645c8aa5396a3b18a0d",
     "quote-gate.mjs": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263",
     "bigodds-model.mjs": "c497586391bd0f64a2a9c4d7de52f158694df0459f94fb87abdc37e2236c2e1e",
-    "bigodds-view.mjs": "69b492fe883d473725f8fe7dcd866cb8d08af80c9251362831e8bb425b741c1c",
+    "bigodds-view.mjs": "a14c6220f153d53f82a8652b289c3d6b61af47333d0bb13b04f056c5fb4f2b66",
     "og-image.mjs": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d",
-    "bigodds.mjs": "bda54a1a93ccd98ff2635e7fce61915557eee0476e09b65ab3db5005a73951cd",
+    "bigodds.mjs": "5547bddaccb54b9df3b6da90e25635d486379a0d3e0438097c5b8b752f487ab2",
     "combo-archive.mjs": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384",
     "assets.mjs": "81cb2cb4d23357ded26cdc8d9466e2ecfb545a10ea3974541c16b3b69337421b",
     "front-office.mjs": "5f8ff2ab65617318c2d71b1a906b3895e6f6c8dbd5b54e397779661db674714d",
@@ -25,5 +25,5 @@
     "integration.js": "bdaf8b104b15a9b6c8782e87639f44c356673b77a3c371706cce4cf9144d9c1d"
   },
   "note": "Hashes dos 18 m\u00f3dulos recuperados. N\u00e3o inclui dados D1 ou valores de segredos.",
-  "previousVersion": "8a39a26a-2b74-4308-a83b-49bdebe3f13d"
+  "previousVersion": "4afd058a-d21a-4952-b6e1-cce8a8b89e78"
 }

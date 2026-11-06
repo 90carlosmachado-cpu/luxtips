@@ -233,3 +233,14 @@ test('ordinary void or lost tickets still block fixture reuse',async()=>{
  s.db.sql.prepare("UPDATE bigodds_ticket_legs SET status='void'").run();await settleBigOdds(s.db,NOW);
  assert.equal((await publishBigOdds(s.db,t,NOW)).status,'blocked_or_inputs_changed');
 });
+test('history restart hides prior tickets and metrics without changing the active ticket or ledger',async()=>{
+ const s=setup(),old=await publishBigOdds(s.db,s.ticket(),NOW);s.finish(1,0,0,NOW);await settleBigOdds(s.db,NOW);const current=await publishBigOdds(s.db,s.ticket(20),NOW+1);assert.equal(current.status,'published');
+ const before=await bigOddsFeed(s.db);assert.equal(before.summary.lost,1);assert.equal(before.history.length,2);
+ s.db.sql.prepare("INSERT INTO openfoot_state VALUES('bigodds:history_reset',?)").run(JSON.stringify({startAt:NOW+1}));
+ const after=await bigOddsFeed(s.db);assert.equal(after.current.id,current.id);assert.equal(after.history.length,1);assert.equal(after.summary.tickets,1);assert.equal(after.summary.lost,0);assert.equal(after.summary.won,0);assert.equal(after.summary.void,0);assert.equal(after.summary.active,1);assert.equal(after.historyStartAt,NOW+1);assert.equal(after.nextCursor,null);
+ const page=await bigOddsFeed(s.db,String(NOW+1));assert.equal(page.history.length,0);assert.equal(page.current.id,current.id);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_tickets').get().n,2);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_all_legs').get().n,10);
+ s.finish(21,0,0,NOW+1);await settleBigOdds(s.db,NOW+1);assert.equal((await bigOddsFeed(s.db)).summary.lost,1);assert.equal(s.db.sql.prepare('SELECT status FROM bigodds_tickets WHERE id=?').get(old.id).status,'lost');
+});
+test('invalid history restart fails closed and frontend clears previously loaded tickets after a restart',async()=>{
+ const s=setup();s.db.sql.prepare("INSERT INTO openfoot_state VALUES('bigodds:history_reset',?)").run(JSON.stringify({startAt:'bad'}));await assert.rejects(bigOddsFeed(s.db),/invalid_history_reset/);const js=bigOddsClient.toString();assert.ok(js.includes('reset?[]:history'));assert.ok(js.includes('d.historyStartAt||0'));
+});

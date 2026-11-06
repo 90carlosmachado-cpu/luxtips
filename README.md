@@ -2,7 +2,7 @@
 
 ## Código atual em produção
 
-Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `4afd058a-d21a-4952-b6e1-cce8a8b89e78`.
+Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `e0ccf26d-8c18-4830-87b2-006da34fa02f`.
 
 - **Entrada atual:** `production/integration.js`, selecionada em `wrangler.jsonc`.
 - **Código completo publicado:** 19 módulos em `production/`, incluindo o bundle recuperado, futebol, Big Odds, interface, PWA e notificações. O bundle não foi refatorado.

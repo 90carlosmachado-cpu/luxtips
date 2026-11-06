@@ -174,7 +174,10 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
 }
 export async function bigOddsFeed(db,cursor=null){
  if(cursor!==null&&(!/^\d{10,16}$/.test(cursor)||!Number.isSafeInteger(Number(cursor))))throw Error('invalid_cursor');
- const rows=await db.prepare(`SELECT * FROM bigodds_tickets WHERE created_at<? ORDER BY created_at DESC LIMIT 51`).bind(cursor?Number(cursor):Number.MAX_SAFE_INTEGER).all();
+ const reset=await db.prepare("SELECT data FROM openfoot_state WHERE key='bigodds:history_reset'").first();
+ const historyStartAt=reset?JSON.parse(reset.data).startAt:0;
+ if(!Number.isSafeInteger(historyStartAt)||historyStartAt<0)throw Error('invalid_history_reset');
+ const rows=await db.prepare(`SELECT * FROM bigodds_tickets WHERE created_at>=? AND created_at<? ORDER BY created_at DESC LIMIT 51`).bind(historyStartAt,cursor?Number(cursor):Number.MAX_SAFE_INTEGER).all();
  const archives=await db.prepare("SELECT key,data FROM openfoot_state WHERE key LIKE 'bigodds:archive:%'").all(),archiveMap=new Map(archives.results.map(r=>[r.key.slice('bigodds:archive:'.length),JSON.parse(r.data)]));
  const page=rows.results.slice(0,50),activeRow=await db.prepare("SELECT * FROM bigodds_tickets WHERE status='active'").first();
  const assemble=async r=>{
@@ -183,8 +186,8 @@ export async function bigOddsFeed(db,cursor=null){
   return {...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})};
  };
  const history=[];for(const r of page)history.push(await assemble(r));
- const summary=await db.prepare(`SELECT COUNT(*) tickets,SUM(status='won') won,SUM(status='lost') lost,SUM(status='void') void,SUM(status='active') active FROM bigodds_tickets`).first();
- return {at:Date.now(),policy:BIGODDS_POLICY,current:activeRow?history.find(t=>t.id===activeRow.id)||await assemble(activeRow):null,history,summary,nextCursor:rows.results.length>50?String(page.at(-1).created_at):null};
+ const summary=await db.prepare(`SELECT COUNT(*) tickets,COALESCE(SUM(status='won'),0) won,COALESCE(SUM(status='lost'),0) lost,COALESCE(SUM(status='void'),0) void,COALESCE(SUM(status='active'),0) active FROM bigodds_tickets WHERE created_at>=?`).bind(historyStartAt).first();
+ return {at:Date.now(),policy:BIGODDS_POLICY,historyStartAt,current:activeRow?history.find(t=>t.id===activeRow.id)||await assemble(activeRow):null,history,summary,nextCursor:rows.results.length>50?String(page.at(-1).created_at):null};
 }
 export async function bigOddsResponse(req,env){
  if(!['GET','HEAD'].includes(req.method))return new Response('Método não permitido',{status:405,headers:{Allow:'GET, HEAD'}});
