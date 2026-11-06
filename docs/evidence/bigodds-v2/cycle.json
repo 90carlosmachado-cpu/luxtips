@@ -1,0 +1,234 @@
++{
+  "deployment": {
+    "id": "8d583325-2d2b-49af-a846-a0dd906cbdf6",
+    "source": "api",
+    "strategy": "percentage",
+    "author_email": "90carlosmachado@gmail.com",
+    "annotations": {
+      "workers/message": "Big Odds v2: reuse explicitly withdrawn fixture...",
+      "workers/triggered_by": "upload"
+    },
+    "versions": [
+      {
+        "version_id": "4afd058a-d21a-4952-b6e1-cce8a8b89e78",
+        "percentage": 100
+      }
+    ],
+    "created_on": "2026-11-06T12:15:07.780033Z"
+  },
+  "checks": {
+    "modulesMatched": 19,
+    "bindingsPreserved": true,
+    "softwareTests": 190,
+    "mobileHttp": 200,
+    "mobileOverflow": false
+  },
+  "cycle": {
+    "command": {
+      "result": [
+        {
+          "results": [
+            {
+              "key": "bigodds:manual_result",
+              "data": "{\"at\":1793967401607,\"requestId\":\"owner-authorized-v2-1793967333563\",\"archived\":\"e162a89f-dcd0-47e1-92b1-1d35077d0ba8\",\"status\":\"published\",\"id\":\"2e32a273-4ad8-44d2-b43b-a0d533f05f15\",\"legs\":9,\"odd\":8.29587314917969}"
+            }
+          ],
+          "success": true,
+          "meta": {
+            "served_by": "v3-prod",
+            "served_by_region": "WEUR",
+            "served_by_colo": "AMS",
+            "served_by_primary": true,
+            "timings": {
+              "sql_duration_ms": 0.7541
+            },
+            "duration": 0.7541,
+            "changes": 0,
+            "last_row_id": 0,
+            "changed_db": false,
+            "size_after": 2001149952,
+            "rows_read": 3,
+            "rows_written": 0,
+            "total_attempts": 1
+          }
+        }
+      ],
+      "errors": [],
+      "messages": [],
+      "success": true
+    },
+    "active": {
+      "result": [
+        {
+          "results": [
+            {
+              "id": "2e32a273-4ad8-44d2-b43b-a0d533f05f15",
+              "status": "active",
+              "policy": "bigodds-xg90-prior2-market50-no-unders-v2",
+              "created_at": 1793967401328,
+              "odd": 8.29587314917969,
+              "bookmaker": "Pinnacle",
+              "legs": 9
+            }
+          ],
+          "success": true,
+          "meta": {
+            "served_by": "v3-prod",
+            "served_by_region": "WEUR",
+            "served_by_colo": "AMS",
+            "served_by_primary": true,
+            "timings": {
+              "sql_duration_ms": 1.9651
+            },
+            "duration": 1.9651,
+            "changes": 0,
+            "last_row_id": 0,
+            "changed_db": false,
+            "size_after": 2001149952,
+            "rows_read": 1,
+            "rows_written": 0,
+            "total_attempts": 1
+          }
+        }
+      ],
+      "errors": [],
+      "messages": [],
+      "success": true
+    },
+    "legs": {
+      "result": [
+        {
+          "results": [
+            {
+              "home": "Willem II",
+              "away": "PEC Zwolle",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1793991600000,
+              "odd": 1.21,
+              "xgUsed": 0
+            },
+            {
+              "home": "Torino",
+              "away": "Lecce",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794060000000,
+              "odd": 1.29,
+              "xgUsed": 1
+            },
+            {
+              "home": "Nacional",
+              "away": "Academico Viseu",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794065400000,
+              "odd": 1.34,
+              "xgUsed": 0
+            },
+            {
+              "home": "Estoril",
+              "away": "Maritimo",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794151800000,
+              "odd": 1.27,
+              "xgUsed": 0
+            },
+            {
+              "home": "Cambuur",
+              "away": "PSV Eindhoven",
+              "label": "Mais de 2,5 golos",
+              "kickoff": 1794152700000,
+              "odd": 1.25,
+              "xgUsed": 0
+            },
+            {
+              "home": "Celta Vigo",
+              "away": "Levante",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794159000000,
+              "odd": 1.3,
+              "xgUsed": 1
+            },
+            {
+              "home": "Villarreal",
+              "away": "Getafe",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794159000000,
+              "odd": 1.25,
+              "xgUsed": 1
+            },
+            {
+              "home": "Estrela",
+              "away": "Benfica",
+              "label": "Visitante vence",
+              "kickoff": 1794169800000,
+              "odd": 1.23,
+              "xgUsed": 0
+            },
+            {
+              "home": "Rio Ave",
+              "away": "SC Braga",
+              "label": "Mais de 1,5 golos",
+              "kickoff": 1794169800000,
+              "odd": 1.25,
+              "xgUsed": 0
+            }
+          ],
+          "success": true,
+          "meta": {
+            "served_by": "v3-prod",
+            "served_by_region": "WEUR",
+            "served_by_colo": "AMS",
+            "served_by_primary": true,
+            "timings": {
+              "sql_duration_ms": 0.9778
+            },
+            "duration": 0.9778,
+            "changes": 0,
+            "last_row_id": 0,
+            "changed_db": false,
+            "size_after": 2001149952,
+            "rows_read": 19,
+            "rows_written": 0,
+            "total_attempts": 1
+          }
+        }
+      ],
+      "errors": [],
+      "messages": [],
+      "success": true
+    },
+    "invariants": {
+      "result": [
+        {
+          "results": [
+            {
+              "active": 1,
+              "reused_old": 1,
+              "reused_previous": 4
+            }
+          ],
+          "success": true,
+          "meta": {
+            "served_by": "v3-prod",
+            "served_by_region": "WEUR",
+            "served_by_colo": "AMS",
+            "served_by_primary": true,
+            "timings": {
+              "sql_duration_ms": 0.5557
+            },
+            "duration": 0.5557,
+            "changes": 0,
+            "last_row_id": 0,
+            "changed_db": false,
+            "size_after": 2001149952,
+            "rows_read": 39,
+            "rows_written": 0,
+            "total_attempts": 1
+          }
+        }
+      ],
+      "errors": [],
+      "messages": [],
+      "success": true
+    }
+  }
+}

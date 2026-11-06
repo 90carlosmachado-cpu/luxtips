@@ -1,0 +1,8 @@
+{
+  "training": "2024-01-01 through 2025-12-31",
+  "evaluation": "2026 games available through frozen input snapshot",
+  "model": "Exact current xG90 prior2 at causal decision clocks, market mixing excluded from model calibration",
+  "method": "Single multiclass power temperature alpha in [0.5,2], optimized on training log loss. No per-league coefficients or model search.",
+  "promotion": "Evaluation multiclass log loss and Brier both decrease; weekly block bootstrap95% upper bound of log-loss difference below zero; xG-covered evaluation subgroup must not worsen either metric.",
+  "limitations": "2026 outcomes already inspected in earlier unrelated research. Train contains no xG available at its actual observation clocks. This is a temporal holdout, not untouched prospective evidence. No historical bookmaker-calibration claim."
+}

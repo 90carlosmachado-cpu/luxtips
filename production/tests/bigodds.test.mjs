@@ -11,6 +11,7 @@ const NOW=Date.parse('2026-11-05T12:00:00Z');
 function setup(){
  const db=testDatabase();db.sql.exec('ALTER TABLE fixtures ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0; CREATE TABLE openfoot_match_details(source_id TEXT,fixture_id INTEGER,league INTEGER,kickoff INTEGER,observed_at INTEGER,data TEXT); CREATE TABLE results(fixture_id INTEGER PRIMARY KEY,hg INTEGER,ag INTEGER,settled_at INTEGER); CREATE TABLE openfoot_market_quotes(fixture_id INTEGER,kickoff INTEGER,bookmaker TEXT,market TEXT,selection TEXT,odd REAL,provider_at INTEGER,observed_at INTEGER);');
  db.sql.exec(readFileSync(new URL('../../migrations/0010_bigodds.sql',import.meta.url),'utf8'));
+ db.sql.exec(readFileSync(new URL('../../migrations/0011_bigodds_withdrawn_reuse.sql',import.meta.url),'utf8'));
  const fixture=id=>({id,league:39,ts:NOW+DAY+id*1000,home:id,away:10000+id,homeName:'Casa '+id,awayName:'Fora '+id,competition:'Liga',status:'NS',finished:false,hg:null,ag:null});
  const store=f=>db.sql.prepare('INSERT OR REPLACE INTO fixtures(id,league,kickoff,finished,data) VALUES(?,?,?,?,?)').run(f.id,f.league,f.ts,Number(f.finished),JSON.stringify(f));
  const ticket=(offset=0)=>{
@@ -25,10 +26,10 @@ test('publication is atomic, pre-match, immutable and has a single active ticket
  const {db,ticket}=setup();const t=ticket(),first=await publishBigOdds(db,t,NOW);assert.equal(first.status,'published');
  const second=await publishBigOdds(db,ticket(20),NOW);assert.equal(second.status,'blocked_or_inputs_changed');
  assert.equal(db.sql.prepare('SELECT COUNT(*) n FROM bigodds_tickets').get().n,1);
- assert.equal(db.sql.prepare('SELECT COUNT(*) n FROM bigodds_legs').get().n,5);
+ assert.equal(db.sql.prepare('SELECT COUNT(*) n FROM bigodds_all_legs').get().n,5);
  assert.throws(()=>db.sql.prepare("UPDATE bigodds_tickets SET data='{}'").run(),/immutable/);
- assert.throws(()=>db.sql.prepare("DELETE FROM bigodds_legs").run(),/immutable/);
- assert.throws(()=>db.sql.prepare("UPDATE bigodds_legs SET snapshot='{}'").run(),/immutable/);
+ assert.throws(()=>db.sql.prepare("DELETE FROM bigodds_ticket_legs").run(),/immutable/);
+ assert.throws(()=>db.sql.prepare("UPDATE bigodds_ticket_legs SET snapshot='{}'").run(),/immutable/);
 });
 test('a later-day pending leg blocks a new ticket despite settled wins',async()=>{
  const s=setup();await publishBigOdds(s.db,s.ticket(),NOW);s.finish(1,2,0);await settleBigOdds(s.db,NOW+3*DAY);
@@ -58,7 +59,7 @@ test('AET/PEN scores cannot settle 90-minute markets',async()=>{
  const s=setup();await publishBigOdds(s.db,s.ticket(),NOW);s.finish(1,2,0);const f=JSON.parse(s.db.sql.prepare('SELECT data FROM fixtures WHERE id=1').get().data);f.status='AET';s.store(f);await settleBigOdds(s.db,NOW+3*DAY);assert.equal((await bigOddsFeed(s.db)).current.legs[0].status,'pending');
 });
 test('failed leg insert rolls back the entire publication',async()=>{
- const s=setup(),t=s.ticket();s.db.sql.exec("CREATE TRIGGER fail_leg BEFORE INSERT ON bigodds_legs WHEN NEW.fixture_id=3 BEGIN SELECT RAISE(ABORT,'test failure'); END;");await assert.rejects(publishBigOdds(s.db,t,NOW),/test failure/);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_tickets').get().n,0);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_legs').get().n,0);
+ const s=setup(),t=s.ticket();s.db.sql.exec("CREATE TRIGGER fail_leg BEFORE INSERT ON bigodds_ticket_legs WHEN NEW.fixture_id=3 BEGIN SELECT RAISE(ABORT,'test failure'); END;");await assert.rejects(publishBigOdds(s.db,t,NOW),/test failure/);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_tickets').get().n,0);assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_all_legs').get().n,0);
 });
 test('atomic fixture guard rejects started, moved, settled or different fixtures',async()=>{
  for(const change of ['started','moved','identity','settled']){const s=setup(),t=s.ticket(),f=s.fixture(1);if(change==='started')f.status='1H';if(change==='moved')f.ts+=DAY;if(change==='identity')f.away=123;s.store(f);if(change==='settled')s.finish(1,2,0);assert.equal((await publishBigOdds(s.db,t,NOW)).status,'blocked_or_inputs_changed');}
@@ -212,4 +213,23 @@ test('authorized internal rebuild archives only the active ticket and runs once 
 });
 test('expired or wrong-policy rebuild commands cannot archive an active publication',async()=>{
  for(const policy of ['expired','wrong']){const s=setup(),old=await publishBigOdds(s.db,s.ticket(),NOW);const c={id:'test',policy:policy==='wrong'?'unknown':BIGODDS_POLICY.id,requestedAt:NOW-1,expires:policy==='expired'?NOW-1:NOW+1000};s.db.sql.prepare("INSERT INTO openfoot_state VALUES('bigodds:manual_rebuild',?)").run(JSON.stringify(c));assert.equal((await syncBigOdds({DB:s.db},NOW,()=>NOW)).status,'outside_daily_window');assert.equal((await bigOddsFeed(s.db)).current.id,old.id);}
+});
+test('explicitly withdrawn legacy fixtures can be reused without rewriting original snapshots',async()=>{
+ const s=setup(),t=s.ticket(),old='legacy-withdrawn',original=JSON.stringify({id:old,createdAt:NOW,policy:{id:'old'},bookmaker:t.bookmaker,odd:t.odd,legs:t.legs});
+ s.db.sql.prepare("INSERT INTO bigodds_tickets(id,created_at,policy,status,odd,bookmaker,data) VALUES(?,?,?,'active',?,?,?)").run(old,NOW,'old',t.odd,t.bookmaker,original);
+ for(const l of t.legs)s.db.sql.prepare('INSERT INTO bigodds_legs(fixture_id,ticket_id,kickoff,snapshot) VALUES(?,?,?,?)').run(l.fixtureId,old,l.kickoff,JSON.stringify(l));
+ await archiveActiveBigOdds(s.db,NOW,'owner-replace');const next=await publishBigOdds(s.db,t,NOW);assert.equal(next.status,'published');
+ const feed=await bigOddsFeed(s.db);assert.equal(feed.current.id,next.id);assert.equal(feed.history.find(t=>t.id===old).archived,true);assert.equal(s.db.sql.prepare('SELECT data FROM bigodds_tickets WHERE id=?').get(old).data,original);
+ s.finish(1,2,0);await settleBigOdds(s.db,NOW+3*DAY);
+ const oldLeg=s.db.sql.prepare('SELECT status,result FROM bigodds_legs WHERE fixture_id=1').get(),newLeg=s.db.sql.prepare('SELECT status,result FROM bigodds_ticket_legs WHERE ticket_id=? AND fixture_id=1').get(next.id);assert.equal(oldLeg.status,'void');assert.equal(JSON.parse(oldLeg.result).status,'replaced');assert.equal(newLeg.status,'won');
+});
+test('withdrawn new-storage tickets can reuse fixtures repeatedly, one active ticket only',async()=>{
+ const s=setup(),t=s.ticket();let ids=[];
+ for(let i=0;i<3;i++){const r=await publishBigOdds(s.db,t,NOW);assert.equal(r.status,'published');ids.push(r.id);if(i<2)await archiveActiveBigOdds(s.db,NOW,'replace-'+i);}
+ assert.equal(s.db.sql.prepare('SELECT COUNT(*) n FROM bigodds_ticket_legs WHERE fixture_id=1').get().n,3);assert.equal(s.db.sql.prepare("SELECT COUNT(*) n FROM bigodds_tickets WHERE status='active'").get().n,1);assert.equal((await bigOddsFeed(s.db)).history.filter(t=>t.archived).length,2);
+});
+test('ordinary void or lost tickets still block fixture reuse',async()=>{
+ const s=setup(),t=s.ticket();await publishBigOdds(s.db,t,NOW);
+ s.db.sql.prepare("UPDATE bigodds_ticket_legs SET status='void'").run();await settleBigOdds(s.db,NOW);
+ assert.equal((await publishBigOdds(s.db,t,NOW)).status,'blocked_or_inputs_changed');
 });

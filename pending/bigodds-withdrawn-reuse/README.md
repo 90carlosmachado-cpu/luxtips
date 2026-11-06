@@ -1,3 +1,7 @@
+# Atualização em 6 de novembro de 2026
+
+A correção foi agora aplicada e publicada na versão `4afd058a-d21a-4952-b6e1-cce8a8b89e78`, com autorização explícita para implementação e novo ciclo. O patch abaixo fica como registo histórico; NÃO aplicar novamente. O estado anterior é conservado abaixo.
+
 # Correção pendente da reutilização de jogos
 
 Esta alteração NÃO está publicada no Worker. O código ativo está em `production/`.

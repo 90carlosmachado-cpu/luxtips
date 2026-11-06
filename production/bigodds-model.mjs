@@ -1,6 +1,6 @@
 // Research candidate goals4: role-specific goals, prior 4, half-life 180 days.
 // No results from the target game and no market odds enter the probability model.
-export const BIGODDS_POLICY=Object.freeze({id:'bigodds-xg90-prior2-market50-no-unders-v1',source:'xg90-prior2-market50',days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.5,quoteMaxAge:21600000,prior:2,halfLifeDays:90,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
+export const BIGODDS_POLICY=Object.freeze({id:'bigodds-xg90-prior2-market50-no-unders-v2',source:'xg90-prior2-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.5,quoteMaxAge:21600000,prior:2,halfLifeDays:90,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
 const DAY=86400000,DECAY=180*DAY/Math.LN2;
 export function goalModel(history,now){
  const leagues=new Map(),teams=new Map();

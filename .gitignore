@@ -10,3 +10,5 @@ dist/
 work/
 recovered/worker.multipart.txt
 worker-configuration.d.ts
+research/bigodds-calibration-current/predictions.json
+research/bigodds-calibration-current/__pycache__/

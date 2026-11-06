@@ -137,3 +137,11 @@
 - `pending/` contém patches não publicados; nunca os aplicar, importar ou publicar automaticamente.
 - Testes atuais: `npm run test:production`; testes históricos: `npm run test:legacy`; ambos: `npm test`. Compilação sem publicar: `npm run build:check`.
 - A autorização desta tarefa limita-se a commit e sincronização do GitHub. Não autoriza deploy, migrações ou novo ciclo.
+
+## Implementação autorizada de 6 de novembro às 12h15 UTC
+
+- Versão publicada `4afd058a-d21a-4952-b6e1-cce8a8b89e78`: reutilização de jogos de boletins explicitamente substituídos e recolha passiva de combos reais. 19 módulos.
+- A migração0011 já existia, não foi reaplicada. Não confundir snapshots por boletim com o índice legado único por jogo.
+- Combos não são preços executáveis nem mercados admitidos pelo Big Odds: `selectQuotes` exclui os códigos passivos. Preservar todas as casas/contrapartes e relógios no arquivo.
+- Calibração atual investigada e NÃO promovida; resultados em research/bigodds-calibration-current/. Não alterar probabilidades sem nova validação e autorização.
+- Mantém geração normal apenas às08h Lisboa. O novo ciclo extraordinário foi pedido explicitamente.

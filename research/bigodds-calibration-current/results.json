@@ -1,0 +1,52 @@
+{
+  "protocol": {
+    "training": "2024-01-01 through 2025-12-31",
+    "evaluation": "2026 games available through frozen input snapshot",
+    "model": "Exact current xG90 prior2 at causal decision clocks, market mixing excluded from model calibration",
+    "method": "Single multiclass power temperature alpha in [0.5,2], optimized on training log loss. No per-league coefficients or model search.",
+    "promotion": "Evaluation multiclass log loss and Brier both decrease; weekly block bootstrap95% upper bound of log-loss difference below zero; xG-covered evaluation subgroup must not worsen either metric.",
+    "limitations": "2026 outcomes already inspected in earlier unrelated research. Train contains no xG available at its actual observation clocks. This is a temporal holdout, not untouched prospective evidence. No historical bookmaker-calibration claim."
+  },
+  "alpha": 0.8550454785453945,
+  "training": {
+    "before": {
+      "n": 6448,
+      "logLoss": 1.0185412745781866,
+      "brier": 0.6101822623108314
+    },
+    "after": {
+      "n": 6448,
+      "logLoss": 1.0164227903139305,
+      "brier": 0.6088906814950308
+    }
+  },
+  "evaluation": {
+    "before": {
+      "n": 2659,
+      "logLoss": 1.0288858902339941,
+      "brier": 0.6167951971911971
+    },
+    "after": {
+      "n": 2659,
+      "logLoss": 1.0261440791696423,
+      "brier": 0.6151573749264234
+    },
+    "logLossDifference95WeeklyBootstrap": [
+      -0.005569716275498004,
+      0.000191448148179023
+    ]
+  },
+  "xgEvaluation": {
+    "before": {
+      "n": 106,
+      "logLoss": 0.9943099448627633,
+      "brier": 0.5927952768501721
+    },
+    "after": {
+      "n": 106,
+      "logLoss": 0.9998490623379278,
+      "brier": 0.5967292122232681
+    }
+  },
+  "promote": false
+}

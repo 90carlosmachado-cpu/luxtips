@@ -50,7 +50,7 @@ export function candidatesFromQuotes(fixtures,quotes,predict,now){
  return out;
 }
 export async function settleBigOdds(db,now=Date.now()){
- const pending=await db.prepare(`SELECT l.fixture_id,l.kickoff,l.snapshot,f.data fixture,r.hg,r.ag,r.settled_at FROM bigodds_legs l
+ const pending=await db.prepare(`SELECT l.fixture_id,l.ticket_id,l.storage,l.kickoff,l.snapshot,f.data fixture,r.hg,r.ag,r.settled_at FROM bigodds_all_legs l
  LEFT JOIN fixtures f ON f.id=l.fixture_id LEFT JOIN results r ON r.fixture_id=l.fixture_id WHERE l.status='pending'`).all();
  const updates=[];
  for(const row of pending.results){
@@ -64,15 +64,15 @@ export async function settleBigOdds(db,now=Date.now()){
    if(f.hg!==row.hg||f.ag!==row.ag)continue;
    status=marketHit(s.market,row.hg,row.ag)?'won':'lost';result={home:row.hg,away:row.ag,status:'FT',sourceSettledAt:row.settled_at};
   }
-  if(status)updates.push(db.prepare("UPDATE bigodds_legs SET status=?,settled_at=?,result=? WHERE fixture_id=? AND status='pending'").bind(status,now,JSON.stringify(result),s.fixtureId));
+  if(status){const table=row.storage==='legacy'?'bigodds_legs':'bigodds_ticket_legs';updates.push(db.prepare("UPDATE "+table+" SET status=?,settled_at=?,result=? WHERE fixture_id=? AND ticket_id=? AND status='pending'").bind(status,now,JSON.stringify(result),s.fixtureId,row.ticket_id));}
  }
  if(updates.length)await db.batch(updates);
  // Losing closes immediately; unfinished legs continue settling in the ledger.
- await db.prepare(`UPDATE bigodds_tickets SET status=CASE WHEN EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='lost') THEN 'lost'
- WHEN NOT EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status<>'void') THEN 'void' ELSE 'won' END,closed_at=?
- WHERE status='active' AND EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.ticket_id=bigodds_tickets.id)
- AND (EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='lost')
- OR NOT EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='pending'))`).bind(now).run();
+ await db.prepare(`UPDATE bigodds_tickets SET status=CASE WHEN EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='lost') THEN 'lost'
+ WHEN NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status<>'void') THEN 'void' ELSE 'won' END,closed_at=?
+ WHERE status='active' AND EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.ticket_id=bigodds_tickets.id)
+ AND (EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='lost')
+ OR NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.ticket_id=bigodds_tickets.id AND l.status='pending'))`).bind(now).run();
  return {settled:updates.length};
 }
 export async function publishBigOdds(db,ticket,now=Date.now()){
@@ -88,8 +88,8 @@ export async function publishBigOdds(db,ticket,now=Date.now()){
  SELECT ?,?,?,'active',?,?,? WHERE NOT EXISTS(SELECT 1 FROM bigodds_tickets WHERE status='active')
  AND (SELECT COUNT(*) FROM fixtures f WHERE (${matches}) AND f.finished=0 AND f.kickoff>?
  AND json_extract(f.data,'$.status')='NS' AND NOT EXISTS(SELECT 1 FROM results r WHERE r.fixture_id=f.id)
- AND NOT EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.fixture_id=f.id))=?`).bind(id,now,BIGODDS_POLICY.id,ticket.odd,ticket.bookmaker,JSON.stringify(data),...args,now+60000,ticket.legs.length);
- const statements=[insert,...ticket.legs.map(l=>db.prepare(`INSERT INTO bigodds_legs(fixture_id,ticket_id,kickoff,snapshot)
+ AND NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.fixture_id=f.id AND NOT EXISTS(SELECT 1 FROM openfoot_state a WHERE a.key='bigodds:archive:'||l.ticket_id AND json_extract(a.data,'$.status')='replaced')))=?`).bind(id,now,BIGODDS_POLICY.id,ticket.odd,ticket.bookmaker,JSON.stringify(data),...args,now+60000,ticket.legs.length);
+ const statements=[insert,...ticket.legs.map(l=>db.prepare(`INSERT INTO bigodds_ticket_legs(fixture_id,ticket_id,kickoff,snapshot)
  SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM bigodds_tickets WHERE id=?)`).bind(l.fixtureId,id,l.kickoff,JSON.stringify(l),id))];
  const result=await db.batch(statements);
  return result[0].meta.changes?{status:'published',id,legs:ticket.legs.length,odd:ticket.odd}:{status:'blocked_or_inputs_changed'};
@@ -102,6 +102,7 @@ export async function archiveActiveBigOdds(db,now,requestId){
  const result={status:'replaced',reason:'Substituído por nova versão a pedido do utilizador',requestId};
  await db.batch([
   db.prepare("UPDATE bigodds_legs SET status='void',settled_at=?,result=? WHERE ticket_id=? AND status='pending' AND EXISTS(SELECT 1 FROM bigodds_tickets WHERE id=? AND status='active')").bind(now,JSON.stringify(result),row.id,row.id),
+  db.prepare("UPDATE bigodds_ticket_legs SET status='void',settled_at=?,result=? WHERE ticket_id=? AND status='pending' AND EXISTS(SELECT 1 FROM bigodds_tickets WHERE id=? AND status='active')").bind(now,JSON.stringify(result),row.id,row.id),
   db.prepare("INSERT INTO openfoot_state(key,data) SELECT ?,? WHERE EXISTS(SELECT 1 FROM bigodds_tickets WHERE id=? AND status='active') ON CONFLICT(key) DO NOTHING").bind('bigodds:archive:'+row.id,JSON.stringify(result),row.id),
   db.prepare("UPDATE bigodds_tickets SET status='void',closed_at=? WHERE id=? AND status='active'").bind(now,row.id)
  ]);
@@ -143,7 +144,7 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
  const end=Date.parse(lisbonDay(Date.parse(lisbonDay(now)+'T12:00:00Z')+BIGODDS_POLICY.days*DAY)+'T00:00:00Z');
  // Query a superset at DST boundaries, then enforce the exact Lisbon dates.
  const rows=await db.prepare(`SELECT data FROM fixtures f WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? AND f.league IN (${leagues.map(()=>'?').join(',')})
- AND NOT EXISTS(SELECT 1 FROM bigodds_legs l WHERE l.fixture_id=f.id) AND NOT EXISTS(SELECT 1 FROM results r WHERE r.fixture_id=f.id)
+ AND NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.fixture_id=f.id AND NOT EXISTS(SELECT 1 FROM openfoot_state a WHERE a.key='bigodds:archive:'||l.ticket_id AND json_extract(a.data,'$.status')='replaced')) AND NOT EXISTS(SELECT 1 FROM results r WHERE r.fixture_id=f.id)
  ORDER BY f.kickoff,f.id`).bind(now+60000,end+3600000,...leagues).all();
  const day=lisbonDay(now),days=Array.from({length:BIGODDS_POLICY.days},(_,i)=>lisbonDay(Date.parse(day+'T12:00:00Z')+i*DAY));
  const fixtures=rows.results.flatMap(r=>{try{const f=JSON.parse(r.data);return validFixture(f)&&f.status==='NS'&&days.includes(lisbonDay(f.ts))?[f]:[];}catch{return [];}});
@@ -177,7 +178,7 @@ export async function bigOddsFeed(db,cursor=null){
  const archives=await db.prepare("SELECT key,data FROM openfoot_state WHERE key LIKE 'bigodds:archive:%'").all(),archiveMap=new Map(archives.results.map(r=>[r.key.slice('bigodds:archive:'.length),JSON.parse(r.data)]));
  const page=rows.results.slice(0,50),activeRow=await db.prepare("SELECT * FROM bigodds_tickets WHERE status='active'").first();
  const assemble=async r=>{
-  const original=JSON.parse(r.data),legs=await db.prepare('SELECT fixture_id,status,settled_at,result FROM bigodds_legs WHERE ticket_id=?').bind(r.id).all();
+  const original=JSON.parse(r.data),legs=await db.prepare('SELECT fixture_id,status,settled_at,result FROM bigodds_all_legs WHERE ticket_id=?').bind(r.id).all();
   const outcomes=new Map(legs.results.map(l=>[l.fixture_id,l]));
   return {...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})};
  };

@@ -1,3 +1,4 @@
+import {extractComboQuotes,isComboQuote} from './combo-archive.mjs';
 import {worstReplaceable,replaceDailyPick} from './daily-ranking.mjs';
 import {oddsRetryDelay,oddsNextAttempt,priorityOddsFixture} from './refresh-policy.mjs';
 var __defProp = Object.defineProperty;
@@ -171,11 +172,13 @@ function extractQuotes(items, fixture, observedAt, verifiedReceipt = false) {
       if (code && Number.isFinite(odd) && odd > 1) out.push({ fixtureId: fixture.id, code, source: "API-Football", verifiedReceipt, bookmaker: b.name, market: code, selection: code, providerMarket: bet.name, providerSelection: value.value, odd, at, providerAt: at, observedAt });
     }
   }
+  out.push(...extractComboQuotes(items, fixture, observedAt, verifiedReceipt));
   return out;
 }
 function selectQuotes(quotes, now) {
   const odds = {};
   for (const q of quotes) {
+    if (isComboQuote(q)) continue;
     if (!q.verifiedReceipt || q.at > now || q.observedAt > now || now - q.at >= POLICY.oddsMaxAge) continue;
     const old = odds[q.code];
     if (!old || q.at > old.at || q.at === old.at && (q.odd > old.odd || q.odd === old.odd && q.bookmaker < old.bookmaker)) odds[q.code] = q;
@@ -186,7 +189,7 @@ function retainedQuotes(quotes, now) {
   const unique = /* @__PURE__ */ new Map();
   for (const q of quotes) {
     if (!q.verifiedReceipt || !Number.isFinite(q.at) || !Number.isFinite(q.observedAt) || q.at > q.observedAt || q.observedAt > now || now - q.at >= POLICY.oddsMaxAge) continue;
-    if (["H", "D", "A"].includes(q.code)) {
+    if (["H", "D", "A"].includes(q.code) || isComboQuote(q)) {
       const key = [q.fixtureId, q.bookmaker, q.code, q.at].join("|"), old = unique.get(key);
       if (!old || q.observedAt < old.observedAt) unique.set(key, q);
     }
@@ -202,7 +205,7 @@ async function cachedOdds(db, f, now) {
       const p = JSON.parse(r.data);
       if (!Number.isFinite(p.fetchedAt) || p.fetchedAt > now || p.fetchedAt >= f.ts) continue;
       const raw = Array.isArray(p.items) ? extractQuotes(p.items, f, p.fetchedAt) : [];
-      quotes.push(...r.key.includes("odds-reviewed") ? (p.quotes || []).filter((q) => q.fixtureId === f.id && q.source === "API-Football" && q.market === q.code && q.selection === q.code && MAP[q.providerMarket]?.[q.providerSelection] === q.code && Number.isFinite(q.odd) && q.odd > 1 && Number.isFinite(q.at) && Number.isFinite(q.observedAt) && q.at <= q.observedAt && q.observedAt <= now && q.observedAt < f.ts) : raw);
+      quotes.push(...r.key.includes("odds-reviewed") ? (p.quotes || []).filter((q) => q.fixtureId === f.id && q.source === "API-Football" && q.market === q.code && q.selection === q.code && (MAP[q.providerMarket]?.[q.providerSelection] === q.code || isComboQuote(q)) && Number.isFinite(q.odd) && q.odd > 1 && Number.isFinite(q.at) && Number.isFinite(q.observedAt) && q.at <= q.observedAt && q.observedAt <= now && q.observedAt < f.ts) : raw);
     } catch {
     }
   }
@@ -244,7 +247,7 @@ async function collectFixtureOdds(env, f, now = Date.now(), request = api) {
     const relevant = ["H", "A"];
     const missing = relevant.filter((m) => !odds[m]);
     const missingKey = missing.join(","), repeat = complete2 && prior.missingKey === missingKey && (prior.probes || 0) > 0;
-    const expired = quotes.length > 0 && !Object.keys(odds).length;
+    const expired = quotes.some(q => !isComboQuote(q)) && !Object.keys(odds).length;
     const status = !complete2 ? "incomplete_response" : expired ? "quote_expired" : missing.length ? repeat ? "market_unavailable" : "incomplete_response" : "ready";
     const delay = oddsRetryDelay(status, complete2, f.ts, completedAt);
     const expiries = Object.values(odds).map((q) => q.at + POLICY.oddsMaxAge).filter((t) => t > completedAt);

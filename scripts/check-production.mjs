@@ -15,4 +15,4 @@ for(const [name,expected] of Object.entries(manifest.modules)){
   if(!body.toString().slice(0,match.index).split('\n').at(-1).trim()&&match[1].startsWith('./')) assert.ok(existsSync(resolve(dirname(path),match[1])),path+' missing '+match[1]);
  }
 }
-console.log('18 módulos de produção com hashes íntegros e sintaxe válida; entrada atual confirmada.');
+console.log(Object.keys(manifest.modules).length+' módulos de produção com hashes íntegros e sintaxe válida; entrada atual confirmada.');
