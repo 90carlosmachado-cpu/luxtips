@@ -15,8 +15,8 @@ function setup(){
  const fixture=id=>({id,league:39,ts:NOW+DAY+id*1000,home:id,away:10000+id,homeName:'Casa '+id,awayName:'Fora '+id,competition:'Liga',status:'NS',finished:false,hg:null,ag:null});
  const store=f=>db.sql.prepare('INSERT OR REPLACE INTO fixtures(id,league,kickoff,finished,data) VALUES(?,?,?,?,?)').run(f.id,f.league,f.ts,Number(f.finished),JSON.stringify(f));
  const ticket=(offset=0)=>{
-  const legs=Array.from({length:5},(_,i)=>{const f=fixture(offset+i+1);store(f);return {fixtureId:f.id,kickoff:f.ts,home:f.home,away:f.away,homeName:f.homeName,awayName:f.awayName,competition:'Liga',league:f.league,market:'O15',label:'Mais de 1,5 golos',odd:1.6,bookmaker:'Casa A',probability:.8,quoteAt:NOW-1000,observedAt:NOW-500,estimated:false};});
-  return {legs,odd:1.6**5,bookmaker:'Casa A'};
+  const legs=Array.from({length:5},(_,i)=>{const f=fixture(offset+i+1);store(f);return {fixtureId:f.id,kickoff:f.ts,home:f.home,away:f.away,homeName:f.homeName,awayName:f.awayName,competition:'Liga',league:f.league,market:'O15',label:'Mais de 1,5 golos',odd:1.6,bookmaker:'Betano',probability:.8,quoteAt:NOW-1000,observedAt:NOW-500,estimated:false};});
+  return {legs,odd:1.6**5,bookmaker:'Betano'};
  };
  const finish=(id,hg,ag,at=NOW+3*DAY)=>{let f=JSON.parse(db.sql.prepare('SELECT data FROM fixtures WHERE id=?').get(id).data);f={...f,hg,ag,finished:true,status:'FT'};store(f);db.sql.prepare('INSERT OR REPLACE INTO results VALUES(?,?,?,?)').run(id,hg,ag,at);};
  return {db,ticket,store,fixture,finish};
@@ -115,7 +115,7 @@ test('complete scheduled cycle builds, publishes, blocks, settles and generates 
  for(let id=1;id<=8;id++)s.store({...s.fixture(100+id),ts:NOW-DAY,home:id,away:10000+id,hg:3,ag:1,status:'FT',finished:true}); // Historical fixture rows without results ledger entries
  for(let id=1;id<=8;id++){
   const f={...s.fixture(id),ts:NOW+7200000+id*1000};s.store(f);
-  for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'Casa A','Goals Over/Under',selection,odd,NOW-1000,NOW-500);
+  for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'Betano','Goals Over/Under',selection,odd,NOW-1000,NOW-500);
  }
  const env={DB:s.db,LEAGUES:'39'},r=await generateBigOdds(env,NOW,()=>NOW);assert.equal(r.status,'published');
  const first=(await bigOddsFeed(s.db)).current;assert.equal(first.legs.length,5);assert.ok(first.legs.every(l=>l.model.homeSample>=1));assert.equal((await syncBigOdds(env,NOW,()=>NOW)).status,'outside_daily_window');
@@ -123,7 +123,7 @@ test('complete scheduled cycle builds, publishes, blocks, settles and generates 
  const feed=await bigOddsFeed(s.db);assert.equal(feed.history[0].status,'lost');assert.equal(feed.current,null); // remaining fixtures have begun
  for(let id=20;id<28;id++){
   const f={...s.fixture(id),ts:NOW+6*3600000+id*1000};s.store(f);
-  for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'Casa A','Goals Over/Under',selection,odd,NOW+3*3600000-1000,NOW+3*3600000-500);
+  for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'Betano','Goals Over/Under',selection,odd,NOW+3*3600000-1000,NOW+3*3600000-500);
  }
  assert.equal((await generateBigOdds(env,NOW+3*3600000,()=>NOW+3*3600000)).status,'published');
  assert.ok((await bigOddsFeed(s.db)).current.legs.every(l=>l.fixtureId>=20));
@@ -186,10 +186,10 @@ test('scheduled generation uses D+2 and rejects D+3 and publication after the mi
  const s=setup(),at=Date.parse('2026-11-06T08:00:00Z');
  for(let id=1;id<=8;id++){
   const f={...s.fixture(100+id),ts:Date.parse('2026-11-08T18:00:00Z')+id*1000};s.store(f);
-  for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'A','Goals Over/Under',selection,odd,at-1000,at-500);
+  for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at-1000,at-500);
  }
  assert.equal((await syncBigOdds({DB:s.db},at,()=>at+60000)).status,'daily_window_expired');assert.equal((await bigOddsFeed(s.db)).summary.tickets,0);
- const fresh=setup();for(let id=1;id<=8;id++){const f={...fresh.fixture(200+id),ts:Date.parse('2026-11-08T18:00:00Z')+id*1000};fresh.store(f);for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])fresh.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'A','Goals Over/Under',selection,odd,at-1000,at-500);}
+ const fresh=setup();for(let id=1;id<=8;id++){const f={...fresh.fixture(200+id),ts:Date.parse('2026-11-08T18:00:00Z')+id*1000};fresh.store(f);for(const [selection,odd]of [['Over 1.5',1.6],['Under 1.5',2.4]])fresh.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(f.id,f.ts,'Betano','Goals Over/Under',selection,odd,at-1000,at-500);}
  assert.equal((await syncBigOdds({DB:fresh.db},at,()=>at+10000)).status,'published');const current=(await bigOddsFeed(fresh.db)).current;assert.ok(current.legs.every(l=>lisbonDay(l.kickoff)==='2026-11-08'));assert.equal(current.policy.days,3);
 });
 test('concurrent cron attempts consume only one daily slot',async()=>{
@@ -204,7 +204,7 @@ test('D+3 fixtures cannot enter the daily candidate pool',async()=>{
 });
 test('authorized internal rebuild archives only the active ticket and runs once outside 08h',async()=>{
  const s=setup(),old=await publishBigOdds(s.db,s.ticket(),NOW),original=s.db.sql.prepare('SELECT data FROM bigodds_tickets WHERE id=?').get(old.id).data;
- for(let id=20;id<28;id++){const f=s.fixture(id);s.store(f);for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'A','Goals Over/Under',selection,odd,NOW-1000,NOW-500);}
+ for(let id=20;id<28;id++){const f=s.fixture(id);s.store(f);for(const [selection,odd] of [['Over 1.5',1.6],['Under 1.5',2.4]])s.db.sql.prepare('INSERT INTO openfoot_market_quotes VALUES(?,?,?,?,?,?,?,?)').run(id,f.ts,'Betano','Goals Over/Under',selection,odd,NOW-1000,NOW-500);}
  const command={id:'test-one-off',policy:BIGODDS_POLICY.id,requestedAt:NOW,expires:NOW+300000};s.db.sql.prepare("INSERT INTO openfoot_state VALUES('bigodds:manual_rebuild',?)").run(JSON.stringify(command));
  const result=await syncBigOdds({DB:s.db},NOW,()=>NOW);assert.equal(result.manual,true);assert.equal(result.status,'published');
  const feed=await bigOddsFeed(s.db),archived=feed.history.find(t=>t.id===old.id);assert.equal(archived.status,'void');assert.equal(archived.archived,true);assert.ok(archived.legs.every(l=>l.status==='void'&&l.result.status==='replaced'));assert.equal(s.db.sql.prepare('SELECT data FROM bigodds_tickets WHERE id=?').get(old.id).data,original);

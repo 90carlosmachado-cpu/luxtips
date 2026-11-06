@@ -73,6 +73,12 @@ export function footballEnhancements(html){
  const helpers='const dayChips='+dayChips.toString()+';const analysisDetails='+analysisDetails.toString()+';'+refreshYesterday.toString()+';('+disclosureEvents.toString()+')();let yesterdayLoad="loading",yesterdayRequest=0;';
  html=html.replace('<script>','<script>'+helpers);
  html=html.replace('FUTEBOL · 1X2','FUTEBOL · R1+R2 · ATÉ 3 POR DIA');
+ html=html.replaceAll('<span class="field-label">Odd registada</span>',`<span class="field-label">'+(g.priceBookmaker==='Betano'?(g.liveQuoteStatus==='quote_expired'?'Última odd Betano':'Odd Betano'):'Odd registada')+'</span>`);
+ html=html.replace("const oddTitle=Number.isFinite(odd)?", "const priceStamp=g.priceBookmaker==='Betano'&&Number.isFinite(pick.oddsAt)?new Date(pick.oddsAt).toLocaleString('pt-PT',{timeZone:'Europe/Lisbon',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';const oddTitle=g.priceBookmaker==='Betano'?(priceStamp?'Betano · '+priceStamp+(g.quoteStale?' · desatualizada':''):'Sem cotação Betano disponível'):Number.isFinite(odd)?");
+ html=html.replace("+(Number.isFinite(odd)?odd.toFixed(2).replace('.',','):'—')", "+(Number.isFinite(odd)?odd.toFixed(2).replace('.',','):'—')");
+ html=html.replace("+'</strong>'+(stale?","+'</strong>'+(g.priceBookmaker==='Betano'&&priceStamp?'<small class=\"small\">'+escapeHtml(priceStamp)+'</small>':'')+(stale?");
+ html=html.replace('setInterval(loadGames, 300000)','setInterval(loadGames, 60000)');
+
  html=html.replace("const stale=!settled&&f.ts>Date.now()&&analysis&&pick.quote&&(['quote_expired','awaiting_recalculation'].includes(pick.quoteStatus)||Date.now()-pick.quote.at>=6*3600000);","const quoteAt=analysis?pick.quote?.at:pick.oddsAt;const stale=!settled&&f.ts>Date.now()&&Number.isFinite(quoteAt)&&(g.quoteStale||Date.now()-quoteAt>=6*3600000);");
  html=html.replace('return [0, 1, 2].map((i) =>','return [-1, 0, 1, 2].map((i) =>');
  html=replaceSection(html,'function displayedGames(','function historyOutcome(',yesterdayFootball.toString().replace('function yesterdayFootball(','function displayedGames('));

@@ -1,6 +1,6 @@
 import {extractComboQuotes,isComboQuote} from './combo-archive.mjs';
 import {worstReplaceable,replaceDailyPick} from './daily-ranking.mjs';
-import {oddsRetryDelay,oddsNextAttempt,priorityOddsFixture} from './refresh-policy.mjs';
+import {oddsRetryDelay,oddsNextAttempt,priorityOddsFixture,priorityOddsRows} from './refresh-policy.mjs';
 var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
@@ -58,6 +58,7 @@ function assessMarket(g, market, now) {
   if (!Number.isFinite(p.cutoff) || p.cutoff > now || p.cutoff >= g.fixture?.ts) return fail("invalid_prediction_clock");
   const q = g.odds?.[market];
   if (!q && ["quote_expired", "temporary_failure", "incomplete_response", "market_unavailable"].includes(g.oddsStatus?.[market])) return fail(g.oddsStatus[market]);
+  if (q && q.bookmaker !== "Betano") return fail("wrong_bookmaker");
   if (q && (q.fixtureId !== g.fixture.id || typeof q.bookmaker !== "string" || !q.bookmaker)) return fail("invalid_quote_identity");
   const status = quoteStatus(q, market, now, g.fixture.ts);
   if (status !== "ready") return fail(status);
@@ -178,7 +179,7 @@ function extractQuotes(items, fixture, observedAt, verifiedReceipt = false) {
 function selectQuotes(quotes, now) {
   const odds = {};
   for (const q of quotes) {
-    if (isComboQuote(q)) continue;
+    if (isComboQuote(q) || q.bookmaker !== "Betano") continue;
     if (!q.verifiedReceipt || q.at > now || q.observedAt > now || now - q.at >= POLICY.oddsMaxAge) continue;
     const old = odds[q.code];
     if (!old || q.at > old.at || q.at === old.at && (q.odd > old.odd || q.odd === old.odd && q.bookmaker < old.bookmaker)) odds[q.code] = q;
@@ -226,7 +227,7 @@ async function saveQuotes(db, f, quotes) {
 async function collectFixtureOdds(env, f, now = Date.now(), request = api) {
   const db = env.DB, key = "odds_collection:" + f.id, old = await cachedOdds(db, f, now), prior = old.state?.kickoff === f.ts ? old.state : {};
   if (f.finished || f.status !== "NS" || f.ts <= now) return { status: "not_prematch", odds: old.odds };
-  if (oddsNextAttempt(prior, f.ts, now) > now) return { status: prior.status, odds: old.odds, fromCache: true };
+  if (oddsNextAttempt(prior, f.ts, now, f.oddsPriority) > now) return { status: prior.status, odds: old.odds, fromCache: true };
   let state = { ...prior, at: now, kickoff: f.ts };
   try {
     const page = prior.nextPage || 1;
@@ -249,7 +250,7 @@ async function collectFixtureOdds(env, f, now = Date.now(), request = api) {
     const missingKey = missing.join(","), repeat = complete2 && prior.missingKey === missingKey && (prior.probes || 0) > 0;
     const expired = quotes.some(q => !isComboQuote(q)) && !Object.keys(odds).length;
     const status = !complete2 ? "incomplete_response" : expired ? "quote_expired" : missing.length ? repeat ? "market_unavailable" : "incomplete_response" : "ready";
-    const delay = oddsRetryDelay(status, complete2, f.ts, completedAt);
+    const delay = oddsRetryDelay(status, complete2, f.ts, completedAt, f.oddsPriority);
     const expiries = Object.values(odds).map((q) => q.at + POLICY.oddsMaxAge).filter((t) => t > completedAt);
     state = {
       at: now,
@@ -1351,7 +1352,7 @@ function publicGames(rows, now = Date.now()) {
   return { games, window };
 }
 function quoteFor(g, market, now) {
-  return assessMarket(g, market, now).eligible ? g.odds[market] : null;
+  return g.odds?.[market]?.bookmaker === "Betano" && assessMarket(g, market, now).eligible ? g.odds[market] : null;
 }
 function pricedTip(g, tip, now) {
   if (!tip) return null;
@@ -14073,10 +14074,11 @@ async function refreshData(env, now = Date.now(), options = {}) {
       ...upcoming.filter((f) => f.status === "NS" && leagues.includes(f.league)).map((f) => ({ kind: "odds", id: f.id, fixture: f })),
       ...leagues.flatMap((league) => [season, season - 1, season - 2].map((year) => ({ kind: "history", path: "fixtures?league=" + league + "&season=" + year, ttl: year === season ? 6 * HOUR5 : 30 * 24 * HOUR5 })))
     ];
-    const priorityRows = previous.wasContinuation ? [] : (await db.prepare("SELECT f.data fixture_data,s.data state_data FROM fixtures f LEFT JOIN openfoot_state s ON s.key='odds_collection:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff").bind(now, w.end).all()).results;
+    const priorityRows = (previous.priorityRunCount||0)>=2 ? [] : await priorityOddsRows(db,now,w.end,leagues);
     const index = summary.next % jobs.length, continuationFixture = priorityOddsFixture(priorityRows, leagues, now);
     const job = continuationFixture ? { kind: "odds", id: continuationFixture.id, fixture: continuationFixture } : jobs[index];
     summary.wasContinuation = !!continuationFixture;
+    summary.priorityRunCount=continuationFixture?(previous.priorityRunCount||0)+1:0;
     summary.job = job;
     summary.total = jobs.length;
     if (job.kind === "odds") {
@@ -14088,7 +14090,7 @@ async function refreshData(env, now = Date.now(), options = {}) {
       if (continuationFixture) {
         const processed = new Set([job.id]);
         summary.priorityFixtures = [job.id];
-        for (let extra = 0; extra < 2 && Date.now() - now < 8000; extra++) {
+        for (let extra = 0; extra < 2 && Date.now() - now < 30000; extra++) {
           const next = priorityOddsFixture(priorityRows.filter(row => {
             try { return !processed.has(JSON.parse(row.fixture_data).id); } catch { return false; }
           }), leagues, now);

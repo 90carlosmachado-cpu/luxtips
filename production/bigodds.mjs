@@ -1,3 +1,4 @@
+import {withTicketBetano} from './betano-prices.mjs';
 import {BIGODDS_POLICY,goalModel,xgMarketModel,selectTicket,marketHit,MARKET_LABELS} from './bigodds-model.mjs';
 const DAY=86400000;
 export const lisbonDay=ts=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).format(ts);
@@ -77,6 +78,7 @@ export async function settleBigOdds(db,now=Date.now()){
 }
 export async function publishBigOdds(db,ticket,now=Date.now()){
  if(!ticket)return {status:'no_eligible_ticket'};
+ if(ticket.bookmaker!=='Betano'||ticket.legs.some(l=>l.bookmaker!=='Betano'))return {status:'wrong_bookmaker'};
  if(ticket.legs.length<5||ticket.legs.length>12||ticket.odd<8||ticket.odd>15+1e-9)throw Error('invalid_bigodds_ticket');
  const odds=ticket.legs.reduce((p,l)=>p*l.odd,1);
  if(Math.abs(odds-ticket.odd)>1e-8||new Set(ticket.legs.map(l=>l.fixtureId)).size!==ticket.legs.length)throw Error('invalid_bigodds_legs');
@@ -165,14 +167,14 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
  }
  const detailRows=await db.prepare("SELECT fixture_id,league,kickoff,observed_at,json_extract(data,'$.fixtureId') data_id,json_extract(data,'$.league') data_league,json_extract(data,'$.kickoff') data_kickoff,json_extract(data,'$.observedAt') data_observed,json_extract(data,'$.homeXg') home_xg,json_extract(data,'$.awayXg') away_xg,json_extract(data,'$.result.home') hg,json_extract(data,'$.result.away') ag FROM openfoot_match_details WHERE observed_at<=? AND kickoff+7200000<=? ORDER BY fixture_id,observed_at").bind(now,now).all();
  const details=detailRows.results.map(r=>({...r,data:{fixtureId:r.data_id,league:r.data_league,kickoff:r.data_kickoff,observedAt:r.data_observed,homeXg:r.home_xg,awayXg:r.away_xg,result:{home:r.hg,away:r.ag}}}));
- const ticket=selectTicket(candidatesFromQuotes(fixtures,quotes,xgMarketModel(history,now,details),now));
+ const ticket=selectTicket(candidatesFromQuotes(fixtures,quotes,xgMarketModel(history,now,details),now).filter(l=>l.bookmaker==='Betano'));
  const publishedAt=clock();
  if(slot&&!dailySlot(publishedAt,slot.at))return {status:'daily_window_expired'};
  const result=await publishBigOdds(db,ticket,publishedAt);
  if(slot)await db.prepare("UPDATE openfoot_state SET data=? WHERE key=?").bind(JSON.stringify({at:publishedAt,scheduledAt:slot.at,...result}),'bigodds:daily0800:'+slot.day).run();
  return result;
 }
-export async function bigOddsFeed(db,cursor=null){
+export async function bigOddsFeed(db,cursor=null,now=Date.now()){
  if(cursor!==null&&(!/^\d{10,16}$/.test(cursor)||!Number.isSafeInteger(Number(cursor))))throw Error('invalid_cursor');
  const reset=await db.prepare("SELECT data FROM openfoot_state WHERE key='bigodds:history_reset'").first();
  const historyStartAt=reset?JSON.parse(reset.data).startAt:0;
@@ -183,7 +185,7 @@ export async function bigOddsFeed(db,cursor=null){
  const assemble=async r=>{
   const original=JSON.parse(r.data),legs=await db.prepare('SELECT fixture_id,status,settled_at,result FROM bigodds_all_legs WHERE ticket_id=?').bind(r.id).all();
   const outcomes=new Map(legs.results.map(l=>[l.fixture_id,l]));
-  return {...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})};
+  return withTicketBetano(db,{...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})},now);
  };
  const history=[];for(const r of page)history.push(await assemble(r));
  const summary=await db.prepare(`SELECT COUNT(*) tickets,COALESCE(SUM(status='won'),0) won,COALESCE(SUM(status='lost'),0) lost,COALESCE(SUM(status='void'),0) void,COALESCE(SUM(status='active'),0) active FROM bigodds_tickets WHERE created_at>=?`).bind(historyStartAt).first();

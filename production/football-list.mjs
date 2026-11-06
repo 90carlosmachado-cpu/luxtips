@@ -1,3 +1,4 @@
+import {withFootballBetano} from './betano-prices.mjs';
 import {readDailyLists,syncDailyLists,listDay,listWindow,membership,snapshotPayload,LIST_VERSION,dayLocked} from './daily-list.mjs';
 import {validWinnerQuote,filterWinnerAnalyses,QUOTE_MAX_AGE} from './quote-gate.mjs';
 const pickOf=g=>g.history?.kind==='analysis'||!g.published&&g.winnerAnalysis?g.winnerAnalysis:g.displayTip||g.winnerTip||g.recommendation;
@@ -11,7 +12,7 @@ export function footballCandidates(body,now) {
   const cards=[];
   for(const g of body.games||[]) {
     const pick=pickOf(g),q=g.odds?.[pick?.market];
-    if(!g.published||!['H','A'].includes(pick?.market)||!q?.verifiedReceipt||q.source!=='API-Football'||q.market!==pick.market||q.selection!==pick.market||q.fixtureId!==g.fixture?.id)continue;
+    if(!g.published||!['H','A'].includes(pick?.market)||q?.bookmaker!=='Betano'||!q?.verifiedReceipt||q.source!=='API-Football'||q.market!==pick.market||q.selection!==pick.market||q.fixtureId!==g.fixture?.id)continue;
     if(!Number.isFinite(q.odd)||q.odd<1.20||!Number.isFinite(q.at)||!Number.isFinite(q.observedAt)||q.at>q.observedAt||q.observedAt>now||g.fixture.ts<=now)continue;
     const assessment=pick.assessment;
     if(!pick.selectionVersion&&Number.isFinite(assessment?.conservativeProbability)&&Number.isFinite(assessment?.minimumExpectedReturn)&&q.odd*assessment.conservativeProbability-1+1e-12<assessment.minimumExpectedReturn)continue;
@@ -30,11 +31,11 @@ async function currentPublishedPrices(db,body,now) {
     if(!g.published||!f||!['H','A'].includes(pick?.market)){games.push(g);continue;}
     // This table contains verified collector receipts, not untrusted raw caches.
     const row=await db.prepare(`SELECT bookmaker,market,selection,odd,provider_at,observed_at FROM openfoot_market_quotes
-      WHERE fixture_id=? AND kickoff=? AND market='Match Winner' AND selection=?
+      WHERE fixture_id=? AND kickoff=? AND bookmaker='Betano' AND market='Match Winner' AND selection=?
       AND provider_at<=observed_at AND observed_at<=? AND observed_at<?
       ORDER BY provider_at DESC,odd DESC,bookmaker LIMIT 1`)
       .bind(f.id,f.ts,pick.market==='H'?'Home':'Away',now,f.ts).first();
-    if(!row){games.push(g);continue;}
+    if(!row){games.push(g.odds?.[pick.market]?.bookmaker==='Betano'?g:{...g,odds:{...g.odds,[pick.market]:null}});continue;}
     const q={fixtureId:f.id,code:pick.market,source:'API-Football',verifiedReceipt:true,market:pick.market,selection:pick.market,providerMarket:row.market,providerSelection:row.selection,bookmaker:row.bookmaker,odd:row.odd,at:row.provider_at,observedAt:row.observed_at};
     games.push({...g,odds:{...g.odds,[pick.market]:q}});
   }
@@ -42,7 +43,7 @@ async function currentPublishedPrices(db,body,now) {
   for(const g of body.winnerAnalyses) {
     const a=g.winnerAnalysis,f=g.fixture;
     const row=await db.prepare(`SELECT bookmaker,odd,provider_at,observed_at FROM openfoot_market_quotes
-      WHERE fixture_id=? AND kickoff=? AND market='Match Winner' AND selection=?
+      WHERE fixture_id=? AND kickoff=? AND bookmaker='Betano' AND market='Match Winner' AND selection=?
       AND provider_at<=observed_at AND observed_at<=? AND observed_at<?
       ORDER BY provider_at DESC,odd DESC,bookmaker LIMIT 1`)
       .bind(f.id,f.ts,a.market==='H'?'Home':'Away',now,f.ts).first();
@@ -78,7 +79,7 @@ export async function syncFootballList(db,body,now=Date.now()) {
     // preserves the last calculation when the raw feed omits aged inputs.
     if(!current||current.winnerAnalysis.market!==pick.market||current.winnerAnalysis.modelProbability<.6)continue;
     const row=await db.prepare(`SELECT odd,provider_at,observed_at FROM openfoot_market_quotes
-      WHERE fixture_id=? AND kickoff=? AND market='Match Winner' AND selection=?
+      WHERE fixture_id=? AND kickoff=? AND bookmaker='Betano' AND market='Match Winner' AND selection=?
       AND provider_at<=observed_at AND observed_at<=? AND observed_at<?
       ORDER BY provider_at DESC,odd DESC,bookmaker LIMIT 1`)
       .bind(old.gameId,old.kickoff,pick.market==='H'?'Home':'Away',now,old.kickoff).first();
@@ -125,12 +126,12 @@ export async function hydrateFootballList(db,items,now) {
 }
 export async function footballCurrentFeed(db,body,now=Date.now()) {
   const lists=await readDailyLists(db,'openfoot_state','football');
-  if(!lists.length)return {...body,winnerAnalyses:[]};
+  if(!lists.length)return {...body,games:await Promise.all((body.games||[]).map(g=>withFootballBetano(db,g,now))),winnerAnalyses:[]};
   const tracked=new Map(lists.map(l=>[l.day,l])),days=new Set(listWindow(now));
   const cards=await hydrateFootballList(db,lists.filter(l=>days.has(l.day)).flatMap(l=>l.items),now);
   const active=cards.filter(g=>g.historyStatus==='pending');
   return {...body,
-    games:[...(body.games||[]).filter(g=>!tracked.has(listDay(g.fixture.ts))||g.fixture.ts<=tracked.get(listDay(g.fixture.ts)).managedSince),...active.filter(g=>g.history.kind==='recommendation')],
+    games:await Promise.all([...(body.games||[]).filter(g=>!tracked.has(listDay(g.fixture.ts))||g.fixture.ts<=tracked.get(listDay(g.fixture.ts)).managedSince),...active.filter(g=>g.history.kind==='recommendation')].map(g=>withFootballBetano(db,g,now))),
     winnerAnalyses:[],
     dailyMembership:membership(lists),dailyListPolicy:{version:LIST_VERSION,timeZone:'Europe/Lisbon',freezeHour:8}};
 }
@@ -141,7 +142,7 @@ export async function footballHistoryFeed(db,body,now=Date.now()) {
   const original=body.historyEntries||body.publishedSelections||[];
   const historical=original.filter(g=>!g.fixture||!tracked.has(listDay(g.fixture.ts))||g.fixture.ts<=tracked.get(listDay(g.fixture.ts)).managedSince);
   const cards=await hydrateFootballList(db,lists.flatMap(l=>l.items),now);
-  const entries=[...historical,...cards].sort((a,b)=>b.fixture.ts-a.fixture.ts||a.fixture.id-b.fixture.id);
+  const entries=(await Promise.all([...historical,...cards].map(g=>withFootballBetano(db,g,now)))).sort((a,b)=>b.fixture.ts-a.fixture.ts||a.fixture.id-b.fixture.id);
   return {...body,historyEntries:entries,publishedSelections:entries.filter(g=>g.history?.kind!=='analysis'),dailyMembership:membership(lists)};
 }
 

@@ -145,3 +145,10 @@
 - Combos não são preços executáveis nem mercados admitidos pelo Big Odds: `selectQuotes` exclui os códigos passivos. Preservar todas as casas/contrapartes e relógios no arquivo.
 - Calibração atual investigada e NÃO promovida; resultados em research/bigodds-calibration-current/. Não alterar probabilidades sem nova validação e autorização.
 - Mantém geração normal apenas às08h Lisboa. O novo ciclo extraordinário foi pedido explicitamente.
+
+## Betano e cotações independentes
+
+- Preços executáveis e apresentados exclusivamente Betano; consenso probabilístico e calibração não mudaram.
+- Atualizar preços não altera snapshots nem retira escolhas bloqueadas. Nunca publicar preço de outra casa como Betano. Preços em falta/expirados têm estado explícito.
+- Novos boletins Big Odds usam política betano-v3 e Betano; o atual mantém os jogos e apenas a apresentação de preços muda.
+- Metas de recolha15min publicados,30min dez seguintes,180min restantes; orçamento6000/dia e quotas/cooldowns preservados. Não prometer atualização em tempo real nem ignorar relógios de origem.

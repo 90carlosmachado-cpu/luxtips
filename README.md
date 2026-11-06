@@ -2,10 +2,10 @@
 
 ## Código atual em produção
 
-Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `e0ccf26d-8c18-4830-87b2-006da34fa02f`.
+Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `2fbe3451-79c5-4bc1-b480-f586aa9da8a3`.
 
 - **Entrada atual:** `production/integration.js`, selecionada em `wrangler.jsonc`.
-- **Código completo publicado:** 19 módulos em `production/`, incluindo o bundle recuperado, futebol, Big Odds, interface, PWA e notificações. O bundle não foi refatorado.
+- **Código completo publicado:** 20 módulos em `production/`, incluindo o bundle recuperado, futebol, Big Odds, interface, PWA e notificações. O bundle não foi refatorado.
 - **Modelo Big Odds:** xG90, prior 2, mistura 50% com referência da casa, sem unders.
 - **Testes:** `npm test` executa os testes históricos e os da produção; `npm run check` e `npm run check:production` verificam o código.
 - **Compilação sem publicar:** `npm ci` e `npm run build:check`. Não existe deploy automático nesta sincronização.
@@ -16,6 +16,8 @@ Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `e0ccf26d-
 O código anterior em `src/` e `recovered/` foi preservado como referência histórica. Não corresponde, isoladamente, ao Worker atual. A configuração aponta para o código publicado recuperado. Dados de jogos, boletins e resultados continuam no D1; credenciais permanecem nos secrets do Cloudflare, sem valores no GitHub.
 
 A v2 mantém as probabilidades e seleção anteriores. A calibração foi avaliada e rejeitada para promoção: ver [resultados do modelo atual](research/bigodds-calibration-current/README.md). Combos reais são recolhidos apenas para arquivo, sem seleção pública.
+
+Agora os preços executáveis e apresentados são exclusivamente Betano. As seleções bloqueadas são independentes das cotações atualizadas. Ver [odds e prioridades](docs/betano-odds-prioridade.md).
 
 ## Documentação histórica preservada
 

@@ -43,7 +43,7 @@ function setup(at='2026-11-05T07:00:00Z'){
     return {fixture:{id,ts,home:id,away:id+100,league,status:'NS',finished:false,homeName:'H'+id,awayName:'A'+id},
       sourceUpdatedAt:clock.now,selectionContract:'selection-inputs-v2',prediction:{version:'luxtips-events-xg-elo020-live-v4',sample:20,cutoff:clock.now,
       probabilities:{H:p,D:(1-p)/2,A:(1-p)/2},risks:[]},
-      odds:{H:{fixtureId:id,market:'H',selection:'H',source:'API-Football',verifiedReceipt:true,odd:1.30,bookmaker:'B',at:clock.now,observedAt:clock.now}}};
+      odds:{H:{fixtureId:id,market:'H',selection:'H',source:'API-Football',verifiedReceipt:true,odd:1.30,bookmaker:'Betano',at:clock.now,observedAt:clock.now}}};
   }
   function store(g){db.sql.prepare('INSERT OR REPLACE INTO fixtures VALUES(?,?,?,?,?)').run(g.fixture.id,g.fixture.league,g.fixture.ts,0,JSON.stringify(g.fixture));db.sql.prepare('INSERT OR REPLACE INTO cache VALUES(?,?,?)').run('forecast:'+g.fixture.id,JSON.stringify(g),clock.now+86400000);}
   const publish=async games=>{for(const g of games)store(g);return rt.publishMarketPicks(db,games,clock.now,{markets:['H','A']});};
