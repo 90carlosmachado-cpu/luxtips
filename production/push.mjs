@@ -1,3 +1,4 @@
+import {lisbonClock} from './daily-list.mjs';
 import {sendPush,validEndpoint,publicKey,decode,encode} from './webpush.mjs';
 export const read=async(db,key)=>{const r=await db.prepare('SELECT data FROM openfoot_state WHERE key=?').bind(key).first();return r?JSON.parse(r.data):null;};
 export const write=(db,key,value)=>db.prepare('INSERT INTO openfoot_state(key,data) VALUES(?,?) ON CONFLICT(key) DO UPDATE SET data=excluded.data').bind(key,JSON.stringify(value)).run();
@@ -32,17 +33,31 @@ export async function pushRoute(request,env){
  await write(env.DB,key,{id,owner,subscription:{endpoint,keys:{p256dh:keys.p256dh,auth:keys.auth}},preferences:prefs,createdAt:prior?.createdAt||now,footballSince:prior?.preferences.football&&prefs.football?prior.footballSince:now,nbaSince:prior?.preferences.nba&&prefs.nba?prior.nbaSince:now,updatedAt:now});
  return json({ok:true});
 }
-export function selectionEvents(football,nba,now){
- const items=[];
- for(const l of football)for(const item of l.items){
-  const g=item.payload,p=g.winnerAnalysis||g.displayTip||g.winnerTip||g.recommendation,f=g.fixture;
-  if(item.kickoff<=now||['cancelled','changed'].includes(g.historyStatus)||!p)continue;
-  items.push({key:'football:'+item.id,sport:'football',kickoff:item.kickoff,firstListedAt:item.firstListedAt,gameId:item.gameId,title:'LuxTips · Futebol',body:f.homeName+' – '+f.awayName+'\n'+(p.market==='H'?f.homeName:f.awayName)+' vence · Odd '+Number(p.quote?.odd??p.odd).toFixed(2).replace('.',','),url:'/?jogo='+item.gameId});
+export function selectionEvents(football,tickets,now){
+ const items=[],clock=lisbonClock(now);
+ for(const list of football){
+  if(list.day!==clock.day||clock.hour<8||!list.locked)continue;
+  const games=(list.items||[]).filter(i=>!['cancelled','changed'].includes(i.payload?.historyStatus));
+  if(!games.length)continue;
+  const first=Date.parse(list.day+'T08:00:00Z');
+  // Resolve the Lisbon offset from the same calendar day (including DST).
+  const offset=lisbonClock(first).hour-8,at=first-offset*3600000;
+  const selectionIds=games.map(i=>i.id||String(i.gameId));
+  const details=games.map(i=>{const g=i.payload,p=g.winnerAnalysis||g.displayTip||g.winnerTip||g.recommendation,f=g.fixture;return p&&f?(p.market==='H'?f.homeName:f.awayName)+' vence':null;}).filter(Boolean);
+  items.push({key:'football-lock:'+list.day,sport:'football',selectionIds,createdAt:at,expiresAt:at+3600000,title:'LuxTips · Futebol',body:('Prognósticos de hoje bloqueados às 08h.\n'+details.join(' · ')).slice(0,400),url:'/'});
+  for(const i of games){
+   if(!(i.firstListedAt>at&&i.firstListedAt<=now)||i.kickoff<=now)continue;
+   const g=i.payload,p=g.winnerAnalysis||g.displayTip||g.winnerTip||g.recommendation,f=g.fixture;
+   if(!p||!f)continue;
+   const id=i.id||String(i.gameId);
+   items.push({key:'football-late:'+list.day+':'+id,sport:'football',selectionIds:[id],createdAt:i.firstListedAt,expiresAt:Math.min(i.firstListedAt+3600000,i.kickoff),title:'LuxTips · Novo prognóstico',body:(f.homeName+' – '+f.awayName+'\n'+(p.market==='H'?f.homeName:f.awayName)+' vence').slice(0,400),url:'/?jogo='+i.gameId});
+  }
  }
- for(const p of nba.upcoming||[]){if(p.kickoff<=now||p.outcome)continue;
-  items.push({key:'nba:'+p.gameId+':'+p.kickoff+':'+p.winner,sport:'nba',kickoff:p.kickoff,firstListedAt:p.dailyList?.firstListedAt,gameId:p.gameId,title:'LuxTips · NBA',body:p.homeName+' – '+p.awayName+'\n'+(p.winner==='home'?p.homeName:p.awayName)+' vence · Odd '+Number(p.odds).toFixed(2).replace('.',','),url:'/nba?jogo='+p.gameId});
+ for(const t of tickets){
+  if(t.status!=='active'||t.created_at>now||t.created_at<=now-3600000)continue;
+  items.push({key:'bigodds-published:'+t.id,sport:'bigodds',createdAt:t.created_at,expiresAt:t.created_at+3600000,title:'LuxTips · Big Odds',body:'Existe uma nova Big Odds disponível.',url:'/big-odds'});
  }
- return items.filter(e=>!e.body.includes('NaN')).map(e=>({...e,body:e.body.slice(0,400)}));
+ return items;
 }
 export async function notifyNewSelections(env,now=Date.now(),sender=sendPush){
  if(!env.PWA_VAPID_JWK)return {status:'unconfigured'};
@@ -52,21 +67,26 @@ export async function notifyNewSelections(env,now=Date.now(),sender=sendPush){
  const stats={at:now,events:0,sent:0,failed:0,expired:0};
  try{
   const rows=await db.prepare("SELECT data FROM openfoot_state WHERE key LIKE 'daily_list:lisbon-0800-v1:football:%'").all();
-  const nba={upcoming:[]}; // NBA notifications retired with its public tab.
-  const baseline=await read(db,'pwa:baseline'),current=selectionEvents(rows.results.map(r=>JSON.parse(r.data)),nba,now);
+  const tickets=await db.prepare("SELECT id,created_at,status FROM bigodds_tickets WHERE status='active' AND created_at>?").bind(now-3600000).all();
+  const baseline=await read(db,'pwa:scheduled-baseline'),baselineAt=baseline?.at??now;
+  const current=selectionEvents(rows.results.map(r=>JSON.parse(r.data)),tickets.results,now);
   for(const e of current){
+   if(e.createdAt<baselineAt||e.expiresAt<=now)continue;
+   if(e.key.startsWith('football-late:')){
+    const dayKey='football-lock:'+e.key.split(':')[1],daily=await read(db,'pwa:event:'+await hash(dayKey));
+    if(daily?.selectionIds?.includes(e.selectionIds[0]))continue;
+   }
    const id=await hash(e.key),key='pwa:event:'+id;if(await read(db,key))continue;
-   const createdAt=baseline&&Number.isFinite(e.firstListedAt)&&e.firstListedAt>=baseline.at?e.firstListedAt:0;
-   await db.prepare('INSERT INTO openfoot_state(key,data) VALUES(?,?) ON CONFLICT(key) DO NOTHING').bind(key,JSON.stringify({...e,id,createdAt})).run();stats.events++;
+   await db.prepare('INSERT INTO openfoot_state(key,data) VALUES(?,?) ON CONFLICT(key) DO NOTHING').bind(key,JSON.stringify({...e,id})).run();stats.events++;
   }
-  if(!baseline)await write(db,'pwa:baseline',{at:now});
+  if(!baseline)await write(db,'pwa:scheduled-baseline',{at:now});
   const subscriptions=(await db.prepare("SELECT key,data FROM openfoot_state WHERE key LIKE 'pwa:sub:%' ORDER BY key").all()).results;
-  const events=(await db.prepare("SELECT data FROM openfoot_state WHERE key LIKE 'pwa:event:%'").all()).results.map(r=>JSON.parse(r.data)).filter(e=>e.createdAt>now-3600000&&e.kickoff>now);
+  const events=(await db.prepare("SELECT data FROM openfoot_state WHERE key LIKE 'pwa:event:%'").all()).results.map(r=>JSON.parse(r.data)).filter(e=>e.expiresAt>now&&/^(football-lock:|football-late:|bigodds-published:)/.test(e.key));
   const active=new Set(current.map(e=>e.key)),jwk=JSON.parse(env.PWA_VAPID_JWK);let attempts=0;
   for(const row of subscriptions){
    const sub=JSON.parse(row.data);
    for(const e of events){
-    if(!active.has(e.key)||!sub.preferences[e.sport]||e.createdAt<(sub[e.sport+'Since']||sub.createdAt))continue;
+    if(!active.has(e.key)||!(e.sport==='bigodds'?sub.preferences.bigodds??sub.preferences.football:sub.preferences.football)||e.createdAt<(sub[e.sport+'Since']||sub.footballSince||sub.createdAt))continue;
     const key='pwa:delivery:'+sub.id+':'+e.id,prior=await read(db,key);
     if(prior?.sent||prior?.nextAt>now||prior?.attempts>=5)continue;
     if(attempts++>=20||Date.now()-now>20000)return {...stats,status:'partial'};

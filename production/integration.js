@@ -333,8 +333,7 @@ function withNba(football2) {
         const response=await football2.fetch(new Request('https://luxtips.internal/api/games'),env,ctx);
         if(!response.ok)throw Error('football_list_source_unavailable');
         await syncFootballList(env.DB,await response.json(),Date.now());
-        await notifyNewSelections(env);
-        }finally{try{await syncBigOdds(env,Date.now(),Date.now,event.scheduledTime);}catch(e){console.error(JSON.stringify({event:'bigodds_sync_failed',code:e.code||'sync_failed'}));}}
+        }finally{try{await syncBigOdds(env,Date.now(),Date.now,event.scheduledTime);}catch(e){console.error(JSON.stringify({event:'bigodds_sync_failed',code:e.code||'sync_failed'}));}finally{await notifyNewSelections(env);}}
       })());
     }
   };

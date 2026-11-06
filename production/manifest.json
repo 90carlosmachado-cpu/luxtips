@@ -1,17 +1,17 @@
 {
-  "version": "52523417-2e45-4fa7-8e8c-b249fa509f5f",
+  "version": "655bd887-860b-4870-b5cf-b6df30a4ea32",
   "retrievedAt": "2026-11-06",
   "main": "integration.js",
-  "source": "Cloudflare GET content/v2",
+  "source": "Cloudflare GET content/v2; módulos alterados verificados após publicação",
   "modules": {
     "stable-dom.mjs": "b833d0bd2a57ff2ec87c88c732c5d053c2d04b8fa7d5cbb5999bd09425cbf7ca",
-    "push.mjs": "4f72cf2e8703a682cf5b760cbe188b7e4b69631e9e877f2b6fa59e30e978d8ae",
+    "push.mjs": "9c7667ca2b38d9cb7c0bd7ee8352e776da3ca787313dc0e9b5582aa450fd91b7",
     "daily-list.mjs": "4f85d2e079def2605e8d4cb3da2419927f6ec276ef991e81e00516f8222d1861",
     "production-worker.mjs": "19a9454e41a1fa5404e73707b9b87dbe766800c81a9840cdb7a61081477b27f4",
     "football-list.mjs": "9285f221fb6d1d5d869ecd4ecd35df434b13cfe647c440a7e7d0a125b039ccf9",
     "refresh-policy.mjs": "1c89ee55066283a00d04355e2823974a93ddb70353ac5e64b10b27127fefac8d",
     "list-presentation.mjs": "efffc3a9cf9a6beb5274a0c575284c14560c3f4ca9773ec7bb1bb6e0213b62e8",
-    "pwa.mjs": "490f67d30ff637a54c892766f8bb0deb0860680817ce3645c8aa5396a3b18a0d",
+    "pwa.mjs": "07bf301200a6488bab91d8fcd41e6b87b141734631c0fc7dc164883e755cabd2",
     "quote-gate.mjs": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263",
     "bigodds-model.mjs": "b67a93e1a8ebdb8f0a7dac3a05c21a2b215c3a8fc5e8625a4363f21f37e0636c",
     "bigodds-view.mjs": "3f430e19062c23266289c88eaa1a06702601edaf248c1db5b02ecb50c61fcdc2",
@@ -19,12 +19,12 @@
     "og-image.mjs": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d",
     "bigodds.mjs": "37803645b07c468af8a7ca7b3748d313bee501a0282624c9777ca6e87bbdda39",
     "combo-archive.mjs": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384",
-    "assets.mjs": "81cb2cb4d23357ded26cdc8d9466e2ecfb545a10ea3974541c16b3b69337421b",
+    "assets.mjs": "1f8fa314e88c632edd0f4b5403f36a465361316ce86de99a3d806aad7af67816",
     "front-office.mjs": "f8218a2a22b699ee5a7909c83838f387a5672d5b211f986d010371942364524a",
     "webpush.mjs": "63252f1ce1b81cba874c86befe282756794d49eb6b5b4365056c7ebfd92c9830",
     "daily-ranking.mjs": "0cef5ee27550cd690bfa2cae93ac6d6cc78c8bdbf7467c919e8bd70dde9bcca0",
-    "integration.js": "bdaf8b104b15a9b6c8782e87639f44c356673b77a3c371706cce4cf9144d9c1d"
+    "integration.js": "715c0916d490d028ad64eb07c2307880de38d9fad1d7b9fac2c764ec22fc500d"
   },
-  "note": "Hashes dos 18 m\u00f3dulos recuperados. N\u00e3o inclui dados D1 ou valores de segredos.",
-  "previousVersion": "2fbe3451-79c5-4bc1-b480-f586aa9da8a3"
+  "note": "Hashes dos 20 módulos; sem dados D1 ou segredos.",
+  "previousVersion": "52523417-2e45-4fa7-8e8c-b249fa509f5f"
 }
