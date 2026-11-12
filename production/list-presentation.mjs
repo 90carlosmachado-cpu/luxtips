@@ -47,7 +47,7 @@ export function syncFootballPresentation(html) {
     .replace(refresh,"          render();\n          if (!document.querySelector('#history').classList.contains('hidden')) await history();\n        } catch (e) {");
   const start=output.indexOf('function historyOutcome(g)'),end=output.indexOf('function crest(',start);
   if(start<0||end<0)throw Error('football_history_ui_anchor_missing');
-  const historyCode=[historyPick,historyOutcome,uniqueHistory,historySummary].map(fn=>fn.toString()).join('\n');
+  const historyCode=[historyOutcome,historyPick,uniqueHistory,historySummary].map(fn=>fn.toString()).join('\n');
   return footballEnhancements(output.slice(0,start)+historyCode+'\n'+output.slice(end));
 }
 
