@@ -1,3 +1,4 @@
+import {notifyTelegram} from './telegram.mjs';
 import {bigOddsResponse,syncBigOdds} from './bigodds.mjs';
 import {bigOddsPage} from './bigodds-view.mjs';
 import {stableDom} from './stable-dom.mjs';
@@ -334,7 +335,12 @@ function withNba(football2) {
         const response=await football2.fetch(new Request('https://luxtips.internal/api/games'),env,ctx);
         if(!response.ok)throw Error('football_list_source_unavailable');
         await syncFootballList(env.DB,await response.json(),Date.now());
-        }finally{await notifyNewSelections(env);}
+        }finally{
+          await Promise.all([
+            notifyNewSelections(env),
+            notifyTelegram(env).catch(()=>console.error(JSON.stringify({event:'telegram_publication_failed'})))
+          ]);
+        }
       })());
     }
   };
