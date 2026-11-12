@@ -274,6 +274,16 @@ async function sportPage(response, nba, policy = null) {
 
 // src/nba/integration.mjs
 function withNba(football2) {
+  async function historyResponse(req,env,ctx) {
+    const response=await football2.fetch(req,env,ctx);
+    if(!response.ok)return response;
+    try {
+      const pending=await includePendingRecommendations(await response.json(),env.DB);
+      return Response.json(await footballHistoryFeed(env.DB,pending),{status:response.status,headers:response.headers});
+    } catch {
+      return Response.json({error:'Histórico temporariamente indisponível.'},{status:503,headers:{'Cache-Control':'no-store'}});
+    }
+  }
   return {
     async fetch(req, env, ctx) {
       const pwa=await pwaRoute(req,env);
@@ -289,16 +299,7 @@ function withNba(football2) {
           return Response.json(body,{status:response.status,headers});
         } catch {return Response.json({error:'Prognósticos temporariamente indisponíveis.'},{status:503,headers:{'Cache-Control':'no-store'}});}
       }
-      if (path === "/api/history" && req.method === "GET" && env.PREDICTION_CONTEXT_MODE === "live") {
-        const response = await football2.fetch(req, env, ctx);
-        if (!response.ok) return response;
-        try {
-          const pending=await includePendingRecommendations(await response.json(), env.DB);
-          return Response.json(await footballHistoryFeed(env.DB,pending), { status: response.status, headers: response.headers });
-        } catch {
-          return Response.json({ error: "Hist\xF3rico temporariamente indispon\xEDvel." }, { status: 503, headers: { "Cache-Control": "no-store" } });
-        }
-      }
+      if(path==='/api/history'&&req.method==='GET'&&env.PREDICTION_CONTEXT_MODE==='live')return historyResponse(req,env,ctx);
       if (path === '/og.png' && ['GET','HEAD'].includes(req.method))return new Response(req.method==='HEAD'?null:Uint8Array.from(atob(ogImage),c=>c.charCodeAt(0)),{headers:{'Content-Type':'image/png','Cache-Control':'public, max-age=604800','X-Content-Type-Options':'nosniff'}});
       if (path === '/como-funciona' && ['GET','HEAD'].includes(req.method)){
         const root=new URL(req.url);root.pathname='/';
@@ -338,7 +339,12 @@ function withNba(football2) {
         }finally{
           await Promise.all([
             notifyNewSelections(env),
-            notifyTelegram(env).catch(()=>console.error(JSON.stringify({event:'telegram_publication_failed'})))
+            notifyTelegram(env,Date.now(),fetch,async()=>{
+              const response=await historyResponse(new Request('https://luxtips.internal/api/history'),env,ctx);
+              if(!response.ok)throw Error('telegram_history_unavailable');
+              const body=await response.json();
+              return body.historyEntries||body.publishedSelections||[];
+            }).catch(()=>console.error(JSON.stringify({event:'telegram_publication_failed'})))
           ]);
         }
       })());

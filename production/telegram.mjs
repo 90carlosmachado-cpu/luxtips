@@ -1,6 +1,7 @@
 import {telegramBrand} from './telegram-brand.mjs';
 import {LIST_VERSION,lisbonClock,readDailyLists} from './daily-list.mjs';
 import {hydrateFootballList} from './football-list.mjs';
+import {historySummary} from './list-presentation.mjs';
 import {esc} from './front-office.mjs';
 import {hash,read,selectionEvents,write} from './push.mjs';
 
@@ -83,7 +84,7 @@ async function loadPublishedHistory(db,now) {
   return [...historical,...await hydrateFootballList(db,items,now)];
 }
 
-async function resultEvents(db,prefix,now) {
+async function resultEvents(db,prefix,now,loadHistory) {
   const rows=await db.prepare(`SELECT DISTINCT ids.value AS id FROM openfoot_state s
     JOIN json_each(s.data,'$.selectionIds') ids
     JOIN results r ON r.fixture_id=CAST(ids.value AS INTEGER)
@@ -106,10 +107,10 @@ async function resultEvents(db,prefix,now) {
     const outcome=result.home===result.away?'D':result.home>result.away?'H':'A';
     settled.set(id,{id,g,result:{...result,hit:p.market===outcome}});
   }
-  const total=settled.size,correct=[...settled.values()].filter(entry=>entry.result.hit).length;
+  const performance=historySummary(await loadHistory());
   return [...settled.values()].filter(entry=>wanted.has(entry.id)).map(({id,g,result})=>({
     key:'football-result:'+id,sport:'football',createdAt:now,expiresAt:now+60000,selectionIds:[id],
-    pick:getPick({payload:g,id,kickoff:g.fixture.ts},true),result:{...result,total,correct}
+    pick:getPick({payload:g,id,kickoff:g.fixture.ts},true),result:{...result,performance}
   })).filter(event=>event.pick);
 }
 
@@ -125,7 +126,13 @@ async function createPhoto(env,title,picks,result,ticket) {
   return png;
 }
 
-export async function notifyTelegram(env,now=Date.now(),send=fetch) {
+function resultCaption(title,pick,result) {
+  const {performance}=result;
+  const stats=performance.total?`\n📊 Acerto histórico · ${performance.rate.toFixed(1).replace('.',',')}% (${performance.correct} em ${performance.total})`:'';
+  return `${result.hit?'✅':'❌'} ${title}\n\n⚽ ${pick.home.name} ${result.home}–${result.away} ${pick.away.name}\n🎯 ${pick.selection} · 1X2${stats}${result.hit?'\n\n🔥 Se acompanhaste este prognóstico, deixa uma reação!':''}`;
+}
+
+export async function notifyTelegram(env,now=Date.now(),send=fetch,loadHistory) {
   const token=env.TELEGRAM_BOT_TOKEN,channel=env.TELEGRAM_CHANNEL_ID;
   if(!token||!channel||!env.FOOTBALL_BROWSER)return {status:'unconfigured'};
   const db=env.DB,prefix='telegram:'+await hash(channel)+':',lock=prefix+'lock',until=now+120000;
@@ -159,7 +166,7 @@ export async function notifyTelegram(env,now=Date.now(),send=fetch) {
       ticketsByEvent.set(key,winner);
       events.push({key,sport:'bigodds',createdAt:winner.closed_at,expiresAt:winner.closed_at+86400000});
     }
-    try {events.push(...await resultEvents(db,prefix,now));}
+    try {events.push(...await resultEvents(db,prefix,now,loadHistory));}
     catch {console.error(JSON.stringify({event:'telegram_results_unavailable'}));}
     const picks=new Map(accepted.map(item=>{const pick=getPick(item);return [pick.id,pick];}));
     const morningKey=prefix+'football-lock:'+day;
@@ -192,7 +199,7 @@ export async function notifyTelegram(env,now=Date.now(),send=fetch) {
       const title=ticket?(wonIds?'Big Odds ganho':'Big Odds'):result?(result.hit?'Prognóstico certo':'Prognóstico falhado'):late?'Novo prognóstico':'Prognósticos do dia';
       if(!selected.length)continue;
       const text=result
-        ? `${result.hit?'✅':'❌'} ${title}\n\n⚽ ${pick.home.name} ${result.home}–${result.away} ${pick.away.name}\n🎯 ${pick.selection} · 1X2\n📊 Acerto histórico · ${Math.round(100*result.correct/result.total)}% (${result.correct} em ${result.total})${result.hit?'\n\n🔥 Se acompanhaste este prognóstico, deixa uma reação!':''}`
+        ? resultCaption(title,pick,result)
         : football
         ? `⚽ LuxTips · ${title}\n\n${selected.map(p=>`🏟️ ${p.match} · ${p.time}\n🎯 ${p.selection} · 1X2\n📊 Odd ${p.odd} · Betano`).join('\n\n')}`
         : wonIds
