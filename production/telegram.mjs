@@ -5,6 +5,7 @@ import {historySummary} from './list-presentation.mjs';
 import {esc} from './front-office.mjs';
 import {hash,read,selectionEvents,write} from './push.mjs';
 
+const bigodesMark='<div class="bigodes-brand" aria-label="BIGODES">BIG<span>ODD</span>ES<div class="moustache">〰</div></div>';
 const botUrl='https://t.me/LuxTipsFootballBot';
 const botButton=JSON.stringify({inline_keyboard:[[{text:'Abrir miniapp Luxtips',url:botUrl}]]});
 const hours=new Intl.DateTimeFormat('pt-PT',{timeZone:'Europe/Lisbon',hour:'2-digit',minute:'2-digit'});
@@ -44,7 +45,8 @@ function card(title,picks,ticket) {
   .crest{flex:none;width:46px;height:46px;background:center/contain no-repeat}
   footer{display:flex;justify-content:space-between;gap:16px;color:#ceff75;font-weight:750}
   footer strong{color:#fff;white-space:nowrap}.note{margin:24px 0 0;color:#aebbc2;font-size:20px}
-  </style><main><header><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"></header><h1>${esc(title)}</h1>${ticket?`<p>Odd ${ticket.won?'final':'total'} ${esc(ticket.odd)} · Betano</p>`:''}
+  .bigodes-brand{font-size:54px;font-weight:950;letter-spacing:2px;line-height:1.1;margin:16px 0 10px}.bigodes-brand span{color:#a3f42a}.moustache{font-size:46px;line-height:.6;color:#a3f42a;transform:scaleX(1.5);margin:12px 0 24px}
+  </style><main><header><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"></header>${ticket?bigodesMark:""}<h1>${esc(title)}</h1>${ticket?`<p>Odd ${ticket.won?'final':'total'} ${esc(ticket.odd)} · Betano</p>`:''}
   ${picks.map(p=>`<article><small>${esc(p.competition)} · ${esc(p.time)}</small><h2>${cardTeam(p.home)}<span>–</span>${cardTeam(p.away)}</h2>
   <footer><span>${esc(p.selection)}</span><strong>${esc(p.odd)} · Betano</strong></footer></article>`).join('')}
   <p class="note">${ticket?"Futebol aos 90 minutos":"Futebol 1X2 aos 90 minutos"} · 18+</p></main></html>`;
@@ -196,15 +198,15 @@ export async function notifyTelegram(env,now=Date.now(),send=fetch,loadHistory) 
         selection:wonIds&&!wonIds.has(leg.fixtureId)?leg.label+' · Anulada':leg.label,
         odd:leg.odd.toFixed(2).replace('.',',')
       })):result?[pick]:(event.selectionIds||[]).map(id=>picks.get(id)).filter(Boolean);
-      const title=ticket?(wonIds?'Big Odds ganho':'Big Odds'):result?(result.hit?'Prognóstico certo':'Prognóstico falhado'):late?'Novo prognóstico':'Prognósticos do dia';
+      const title=ticket?(wonIds?'BIGODES ganho':'BIGODES'):result?(result.hit?'Prognóstico certo':'Prognóstico falhado'):late?'Novo prognóstico':'Prognósticos do dia';
       if(!selected.length)continue;
       const text=result
         ? resultCaption(title,pick,result)
         : football
         ? `⚽ LuxTips · ${title}\n\n${selected.map(p=>`🏟️ ${p.match} · ${p.time}\n🎯 ${p.selection} · 1X2\n📊 Odd ${p.odd} · Betano`).join('\n\n')}`
         : wonIds
-        ? `✅ LuxTips · Big Odds ganho\n\n📊 Odd final ${ticketOdd} · Betano\n⚽ ${wonLegs.length} ${wonLegs.length===1?'seleção certa':'seleções certas'}${voidCount?' · '+voidCount+(voidCount===1?' anulada':' anuladas'):''}`
-        : `🔥 LuxTips · Big Odds\n\n📊 Odd total ${ticketOdd} · Betano\n⚽ ${selected.length} seleções`;
+        ? `✅ LuxTips · BIGODES ganho\n\n📊 Odd final ${ticketOdd} · Betano\n⚽ ${wonLegs.length} ${wonLegs.length===1?'seleção certa':'seleções certas'}${voidCount?' · '+voidCount+(voidCount===1?' anulada':' anuladas'):''}`
+        : `🔥 LuxTips · BIGODES\n\n📊 Odd total ${ticketOdd} · Betano\n⚽ ${selected.length} seleções`;
       const form=new FormData();
       form.set('chat_id',channel);
       form.set('reply_markup',botButton);
