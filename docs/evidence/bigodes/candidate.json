@@ -1,0 +1,13 @@
+{
+  "scope": "Presentation only; no algorithm or database changes",
+  "modules": {
+    "integration.js": "c4bd08578e3b2ab836249f8e829a5f1f17303ba1522144ba6d8def40b6c27513",
+    "bigodds-view.mjs": "cb3af06111836dc43f895f3b45e0b1bdd642c41452883853daf7aa6419b01112",
+    "front-office.mjs": "5489b76ded789eb26287c9eb02821e4379f676192e04f6c4df936bfc670d22b6",
+    "pwa.mjs": "0d71607236bb3489dc8624f61333c4aa0a590c8c12be7f038fd2d95b3d071397",
+    "push.mjs": "dc0df0184e93ba1b593f7e9bfb6c0e8b0f262f4935e6117496eebe50976fa8fa",
+    "telegram.mjs": "86cbd8f77e244f28ba93d99e5e754cf9fde1ebf19753da84f6c0620c3350b2e3",
+    "bigodes-brand.mjs": "f5e42d25748eb79325ffcd92ba2ec14efcd782110489776dfda778f1a3b58f13"
+  },
+  "telegramDeliveryLogicUnchanged": true
+}

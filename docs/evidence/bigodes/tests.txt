@@ -1,0 +1,35 @@
+{
+  "baseline": {
+    "legacy": [
+      "# tests 129",
+      "# pass 129",
+      "# fail 0"
+    ],
+    "production": [
+      "# tests 103",
+      "# pass 97",
+      "# fail 6"
+    ]
+  },
+  "candidate": {
+    "legacy": [
+      "# tests 129",
+      "# pass 129",
+      "# fail 0"
+    ],
+    "production": [
+      "# tests 109",
+      "# pass 103",
+      "# fail 6"
+    ]
+  },
+  "preexistingFailures": [
+    "actual cron integration runs Big Odds before slow football maintenance",
+    "scheduled deliveries deduplicate, ignore legacy events and retain existing subscribers",
+    "failed delivery retries without repeating an already successful event",
+    "late entries for today notify once, future days and odds updates do not notify",
+    "entry first discovered during 08h cycle is included without a duplicate late alert",
+    "first pick of an initially empty day still notifies after 09h"
+  ],
+  "newFailures": []
+}

@@ -55,7 +55,7 @@ export function selectionEvents(football,tickets,now){
  }
  for(const t of tickets){
   if(t.status!=='active'||t.created_at>now||t.created_at<=now-3600000)continue;
-  items.push({key:'bigodds-published:'+t.id,sport:'bigodds',createdAt:t.created_at,expiresAt:t.created_at+3600000,title:'LuxTips · Big Odds',body:'Existe uma nova Big Odds disponível.',url:'/big-odds'});
+  items.push({key:'bigodds-published:'+t.id,sport:'bigodds',createdAt:t.created_at,expiresAt:t.created_at+3600000,title:'LuxTips · Bigodes',body:'Existe uma nova múltipla BIGODES disponível.',url:'/big-odds'});
  }
  return items;
 }

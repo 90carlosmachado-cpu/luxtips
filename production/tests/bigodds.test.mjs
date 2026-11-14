@@ -141,7 +141,7 @@ test('browser client loads cards, escapes names, changes tabs, paginates and rep
  context.stableDom=(target,markup)=>{if(target.innerHTML!==markup)target.innerHTML=markup;};context.analysisDetails=()=>'';context.disclosureEvents=()=>{};
  vm.runInContext('('+bigOddsClient.toString()+')(stableDom,analysisDetails,disclosureEvents)',context);await new Promise(resolve=>setImmediate(resolve));
  assert.ok(node('#bigCurrent').innerHTML.includes('&lt;script&gt;'));assert.ok(!node('#bigCurrent').innerHTML.includes('<script>alert'));
- await listeners.click({target:{closest:()=>tabs[1]}});assert.equal(tabs[1]['aria-selected'],'true');assert.equal(node('#pageTitle').textContent,'Histórico');
+ await listeners.click({target:{closest:()=>tabs[1]}});assert.equal(tabs[1]['aria-selected'],'true');assert.equal(node('#pageTitle').innerHTML,'Histórico');
  await listeners.click({target:{closest:()=>({id:'bigMore',dataset:{}})}});assert.equal(calls,2);assert.ok(!node('#bigHistory').innerHTML.includes('id="bigMore"'));
  fail=true;await listeners.click({target:{closest:()=>({id:'bigRetry',dataset:{}})}});await new Promise(resolve=>setImmediate(resolve));assert.ok(node('#status').textContent.includes('indisponível'));assert.ok(node('#bigCurrent').innerHTML.includes('&lt;script&gt;'));
 });

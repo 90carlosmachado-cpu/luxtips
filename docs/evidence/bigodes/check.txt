@@ -1,0 +1,6 @@
+
+> check
+> node scripts/check.mjs && node scripts/check-production.mjs
+
+Sintaxe válida; bundle gerado coincide com as adaptações auditáveis do original recuperado.
+25 módulos de produção com hashes íntegros e sintaxe válida; entrada atual confirmada.

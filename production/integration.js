@@ -1,3 +1,4 @@
+import {bigodesIcon} from './bigodes-brand.mjs';
 import {notifyTelegram} from './telegram.mjs';
 import {bigOddsResponse,syncBigOdds} from './bigodds.mjs';
 import {bigOddsPage} from './bigodds-view.mjs';
@@ -129,7 +130,7 @@ function nbaHistoryMembership(rows,data,day) {
 var football = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 9 7 5-3 8h-8l-3-8zm0-7v7m14 3-7 2m2 14-5-6M7 28l5-6M2 12l7 2" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 var basketball = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 16h28M16 2v28M6 6c13 6 7 14 20 20M26 6C13 12 19 20 6 26" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 function sportNavigation(nba) {
-  return '<nav class="sports" aria-label="Modalidade"><a href="/"' + (!nba ? ' aria-current="page"' : "") + ">" + football + '<span>Futebol</span></a><a href="/big-odds"' + (nba ? ' aria-current="page"' : "") + ">" + football + "<span>Big Odds</span></a>"+howLink()+"</nav>";
+  return '<nav class="sports" aria-label="Modalidade"><a href="/"' + (!nba ? ' aria-current="page"' : "") + ">" + football + '<span>Futebol</span></a><a href="/big-odds"' + (nba ? ' aria-current="page"' : "") + ">" + bigodesIcon + "<span>Bigodes</span></a>"+howLink()+"</nav>";
 }
 var extraStyle = `<style>
 .sports{display:flex;gap:8px;margin:0}.section-nav{width:max-content;margin:24px 0 0}.topbar .sports{flex-shrink:0}@media(max-width:620px){.topbar .sports{width:100%}.topbar .sports a{flex:1}.section-nav{width:100%;margin-top:18px}}.sports a{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border:1px solid var(--line);border-radius:10px;color:var(--muted);text-decoration:none;font-weight:700;background:var(--panel)}.sports a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:#26351f}.sports a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.sports svg{width:24px;height:24px}.nba-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:20px 0}.nba-team{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center;font-size:12px;font-weight:600}.nba-team img{width:52px;height:52px;object-fit:contain}.nba-date{margin:24px 0 12px}.nba-history-days{display:flex;gap:6px;overflow:auto;margin:16px 0}.nba-history-days button{white-space:nowrap}.nba-more{margin-top:20px}.nba-unavailable{display:none}@media(max-width:540px){.sports a{flex:1;padding:12px}.sports{gap:8px}.nba-team img{width:44px;height:44px}}

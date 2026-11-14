@@ -14,7 +14,7 @@ test('football only notifies today at its Lisbon lock, summer and winter',()=>{
 });
 test('Big Odds contains no selections or odds and is keyed by ticket',()=>{
  const [e]=selectionEvents([],[{id:'one',status:'active',created_at:at}],at);
- assert.equal(e.body,'Existe uma nova Big Odds disponível.');assert.equal(e.url,'/big-odds');
+ assert.equal(e.body,'Existe uma nova múltipla BIGODES disponível.');assert.equal(e.url,'/big-odds');
  assert.equal(selectionEvents([],[{id:'old',status:'active',created_at:at-3600000}],at).length,0);
 });
 function setup(){const db=testDatabase();db.sql.exec('CREATE TABLE bigodds_tickets(id TEXT,created_at INTEGER,status TEXT)');return db;}
