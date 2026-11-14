@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-14",
+  "implementationCommit": "7c766706a2382c4a90d139e952b791daf176b0ad",
+  "policy": "bigodds-exact-ev-betano-v4",
+  "worker": "luxtips",
+  "previousVersion": "1bddff44-14ed-4cb1-a37d-db3803b4d3ce",
+  "activeVersion": "7ccd3b27-f4fe-4683-a48d-029b31596cda",
+  "deploymentId": "c8a35f77-7674-4cd5-b392-3d39971c0f64",
+  "deployedAt": "2026-11-14T14:13:22.398466Z",
+  "deploymentMethod": "content PUT preserving settings and all untouched modules",
+  "moduleCount": 24,
+  "untouchedModuleCount": 21,
+  "sourceMismatches": [],
+  "settingsUnchanged": true,
+  "testedModuleSha256": {
+    "bigodds.mjs": "18c320ae754611c1568b42fc79dc6ecbd6b94adc7ffee5e84be58b1f389217e4",
+    "bigodds-model.mjs": "b3324c68aa1b9d35bc10156c7ddb6c201c201d06b989bb0168acec964742a57b",
+    "bigodds-optimizer.mjs": "1f36b9394562427d896093979b9bcf39ebb890254e7413a6db98605322eb9009"
+  },
+  "tests": {
+    "localPassed": 26,
+    "localFailed": 0,
+    "optimizerAuditTests": 16,
+    "sqliteIntegrationTests": 10,
+    "randomExhaustiveOracleCases": 1000,
+    "fullRepositorySuiteRun": false,
+    "wranglerDryRunRun": false,
+    "workerUploadAccepted": true
+  },
+  "historyReset": {
+    "requestId": "b4cd92b1-c4c6-444e-b0b5-575c26a0e7db",
+    "startAt": 1794665682430,
+    "oldTickets": 7,
+    "oldLegs": 56,
+    "physicalDeletion": false,
+    "publicHistoryReset": true,
+    "oldPendingLegsVoided": 17,
+    "originalSnapshotsUnchanged": true,
+    "immutableTriggersPreserved": 6,
+    "backupKey": "bigodds:recovery:b4cd92b1-c4c6-444e-b0b5-575c26a0e7db",
+    "backupSha256": "bb92a8c5212070deb2f6ab3f51d0000d92846917d31271a8b3553dcb49852f05",
+    "backupBytes": 202862,
+    "verificationNote": "The write batch completed; its initial follow-up SELECT was rejected for combining params with multiple statements. Read-only verification was corrected; the reset was not repeated."
+  },
+  "manualCycle": {
+    "requestId": "b4cd92b1-c4c6-444e-b0b5-575c26a0e7db",
+    "status": "published",
+    "queueConsumed": true,
+    "ticketId": "356d9c1f-e297-4d3a-96ca-ce4dde2dfdc6",
+    "createdAt": "2026-11-14T14:15:01.720Z",
+    "legs": 5,
+    "registeredOdd": 8.753011199999998,
+    "candidateCountAfterFilters": 24,
+    "fixtureCountAfterFilters": 13,
+    "searchNodes": 2444,
+    "optimalityProvedForSuppliedInputs": true,
+    "probabilityCalibrationValidated": false,
+    "independentGamesAssumed": true,
+    "legValueGuardsVerified": true,
+    "ticketValueGuardVerified": true,
+    "uniqueFixturesAndTeamsVerified": true,
+    "realBetanoPricesVerified": true
+  },
+  "publicVerification": {
+    "checkedAt": "2026-11-14T14:17:36.227Z",
+    "bigOddsPageHttp": 200,
+    "footballPageHttp": 200,
+    "bigOddsApiHttp": 200,
+    "historyIds": ["356d9c1f-e297-4d3a-96ca-ce4dde2dfdc6"],
+    "summary": {"tickets": 1, "won": 0, "lost": 0, "void": 0, "active": 1},
+    "displayedOdd": 8.396783999999998,
+    "displayedOddStatus": "ready",
+    "priceNote": "The Northern Ireland-Ukraine BN quote refreshed from 1.72 to 1.65 after publication; the immutable original remains 8.7530112."
+  },
+  "limitations": [
+    "Selection optimization is not proof of profitable or calibrated predictions.",
+    "Estimated combo odds remain research-only and are not executable markets.",
+    "Historical records remain in the internal recovery/audit ledger, not the public history.",
+    "Only the changed runtime modules and a missing live dependency were synchronized; do not replace the whole live bundle with an older repository recovery."
+  ]
+}
