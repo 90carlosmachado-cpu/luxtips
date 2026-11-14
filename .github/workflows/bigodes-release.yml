@@ -1,0 +1,125 @@
+name: BIGODES one-time validation
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/bigodes-release.yml']
+permissions:
+  contents: write
+concurrency:
+  group: bigodes-release
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Apply presentation-only changes
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync,readdirSync,mkdirSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          import {createHash} from 'node:crypto';
+          import assert from 'node:assert/strict';
+          const files=Object.fromEntries(readdirSync('production').filter(n=>/\.(mjs|js)$/.test(n)).map(n=>[n,readFileSync('production/'+n,'utf8')]));
+          for(const n of ['bigodds-view.mjs','telegram.mjs'])files[n]=execFileSync('git',['show','358c142c48612ed322bd875947169a3f673ba31e^:production/'+n],{encoding:'utf8'});
+          const before={...files};
+          const icon='<svg class="bigodes-moustache" viewBox="0 0 120 48" aria-hidden="true" focusable="false"><path fill="currentColor" d="M60 15C48 2 38 5 30 18C23 30 12 32 4 20C4 42 32 46 50 33L60 24L70 33C88 46 116 42 116 20C108 32 97 30 90 18C82 5 72 2 60 15Z"/></svg>';
+          const heading='BIG<span class="bigodes-odd">OD</span>ES'+icon;
+          const mark='<div class="bigodes-brand" role="img" aria-label="BIGODES — Big Odds do LuxTips"><div class="bigodes-name">'+heading+'</div><small class="bigodes-tagline">BIG ODDS · MÚLTIPLAS DE FUTEBOL</small></div>';
+          const styles='.bigodes-odd{color:#ceff75}.bigodes-moustache{display:block;width:112px;height:45px;margin:8px auto 0;color:#f2f6f8}.bigodes-wordmark{display:inline-block;text-align:center;letter-spacing:.035em;font-weight:900}.bigodes-brand{max-width:540px;margin:28px auto;padding:26px 32px 30px;border:1px solid #ceff75;border-radius:22px 22px 48px 48px;background:radial-gradient(ellipse at top,#26351f,#111920 75%);box-shadow:0 0 28px #ceff7518;text-align:center;color:#f2f6f8}.bigodes-name{font-size:72px;font-weight:900;letter-spacing:.035em;line-height:1.05}.bigodes-brand .bigodes-moustache{width:160px;height:64px;margin:12px auto}.bigodes-tagline{font-size:14px!important;letter-spacing:.1em;color:#ceff75!important;margin-top:14px}.bigodes-status{text-align:center;font-size:32px!important;margin:18px 0!important}';
+          files['bigodes-brand.mjs']=[['bigodesIcon',icon],['bigodesHeading',heading],['bigodesMark',mark],['bigodesStyles',styles]].map(([k,v])=>'export const '+k+'='+JSON.stringify(v)+';').join('\n')+'\n';
+          const once=(n,a,z)=>{assert.equal(files[n].split(a).length,2,'Patch anchor '+n+': '+a.slice(0,80));files[n]=files[n].replace(a,z);};
+          for(const n of ['front-office.mjs','pwa.mjs','push.mjs'])files[n]=files[n].replaceAll('Big Odds','Bigodes');
+          files['push.mjs']=files['push.mjs'].replace('Existe uma nova Bigodes disponível.','Existe uma nova múltipla BIGODES disponível.');
+          files['integration.js']="import {bigodesIcon} from './bigodes-brand.mjs';\n"+files['integration.js'];
+          once('integration.js','+ football + "<span>Big Odds</span></a>"','+ bigodesIcon + "<span>Bigodes</span></a>"');
+          files['bigodds-view.mjs']="import {bigodesHeading,bigodesStyles} from './bigodes-brand.mjs';\n"+files['bigodds-view.mjs'].replaceAll('Big Odds','Bigodes').replaceAll('BIG ODDS','BIGODES');
+          once('bigodds-view.mjs',' const number=x=>'," const pageTitleHtml=$('#pageTitle').innerHTML;\n const number=x=>");
+          once('bigodds-view.mjs',"$('#pageTitle').textContent=b.dataset.bigTab==='history'?'Histórico':'Bigodes';","$('#pageTitle').innerHTML=b.dataset.bigTab==='history'?'Histórico':pageTitleHtml;");
+          once('bigodds-view.mjs','<h1 id="pageTitle">Bigodes<span class="title-dot">.</span></h1>','<h1 id="pageTitle" class="bigodes-wordmark">\'+bigodesHeading+\'</h1>');
+          once('bigodds-view.mjs'," html=decorateFrontOffice(html,'bigodds')"," html=html.replace('</head>','<style>'+bigodesStyles+'</style></head>');\n html=decorateFrontOffice(html,'bigodds')");
+          files['telegram.mjs']="import {bigodesMark,bigodesStyles} from './bigodes-brand.mjs';\n"+files['telegram.mjs'].replaceAll('Big Odds','BIGODES');
+          once('telegram.mjs','  </style><main><header>','  ${ticket?bigodesStyles:""}\n  </style><main><header>');
+          once('telegram.mjs','</header><h1>${esc(title)}</h1>${ticket?','</header>${ticket?bigodesMark+\'<h1 class="bigodes-status">\'+(ticket.won?\'Múltipla ganha\':\'Boletim em curso\')+\'</h1>\':\'<h1>\'+esc(title)+\'</h1>\'}${ticket?');
+          files['telegram.mjs']=files['telegram.mjs'].replaceAll('BIGODES ganho','BIGODES · Múltipla ganha');
+          const expected={'integration.js':'c4bd08578e3b2ab836249f8e829a5f1f17303ba1522144ba6d8def40b6c27513','bigodds-view.mjs':'cb3af06111836dc43f895f3b45e0b1bdd642c41452883853daf7aa6419b01112','front-office.mjs':'5489b76ded789eb26287c9eb02821e4379f676192e04f6c4df936bfc670d22b6','pwa.mjs':'0d71607236bb3489dc8624f61333c4aa0a590c8c12be7f038fd2d95b3d071397','push.mjs':'dc0df0184e93ba1b593f7e9bfb6c0e8b0f262f4935e6117496eebe50976fa8fa','telegram.mjs':'86cbd8f77e244f28ba93d99e5e754cf9fde1ebf19753da84f6c0620c3350b2e3','bigodes-brand.mjs':'f5e42d25748eb79325ffcd92ba2ec14efcd782110489776dfda778f1a3b58f13'};
+          for(const [n,sha] of Object.entries(expected)){assert.equal(createHash('sha256').update(files[n]).digest('hex'),sha,'Candidate differs from Cloudflare validation: '+n);writeFileSync('production/'+n,files[n]);}
+          for(const n of ['bigodds.mjs','bigodds-model.mjs','bigodds-optimizer.mjs','production-worker.mjs'])assert.equal(files[n],before[n],'Algorithm changed: '+n);
+          const notify=s=>s.slice(s.indexOf('export async function notifyTelegram'));
+          assert.equal(notify(files['telegram.mjs']),notify(before['telegram.mjs']).replaceAll('Big Odds','BIGODES').replaceAll('BIGODES ganho','BIGODES · Múltipla ganha'),'Telegram delivery logic changed');
+          const p='production/tests/push-schedule.test.mjs';
+          writeFileSync(p,readFileSync(p,'utf8').replaceAll('LuxTips · Big Odds','LuxTips · Bigodes').replaceAll('Existe uma nova Big Odds disponível.','Existe uma nova múltipla BIGODES disponível.'));
+          mkdirSync('docs/evidence/bigodes',{recursive:true});
+          writeFileSync('docs/evidence/bigodes/candidate.json',JSON.stringify({scope:'Presentation only; no algorithm or database changes',modules:expected,telegramDeliveryLogicUnchanged:true},null,2)+'\n');
+          NODE
+      - name: Add branding regression tests
+        shell: bash
+        run: |
+          cat > production/tests/bigodes-brand.test.mjs <<'NODE'
+          import test from 'node:test';
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          import {bigodesIcon,bigodesHeading,bigodesMark,bigodesStyles} from '../bigodes-brand.mjs';
+          import {telegramBrand} from '../telegram-brand.mjs';
+          import {esc} from '../front-office.mjs';
+          const source=readFileSync(new URL('../telegram.mjs',import.meta.url),'utf8');
+          const render=new Function('esc','telegramBrand','bigodesMark','bigodesStyles',source.slice(source.indexOf('function cardTeam('),source.indexOf('function resultCard('))+'\nreturn card;')(esc,telegramBrand,bigodesMark,bigodesStyles);
+          const pick={home:{id:1,name:'Casa <teste>'},away:{id:2,name:'Fora'},competition:'Teste',time:'15/11 · 18:00',selection:'Casa vence',odd:'1,50'};
+          test('BIGODES keeps its Portuguese spelling and explains the Big Odds pun',()=>{
+            assert.equal(bigodesHeading.replace(/<svg[\s\S]*?<\/svg>/,'').replace(/<[^>]+>/g,''),'BIGODES');
+            assert.match(bigodesMark,/BIG ODDS/);assert.match(bigodesIcon,/<path fill="currentColor"/);assert.match(bigodesStyles,/#ceff75/);
+          });
+          for(const count of [1,12])test('Telegram brand, logos and escaped selections: '+count,()=>{
+            const html=render('BIGODES',Array.from({length:count},()=>pick),{odd:'10,00',won:false});
+            assert.match(html,/class="bigodes-brand"/);assert.match(html,/class="bigodes-moustache"/);
+            assert.equal((html.match(/<article>/g)||[]).length,count);assert.equal((html.match(/class="crest"/g)||[]).length,count*2);
+            assert.ok(!html.includes('BIGODDES'));assert.ok(!html.includes('<teste>'));assert.match(html,/Boletim em curso/);
+          });
+          test('Winning multiple receives the same identity',()=>assert.match(render('BIGODES',[pick],{odd:'10,00',won:true}),/Múltipla ganha/));
+          test('Ordinary football cards retain their identity',()=>{const html=render('Prognósticos do dia',[pick],null);assert.ok(!html.includes('class="bigodes-brand"'));assert.match(html,/<h1>Prognósticos do dia<\/h1>/);});
+          test('Returning from history restores the complete wordmark',()=>{const view=readFileSync(new URL('../bigodds-view.mjs',import.meta.url),'utf8');assert.match(view,/const pageTitleHtml=/);assert.ok(view.includes(".innerHTML=b.dataset.bigTab==='history'?'Histórico':pageTitleHtml"));});
+          NODE
+      - name: Install pinned dependencies
+        run: npm ci
+      - name: Run all tests
+        shell: bash
+        run: |
+          set -o pipefail
+          npm test 2>&1 | tee /tmp/bigodes-tests.txt
+      - name: Check candidate syntax and compile without deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp production/manifest.json /tmp/bigodes-original-manifest.json
+          node --input-type=module <<'NODE'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          const manifest=JSON.parse(readFileSync('production/manifest.json','utf8'));
+          const candidate=JSON.parse(readFileSync('docs/evidence/bigodes/candidate.json','utf8'));
+          Object.assign(manifest.modules,candidate.modules);
+          writeFileSync('production/manifest.json',JSON.stringify(manifest,null,2)+'\n');
+          NODE
+          npm run check 2>&1 | tee /tmp/bigodes-check.txt
+          npm run build:check 2>&1 | tee /tmp/bigodes-build.txt
+          cp /tmp/bigodes-original-manifest.json production/manifest.json
+          tail -n 15 /tmp/bigodes-tests.txt > docs/evidence/bigodes/tests.txt
+          cat /tmp/bigodes-check.txt > docs/evidence/bigodes/check.txt
+          cat /tmp/bigodes-build.txt > docs/evidence/bigodes/build.txt
+      - name: Commit verified source and remove this one-time runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add production/bigodes-brand.mjs production/bigodds-view.mjs production/telegram.mjs production/integration.js production/front-office.mjs production/pwa.mjs production/push.mjs production/tests/bigodes-brand.test.mjs production/tests/push-schedule.test.mjs docs/evidence/bigodes
+          git rm .github/workflows/bigodes-release.yml
+          git diff --cached --stat
+          git commit -m 'Fix BIGODES identity across website and Telegram; preserve prediction and delivery logic'
+          git push origin HEAD:main
+          git rev-parse HEAD
