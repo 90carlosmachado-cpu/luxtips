@@ -1,6 +1,7 @@
+import {optimizeBigOdds} from './bigodds-optimizer.mjs';
 // Research candidate goals4: role-specific goals, prior 4, half-life 180 days.
 // No results from the target game and no market odds enter the probability model.
-export const BIGODDS_POLICY=Object.freeze({id:'bigodds-xg90-prior2-market50-no-unders-betano-v3',bookmaker:'Betano',source:'xg90-prior2-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.5,quoteMaxAge:21600000,prior:2,halfLifeDays:90,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
+export const BIGODDS_POLICY=Object.freeze({id:'bigodds-exact-ev-betano-v4',optimizer:'exact-branch-bound-v1',minLegExpectedReturn:0,minTicketExpectedReturn:.03,disallowRepeatedTeams:true,maxNodes:1000000,bookmaker:'Betano',source:'xg90-prior2-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.5,quoteMaxAge:21600000,prior:2,halfLifeDays:90,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
 const DAY=86400000,DECAY=180*DAY/Math.LN2;
 export function goalModel(history,now){
  const leagues=new Map(),teams=new Map();
@@ -64,6 +65,7 @@ export function marketHit(m,h,a){
 }
 export const MARKET_LABELS={'1':'Casa vence','2':'Visitante vence','1X':'1X','X2':'X2','1+O15':'Casa vence + mais de 1,5','2+O15':'Visitante vence + mais de 1,5','1X+O15':'1X + mais de 1,5','X2+O15':'X2 + mais de 1,5',O15:'Mais de 1,5 golos',U15:'Menos de 1,5 golos',O25:'Mais de 2,5 golos',U25:'Menos de 2,5 golos',O35:'Mais de 3,5 golos',U35:'Menos de 3,5 golos',BY:'Ambas marcam',BN:'Ambas não marcam'};
 const side=m=>['1','1X','1+O15','1X+O15'].includes(m)?'home':['2','X2','2+O15','X2+O15'].includes(m)?'away':null;
+// Historical selector retained only for existing replay tests; runtime uses analyzeTicketExact.
 export function selectTicket(candidates){
  const books=new Map();
  for(const l of candidates){
@@ -88,4 +90,29 @@ export function selectTicket(candidates){
   }
  }
  return best;
+}
+
+// Preserve analytical direction before checking prices; do not chase the opposite side.
+export function analyzeTicketExact(candidates,now=Date.now()){
+ if(!Array.isArray(candidates))throw new TypeError('Expected candidate array');
+ let directionRejected=0;
+ const eligible=candidates.filter(l=>{
+  const marketSide=side(l?.market);
+  if(!marketSide)return true;
+  const model=l.modelProbabilities||l.probabilities;
+  if(!Number.isFinite(model?.['1X'])||!Number.isFinite(model?.X2)){directionRejected++;return false;}
+  const direction=model['1X']>=model.X2?'home':'away';
+  if(marketSide!==direction){directionRejected++;return false;}
+  return true;
+ });
+ const result=optimizeBigOdds(eligible,{...BIGODDS_POLICY,now});
+ if(directionRejected)result.rejections.analytical_direction=directionRejected;
+ if(result.status!=='optimal')result.ticket=null;
+ if(result.ticket)result.ticket.optimization={algorithm:BIGODDS_POLICY.optimizer,optimalityProved:true,
+  independentGamesAssumed:true,probabilityCalibrationValidated:false,nodes:result.nodes,
+  candidateCount:result.candidateCount,fixtureCount:result.fixtureCount};
+ return result;
+}
+export function selectTicketExact(candidates,now=Date.now()){
+ return analyzeTicketExact(candidates,now).ticket;
 }
