@@ -19,39 +19,42 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Preserve deployed presentation and run original guarded release checks
+      - name: Validate scoped identity changes and compile
         shell: bash
         run: |
           python3 <<'PY'
-          import subprocess, textwrap
-          original=subprocess.check_output(['git','show','473a7e78c5bf066aa65bf5b786924eff868d8ee8:.github/workflows/bigodes-release.yml'],text=True)
-          def script(name):
-              section=original.split('      - name: '+name+'\n',1)[1].split('\n      - ',1)[0]
-              return textwrap.dedent(section.split('        run: |\n',1)[1])
-          deployed_block=r''' const nations=p.nationsObjective;
-           if(nations){
-            const objectives={seeded_quarter_final:'ganhar o grupo e ser cabeça de série nos quartos',quarter_final:'chegar aos quartos',stay_a:'manter-se na Liga A',playoff_a_b:'chegar ao play-off A/B',relegation_b:'descer à Liga B',promotion_a:'subir à Liga A',stay_b:'manter-se na Liga B',playoff_b_c:'chegar ao play-off B/C',promotion_b:'subir à Liga B',stay_c:'manter-se na Liga C',best_d_winner:'ser o vencedor de grupo mais bem classificado da Liga D',d_winner:'ganhar o grupo',promotion_c:'subir à Liga C'};
-            const outcome=objectives[nations.objective];
-            const stage={quarter_final:'Quartos de final',playoff:'Play-off',semi_final:'Meia-final',third_place:'3.º lugar',final:'Final'}[nations.stage];
-            if(stage){
-             note+=' Liga das Nações · '+stage+(nations.leg?' · '+nations.leg+'.ª mão':'')+'. Prognóstico para os 90 minutos.';
-             if(nations.firstLeg)note+=' Resultado da primeira mão, pela ordem das equipas deste jogo, '+nations.firstLeg.homeGoals+'–'+nations.firstLeg.awayGoals+'.';
-             if(nations.status==='draw_enough')note+=' O empate dá a passagem. A vitória exige mais 5 pontos percentuais no limiar de seleção.';
-             if(Number.isInteger(nations.equalizingMargin))note+=' Para igualar o agregado, precisa de vencer por '+nations.equalizingMargin+(nations.equalizingMargin===1?' golo.':' golos.');
-             if(!nations.leg)note+=' O modelo usa uma base sem vantagem caseira.';
-            }else if(outcome){
-             const situation={needs_win:'Precisa de vencer para',draw_enough:'Um empate basta para',in_play:'Ainda pode'}[nations.status];
-             if(situation)note+=' Liga das Nações · '+nations.group+'. '+situation+' '+outcome+'.'+(nations.dependsOnOtherResultsOrTiebreak?' Depende também de outros resultados ou de critérios de desempate.':'');
-             if(nations.status==='draw_enough')note+=' A vitória exige mais 5 pontos percentuais no limiar de seleção.';
-            }
-           }
-          '''
-          import json
-          sync="files['front-office.mjs']=files['front-office.mjs'].replace(' if(p.disagreement===true)',"+json.dumps(deployed_block,ensure_ascii=False)+"+' if(p.disagreement===true)');\n"
-          apply=script('Apply presentation-only changes').replace('const before={...files};',sync+'const before={...files};')
-          tasks=[('Apply guarded branding changes',apply),('Add regression tests',script('Add branding regression tests')),('Install pinned dependencies','npm ci'),('Run all tests',script('Run all tests')),('Check and compile',script('Check candidate syntax and compile without deployment')),('Synchronise verified code',script('Commit verified source and remove this one-time runner'))]
-          for name,command in tasks:
-              print('::group::'+name,flush=True)
-              subprocess.run(['bash','-euo','pipefail','-c',command],check=True)
-              print('::endgroup::',flush=True)
+          import subprocess,textwrap,json
+          previous=subprocess.check_output(['git','show','084e99cf1d5036a95ccb8c89e9222966acf01d8b:.github/workflows/bigodes-release.yml'],text=True)
+          driver=textwrap.dedent(previous.split('        run: |\n',1)[1])
+          driver=driver.split("python3 <<'PY'\n",1)[1].rsplit('\nPY',1)[0]
+          prefix=driver.split('tasks=[',1)[0]
+          exec(prefix)
+          subprocess.run(['bash','-euo','pipefail','-c','mkdir -p /tmp/bigodes-baseline && git archive 358c142c48612ed322bd875947169a3f673ba31e^ | tar -x -C /tmp/bigodes-baseline'],check=True)
+          subprocess.run(['bash','-euo','pipefail','-c',apply],check=True)
+          subprocess.run(['bash','-euo','pipefail','-c',script('Add branding regression tests')],check=True)
+          p='production/tests/bigodds.test.mjs'
+          with open(p) as f:s=f.read()
+          old="assert.equal(node('#pageTitle').textContent,'Histórico')"
+          assert s.count(old)==1
+          with open(p,'w') as f:f.write(s.replace(old,"assert.equal(node('#pageTitle').innerHTML,'Histórico')"))
+          subprocess.run(['npm','ci'],check=True)
+          failures={}
+          summaries={}
+          for label,cwd in [('baseline','/tmp/bigodes-baseline'),('candidate','.')]:
+              failures[label]=[];summaries[label]={}
+              for suite in ['tests/*.test.mjs','production/tests/*.test.mjs']:
+                  r=subprocess.run(['bash','-c','node --test --test-reporter=tap '+suite],cwd=cwd,text=True,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+                  key='legacy' if suite.startswith('tests/') else 'production'
+                  with open('/tmp/bigodes-'+label+'-'+key+'.txt','w') as f:f.write(r.stdout)
+                  failures[label]+=[line.split(' - ',1)[-1] for line in r.stdout.splitlines() if line.startswith('not ok ')]
+                  summaries[label][key]=[line for line in r.stdout.splitlines() if line.startswith(('# tests ','# pass ','# fail '))]
+                  print(label,key,*summaries[label][key],flush=True)
+          assert sorted(failures['candidate'])==sorted(failures['baseline']),(failures['baseline'],failures['candidate'])
+          subprocess.run(['node','--test','production/tests/bigodes-brand.test.mjs'],check=True)
+          result={'baseline':summaries['baseline'],'candidate':summaries['candidate'],'preexistingFailures':failures['baseline'],'newFailures':[]}
+          with open('docs/evidence/bigodes/test-comparison.json','w') as f:json.dump(result,f,ensure_ascii=False,indent=2)
+          with open('/tmp/bigodes-tests.txt','w') as f:json.dump(result,f,ensure_ascii=False,indent=2)
+          subprocess.run(['bash','-euo','pipefail','-c',script('Check candidate syntax and compile without deployment')],check=True)
+          commit=script('Commit verified source and remove this one-time runner').replace('git diff --cached --stat','git add production/tests/bigodds.test.mjs\ngit diff --cached --stat')
+          subprocess.run(['bash','-euo','pipefail','-c',commit],check=True)
           PY
