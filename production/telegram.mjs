@@ -4,7 +4,7 @@ import {LIST_VERSION,lisbonClock,readDailyLists} from './daily-list.mjs';
 import {hydrateFootballList} from './football-list.mjs';
 import {historySummary} from './list-presentation.mjs';
 import {esc} from './front-office.mjs';
-import {hash,read,selectionEvents,write} from './push.mjs';
+import {hash,read,selectionEvents,write} from './selection-events.mjs';
 
 const botUrl='https://t.me/LuxTipsFootballBot';
 const botButton=JSON.stringify({inline_keyboard:[[{text:'Abrir miniapp Luxtips',url:botUrl}]]});

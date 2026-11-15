@@ -3,12 +3,11 @@ import {notifyTelegram} from './telegram.mjs';
 import {bigOddsResponse,syncBigOdds} from './bigodds.mjs';
 import {bigOddsPage} from './bigodds-view.mjs';
 import {stableDom} from './stable-dom.mjs';
-import {esc,dayChips,analysisDetails,disclosureEvents,howLink,decorateFrontOffice,methodContent} from './front-office.mjs';
+import {esc,dayChips,analysisDetails,disclosureEvents,decorateFrontOffice} from './front-office.mjs';
 import {ogImage} from './og-image.mjs';
 // platform-integration/entry.mjs
 import original from "./production-worker.mjs";
 import {pwaRoute,injectPwa} from './pwa.mjs';
-import {notifyNewSelections} from './push.mjs';
 import {syncFootballList,footballCurrentFeed,footballHistoryFeed} from './football-list.mjs';
 import {syncFootballPresentation} from './list-presentation.mjs';
 import { FootballRelay } from "./production-worker.mjs";
@@ -130,10 +129,10 @@ function nbaHistoryMembership(rows,data,day) {
 var football = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 9 7 5-3 8h-8l-3-8zm0-7v7m14 3-7 2m2 14-5-6M7 28l5-6M2 12l7 2" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 var basketball = '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2 16h28M16 2v28M6 6c13 6 7 14 20 20M26 6C13 12 19 20 6 26" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 function sportNavigation(nba) {
-  return '<nav class="sports" aria-label="Modalidade"><a href="/"' + (!nba ? ' aria-current="page"' : "") + ">" + football + '<span>Futebol</span></a><a href="/big-odds"' + (nba ? ' aria-current="page"' : "") + ">" + bigodesIcon + "<span>Bigodes</span></a>"+howLink()+"</nav>";
+  return '<nav class="sports" aria-label="Modalidade"><a href="/"' + (!nba ? ' aria-current="page"' : "") + ">" + football + '<span>Futebol</span></a><a href="/big-odds"' + (nba ? ' aria-current="page"' : "") + ">" + bigodesIcon + "<span>Bigodes</span></a></nav>";
 }
 var extraStyle = `<style>
-.sports{display:flex;gap:8px;margin:0}.section-nav{width:max-content;margin:24px 0 0}.topbar .sports{flex-shrink:0}@media(max-width:620px){.topbar .sports{width:100%}.topbar .sports a{flex:1}.section-nav{width:100%;margin-top:18px}}.sports a{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border:1px solid var(--line);border-radius:10px;color:var(--muted);text-decoration:none;font-weight:700;background:var(--panel)}.sports a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:#26351f}.sports a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.sports svg{width:24px;height:24px}.nba-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:20px 0}.nba-team{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center;font-size:12px;font-weight:600}.nba-team img{width:52px;height:52px;object-fit:contain}.nba-date{margin:24px 0 12px}.nba-history-days{display:flex;gap:6px;overflow:auto;margin:16px 0}.nba-history-days button{white-space:nowrap}.nba-more{margin-top:20px}.nba-unavailable{display:none}@media(max-width:540px){.sports a{flex:1;padding:12px}.sports{gap:8px}.nba-team img{width:44px;height:44px}}
+.sports{display:flex;gap:8px;margin:0}.section-nav{width:max-content;margin:24px 0 0}.topbar .sports{flex-shrink:0}@media(max-width:620px){.topbar .sports{width:100%}.topbar .sports a{flex:1}.section-nav{width:100%;margin-top:18px}}.sports a{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 24px;border:1px solid var(--line);border-radius:10px;color:var(--muted);text-decoration:none;font-weight:700;background:var(--panel)}.sports a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:#26351f}.sports a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.sports svg{display:block;width:24px;height:24px;flex:none;margin:0}.nba-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin:20px 0}.nba-team{display:flex;align-items:center;flex-direction:column;gap:8px;text-align:center;font-size:12px;font-weight:600}.nba-team img{width:52px;height:52px;object-fit:contain}.nba-date{margin:24px 0 12px}.nba-history-days{display:flex;gap:6px;overflow:auto;margin:16px 0}.nba-history-days button{white-space:nowrap}.nba-more{margin-top:20px}.nba-unavailable{display:none}@media(max-width:540px){.sports a{flex:1;padding:12px}.sports{gap:8px}.nba-team img{width:44px;height:44px}}
 @media(max-width:620px){.days button{white-space:normal;min-width:0}}
 </style>`;
 function nbaClient(card, outcome) {
@@ -253,7 +252,7 @@ function integrateSports(html, nba = false) {
   const script = "(()=>{const __name=f=>f;"+[esc,dayChips,analysisDetails,disclosureEvents].map(f=>f.toString()).join("\n")+";disclosureEvents();const NBA_TEAMS=" + JSON.stringify(NBA_TEAMS) + ";" + [stableDom, nbaEscape, nbaCrest, nbaOutcome, nbaCard, nbaHistoryMembership].map((f) => f.toString()).join("\n") + ";(" + nbaClient.toString() + ")(nbaCard,nbaOutcome);})();";
   return html.slice(0, a) + "<script>" + script + "<\/script>" + html.slice(b + 9);
 }
-async function sportPage(response, nba, policy = null) {
+async function sportPage(response, nba) {
   if (!response.ok) return response;
   const headers = new Headers(response.headers);
   headers.set("Cache-Control", "no-store");
@@ -265,12 +264,8 @@ async function sportPage(response, nba, policy = null) {
   }
   const csp=headers.get('Content-Security-Policy');
   if(csp)headers.set('Content-Security-Policy',csp.replace(/script-src([^;]*)/,(_,sources)=>"script-src"+sources+(sources.includes("'self'")?'':" 'self'"))+(!/worker-src/.test(csp)?"; worker-src 'self'":'')+(!/manifest-src/.test(csp)?"; manifest-src 'self'":''));
-  let html=integrateSports(await response.text(),nba);
-  if(policy){
-    html=html.replace(/<main id="main" class="shell">[\s\S]*?<\/main>/,methodContent(policy)).replace(/<script>[\s\S]*?<\/script>/g,'');
-    html=html.replace('<a href="/" aria-current="page"','<a href="/"').replace('<a href="/como-funciona">','<a href="/como-funciona" aria-current="page">').replace(/<title>[^<]*<\/title>/,'<title>Como funciona · LuxTips</title>');
-  }
-  return new Response(injectPwa(decorateFrontOffice(html,policy?'about':nba?'nba':'football')), { status: response.status, headers });
+  const html=integrateSports(await response.text(),nba);
+  return new Response(injectPwa(decorateFrontOffice(html,nba?'nba':'football')), { status: response.status, headers });
 }
 
 // src/nba/integration.mjs
@@ -302,14 +297,7 @@ function withNba(football2) {
       }
       if(path==='/api/history'&&req.method==='GET'&&env.PREDICTION_CONTEXT_MODE==='live')return historyResponse(req,env,ctx);
       if (path === '/og.png' && ['GET','HEAD'].includes(req.method))return new Response(req.method==='HEAD'?null:Uint8Array.from(atob(ogImage),c=>c.charCodeAt(0)),{headers:{'Content-Type':'image/png','Cache-Control':'public, max-age=604800','X-Content-Type-Options':'nosniff'}});
-      if (path === '/como-funciona' && ['GET','HEAD'].includes(req.method)){
-        const root=new URL(req.url);root.pathname='/';
-        const response=await football2.fetch(new Request(root,req),env,ctx);
-        let policy={};
-        try{const r=await football2.fetch(new Request(new URL('/api/games',req.url)),env,ctx);if(r.ok){const data=await footballCurrentFeed(env.DB,await r.json());policy={...data.selectionPolicy,...data.dailyListPolicy};}}catch{}
-        const page=await sportPage(response,false,policy);
-        return req.method==='HEAD'?new Response(null,{status:page.status,headers:page.headers}):page;
-      }
+      if (['/como-funciona','/como-funciona/'].includes(path) && ['GET','HEAD'].includes(req.method))return Response.redirect(new URL('/',req.url),301);
       if (path === '/api/big-odds') return bigOddsResponse(req,env);
       if (path === '/api/nba') return Response.json({error:'O separador NBA foi descontinuado.'},{status:410,headers:{'Cache-Control':'no-store'}});
       if (['/nba','/nba/'].includes(path)&&['GET','HEAD'].includes(req.method))return Response.redirect(new URL('/big-odds',req.url),302);
@@ -338,15 +326,12 @@ function withNba(football2) {
         if(!response.ok)throw Error('football_list_source_unavailable');
         await syncFootballList(env.DB,await response.json(),Date.now());
         }finally{
-          await Promise.all([
-            notifyNewSelections(env),
-            notifyTelegram(env,Date.now(),fetch,async()=>{
+          await notifyTelegram(env,Date.now(),fetch,async()=>{
               const response=await historyResponse(new Request('https://luxtips.internal/api/history'),env,ctx);
               if(!response.ok)throw Error('telegram_history_unavailable');
               const body=await response.json();
               return body.historyEntries||body.publishedSelections||[];
-            }).catch(()=>console.error(JSON.stringify({event:'telegram_publication_failed'})))
-          ]);
+          }).catch(()=>console.error(JSON.stringify({event:'telegram_publication_failed'})));
         }
       })());
     }

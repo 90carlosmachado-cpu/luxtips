@@ -1,5 +1,18 @@
 # LuxTips
 
+## Alterações preparadas em 15 de novembro de 2026
+
+Revisão local, ainda sem commit ou publicação: navegação com Futebol e Bigodes,
+remoção da página Como funciona e das notificações web, e histórico em ordem
+descendente com 10 registos iniciais e mais 10 por clique. Os relógios das odds e
+os textos auxiliares indicados foram retirados da apresentação.
+
+O Telegram conserva os eventos e os identificadores de entrega através de
+`production/selection-events.mjs`. A PWA mantém manifesto, ícones e modo offline;
+os dispositivos cancelam subscrições push antigas quando recebem o cliente ou
+service worker atualizado. As rotas `/api/push/*` devolvem 410. Não há migrações
+nem alterações aos prognósticos, às odds ou ao histórico guardado.
+
 ## Código atual em produção
 
 Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `bd0f8795-2bba-4e93-a3d4-ceb92cb94fcd`.

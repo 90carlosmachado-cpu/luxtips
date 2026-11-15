@@ -152,9 +152,10 @@ test('actual integration routes replace NBA with Big Odds and preserve football 
  const wrapped=context.withNba({fetch:async req=>{calls.push(new URL(req.url).pathname);return new URL(req.url).pathname==='/api/games'?Response.json({games:[]}):new Response(base);}}),env={DB:setup().db};
  assert.equal((await wrapped.fetch(new Request('https://test/nba'),env,{})).headers.get('Location'),'https://test/big-odds');
  assert.equal((await wrapped.fetch(new Request('https://test/api/nba'),env,{})).status,410);
+ for(const path of ['/como-funciona','/como-funciona/']){const removed=await wrapped.fetch(new Request('https://test'+path),env,{});assert.equal(removed.status,301);assert.equal(removed.headers.get('Location'),'https://test/');}
  assert.ok((await (await wrapped.fetch(new Request('https://test/big-odds'),env,{})).text()).includes('data-big-tab="current"'));
  assert.equal((await wrapped.fetch(new Request('https://test/api/games'),env,{})).status,200);assert.ok(calls.includes('/api/games'));
- const navStart=source.indexOf('function sportNavigation('),navEnd=source.indexOf('var extraStyle',navStart);vm.runInContext(source.slice(navStart,navEnd),vm.createContext({football:'',howLink:()=>'',basketball:''}));assert.ok(!source.slice(navStart,navEnd).includes('href="/nba"'));
+ const navStart=source.indexOf('function sportNavigation('),navEnd=source.indexOf('var extraStyle',navStart);vm.runInContext(source.slice(navStart,navEnd),vm.createContext({football:'',bigodesIcon:'',basketball:''}));assert.ok(!source.slice(navStart,navEnd).includes('href="/nba"'));
 });
 test('08h Lisbon only, including summer and DST transition days',()=>{
  for(const date of ['2026-11-06','2026-07-05','2026-03-29','2026-10-25']){
@@ -306,8 +307,8 @@ test('Big Odds aborts stalled requests or bodies and recovers on the next timer 
 test('actual cron integration runs Big Odds before slow football maintenance',async()=>{
  const source=readFileSync(new URL('../integration.js',import.meta.url),'utf8'),start=source.indexOf('function withNba('),end=source.indexOf('// platform-integration/entry.mjs',start),order=[];
  let release,task;const slow=new Promise(r=>{release=r;});
- const context=vm.createContext({Date,Request,Response,Headers,URL,JSON,console,syncBigOdds:async()=>{order.push('big');},syncFootballList:async()=>{order.push('list');},notifyNewSelections:async()=>{order.push('notify');}});
+ const context=vm.createContext({Date,Request,Response,Headers,URL,JSON,console,syncBigOdds:async()=>{order.push('big');},syncFootballList:async()=>{order.push('list');},fetch:async()=>{throw Error('unexpected delivery');},notifyTelegram:async()=>{order.push('telegram');}});
  vm.runInContext(source.slice(start,end),context);
  const wrapped=context.withNba({scheduled(event,env,ctx){order.push('football');ctx.waitUntil(slow);},fetch:async()=>Response.json({games:[],winnerAnalyses:[]})});
- wrapped.scheduled({scheduledTime:NOW},{DB:{}},{waitUntil(p){task=p;}});await new Promise(r=>setImmediate(r));assert.deepEqual(order,['big','football']);release();await task;assert.deepEqual(order,['big','football','list','notify']);
+ wrapped.scheduled({scheduledTime:NOW},{DB:{}},{waitUntil(p){task=p;}});await new Promise(r=>setImmediate(r));assert.deepEqual(order,['big','football']);release();await task;assert.deepEqual(order,['big','football','list','telegram']);
 });
