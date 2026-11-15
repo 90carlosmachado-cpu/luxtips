@@ -1,0 +1,388 @@
+{
+  "publishedAt": "2026-11-15T09:25:59.049355Z",
+  "worker": "luxtips",
+  "url": "https://luxtips.90carlosmachado.workers.dev/",
+  "sourceCommit": "5e112e81a7cffccc7b9991de6bf89712bc60e300",
+  "baseCommit": "ec3837cdcd294efa9e98d711bd5194567fb1fbf0",
+  "deployment": {
+    "id": "08d9b108-429b-496d-90c9-390d5be9a86e",
+    "versionId": "03fcc258-1c2a-4295-bf73-83247d655b04",
+    "trafficPercentage": 100,
+    "method": "Content-only module upload, preserving settings and schedules"
+  },
+  "runtime": {
+    "moduleCount": 24,
+    "changedOrAddedModules": [
+      "assets.mjs",
+      "bigodds-view.mjs",
+      "front-office.mjs",
+      "integration.js",
+      "list-presentation.mjs",
+      "pwa.mjs",
+      "selection-events.mjs",
+      "telegram.mjs"
+    ],
+    "removedModules": [
+      "push.mjs",
+      "webpush.mjs"
+    ],
+    "preservedModules": [
+      "betano-prices.mjs",
+      "bigodds-model.mjs",
+      "bigodds-optimizer.mjs",
+      "bigodds.mjs",
+      "bigodes-brand.mjs",
+      "combo-archive.mjs",
+      "daily-list.mjs",
+      "daily-ranking.mjs",
+      "football-list.mjs",
+      "nations-league.mjs",
+      "og-image.mjs",
+      "production-worker.mjs",
+      "quote-gate.mjs",
+      "refresh-policy.mjs",
+      "stable-dom.mjs",
+      "telegram-brand.mjs"
+    ],
+    "settingsUnchanged": true,
+    "schedulesUnchanged": true,
+    "productionOnlyDifferencesPreserved": [
+      "production-worker.mjs",
+      "football-list.mjs"
+    ],
+    "sha256": {
+      "assets.mjs": "52872ac5ccc71e31cd9e6432c1b87d755746f2c7e29c6cc3ae0160c030dbeca7",
+      "betano-prices.mjs": "e908372845448f716e0c0e7de0acbb786daba2bf2afb68bf06596fc566d2563f",
+      "bigodds-model.mjs": "b3324c68aa1b9d35bc10156c7ddb6c201c201d06b989bb0168acec964742a57b",
+      "bigodds-optimizer.mjs": "1f36b9394562427d896093979b9bcf39ebb890254e7413a6db98605322eb9009",
+      "bigodds-view.mjs": "ff1d14cb2134d8204a6336bcca3679d91063c6eaf75a0e570d6ff4ce772da754",
+      "bigodds.mjs": "18c320ae754611c1568b42fc79dc6ecbd6b94adc7ffee5e84be58b1f389217e4",
+      "bigodes-brand.mjs": "f5e42d25748eb79325ffcd92ba2ec14efcd782110489776dfda778f1a3b58f13",
+      "combo-archive.mjs": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384",
+      "daily-list.mjs": "4f85d2e079def2605e8d4cb3da2419927f6ec276ef991e81e00516f8222d1861",
+      "daily-ranking.mjs": "0cef5ee27550cd690bfa2cae93ac6d6cc78c8bdbf7467c919e8bd70dde9bcca0",
+      "football-list.mjs": "5193c6151a7e665e128c581ea55b44742621f4400d4b2489e843e9073c6dd130",
+      "front-office.mjs": "b77e3b2c8edce60f5200dce7d066c469d43c5b7f70aec4054ffd97b40afa2316",
+      "integration.js": "0005297efd61fc6d8757580700c42badb97f12dc5a8325c10a32865e7ce95900",
+      "list-presentation.mjs": "777bd7bc252bca4c15ea4204ab42a2279da1a48b5ec08f883c43396f67280266",
+      "nations-league.mjs": "581239bb0d48ae79a4a29c6fdd3ce01c598ee41d01c443748a68f3f84b352e8e",
+      "og-image.mjs": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d",
+      "production-worker.mjs": "e96afc75519594fe0acfc665fafb32170561a08b84885da5566b9ef34f58b31c",
+      "pwa.mjs": "b69ada0949b23006d7c5f8ced01ca04a72e65899df367f06ee4bc58faab67cdc",
+      "quote-gate.mjs": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263",
+      "refresh-policy.mjs": "1c89ee55066283a00d04355e2823974a93ddb70353ac5e64b10b27127fefac8d",
+      "selection-events.mjs": "6e0e1707fb2693978f6b63c86db2f1a312a0707e94fa500110ce8344e5ffb2c4",
+      "stable-dom.mjs": "b833d0bd2a57ff2ec87c88c732c5d053c2d04b8fa7d5cbb5999bd09425cbf7ca",
+      "telegram-brand.mjs": "95bdd929d1ce0b66b4f070a27e2ef19087443f1d7b3717d68325a11cb66fd9f5",
+      "telegram.mjs": "5a9434c8129b99a8a230b2545a8fbbd0869cf54f120bbd44704054842abc4042"
+    }
+  },
+  "validation": {
+    "productionTests": {
+      "passed": 115,
+      "failed": 0
+    },
+    "finalCspRegressionTests": {
+      "passed": 52,
+      "failed": 0
+    },
+    "buildDryRun": "passed",
+    "diffCheck": "passed",
+    "browserRendering": {
+      "footballMobile": {
+        "url": "https://luxtips.90carlosmachado.workers.dev/?release=cfb28c2-verify2",
+        "status": 200,
+        "passed": true,
+        "checks": [
+          {
+            "name": "public API returns 200",
+            "passed": true
+          },
+          {
+            "name": "Futebol and Bigodes on one row",
+            "passed": true
+          },
+          {
+            "name": "icon and text 9px apart",
+            "passed": true
+          },
+          {
+            "name": "notification controls removed",
+            "passed": true
+          },
+          {
+            "name": "quote timestamps removed",
+            "passed": true
+          },
+          {
+            "name": "no horizontal overflow",
+            "passed": true
+          },
+          {
+            "name": "retired push route returns 410",
+            "passed": true
+          },
+          {
+            "name": "removed page redirects to Futebol",
+            "passed": true
+          },
+          {
+            "name": "initial history newest first and limited to ten",
+            "passed": true
+          },
+          {
+            "name": "show ten more without reordering",
+            "passed": true
+          },
+          {
+            "name": "removed text: Como funciona",
+            "passed": true
+          },
+          {
+            "name": "removed text: Seleção às 08h · mantém-se enquanto estiver em curso.",
+            "passed": true
+          },
+          {
+            "name": "removed text: FUTEBOL · R1+R2 · ATÉ 3 POR DIA",
+            "passed": true
+          },
+          {
+            "name": "removed text: Registo recuperado · apresentação original não confirmada",
+            "passed": true
+          },
+          {
+            "name": "no history horizontal overflow",
+            "passed": true
+          }
+        ],
+        "apiStatus": 200,
+        "nav": [
+          {
+            "text": "Futebol",
+            "top": 100,
+            "gap": 9
+          },
+          {
+            "text": "Bigodes",
+            "top": 100,
+            "gap": 9
+          }
+        ],
+        "pushStatus": 410,
+        "aboutRedirect": true,
+        "totalAvailable": 48,
+        "initialCount": 10,
+        "initialIds": [
+          1545617,
+          1528982,
+          1528972,
+          1528965,
+          1545659,
+          1528962,
+          1575538,
+          1550187,
+          1575212,
+          1575217
+        ],
+        "afterMore": 20
+      },
+      "footballDesktop": {
+        "url": "https://luxtips.90carlosmachado.workers.dev/?release=5e112e8",
+        "status": 200,
+        "passed": true,
+        "checks": [
+          {
+            "name": "public API returns 200",
+            "passed": true
+          },
+          {
+            "name": "Futebol and Bigodes on one row",
+            "passed": true
+          },
+          {
+            "name": "icon and text 9px apart",
+            "passed": true
+          },
+          {
+            "name": "notification controls removed",
+            "passed": true
+          },
+          {
+            "name": "quote timestamps removed",
+            "passed": true
+          },
+          {
+            "name": "no horizontal overflow",
+            "passed": true
+          },
+          {
+            "name": "retired push route returns 410",
+            "passed": true
+          },
+          {
+            "name": "removed page redirects to Futebol",
+            "passed": true
+          },
+          {
+            "name": "initial history newest first and limited to ten",
+            "passed": true
+          },
+          {
+            "name": "show ten more without reordering",
+            "passed": true
+          },
+          {
+            "name": "removed text: Como funciona",
+            "passed": true
+          },
+          {
+            "name": "removed text: Seleção às 08h · mantém-se enquanto estiver em curso.",
+            "passed": true
+          },
+          {
+            "name": "removed text: FUTEBOL · R1+R2 · ATÉ 3 POR DIA",
+            "passed": true
+          },
+          {
+            "name": "removed text: Registo recuperado · apresentação original não confirmada",
+            "passed": true
+          },
+          {
+            "name": "no history horizontal overflow",
+            "passed": true
+          }
+        ],
+        "apiStatus": 200,
+        "nav": [
+          {
+            "text": "Futebol",
+            "top": 28.5,
+            "gap": 9
+          },
+          {
+            "text": "Bigodes",
+            "top": 28.5,
+            "gap": 9
+          }
+        ],
+        "pushStatus": 410,
+        "aboutRedirect": true,
+        "totalAvailable": 48,
+        "initialCount": 10,
+        "initialIds": [
+          1545617,
+          1528982,
+          1528972,
+          1528965,
+          1545659,
+          1528962,
+          1575538,
+          1550187,
+          1575212,
+          1575217
+        ],
+        "afterMore": 20
+      },
+      "bigodesMobile": {
+        "url": "https://luxtips.90carlosmachado.workers.dev/big-odds?release=5e112e8",
+        "status": 200,
+        "passed": true,
+        "checks": [
+          {
+            "name": "public API returns 200",
+            "passed": true
+          },
+          {
+            "name": "Futebol and Bigodes on one row",
+            "passed": true
+          },
+          {
+            "name": "icon and text 9px apart",
+            "passed": true
+          },
+          {
+            "name": "notification controls removed",
+            "passed": true
+          },
+          {
+            "name": "quote timestamps removed",
+            "passed": true
+          },
+          {
+            "name": "no horizontal overflow",
+            "passed": true
+          },
+          {
+            "name": "retired push route returns 410",
+            "passed": true
+          },
+          {
+            "name": "removed page redirects to Futebol",
+            "passed": true
+          },
+          {
+            "name": "initial history newest first and limited to ten",
+            "passed": true
+          },
+          {
+            "name": "show more absent when history fits",
+            "passed": true
+          },
+          {
+            "name": "removed text: Como funciona",
+            "passed": true
+          },
+          {
+            "name": "removed text: Seleção às 08h · mantém-se enquanto estiver em curso.",
+            "passed": true
+          },
+          {
+            "name": "removed text: FUTEBOL · R1+R2 · ATÉ 3 POR DIA",
+            "passed": true
+          },
+          {
+            "name": "removed text: Registo recuperado · apresentação original não confirmada",
+            "passed": true
+          },
+          {
+            "name": "no history horizontal overflow",
+            "passed": true
+          },
+          {
+            "name": "subscription cleanup client loaded under CSP",
+            "passed": true
+          }
+        ],
+        "apiStatus": 200,
+        "nav": [
+          {
+            "text": "Futebol",
+            "top": 100,
+            "gap": 9
+          },
+          {
+            "text": "Bigodes",
+            "top": 100,
+            "gap": 9
+          }
+        ],
+        "pushStatus": 410,
+        "aboutRedirect": true,
+        "currentTicket": "356d9c1f-e297-4d3a-96ca-ce4dde2dfdc6",
+        "totalAvailable": 0,
+        "initialCount": 0,
+        "initialIds": [],
+        "pwaClientLoaded": true
+      }
+    },
+    "syntheticHistoryCoverage": "Bigodes: 123 tickets across 50-item API pages; 10-item display increments; refresh, reset, retry and concurrency cases."
+  },
+  "notes": [
+    "No database migrations or manual data writes were performed.",
+    "Telegram delivery code was retained; only the selection-events import was extracted from the retired web-push module. No test messages were sent.",
+    "Old browser push subscriptions are cancelled when the updated PWA client or service worker runs. Retired /api/push/* routes return 410.",
+    "Bigodes CSP now allows the same-origin PWA cleanup client and service worker, as already allowed on Futebol.",
+    "production/manifest.json and the 6 November synchronization record are historical. This release preserves the active remote versions of production-worker.mjs and football-list.mjs; a wholesale local bundle upload would overwrite those differences.",
+    "Live Bigodes history contained no completed tickets at validation time; multi-page history behavior was validated with synthetic data."
+  ]
+}

@@ -1,7 +1,9 @@
 # Notificações de Futebol e Big Odds
 
-Nota de 15 de novembro de 2026: a revisão local retira este sistema de push e
-mantém os avisos no Telegram. A publicação desta revisão está pendente.
+Desde 15 de novembro de 2026, o push web está desativado em produção e os avisos
+mantêm-se no Telegram. As rotas `/api/push/*` devolvem 410 e as subscrições antigas
+são canceladas quando o dispositivo executa o cliente ou service worker atualizado.
+Ver [registo da publicação](evidence/site-cleanup-2026-11-15/release.json).
 O texto seguinte documenta o funcionamento histórico.
 
 Publicado: 6 de novembro de 2026.

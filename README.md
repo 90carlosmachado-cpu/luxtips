@@ -1,8 +1,8 @@
 # LuxTips
 
-## Alterações preparadas em 15 de novembro de 2026
+## Alterações publicadas em 15 de novembro de 2026
 
-Revisão local, ainda sem commit ou publicação: navegação com Futebol e Bigodes,
+Publicado no Worker `luxtips`: navegação com Futebol e Bigodes,
 remoção da página Como funciona e das notificações web, e histórico em ordem
 descendente com 10 registos iniciais e mais 10 por clique. Os relógios das odds e
 os textos auxiliares indicados foram retirados da apresentação.
@@ -13,7 +13,18 @@ os dispositivos cancelam subscrições push antigas quando recebem o cliente ou
 service worker atualizado. As rotas `/api/push/*` devolvem 410. Não há migrações
 nem alterações aos prognósticos, às odds ou ao histórico guardado.
 
-## Código atual em produção
+Versão ativa: `03fcc258-1c2a-4295-bf73-83247d655b04`, publicada às 09:25 UTC.
+Código da alteração: `5e112e81a7cffccc7b9991de6bf89712bc60e300`.
+Foram verificados 115 testes de produção, 52 testes da correção final da política
+de carregamento da PWA, a compilação e a interface pública em telemóvel e computador.
+O histórico real do Futebol apresentou 10 dos 48 registos e passou para 20 ao carregar em «Mostrar mais».
+
+A publicação conservou os 16 módulos remotos não alterados, as configurações e os
+agendamentos. As diferenças já existentes nos módulos `production-worker.mjs` e
+`football-list.mjs` foram preservadas. O manifesto antigo é histórico; consultar o
+[registo desta publicação e os hashes ativos](docs/evidence/site-cleanup-2026-11-15/release.json).
+
+## Sincronização de 6 de novembro de 2026 (referência histórica)
 
 Sincronizado em 6 de novembro de 2026 com o Worker `luxtips`, versão `bd0f8795-2bba-4e93-a3d4-ceb92cb94fcd`.
 
