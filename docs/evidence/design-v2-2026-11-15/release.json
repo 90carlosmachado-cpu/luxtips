@@ -1,0 +1,66 @@
+{
+  "worker": "luxtips",
+  "publishedAt": "2026-11-15T10:46:59.573324Z",
+  "deploymentId": "45a8c3a5-3c9a-4b38-907a-f0d32196acab",
+  "versionId": "610ad941-f018-484c-8b6c-2a53ae59b0be",
+  "previousVersionId": "03fcc258-1c2a-4295-bf73-83247d655b04",
+  "baseCommit": "1a5e4626da3d56ed2725c2469ae4c66976a829aa",
+  "trafficPercentage": 100,
+  "scope": "Bola de Cristal identity, compact interface, Bigodes progress, future Telegram branding and PWA shortcut. No prediction policy, odds refresh or data migrations.",
+  "moduleCount": 27,
+  "retainedRuntimeModules": 20,
+  "bindingsUnchanged": true,
+  "runtimeSettingsUnchanged": true,
+  "cron": "* * * * *",
+  "cronUnchanged": true,
+  "container": "FootballRelay",
+  "runtimeSha256": {
+    "front-office.mjs": "6e753889269c7ac4a31033f6d7deed22609f6ff5c0c210b6e984760686fdbbfc",
+    "bigodds-view.mjs": "8ffbe96da921955685e3fc3cb06e07e744ad095e97b71570c0cccaacae90b3fc",
+    "telegram.mjs": "3cd6685abb394c5ffaa1e5dee8a7a1dc5aa6a1d6ab470627d0a864ac8a8b5a70",
+    "pwa.mjs": "1173bc0f55f6fc18579062b93b2d020b662a9bb50397aa71e3666b420405bb0e",
+    "design-system.mjs": "595c9b0c1b48115ab88ed17c41278414a96e3f0d97a2165a938eb99bd6fa0803",
+    "crystal-brand.mjs": "d101096121c33b1631ea8796e2029bd2e2acd31a28b0da49d762a68cf9aa1775",
+    "ticket-presentation.mjs": "b234e504d17efe1bb4bbd76a251797b2e41ea3f180af68d329b1437ac8d29706"
+  },
+  "preservedCriticalRuntimeSha256": {
+    "production-worker.mjs": "e96afc75519594fe0acfc665fafb32170561a08b84885da5566b9ef34f58b31c",
+    "football-list.mjs": "5193c6151a7e665e128c581ea55b44742621f4400d4b2489e843e9073c6dd130",
+    "assets.mjs": "52872ac5ccc71e31cd9e6432c1b87d755746f2c7e29c6cc3ae0160c030dbeca7",
+    "telegram-brand.mjs": "95bdd929d1ce0b66b4f070a27e2ef19087443f1d7b3717d68325a11cb66fd9f5"
+  },
+  "sourceGitBlobs": {
+    "production/front-office.mjs": "878426f430e824c6f0d19c7cfec9b2a0b9dd9fd6",
+    "production/bigodds-view.mjs": "bb3df75c79c65c9740039f65663edb7a969a0134",
+    "production/telegram.mjs": "e3f4a981f0f338eb17e572b55cf295192cd81f79",
+    "production/pwa.mjs": "01cdee7d17d4fda3e740a2041491d4a65240db89",
+    "production/design-system.mjs": "7ef15108c365f851b89cb2d0c3b87b23b6472e65",
+    "production/crystal-brand.mjs": "c05bd266fb49274d6234d3c4aae60fc852b1da83",
+    "production/ticket-presentation.mjs": "8a4d7418fb25d7c4b01f23a46282ad5fe6049182",
+    "production/tests/bigodes-history-ui.test.mjs": "376d8d19d97dc8afb0521077961a5f5eac845cb1",
+    "production/tests/bigodes-brand.test.mjs": "36e4242d029811ca48006eda5c5db053f3b5f53c",
+    "production/tests/design-v2.test.mjs": "d64f3547bfe82cfa162075e1a5e425c0142e6eae"
+  },
+  "validation": {
+    "scopedUnitAndPreservationTests": {"passed":35,"failed":0},
+    "localBrowserAssertions": {"passed":140,"widths":[320,390,768,1440]},
+    "completeCloudflareRuntimeCompile": {"passed":true,"startupTimeMs":9},
+    "liveBrowserWidths": [390,1440],
+    "livePageStatuses": {"/":200,"/big-odds":200},
+    "liveHistory": {"initial":10,"afterMore":20},
+    "liveBigodes": {"selections":5,"won":2,"displayedTotal":"8,30","closedTickets":0},
+    "originalLogo": {"unchangedSource":true,"loaded":true,"naturalWidth":2172,"naturalHeight":724},
+    "manifestShortcut": "Bola de Cristal",
+    "pushStatus":410,
+    "finalMobileVerificationPassed":true
+  },
+  "notes": [
+    "All seven changed runtime modules matched the prepared, tested sources before upload. The committed front-office.mjs omits only the terminal LF; all executable content is identical.",
+    "The full legacy/npm suite and Wrangler dry run were not executed in this network-restricted local environment. All 27 real modules were accepted by Cloudflare version compilation before activation.",
+    "Browser history, navigation, analyses, responsive overflow, branding and progress were verified after activation. A test initially assumed a URL-based logo; the actual unchanged embedded PNG was separately checked as loaded and its source hashes verified.",
+    "Bigodes history had no closed live tickets. Multi-page and retry behavior was validated with 123 synthetic tickets.",
+    "No manual D1 writes, migrations, model refreshes or Telegram test messages were performed.",
+    "Existing production-only differences in production-worker.mjs and football-list.mjs were preserved. Do not replace the active Worker wholesale with the older repository versions of those modules.",
+    "Rollback target is the previous version above. No data rollback is required for this presentation-only release."
+  ]
+}

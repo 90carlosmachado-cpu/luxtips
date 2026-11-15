@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
+import {legState,ticketProgress} from '../ticket-presentation.mjs';
 import {bigOddsClient} from '../bigodds-view.mjs';
 
 const NOW=Date.parse('2026-11-15T12:00:00Z');
@@ -21,7 +22,7 @@ async function client(respond){
   return nodes.get(id);
  };
  let tick;
- const context=vm.createContext({console,Date,Intl,Map,Set,String,Number,JSON,Object,Promise,encodeURIComponent,
+ const context=vm.createContext({console,legState,ticketProgress,Date,Intl,Map,Set,String,Number,JSON,Object,Promise,encodeURIComponent,
   AbortController,setTimeout,clearTimeout,setInterval(fn){tick=fn;},
   document:{querySelector:node,querySelectorAll:()=>[],addEventListener:(name,fn)=>{listeners[name]=fn;}},
   fetch:async url=>{calls.push(url);const data=await respond(url,calls.length);return {ok:true,json:async()=>data};},

@@ -1,3 +1,4 @@
+import {crystalMark,crystalCardStyles} from './crystal-brand.mjs';
 import {bigodesMark,bigodesStyles} from './bigodes-brand.mjs';
 import {telegramBrand} from './telegram-brand.mjs';
 import {LIST_VERSION,lisbonClock,readDailyLists} from './daily-list.mjs';
@@ -45,8 +46,8 @@ function card(title,picks,ticket) {
   .crest{flex:none;width:46px;height:46px;background:center/contain no-repeat}
   footer{display:flex;justify-content:space-between;gap:16px;color:#ceff75;font-weight:750}
   footer strong{color:#fff;white-space:nowrap}.note{margin:24px 0 0;color:#aebbc2;font-size:20px}
-  ${ticket?bigodesStyles:""}
-  </style><main><header><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"></header>${ticket?bigodesMark+'<h1 class="bigodes-status">'+(ticket.won?'Múltipla ganha':'Boletim em curso')+'</h1>':'<h1>'+esc(title)+'</h1>'}${ticket?`<p>Odd ${ticket.won?'final':'total'} ${esc(ticket.odd)} · Betano</p>`:''}
+  ${ticket?bigodesStyles:crystalCardStyles}
+  </style><main><header><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"></header>${ticket?bigodesMark+'<h1 class="bigodes-status">'+(ticket.won?'Múltipla ganha':'Boletim em curso')+'</h1>':crystalMark+'<h1>'+esc(title)+'</h1>'}${ticket?`<p>Odd ${ticket.won?'final':'total'} ${esc(ticket.odd)} · Betano</p>`:''}
   ${picks.map(p=>`<article><small>${esc(p.competition)} · ${esc(p.time)}</small><h2>${cardTeam(p.home)}<span>–</span>${cardTeam(p.away)}</h2>
   <footer><span>${esc(p.selection)}</span><strong>${esc(p.odd)} · Betano</strong></footer></article>`).join('')}
   <p class="note">${ticket?"Futebol aos 90 minutos":"Futebol 1X2 aos 90 minutos"} · 18+</p></main></html>`;
@@ -61,7 +62,8 @@ function resultCard(title,pick,result) {
   .team{display:flex;flex-direction:column;align-items:center;gap:12px;overflow-wrap:anywhere;font-weight:700}
   .crest{width:105px;height:105px;background:center/contain no-repeat}
   strong{display:block;font-size:74px}small{color:#aebbc2;font-size:18px}footer{margin-top:24px}
-  </style><main><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"><h1>${esc(title)}</h1>
+  ${crystalCardStyles}
+  </style><main><img class="brand" alt="LuxTips" src="data:image/png;base64,${telegramBrand}"><div class="result-brand">${crystalMark}</div><h1>${esc(title)}</h1>
   <article>${cardTeam(pick.home)}<div><strong>${result.home}–${result.away}</strong><small>FINAL · 90 MIN</small></div>${cardTeam(pick.away)}</article>
   <footer>${esc(pick.selection)} · 1X2</footer></main></html>`;
 }
@@ -131,7 +133,7 @@ async function createPhoto(env,title,picks,result,ticket) {
 function resultCaption(title,pick,result) {
   const {performance}=result;
   const stats=performance.total?`\n📊 Acerto histórico · ${performance.rate.toFixed(1).replace('.',',')}% (${performance.correct} em ${performance.total})`:'';
-  return `${result.hit?'✅':'❌'} ${title}\n\n⚽ ${pick.home.name} ${result.home}–${result.away} ${pick.away.name}\n🎯 ${pick.selection} · 1X2${stats}${result.hit?'\n\n🔥 Se acompanhaste este prognóstico, deixa uma reação!':''}`;
+  return `🔮 LuxTips · Bola de Cristal\n${result.hit?'✅':'❌'} ${title}\n\n⚽ ${pick.home.name} ${result.home}–${result.away} ${pick.away.name}\n🎯 ${pick.selection} · 1X2${stats}${result.hit?'\n\n🔥 Se acompanhaste este prognóstico, deixa uma reação!':''}`;
 }
 
 export async function notifyTelegram(env,now=Date.now(),send=fetch,loadHistory) {
@@ -203,7 +205,7 @@ export async function notifyTelegram(env,now=Date.now(),send=fetch,loadHistory) 
       const text=result
         ? resultCaption(title,pick,result)
         : football
-        ? `⚽ LuxTips · ${title}\n\n${selected.map(p=>`🏟️ ${p.match} · ${p.time}\n🎯 ${p.selection} · 1X2\n📊 Odd ${p.odd} · Betano`).join('\n\n')}`
+        ? `🔮 LuxTips · Bola de Cristal\n${title}\n\n${selected.map(p=>`🏟️ ${p.match} · ${p.time}\n🎯 ${p.selection} · 1X2\n📊 Odd ${p.odd} · Betano`).join('\n\n')}`
         : wonIds
         ? `✅ LuxTips · BIGODES · Múltipla ganha\n\n📊 Odd final ${ticketOdd} · Betano\n⚽ ${wonLegs.length} ${wonLegs.length===1?'seleção certa':'seleções certas'}${voidCount?' · '+voidCount+(voidCount===1?' anulada':' anuladas'):''}`
         : `🔥 LuxTips · BIGODES\n\n📊 Odd total ${ticketOdd} · Betano\n⚽ ${selected.length} seleções`;

@@ -1,7 +1,8 @@
+import {applyDesign} from './design-system.mjs';
 export function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 export function dayChips(days,labels,selected,counts){
  return days.map((day,i)=>{const n=Number.isInteger(counts[i])&&counts[i]>=0?counts[i]:0;
- return '<button type="button" role="tab" tabindex="'+esc(day===selected?0:-1)+'" aria-controls="cards" data-day="'+esc(day)+'" aria-selected="'+esc(day===selected)+'" aria-label="'+esc(labels[i]+', '+n+' '+(n===1?'jogo':'jogos'))+'"><span>'+esc(labels[i])+'</span><span class="day-badge" aria-hidden="true">'+esc(n)+'</span></button>';}).join('');
+ return '<button type="button" role="tab" tabindex="'+esc(day===selected?0:-1)+'" aria-controls="cards" data-day="'+esc(day)+'" aria-selected="'+esc(day===selected)+'" aria-label="'+esc(labels[i]+', '+n+' '+(n===1?'jogo':'jogos'))+'"><span>'+esc(labels[i]==='Depois de amanhã'?'Depois':labels[i])+'</span><span class="day-badge" aria-hidden="true">'+esc(n)+'</span></button>';}).join('');
 }
 export function analysisDetails(p,esc,key=''){
  const probability=p?.decisionProbability??p?.modelProbability??p?.probability;
@@ -109,9 +110,9 @@ export function footballEnhancements(html){
 export const responsibleNotice='<div class="responsible-notice"><span class="age-badge" aria-label="Maiores de 18 anos">18+</span><div><p>Prognósticos com fins informativos. Não garantimos resultados.</p><a href="https://www.jogoresponsavel.pt" target="_blank" rel="noopener">Joga com responsabilidade — jogoresponsavel.pt</a></div></div>';
 export function shareMeta(kind='football'){
  const big=kind==='bigodds',nba=kind==='nba',url='https://luxtips.90carlosmachado.workers.dev'+(big?'/big-odds':nba?'/nba':'/');
- const title=big?'Bigodes · LuxTips':nba?'LuxTips · Prognósticos de NBA':'LuxTips · Prognósticos de futebol';
- const description=big?'Uma múltipla de cada vez, com odds registadas, resultados por seleção e histórico de boletins.':nba?'Prognósticos diários de NBA com odds registadas e histórico público.':'Prognósticos 1X2 diários com odds registadas e histórico público.';
- return '<meta name="description" content="'+esc(nba||big?description:'Prognósticos diários de futebol e Bigodes com odds registadas, taxa de acerto pública e histórico verificável.')+'"><link rel="canonical" href="'+esc(url)+'"><meta property="og:type" content="website"><meta property="og:site_name" content="LuxTips">'+['og:title','twitter:title'].map(k=>'<meta '+(k.startsWith('og:')?'property':'name')+'="'+esc(k)+'" content="'+esc(title)+'">').join('')+['og:description','twitter:description'].map(k=>'<meta '+(k.startsWith('og:')?'property':'name')+'="'+esc(k)+'" content="'+esc(description)+'">').join('')+'<meta property="og:url" content="'+esc(url)+'"><meta property="og:image" content="https://luxtips.90carlosmachado.workers.dev/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="LuxTips — Prognósticos de futebol e Bigodes"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://luxtips.90carlosmachado.workers.dev/og.png">';
+ const title=big?'Bigodes · LuxTips':nba?'LuxTips · Prognósticos de NBA':'Bola de Cristal · LuxTips';
+ const description=big?'Uma múltipla de cada vez, com odds registadas, resultados por seleção e histórico de boletins.':nba?'Prognósticos diários de NBA com odds registadas e histórico público.':'Bola de Cristal: prognósticos individuais de futebol com análise, odds registadas e histórico público.';
+ return '<meta name="description" content="'+esc(nba||big?description:'Bola de Cristal e Bigodes: prognósticos individuais e múltiplas de futebol com odds registadas e histórico público.')+'"><link rel="canonical" href="'+esc(url)+'"><meta property="og:type" content="website"><meta property="og:site_name" content="LuxTips">'+['og:title','twitter:title'].map(k=>'<meta '+(k.startsWith('og:')?'property':'name')+'="'+esc(k)+'" content="'+esc(title)+'">').join('')+['og:description','twitter:description'].map(k=>'<meta '+(k.startsWith('og:')?'property':'name')+'="'+esc(k)+'" content="'+esc(description)+'">').join('')+'<meta property="og:url" content="'+esc(url)+'"><meta property="og:image" content="https://luxtips.90carlosmachado.workers.dev/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="LuxTips — Prognósticos de futebol e Bigodes"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://luxtips.90carlosmachado.workers.dev/og.png">';
 }
 export const frontStyle=`<style>
 .history-more{padding:12px 20px;background:var(--panel);border:1px solid var(--line);border-radius:10px;cursor:pointer}
@@ -133,5 +134,5 @@ export function decorateFrontOffice(html,kind='football'){
  html=html.replace(/<meta\b[^>]*(?:name="(?:description|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/gi,'').replace(/<link\b[^>]*rel="canonical"[^>]*>/gi,'');
  html=html.replace('</head>',shareMeta(kind)+frontStyle+'</head>');
  html=html.replace(/(<footer\b[^>]*class="shell"[^>]*>[\s\S]*?)(<\/footer>)/,(_,content,end)=>content+responsibleNotice+end);
- return html;
+ return applyDesign(html,kind);
 }

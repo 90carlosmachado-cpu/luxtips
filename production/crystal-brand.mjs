@@ -1,0 +1,5 @@
+/** Presentation only: no market, probability, publication or delivery identifiers. */
+export const crystalName = 'Bola de Cristal';
+export const crystalIcon = '<svg class="crystal-icon" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="13" r="9.5"/><path d="m15 8 4.8 3.5-1.8 5.6h-6l-1.8-5.6Z"/><path d="M15 3.5V8m9 2-4.2 1.5m.8 9-2.6-3.4m-8.6 3.4 2.6-3.4M6 10l4.2 1.5M9 24h12l2 4H7Z"/></g><path fill="#ceff75" d="m27 2 .9 2.6L30.5 5l-2.6.9L27 8.5l-.9-2.6L23.5 5l2.6-.4Z"/></svg>';
+export const crystalMark = '<div class="crystal-mark">'+crystalIcon+'<span>Bola de <strong>Cristal</strong></span></div>';
+export const crystalCardStyles = '.crystal-mark{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin:24px 0 8px;color:#f2f6f8;font-size:27px;font-weight:600;line-height:1.2}.crystal-mark strong{display:inline;font:inherit;color:#ceff75}.crystal-mark .crystal-icon{width:38px;height:38px;flex:none}.result-brand{display:flex;justify-content:center}.result-brand .crystal-mark{margin:20px 0 0;font-size:25px}';
