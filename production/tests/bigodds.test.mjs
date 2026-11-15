@@ -107,7 +107,8 @@ test('Lisbon clock handles summer and winter and PWA points to Big Odds',()=>{as
 test('Big Odds page has tabs, accurate canonical metadata and a standalone valid client',async()=>{
  const original='<html><head><title>LuxTips</title></head><body><header></header><main id="main" class="shell">old</main><script>throw Error("old client")</script><footer class="shell"></footer></body></html>';
  const navigation=html=>html.replace('<header>','<header><a href="/" aria-current="page">Futebol</a><a href="/big-odds">Big Odds</a>');
- const response=await bigOddsPage(new Response(original),navigation),html=await response.text();assert.ok(html.includes('data-big-tab="history"'));assert.ok(html.includes('aria-current="page">Big Odds'));assert.ok(!html.includes('old client'));assert.ok(html.includes('https://luxtips.90carlosmachado.workers.dev/big-odds'));assert.ok(!html.includes('> NBA'));
+ const response=await bigOddsPage(new Response(original,{headers:{'Content-Security-Policy':"default-src 'self'; script-src 'unsafe-inline'; frame-ancestors 'self' https://web.telegram.org"}}),navigation),html=await response.text();assert.ok(html.includes('data-big-tab="history"'));assert.ok(html.includes('aria-current="page">Big Odds'));assert.ok(!html.includes('old client'));assert.ok(html.includes('https://luxtips.90carlosmachado.workers.dev/big-odds'));assert.ok(!html.includes('> NBA'));
+ const csp=response.headers.get('Content-Security-Policy');assert.match(csp,/script-src 'unsafe-inline' 'self'/);assert.match(csp,/worker-src 'self'/);assert.match(csp,/manifest-src 'self'/);assert.match(csp,/frame-ancestors 'self' https:\/\/web.telegram.org/);
  new vm.Script('('+bigOddsClient.toString()+')');
 });
 test('complete scheduled cycle builds, publishes, blocks, settles and generates the next ticket',async()=>{

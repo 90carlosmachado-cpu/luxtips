@@ -108,5 +108,7 @@ export async function bigOddsPage(response,integrateSports){
  html=html.replace('</head>','<style>'+bigodesStyles+'</style></head>');
  html=decorateFrontOffice(html,'bigodds').replace('</body>','<script>'+[esc,stableDom,analysisDetails,disclosureEvents].map(f=>f.toString()).join('\n')+';('+bigOddsClient.toString()+')(stableDom,analysisDetails,disclosureEvents);</script></body>');
  const headers=new Headers(response.headers);headers.delete('Content-Length');headers.delete('ETag');headers.set('Cache-Control','no-store');
+ const csp=headers.get('Content-Security-Policy');
+ if(csp)headers.set('Content-Security-Policy',csp.replace(/script-src([^;]*)/,(_,sources)=>'script-src'+sources+(sources.includes("'self'")?'':" 'self'"))+(!/worker-src/.test(csp)?"; worker-src 'self'":'')+(!/manifest-src/.test(csp)?"; manifest-src 'self'":''));
  return new Response(injectPwa(html),{status:response.status,headers});
 }
