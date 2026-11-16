@@ -6,6 +6,7 @@ import {testDatabase} from './sqlite.mjs';
 import {worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots,freezeAt} from '../daily-ranking.mjs';
 import {listDay,reconcileDay,readDailyLists,LIST_VERSION,lisbonClock} from '../daily-list.mjs';
 import {syncFootballList,footballCurrentFeed,footballHistoryFeed} from '../football-list.mjs';
+import {NATIONS_LEAGUE,isNationsFixture,nationsSelectionReason} from '../nations-league.mjs';
 
 // Execute the actual production functions and SQL, without importing Cloudflare's
 // platform-only DurableObject module into Node. No model or publisher stubs.
@@ -14,7 +15,8 @@ const section=(start,end)=>source.slice(source.indexOf(start),source.indexOf(end
 function runtime(clock){
   class ClockDate extends Date {static now(){return clock.now;}}
   const context=vm.createContext({Date:ClockDate,Intl,JSON,Math,Number,Map,Set,Object,Array,Infinity,
-    worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots,__name:x=>x});
+    worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots,
+    NATIONS_LEAGUE,isNationsFixture,nationsSelectionReason,__name:x=>x});
   vm.runInContext([
     section('function quoteStatus(','var init_policy'),
     section('function pendingReason(','var init_readiness'),

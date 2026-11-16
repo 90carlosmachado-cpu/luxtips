@@ -1,3 +1,4 @@
+import {NATIONS_LEAGUE,NATIONS_SEASON,NATIONS_FIXTURES_PATH,NATIONS_SNAPSHOT_TTL,nationsMode,nationsWindow,isNationsFixture,nationsFinalsVenue,contextFromSnapshot,nationsSelectionReason,NATIONS_HISTORY_LEAGUES,nationsHistoryJobs,isNationsOfficialResult} from './nations-league.mjs';
 import {extractComboQuotes,isComboQuote} from './combo-archive.mjs';
 import {worstReplaceable,replaceDailyPick,releaseBelowMinimumSlots} from './daily-ranking.mjs';
 import {oddsRetryDelay,oddsNextAttempt,priorityOddsFixture,priorityOddsRows} from './refresh-policy.mjs';
@@ -42,7 +43,7 @@ function winnerDecision(p, market, now, kickoff = Infinity) {
     samplePolicy:conditional?'r2-market-anchor-4':'standard-12',basis:valid?'model-market-50-50':'model-only-70',
     referenceBooks:valid?m.books:0,selectionVersion:'winner-1x2-r1-r2-v2'};
 }
-function assessMarket(g, market, now) {
+function assessMarket(g, market, now, nationsComparison = null) {
   const p = g.prediction, probability = p?.probabilities?.[market];
   const fail = /* @__PURE__ */ __name((reason) => ({ eligible: false, reason }), "fail");
   if (!p) return fail("missing_prediction");
@@ -62,6 +63,14 @@ function assessMarket(g, market, now) {
   if (q && (q.fixtureId !== g.fixture.id || typeof q.bookmaker !== "string" || !q.bookmaker)) return fail("invalid_quote_identity");
   const status = quoteStatus(q, market, now, g.fixture.ts);
   if (status !== "ready") return fail(status);
+  if (g.fixture.league === NATIONS_LEAGUE) {
+    if (!decision || !isNationsFixture(g.fixture)) return fail("nations_stage_or_market_excluded");
+    if (nationsComparison !== "baseline") {
+      if (g.nationsLeague?.mode !== "live" && nationsComparison !== "with_context") return fail("nations_validation_pending");
+      const reason = nationsSelectionReason(g, market, now, decision);
+      if (reason) return fail(reason);
+    }
+  }
   const reserve = p.contextAdjustment?.uncertainty?.spread?.[market];
   if (decision) return {...decision,probability,conservativeProbability:decision.decisionProbability,modelDisagreement:Number.isFinite(reserve)?reserve:null,odd:q.odd,expectedReturn:decision.decisionProbability*q.odd-1,minimumExpectedReturn:null,uncertaintyKind:"component disagreement; informational only"};
   if (!Number.isFinite(reserve) || reserve < 0 || reserve > 1) return fail("invalid_component_divergence");
@@ -557,7 +566,11 @@ async function publishAvailable(db, games, now, options) {
       ...tip,
       selectionType: alternative ? "market-selection" : "winner-tip",
       priceEligible: true,
-      minimumMarketOdd: 1.20,
+      minimumMarketOdd: POLICY.minimumOdd,
+      ...(g.fixture.league === NATIONS_LEAGUE ? { nationsObjective: {
+        group: g.nationsLeague.group, stage: g.nationsLeague.stage, leg: g.nationsLeague.leg,
+        firstLeg: g.nationsLeague.firstLeg, ...g.nationsLeague[tip.market]
+      } } : {}),
       expectedValue: tip.probability * tip.odd - 1,
       calibrationStatus: "Avalia\xE7\xE3o prospetiva em curso",
       reason: "R1+R2: probabilidade de decisão combina modelo e consenso de mercado (50/50), com amostra e odds verificadas. Mercado avaliado pelos dados dispon\xEDveis, odd recente e vantagem ap\xF3s diverg\xEAncia entre componentes.",
@@ -931,6 +944,7 @@ function normalize(f) {
     ts,
     league: f.league.id,
     season: f.league.season,
+    ...(f.league.id === NATIONS_LEAGUE ? { nationsRound: f.league.round } : {}),
     competition: String(f.league.name || ""),
     country: String(f.league.country || ""),
     home: home.id,
@@ -1076,7 +1090,8 @@ function grid(lh, la) {
 }
 function predict(state, f) {
   const h = state.teams[f.home], a = state.teams[f.away];
-  const lh = clip(state.bh * (h?.attack || 1) * (a?.defense || 1), 0.15, 5), la = clip(state.ba * (a?.attack || 1) * (h?.defense || 1), 0.15, 5);
+  const neutralRate = nationsFinalsVenue(f) ? Math.sqrt(state.bh * state.ba) : null;
+  const lh = clip((neutralRate ?? state.bh) * (h?.attack || 1) * (a?.defense || 1), 0.15, 5), la = clip((neutralRate ?? state.ba) * (a?.attack || 1) * (h?.defense || 1), 0.15, 5);
   const ew = state.opts.eloWeight || 0, delta = clip(((h?.elo || 1500) - (a?.elo || 1500)) / 400, -1, 1);
   const homeGoals = clip(lh * Math.exp(ew * delta), 0.15, 5), awayGoals = clip(la * Math.exp(-ew * delta), 0.15, 5);
   const probabilities = grid(homeGoals, awayGoals), sample = Math.min(h?.w || 0, a?.w || 0);
@@ -11638,6 +11653,7 @@ async function winnerResponse(db, now = Date.now()) {
     }
   }
   const winnerAnalyses = pool.flatMap((g) => {
+    if (g.fixture.league === NATIONS_LEAGUE && g.nationsLeague?.mode !== "live") return [];
     const a = winnerAnalysis({ ...g, lastKnownOdds: { H: last.get(g.fixture.id + ":H"), A: last.get(g.fixture.id + ":A") } }, now);
     return a ? [{ fixture: g.fixture, winnerAnalysis: a }] : [];
   });
@@ -11665,7 +11681,9 @@ async function winnerResponse(db, now = Date.now()) {
     games,
     winnerAnalyses,
     window,
-    competitions: [...competitionNames].map(([id, name]) => ({ id, name })),
+    competitions: [...competitionNames].map(([id, name]) => ({ id, name })).concat(
+      games.some(g => g.fixture.league === NATIONS_LEAGUE) ? [{ id: NATIONS_LEAGUE, name: "Liga das Nações" }] : []
+    ),
     analysis: { days },
     selectionPolicy: { selectionVersion: "winner-1x2-r1-r2-v2", markets: ["H", "A"], minimumOdd: POLICY.minimumOdd, minimumWinnerProbability: 0.65, modelOnlyMinimum:0.70, minimumSample:12, conditionalMinimumSample:4, marketAnchorMinimum:0.70, marketWeight:0.5, minimumExpectedReturn:null, maxGamesPerDay:POLICY.maxGamesPerDay },
     diagnostics: { collected: rows.results.length, calculated: pool.length, visibleAnalyses: winnerAnalyses.length, publishedWinners: games.length },
@@ -13270,7 +13288,8 @@ async function collectContext(env, now = Date.now()) {
       }
       else summary.auditNext++;
     }
-    const fixtures = (await db.prepare("SELECT data FROM fixtures WHERE finished=0 AND kickoff>? AND kickoff<? ORDER BY kickoff LIMIT 150").bind(now, forecastWindow(now).end).all()).results.map((r) => JSON.parse(r.data)).filter((f) => f.status === "NS");
+    const fixtures = (await db.prepare("SELECT data FROM fixtures WHERE finished=0 AND kickoff>? AND kickoff<? ORDER BY kickoff LIMIT 150").bind(now, forecastWindow(now).end).all()).results.map((r) => JSON.parse(r.data)).filter(f =>
+      f.status === "NS" && (f.league !== NATIONS_LEAGUE || nationsMode(env, f) !== "off" && isNationsFixture(f)));
     const next = stamp ? JSON.parse(stamp.data).next || 0 : 0, start = fixtures.length ? next % fixtures.length : 0;
     const rotated = [...fixtures.slice(start), ...fixtures.slice(0, start)];
     summary.next = start;
@@ -13906,24 +13925,47 @@ async function refreshContextForecasts(env, now = Date.now(), options = {}) {
   try {
     const leagues = String(env.LEAGUES || "94,39,140,78,135,61,88,2,3,848").split(",").map(Number).filter(Number.isSafeInteger);
     const w = forecastWindow(now);
+    if (nationsWindow(now, env) && !leagues.includes(NATIONS_LEAGUE)) leagues.push(NATIONS_LEAGUE);
     const rows = await db.prepare("SELECT f.data fixture_data,f.updated_at,c.data FROM fixtures f LEFT JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff").bind(now, w.end).all();
+    const forecastRows = rows.results.filter(row => {
+      const f = JSON.parse(row.fixture_data);
+      return leagues.includes(f.league) && (f.league !== NATIONS_LEAGUE || nationsMode(env, f) !== "off" && isNationsFixture(f));
+    });
+    let nations = new Map();
+    if (forecastRows.some(row => JSON.parse(row.fixture_data).league === NATIONS_LEAGUE)) {
+      try {
+        const row = await db.prepare("SELECT data FROM cache WHERE key=?").bind("api:" + NATIONS_FIXTURES_PATH).first();
+        nations = contextFromSnapshot(row ? JSON.parse(row.data) : null, normalize, now);
+      } catch {
+        summary.failures.push({ league: NATIONS_LEAGUE, reason: "nations_context_unavailable" });
+      }
+    }
     const environment = liveEnvironment(env), states = /* @__PURE__ */ new Map(), games = [];
-    const previous = old ? JSON.parse(old.data) : {}, start = rows.results.length ? (previous.next || 0) % rows.results.length : 0;
-    const selected = [...rows.results.slice(start), ...rows.results.slice(0, start)].slice(0, 5);
-    summary.next = rows.results.length ? (start + selected.length) % rows.results.length : 0;
+    const previous = old ? JSON.parse(old.data) : {}, start = forecastRows.length ? (previous.next || 0) % forecastRows.length : 0;
+    const selected = [...forecastRows.slice(start), ...forecastRows.slice(0, start)].slice(0, 5);
+    summary.next = forecastRows.length ? (start + selected.length) % forecastRows.length : 0;
     const selectedLeagues = [...new Set(selected.map((r) => JSON.parse(r.fixture_data).league))];
     const european = selectedLeagues.some((league) => [2, 3, 848].includes(league));
-    const filter = european || !selectedLeagues.length ? "" : " AND league IN (" + selectedLeagues.map(() => "?").join(",") + ")";
-    const hrows = await db.prepare("SELECT data,updated_at FROM fixtures WHERE finished=1 AND kickoff>? AND kickoff<?" + filter + " ORDER BY kickoff").bind(now - 3 * 365 * DAY9, now - 72e5, ...european ? [] : selectedLeagues).all();
+    const filterByLeague = ids => european || !ids.length ? "" : " AND league IN (" + ids.map(() => "?").join(",") + ")";
+    const historyLeagues = selectedLeagues.includes(NATIONS_LEAGUE)
+      ? [...new Set([...selectedLeagues, ...NATIONS_HISTORY_LEAGUES])] : selectedLeagues;
+    const hrows = await db.prepare("SELECT data,updated_at FROM fixtures WHERE finished=1 AND kickoff>? AND kickoff<?" + filterByLeague(historyLeagues) + " ORDER BY kickoff")
+      .bind(now - 3 * 365 * DAY9, now - 72e5, ...(european ? [] : historyLeagues)).all();
     const knownHistory = hrows.results.filter((r) => Number.isFinite(r.updated_at) && r.updated_at <= now);
-    const history = knownHistory.map((r) => JSON.parse(r.data)).filter((f) => leagues.includes(f.league));
-    const drows = await db.prepare("SELECT data FROM openfoot_match_details WHERE observed_at<=? AND kickoff<?" + filter + " ORDER BY observed_at DESC").bind(now, now, ...european ? [] : selectedLeagues).all();
+    const allHistory = knownHistory.map(r => JSON.parse(r.data));
+    const history = allHistory.filter(f => leagues.includes(f.league) && f.league !== NATIONS_LEAGUE);
+    const drows = await db.prepare("SELECT data FROM openfoot_match_details WHERE observed_at<=? AND kickoff<?" + filterByLeague(selectedLeagues) + " ORDER BY observed_at DESC").bind(now, now, ...european ? [] : selectedLeagues).all();
     const details = drows.results.map((r) => JSON.parse(r.data)), cleanHistory = historyWithoutKnownRedCards(history, details, now);
+    const nationalHistory = selectedLeagues.includes(NATIONS_LEAGUE)
+      ? historyWithoutKnownRedCards(allHistory.filter(isNationsOfficialResult), details, now) : [];
     for (const row of selected) {
       const f = JSON.parse(row.fixture_data);
       if (f.status !== "NS" || !leagues.includes(f.league)) continue;
       try {
-        const european2 = [2, 3, 848].includes(f.league), h = european2 ? cleanHistory : cleanHistory.filter((r) => r.league === f.league);
+        const european2 = [2, 3, 848].includes(f.league);
+        const h = f.league === NATIONS_LEAGUE ? nationalHistory :
+          european2 ? cleanHistory : cleanHistory.filter(r => r.league === f.league);
+        const nationsLeague = f.league === NATIONS_LEAGUE ? { ...nations.get(f.id), mode: nationsMode(env, f) } : undefined;
         if (!states.has(f.league)) states.set(f.league, fitLiveStrength(h, now, f.league));
         let original = row.data ? JSON.parse(row.data) : {};
         if (original.fixture && (original.fixture.id !== f.id || original.fixture.league !== f.league || original.fixture.home !== f.home || original.fixture.away !== f.away)) {
@@ -13933,16 +13975,18 @@ async function refreshContextForecasts(env, now = Date.now(), options = {}) {
         if (original.fixture && original.fixture.ts !== f.ts) original = {};
         let p = competitionEvidence(predictLiveStrength(states.get(f.league), f), f.league);
         if (typeof environment.__openfootEnrich === "function") p = await environment.__openfootEnrich(h, f, p, now);
-        p = detailedPrediction(history, details, f, p, now);
+        const fixtureHistory = f.league === NATIONS_LEAGUE ? h : history;
+        p = detailedPrediction(fixtureHistory, details, f, p, now);
         const sources = await contextSources(db, f, now);
         const prices = await cachedOdds(db, f, now);
         const quotes = prices.quotes.filter((q) => q.verifiedReceipt && ["H", "D", "A"].includes(q.code)).map((q) => ({ ...q, market: "1X2", selection: q.code }));
-        p = contextPrediction(history, f, p, sources, quotes, now);
+        p = contextPrediction(fixtureHistory, f, p, sources, quotes, now);
+        if (f.league === NATIONS_LEAGUE) p.historyScope = "senior-official-national-matches";
         const sourceUpdatedAt = Math.max(Number.isFinite(original.sourceUpdatedAt) ? original.sourceUpdatedAt : 0, row.updated_at || 0);
         const sourceStale = !sourceUpdatedAt || now - sourceUpdatedAt > 2 * 36e5;
         const odds = prices.odds;
         const usedIds = new Set(h.map((f2) => f2.id));
-        const input = JSON.stringify({ selectionPolicy:"winner-1x2-r1-r2-v2",fixture: f, sourceUpdatedAt, history: knownHistory.filter((r) => usedIds.has(JSON.parse(r.data).id)), xg: p.xgEnrichment?.inputDigest, details: details.filter((d) => d.league === f.league), sources, odds, marketReference: p.contextAdjustment.market, oddsCollection: prices.state?.status, bucket: Math.floor(now / 18e5) });
+        const input = JSON.stringify({ selectionPolicy:"winner-1x2-r1-r2-v2",fixture: f, nationsLeague, sourceUpdatedAt, history: knownHistory.filter((r) => usedIds.has(JSON.parse(r.data).id)), xg: p.xgEnrichment?.inputDigest, details: details.filter((d) => d.league === f.league), sources, odds, marketReference: p.contextAdjustment.market, oddsCollection: prices.state?.status, bucket: Math.floor(now / 18e5) });
         const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
         const signature = [...new Uint8Array(digest)].map((n) => n.toString(16).padStart(2, "0")).join("");
         if (original.prediction?.version === p.version && original.prediction?.contextAdjustment?.inputSignature === signature && !informationCaptureNeeded(env, original, f, now)) {
@@ -13956,6 +14000,7 @@ async function refreshContextForecasts(env, now = Date.now(), options = {}) {
         let g = applyPricing({
           ...original,
           fixture: f,
+          nationsLeague,
           prediction: p,
           recommendation: null,
           odds,
@@ -13988,6 +14033,14 @@ async function refreshContextForecasts(env, now = Date.now(), options = {}) {
         delete g.result;
         const assessment = selectionAssessment(g, now);
         g.selectionAssessment = assessment;
+        if (nationsLeague) {
+          g.nationsLeague.comparison = Object.fromEntries(WINNER_MARKETS.map(market => [
+            market, {
+              baseline: assessMarket(g, market, now, "baseline"),
+              contextual: assessMarket(g, market, now, "with_context")
+            }
+          ]));
+        }
         if (g.winnerTip) g.winnerTip = { ...g.winnerTip, priceEligible: g.winnerTip.priceEligible && assessment.eligible, valueStatus: assessment.eligible ? "Valor esperado positivo ap\xF3s reserva para diverg\xEAncia do modelo." : "Sem vantagem suficiente ap\xF3s margem e incerteza do modelo." };
         const recordedAt = Date.now();
         if (recordedAt >= f.ts) continue;
@@ -14012,7 +14065,17 @@ async function refreshContextForecasts(env, now = Date.now(), options = {}) {
       }
     }
     const poolRows = await db.prepare("SELECT c.data,f.data fixture_data FROM fixtures f LEFT JOIN cache c ON c.key='forecast:'||f.id WHERE f.finished=0 AND f.kickoff>? AND f.kickoff<? ORDER BY f.kickoff").bind(now, w.end).all();
-    const rowsForLeagues = poolRows.results.filter((r) => leagues.includes(JSON.parse(r.fixture_data).league));
+    const rowsForLeagues = poolRows.results.filter(r => {
+      const f = JSON.parse(r.fixture_data);
+      return leagues.includes(f.league) && (f.league !== NATIONS_LEAGUE || nationsMode(env, f) === "live" && isNationsFixture(f) && nations.has(f.id));
+    }).map(r => {
+      if (!r.data || JSON.parse(r.fixture_data).league !== NATIONS_LEAGUE) return r;
+      // Reassess every candidate against the current snapshot, including fixtures
+      // that were outside this cycle's forecast batch.
+      const g = JSON.parse(r.data);
+      g.nationsLeague = { ...nations.get(g.fixture.id), mode: nationsMode(env, g.fixture) };
+      return { ...r, data: JSON.stringify(g) };
+    });
     const pool = publicGames(rowsForLeagues.filter((r) => r.data), now).games.filter((g) => g.prediction?.version === CONTEXT_VERSION);
     summary.publication = await publishMarketPicks(db, pool, Date.now(), { rows: rowsForLeagues, markets: WINNER_MARKETS });
     const days = Object.values(summary.publication.days || {});
@@ -14067,19 +14130,36 @@ async function refreshData(env, now = Date.now(), options = {}) {
   if (!await db.prepare("INSERT INTO openfoot_locks(key,until) VALUES('data_refresh',?) ON CONFLICT(key) DO UPDATE SET until=excluded.until WHERE until<? RETURNING until").bind(token, now).first()) return { status: "locked" };
   const summary = { at: now, status: "ok", next: previous.next || 0, requests: 0, saved: 0, lastCompletedAt: previous.lastCompletedAt || null, lastSuccessAt: previous.lastSuccessAt || (previous.status === "ok" ? previous.at : null) };
   try {
-    const leagues = String(env.LEAGUES).split(",").map(Number), w = forecastWindow(now);
+    const leagues = String(env.LEAGUES).split(",").map(Number).filter(league => league !== NATIONS_LEAGUE), w = forecastWindow(now);
+    const includeNations = nationsWindow(now, env);
+    if (includeNations) leagues.push(NATIONS_LEAGUE);
     const upcoming = (await db.prepare("SELECT data FROM fixtures WHERE finished=0 AND kickoff>? AND kickoff<? ORDER BY kickoff").bind(now, w.end).all()).results.map((r) => JSON.parse(r.data));
     const season = new Date(now).getUTCFullYear() - (new Date(now).getUTCMonth() < 6 ? 1 : 0);
     const jobs = [
-      ...leagues.map((league) => ({ kind: "fixtures", path: "fixtures?league=" + league + "&season=" + season + "&from=" + w.days[0] + "&to=" + w.days.at(-1), ttl: HOUR5 })),
-      ...upcoming.filter((f) => f.status === "NS" && leagues.includes(f.league)).map((f) => ({ kind: "odds", id: f.id, fixture: f })),
-      ...leagues.flatMap((league) => [season, season - 1, season - 2].map((year) => ({ kind: "history", path: "fixtures?league=" + league + "&season=" + year, ttl: year === season ? 6 * HOUR5 : 30 * 24 * HOUR5 })))
+      ...leagues.map((league) => league === NATIONS_LEAGUE
+        ? { kind: "fixtures", path: NATIONS_FIXTURES_PATH, ttl: NATIONS_SNAPSHOT_TTL }
+        : { kind: "fixtures", path: "fixtures?league=" + league + "&season=" + season + "&from=" + w.days[0] + "&to=" + w.days.at(-1), ttl: HOUR5 }),
+      ...upcoming.filter((f) => f.status === "NS" && leagues.includes(f.league) &&
+        (f.league !== NATIONS_LEAGUE || isNationsFixture(f) && nationsMode(env, f) !== "off")).map((f) => ({ kind: "odds", id: f.id, fixture: f })),
+      ...(includeNations ? nationsHistoryJobs() : []),
+      ...leagues.flatMap((league) => (league === NATIONS_LEAGUE ? [NATIONS_SEASON - 2] : [season, season - 1, season - 2]).map((year) => ({
+        kind: "history", path: "fixtures?league=" + league + "&season=" + year, ttl: year === season ? 6 * HOUR5 : 30 * 24 * HOUR5
+      })))
     ];
-    const priorityRows = (previous.priorityRunCount||0)>=2 ? [] : await priorityOddsRows(db,now,w.end,leagues);
-    const index = summary.next % jobs.length, continuationFixture = priorityOddsFixture(priorityRows, leagues, now);
-    const job = continuationFixture ? { kind: "odds", id: continuationFixture.id, fixture: continuationFixture } : jobs[index];
-    summary.wasContinuation = !!continuationFixture;
-    summary.priorityRunCount=continuationFixture?(previous.priorityRunCount||0)+1:0;
+    const useNationsPriority = upcoming.some(f => f.league === NATIONS_LEAGUE &&
+      f.status === "NS" && isNationsFixture(f) && nationsMode(env, f) === "live");
+    const priorityRows = (previous.priorityRunCount||0)>=2 ? [] : await priorityOddsRows(db,now,w.end,leagues.filter(league => league !== NATIONS_LEAGUE || useNationsPriority));
+    const prioritized = priorityRows.filter(row => {
+      const f = JSON.parse(row.fixture_data);
+      return f.league !== NATIONS_LEAGUE || isNationsFixture(f) && nationsMode(env, f) === "live";
+    });
+    const index = summary.next % jobs.length, continuationFixture = priorityOddsFixture(prioritized, leagues, now);
+    const needsNations = includeNations && now - (previous.nationsCheckedAt ?? 0) >= NATIONS_SNAPSHOT_TTL / 2;
+    const job = needsNations ? jobs.find(job => job.path === NATIONS_FIXTURES_PATH) :
+      continuationFixture ? { kind: "odds", id: continuationFixture.id, fixture: continuationFixture } : jobs[index];
+    if (includeNations) summary.nationsCheckedAt = needsNations ? now : previous.nationsCheckedAt;
+    summary.wasContinuation = needsNations || !!continuationFixture;
+    summary.priorityRunCount=!needsNations&&continuationFixture?(previous.priorityRunCount||0)+1:0;
     summary.job = job;
     summary.total = jobs.length;
     if (job.kind === "odds") {
@@ -14092,7 +14172,7 @@ async function refreshData(env, now = Date.now(), options = {}) {
         const processed = new Set([job.id]);
         summary.priorityFixtures = [job.id];
         for (let extra = 0; extra < 2 && Date.now() - now < 30000; extra++) {
-          const next = priorityOddsFixture(priorityRows.filter(row => {
+          const next = priorityOddsFixture(prioritized.filter(row => {
             try { return !processed.has(JSON.parse(row.fixture_data).id); } catch { return false; }
           }), leagues, now);
           if (!next) break;
@@ -14105,9 +14185,15 @@ async function refreshData(env, now = Date.now(), options = {}) {
         }
       }
     } else {
-      const result = await api(env, job.path, job.ttl, !!options.force);
+      const result = await api(env, job.path, job.ttl, !!options.force || needsNations);
       if (result.refreshFailed || result.stale) throw Object.assign(Error("source_refresh_failed"), { code: "source_refresh_failed" });
-      const rows = result.data.map(normalize).filter((f) => f && leagues.includes(f.league));
+      const historyJob = job.kind === "nations_history";
+      if (historyJob && (!result.data.length || result.data.some(item => item?.league?.id !== job.league || item.league.season !== job.season))) {
+        throw Object.assign(Error("nations_history_invalid_campaign"), { code: "nations_history_invalid_campaign" });
+      }
+      const rows = result.data.map(normalize).filter(f => f && (historyJob
+        ? isNationsOfficialResult(f) && f.ts > now - 3 * 365 * DAY9 && f.ts < now - 72e5
+        : leagues.includes(f.league)));
       for (let start = 0; start < rows.length; start += 50) await db.batch(rows.slice(start, start + 50).map((f) => db.prepare("INSERT INTO fixtures(id,league,kickoff,finished,data,updated_at) VALUES(?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET league=excluded.league,kickoff=excluded.kickoff,finished=excluded.finished,data=excluded.data,updated_at=excluded.updated_at WHERE fixtures.updated_at<=excluded.updated_at").bind(f.id, f.league, f.ts, f.finished ? 1 : 0, JSON.stringify(f), result.fetchedAt)));
       summary.saved = rows.length;
     }

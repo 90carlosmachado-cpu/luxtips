@@ -1,7 +1,9 @@
 import {optimizeBigOdds} from './bigodds-optimizer.mjs';
+import {fitNationalStrength,predictNationalStrength,NATIONAL_STRENGTH_LEAGUES} from './bigodds-strength.mjs';
+import {BIGODES_QUALITY_VERSION} from './bigodds-quality.mjs';
 // Research candidate goals4: role-specific goals, prior 4, half-life 180 days.
 // No results from the target game and no market odds enter the probability model.
-export const BIGODDS_POLICY=Object.freeze({id:'bigodds-exact-ev-betano-v4',optimizer:'exact-branch-bound-v1',minLegExpectedReturn:0,minTicketExpectedReturn:.03,disallowRepeatedTeams:true,maxNodes:1000000,bookmaker:'Betano',source:'xg90-prior2-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.5,quoteMaxAge:21600000,prior:2,halfLifeDays:90,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
+export const BIGODDS_POLICY=Object.freeze({id:'bigodes-quality-betano-v5',optimizer:'exact-branch-bound-quality-v2',minLegExpectedReturn:0,minTicketExpectedReturn:.03,minJointProbability:.20,requireQualityEvidence:true,minMarketProbability:.70,maxModelMarketGap:.15,disallowRepeatedTeams:true,maxNodes:1000000,bookmaker:'Betano',source:'national-opponent-strength-or-club-xg-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.75,quoteMaxAge:21600000,prior:2,halfLifeDays:90,nationalPrior:8,nationalHalfLifeDays:365,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
 const DAY=86400000,DECAY=180*DAY/Math.LN2;
 export function goalModel(history,now){
  const leagues=new Map(),teams=new Map();
@@ -47,6 +49,48 @@ export function xgMarketModel(history,now,details=[]){
   let xgUsed=Math.min(xlh[0],xla[0])>=20&&Math.min(xh[0],xa[0])>=2;
   if(xgUsed){const bxh=xlh[1]/xlh[0],bxa=xla[1]/xla[0];xgUsed=Math.min(bxh,bxa)>0;if(xgUsed){mh=bh*((xh[1]+prior*bxh)/(xh[0]+prior)/bxh)*((xa[2]+prior*bxh)/(xa[0]+prior)/bxh);ma=ba*((xa[1]+prior*bxa)/(xa[0]+prior)/bxa)*((xh[2]+prior*bxa)/(xh[0]+prior)/bxa);}}
   return {probabilities:scoreProbabilities(mh,ma),homeGoals:mh,awayGoals:ma,homeSample:h[3],awaySample:a[3],xgUsed,xgHomeSample:xh[3],xgAwaySample:xa[3],xgHomeWeighted:xh[0],xgAwayWeighted:xa[0],xgLeagueWeighted:Math.min(xlh[0],xla[0]),source:xgUsed?'xg':'goals_fallback'};
+ };
+}
+
+// New publications use explicit evidence. Frozen goal/xG functions above remain
+// available for truthful historical replay; they are not rewritten retroactively.
+export function qualityMarketModel(history,now,details=[]){
+ const nationals=new Set(NATIONAL_STRENGTH_LEAGUES);
+ const nationalState=fitNationalStrength(history.filter(r=>nationals.has(r.league)),now);
+ const clubHistory=history.filter(r=>!nationals.has(r.league)&&r.status==='FT'&&
+  Number.isSafeInteger(r.id)&&Number.isSafeInteger(r.home)&&Number.isSafeInteger(r.away)&&r.home!==r.away&&
+  [r.hg,r.ag].every(v=>Number.isInteger(v)&&v>=0)&&Number.isFinite(r.kickoff)&&Number.isFinite(r.settled_at)&&
+  r.settled_at>r.kickoff&&r.settled_at<=now&&r.kickoff+7200000<=now);
+ const clubPredict=xgMarketModel(clubHistory,now,details),samples=new Map(),seen=new Set();
+ for(const r of clubHistory){
+  if(seen.has(r.id)||!Number.isSafeInteger(r.id)||!Number.isSafeInteger(r.home)||!Number.isSafeInteger(r.away)||r.home===r.away||
+     ![r.hg,r.ag].every(v=>Number.isInteger(v)&&v>=0)||!Number.isFinite(r.kickoff)||!Number.isFinite(r.settled_at)||
+     r.settled_at>now||r.kickoff+7200000>now||r.status!=='FT')continue;
+  seen.add(r.id);const weight=Math.exp(-Math.LN2*(now-r.kickoff)/ (90*DAY));
+  for(const [team,role]of [[r.home,'home'],[r.away,'away']]){
+   const key=r.league+':'+team;
+   const s=samples.get(key)||{games:0,weighted:0,lastAt:null,home:{games:0,weighted:0},away:{games:0,weighted:0}};
+   s.games++;s.weighted+=weight;s.lastAt=Math.max(s.lastAt??r.kickoff,r.kickoff);s[role].games++;s[role].weighted+=weight;samples.set(key,s);
+  }
+ }
+ return f=>{
+  if(nationals.has(f.league)){
+   const model=predictNationalStrength(nationalState,f);
+   const evidence={version:BIGODES_QUALITY_VERSION,scope:'national_official',
+    home:{games:model.homeSample,weighted:model.homeWeighted,lastAt:model.homeLastAt},
+    away:{games:model.awaySample,weighted:model.awayWeighted,lastAt:model.awayLastAt}};
+   return {...model,evidence,probabilities:[model.homeGoals,model.awayGoals].every(Number.isFinite)?scoreProbabilities(model.homeGoals,model.awayGoals):{}};
+  }
+  const model=clubPredict(f),reasons=[];
+  const sample=(team,role)=>{const s=samples.get(f.league+':'+team);return {games:s?.games??0,weighted:s?.weighted??0,lastAt:s?.lastAt??null,roleGames:s?.[role].games??0,roleWeighted:s?.[role].weighted??0};};
+  const evidence={version:BIGODES_QUALITY_VERSION,scope:'competition_roles',home:sample(f.home,'home'),away:sample(f.away,'away')};
+  for(const side of ['home','away']){
+   const s=evidence[side];
+   if(s.games<8||s.weighted<4)reasons.push(side+'_sample_below_minimum');
+   if(s.roleGames<3||s.roleWeighted<1)reasons.push(side+'_role_sample_below_minimum');
+   if(!Number.isFinite(s.lastAt)||now-s.lastAt>90*DAY)reasons.push(side+'_history_stale');
+  }
+  return {...model,cutoff:now,evidence,quality:{eligible:reasons.length===0,reasons,calibrated:false}};
  };
 }
 export function scoreProbabilities(homeGoals,awayGoals){
@@ -110,7 +154,8 @@ export function analyzeTicketExact(candidates,now=Date.now()){
  if(result.status!=='optimal')result.ticket=null;
  if(result.ticket)result.ticket.optimization={algorithm:BIGODDS_POLICY.optimizer,optimalityProved:true,
   independentGamesAssumed:true,probabilityCalibrationValidated:false,nodes:result.nodes,
-  candidateCount:result.candidateCount,fixtureCount:result.fixtureCount};
+  candidateCount:result.candidateCount,fixtureCount:result.fixtureCount,qualityGatesApplied:true,
+  minJointProbability:BIGODDS_POLICY.minJointProbability};
  return result;
 }
 export function selectTicketExact(candidates,now=Date.now()){

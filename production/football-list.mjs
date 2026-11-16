@@ -12,8 +12,9 @@ export function footballCandidates(body,now) {
   const cards=[];
   for(const g of body.games||[]) {
     const pick=pickOf(g),q=g.odds?.[pick?.market];
-    if(!g.published||!['H','A'].includes(pick?.market)||q?.bookmaker!=='Betano'||!q?.verifiedReceipt||q.source!=='API-Football'||q.market!==pick.market||q.selection!==pick.market||q.fixtureId!==g.fixture?.id)continue;
-    if(!Number.isFinite(q.odd)||q.odd<1.20||!Number.isFinite(q.at)||!Number.isFinite(q.observedAt)||q.at>q.observedAt||q.observedAt>now||g.fixture.ts<=now)continue;
+    if(!g.published||!g.fixture||!['H','A'].includes(pick?.market)||q?.bookmaker!=='Betano'||!q?.verifiedReceipt||q.source!=='API-Football'||q.market!==pick.market||q.selection!==pick.market||q.fixtureId!==g.fixture?.id)continue;
+    const minimum=1.20;
+    if(!Number.isFinite(q.odd)||q.odd<minimum||!Number.isFinite(q.at)||!Number.isFinite(q.observedAt)||q.at>q.observedAt||q.observedAt>now||g.fixture.ts<=now)continue;
     const assessment=pick.assessment;
     if(!pick.selectionVersion&&Number.isFinite(assessment?.conservativeProbability)&&Number.isFinite(assessment?.minimumExpectedReturn)&&q.odd*assessment.conservativeProbability-1+1e-12<assessment.minimumExpectedReturn)continue;
     const card=cleanCard(g,'recommendation'),field=g.displayTip?'displayTip':g.winnerTip?'winnerTip':'recommendation';

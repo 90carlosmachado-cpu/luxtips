@@ -1,0 +1,44 @@
+{
+  "id": "bigodes-national-quality-20261116-v1",
+  "scope": "Nations League target matches; common paired sample, official national-team history only",
+  "source": {
+    "sha256": "471ac20f3cada3a9d5e034d2581ada916e2342bcdc50f6827ac3d3c11a193502",
+    "rows": 717,
+    "counts": {
+      "960/2023": 48,
+      "960/2024": 7,
+      "4/2024": 46,
+      "5/2024": 156,
+      "5/2025": 23,
+      "32/2025": 192,
+      "5/2026": 142,
+      "32/2026": 8,
+      "1/2026": 95
+    },
+    "firstKickoff": 1699818300000,
+    "lastKickoff": 1794771900000,
+    "importsMoreThanOneDayLate": 683
+  },
+  "development": "Calendar 2024–2025; 2023 is warm-up. Descriptive only; no parameter search.",
+  "evaluation": "Calendar 2026; fixed candidate configuration, no tuning on these outcomes.",
+  "candidateOptions": {
+    "prior": 8,
+    "halfLifeDays": 365
+  },
+  "baseline": "Frozen xgMarketModel, prior2/half-life90, Nations League history only; no xG for these data.",
+  "candidate": "Regularized attack/defence strengths adjusted to opponent strength; pooled official national-team history.",
+  "predictionTime": "08:00 Europe/Lisbon on each match day; simultaneous matches share the same historical cutoff.",
+  "historicalAvailability": "RETROSPECTIVE EVENT-TIME RECONSTRUCTION. Results assumed available kickoff+2h. Actual import/revision clocks were mostly later and do not prove contemporary availability.",
+  "tournamentVenue": "Candidate treats final tournaments (World Cup/Euro) as neutral unless independently verified otherwise. Legacy neutral field is not trusted.",
+  "metrics": [
+    "Three-way Brier sum (not divided by 3)",
+    "Three-way log loss",
+    "Per-market binary Brier/log loss",
+    "Calibration by probability band"
+  ],
+  "uncertainty": "Paired metric-difference percentile intervals from 2000 bootstrap samples of whole match days; per-market Wilson intervals are binomial approximations.",
+  "selectionBias": "No best parameters or market selection are chosen from evaluation outcomes. Raw model diagnostics do not validate the 50/50 blend or accumulator selection.",
+  "acceptance": "Report paired comparison and coverage without forcing a passing result. No empirical win-rate guarantee, ROI claim or deployment decision is produced.",
+  "odds": "Historical contemporaneous Betano odds are not supplied: no valid accumulator hit-rate or profitability backtest.",
+  "productionWrites": false
+}

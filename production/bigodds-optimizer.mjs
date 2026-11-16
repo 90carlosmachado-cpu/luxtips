@@ -3,12 +3,15 @@
  * No I/O and no writes. A mathematical optimum is conditional on supplied
  * probabilities and cross-fixture independence; it is not a win guarantee.
  */
+import {legQualityFailure} from './bigodds-quality.mjs';
 export const DEFAULT_POLICY = Object.freeze({
   bookmaker: 'Betano', minLegs: 5, maxLegs: 12,
   minOdd: 8, maxOdd: 15, minLegOdd: 1.2, minProbability: 0.5,
   minLegExpectedReturn: 0, minTicketExpectedReturn: 0.03,
   quoteMaxAge: 21600000, kickoffBuffer: 60000,
   disallowRepeatedTeams: true, requireLowerProbability: false,
+  minJointProbability: 0, requireQualityEvidence: false,
+  minMarketProbability: 0, maxModelMarketGap: 1,
   maxNodes: 1000000,
   markets: ['1','2','1X','X2','O15','O25','O35','BY','BN'],
 });
@@ -35,6 +38,9 @@ function validatePolicy(policy, now) {
     if (policy[k] !== null && (!finite(policy[k]) || policy[k] <= -1)) {
       throw new TypeError(`Invalid ${k}`);
     }
+  }
+  for (const k of ['minJointProbability','minMarketProbability','maxModelMarketGap']) {
+    if (!finite(policy[k]) || policy[k] < 0 || policy[k] > 1) throw new TypeError(`Invalid ${k}`);
   }
 }
 
@@ -89,6 +95,8 @@ export function optimizeBigOdds(candidates, options = {}) {
     if (scoreP < policy.minProbability || leg.odd < policy.minLegOdd) {
       reject('below_leg_minimum'); continue;
     }
+    const qualityFailure = legQualityFailure({...leg, probability:p}, policy, now);
+    if (qualityFailure) { reject(qualityFailure); continue; }
     if (policy.minLegExpectedReturn !== null
         && scoreP*leg.odd < 1+policy.minLegExpectedReturn-EPS) {
       reject('negative_or_insufficient_leg_value'); continue;
@@ -126,6 +134,8 @@ export function optimizeBigOdds(candidates, options = {}) {
     if (odd > policy.maxOdd+EPS || n+remaining < policy.minLegs) return;
     if (best && lp < best.logProbability-EPS) return;
     const joint = Math.exp(lp);
+    // Adding legs cannot improve the joint probability. Fail before chasing odds.
+    if (joint < policy.minJointProbability-EPS) return;
     if (n >= policy.minLegs && odd >= policy.minOdd-EPS
         && (policy.minTicketExpectedReturn === null
             || joint*odd >= 1+policy.minTicketExpectedReturn-EPS)) {

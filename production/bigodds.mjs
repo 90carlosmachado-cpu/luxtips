@@ -1,6 +1,7 @@
-import {NATIONS_LEAGUE,isNationsFixture,nationsMode,nationsWindow} from './nations-league.mjs';
+import {NATIONS_LEAGUE,NATIONS_HISTORY_LEAGUES,isNationsFixture,nationsMode,nationsWindow} from './nations-league.mjs';
 import {withTicketBetano} from './betano-prices.mjs';
-import {BIGODDS_POLICY,goalModel,xgMarketModel,analyzeTicketExact,marketHit,MARKET_LABELS} from './bigodds-model.mjs';
+import {BIGODDS_POLICY,qualityMarketModel,analyzeTicketExact,marketHit,MARKET_LABELS} from './bigodds-model.mjs';
+import {legQualityFailure} from './bigodds-quality.mjs';
 const DAY=86400000;
 export const lisbonDay=ts=>new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Lisbon',year:'numeric',month:'2-digit',day:'2-digit'}).format(ts);
 const json=(body,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
@@ -32,7 +33,7 @@ export function candidatesFromQuotes(fixtures,quotes,predict,now){
    if(market==='D')continue;
    if(['1','2','1X','X2'].includes(market)){
     const trio=['1','D','2'].map(k=>group.get(k));
-    if(trio.some(v=>!v)||new Set(trio.map(v=>v.provider_at)).size!==1)continue;
+    if(trio.some(v=>!v||v.provider_at!==q.provider_at))continue;
    }
    // The historical candidate required a complete paired totals/BTTS market.
    let marketProbability=null,referenceAt=q.provider_at;
@@ -41,12 +42,12 @@ export function candidatesFromQuotes(fixtures,quotes,predict,now){
    const partner={O15:'U15',U15:'O15',O25:'U25',U25:'O25',O35:'U35',U35:'O35',BY:'BN',BN:'BY'}[market];
    if(partner&&group.get(partner)?.provider_at!==q.provider_at)continue;
    if(partner)marketProbability=(1/q.odd)/(1/q.odd+1/group.get(partner).odd);
-   const modelProbability=model.probabilities[market];
+   const modelProbability=model.probabilities?.[market];
    if(!Number.isFinite(marketProbability)||!Number.isFinite(modelProbability))continue;
    const decisionProbability=.5*modelProbability+.5*marketProbability;
    out.push({fixtureId:f.id,kickoff:f.ts,home:f.home,away:f.away,league:f.league,competition:f.competition,homeName:f.homeName,awayName:f.awayName,
     market,label:MARKET_LABELS[market],odd:q.odd,bookmaker,quoteAt:q.provider_at,observedAt:q.observed_at,source:'API-Football',estimated:false,
-    probabilities:{...model.probabilities,[market]:decisionProbability},modelProbabilities:model.probabilities,modelProbability,marketProbability,referenceAt,selectionVersion:'bigodds-xg-market-v1',model:{...model,probabilities:undefined,cutoff:now}});
+    probabilities:{...model.probabilities,[market]:decisionProbability},modelProbabilities:model.probabilities,modelProbability,marketProbability,referenceAt,selectionVersion:'bigodes-quality-market-v2',model:{...model,probabilities:undefined,cutoff:now}});
   }
  }
  return out;
@@ -86,11 +87,14 @@ export async function publishBigOdds(db,ticket,now=Date.now()){
  if(!Number.isFinite(ticket.odd)||ticket.legs.length<5||ticket.legs.length>12||ticket.odd<8||ticket.odd>15+1e-9)throw Error('invalid_bigodds_ticket');
  const odds=ticket.legs.reduce((p,l)=>p*l.odd,1);
  if(Math.abs(odds-ticket.odd)>1e-8||new Set(ticket.legs.map(l=>l.fixtureId)).size!==ticket.legs.length)throw Error('invalid_bigodds_legs');
- if(ticket.legs.some(l=>!BIGODDS_POLICY.markets.includes(l.market)||l.bookmaker!==ticket.bookmaker||l.estimated||l.odd<1.2||l.probability<.5||!(l.quoteAt>now-21600000&&l.quoteAt<=l.observedAt&&l.observedAt<=now&&l.kickoff>now+60000)))return {status:'inputs_expired'};
+ if(ticket.legs.some(l=>!BIGODDS_POLICY.markets.includes(l.market)||l.bookmaker!==ticket.bookmaker||l.estimated||l.odd<BIGODDS_POLICY.minLegOdd||!(l.quoteAt>now-BIGODDS_POLICY.quoteMaxAge&&l.quoteAt<=l.observedAt&&l.observedAt<=now&&l.kickoff>now+60000)))return {status:'inputs_expired'};
  const selectionProbabilities=ticket.legs.map(l=>l.selectionProbability??l.probability);
  if(ticket.legs.some((l,i)=>!Number.isFinite(l.odd)||l.estimated!==false||!Number.isFinite(l.probability)||l.probability<=0||l.probability>1||!Number.isFinite(selectionProbabilities[i])||selectionProbabilities[i]<=0||selectionProbabilities[i]>l.probability))return {status:'invalid_probability_or_price'};
+ if(selectionProbabilities.some(p=>p<BIGODDS_POLICY.minProbability))return {status:'probability_below_minimum'};
+ for(const leg of ticket.legs){const reason=legQualityFailure(leg,BIGODDS_POLICY,now);if(reason)return {status:'quality_rejected',reason};}
  if(ticket.legs.some(l=>!Number.isInteger(l.home)||!Number.isInteger(l.away)||l.home<=0||l.away<=0||l.home===l.away)||new Set(ticket.legs.flatMap(l=>[l.home,l.away])).size!==2*ticket.legs.length)return {status:'repeated_or_invalid_team'};
  const jointProbability=selectionProbabilities.reduce((p,v)=>p*v,1),expectedNetPerUnit=jointProbability*odds-1;
+ if(jointProbability<BIGODDS_POLICY.minJointProbability-1e-12)return {status:'joint_probability_below_minimum'};
  if(ticket.legs.some((l,i)=>selectionProbabilities[i]*l.odd<1+BIGODDS_POLICY.minLegExpectedReturn-1e-12)||expectedNetPerUnit<BIGODDS_POLICY.minTicketExpectedReturn-1e-12)return {status:'insufficient_expected_value'};
  const id=crypto.randomUUID(),data={id,createdAt:now,policy:BIGODDS_POLICY,bookmaker:ticket.bookmaker,odd:ticket.odd,legs:ticket.legs,jointProbability,expectedNetPerUnit,optimization:ticket.optimization??null};
  const matches=ticket.legs.map(()=>'(f.id=? AND f.kickoff=? AND json_extract(f.data,\'$.home\')=? AND json_extract(f.data,\'$.away\')=?)').join(' OR ');
@@ -193,13 +197,14 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
   }catch{return [];}
  });
  if(!fixtures.length)return {status:'no_upcoming_fixtures'};
+ const historyLeagues=[...new Set([...leagues,...(leagues.includes(NATIONS_LEAGUE)?NATIONS_HISTORY_LEAGUES:[])])];
  const history=[];let after=0;
  for(;;){
-  const chunk=await db.prepare(`SELECT f.id,f.league,f.kickoff,json_extract(f.data,'$.home') home,json_extract(f.data,'$.away') away,json_extract(f.data,'$.hg') hg,json_extract(f.data,'$.ag') ag,COALESCE(r.settled_at,f.updated_at) settled_at
+  const chunk=await db.prepare(`SELECT f.id,f.league,f.kickoff,json_extract(f.data,'$.season') season,json_extract(f.data,'$.home') home,json_extract(f.data,'$.away') away,json_extract(f.data,'$.hg') hg,json_extract(f.data,'$.ag') ag,json_extract(f.data,'$.status') status,json_extract(f.data,'$.neutral') neutral,json_extract(f.data,'$.neutralVerified') neutralVerified,COALESCE(r.settled_at,f.updated_at) settled_at
    FROM fixtures f LEFT JOIN results r ON r.fixture_id=f.id WHERE f.finished=1 AND f.id>? AND f.kickoff>=1672531200000 AND f.kickoff+7200000<=? AND COALESCE(r.settled_at,f.updated_at)<=?
    AND json_extract(f.data,'$.status')='FT' AND (r.fixture_id IS NULL OR (json_extract(f.data,'$.hg')=r.hg AND json_extract(f.data,'$.ag')=r.ag))
-   AND f.league IN (${leagues.map(()=>'?').join(',')}) ORDER BY f.id LIMIT 4000`).bind(after,now,now,...leagues).all();
-  history.push(...chunk.results);if(chunk.results.length<4000)break;after=chunk.results.at(-1).id;
+   AND f.league IN (${historyLeagues.map(()=>'?').join(',')}) ORDER BY f.id LIMIT 4000`).bind(after,now,now,...historyLeagues).all();
+  history.push(...chunk.results.map(r=>({...r,neutralVerified:r.neutralVerified===1})));if(chunk.results.length<4000)break;after=chunk.results.at(-1).id;
  }
  const quotes=[];
  for(let start=0;start<fixtures.length;start+=50){
@@ -209,7 +214,7 @@ export async function generateBigOdds(env,now,clock=Date.now,slot=null){
  }
  const detailRows=await db.prepare("SELECT fixture_id,league,kickoff,observed_at,json_extract(data,'$.fixtureId') data_id,json_extract(data,'$.league') data_league,json_extract(data,'$.kickoff') data_kickoff,json_extract(data,'$.observedAt') data_observed,json_extract(data,'$.homeXg') home_xg,json_extract(data,'$.awayXg') away_xg,json_extract(data,'$.result.home') hg,json_extract(data,'$.result.away') ag FROM openfoot_match_details WHERE observed_at<=? AND kickoff+7200000<=? ORDER BY fixture_id,observed_at").bind(now,now).all();
  const details=detailRows.results.map(r=>({...r,data:{fixtureId:r.data_id,league:r.data_league,kickoff:r.data_kickoff,observedAt:r.data_observed,homeXg:r.home_xg,awayXg:r.away_xg,result:{home:r.hg,away:r.ag}}}));
- const candidates=candidatesFromQuotes(fixtures,quotes,xgMarketModel(history,now,details),now).filter(l=>l.bookmaker==='Betano');
+ const candidates=candidatesFromQuotes(fixtures,quotes,qualityMarketModel(history,now,details),now).filter(l=>l.bookmaker==='Betano');
  const analysis=analyzeTicketExact(candidates,now),ticket=analysis.ticket;
  const {ticket:ignoredTicket,...diagnostics}=analysis;
  // Freeze every decision's candidates, including an unsuccessful search, for reproducible audits.
