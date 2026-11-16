@@ -6,12 +6,13 @@ Correção implementada e validada localmente em 16 de novembro de 2026, sobre o
 GitHub `main` em `5572c324dbaac27f88c9458236db295d5ded0226`, no ramo
 `fix/bigodes-quality-20261116`. O titular autorizou explicitamente, em 16 de
 novembro, o commit e push, a publicação e o arquivo do boletim ativo, preservando
-o histórico. A publicação está em preparação; os identificadores e a confirmação
-operacional serão registados depois da verificação remota.
+o histórico. Publicação confirmada às 08:58 de Lisboa, versão Cloudflare
+`9ce582f6-1f4f-47f5-9b18-6b2dcb96fb75`, com 100% do tráfego. Código sincronizado
+no GitHub em `2aeb28b1728a6db27bfd7718148b92c0f31af0d7`.
 
 Política nova: `bigodes-quality-betano-v5`. A versão anterior era
-`bigodds-exact-ev-betano-v4`. O manifesto da última publicação não foi reescrito
-para apresentar código local como se já estivesse publicado.
+`bigodds-exact-ev-betano-v4`. O manifesto foi atualizado após confirmar os hashes
+dos 29 módulos ativos, todos idênticos ao código validado.
 
 ## Problema corrigido
 
@@ -163,10 +164,27 @@ Essa sincronização evita perder código que já estava em produção.
 
 A publicação usa a substituição de conteúdo, preservando configuração e todos
 os módulos alheios à correção. São alterados quatro módulos e acrescentados dois.
-Não é necessária migração de esquema. O manifesto só será atualizado depois de
-confirmar a versão ativa e os hashes remotos.
+Não foi necessária migração de esquema. A versão ativa e os hashes remotos foram
+confirmados antes da atualização do manifesto.
 
 O deploy por si só conserva o boletim ativo. O arquivo e o novo ciclo autorizados
 usam `bigodds:manual_rebuild`, mantendo os snapshots e resultados originais.
 O histórico não é reiniciado e só haverá nova múltipla se existir uma combinação
 elegível. O arquivo não edita nem apaga cartões já enviados ao Telegram.
+
+## Confirmação operacional — 16 de novembro, 09:06 de Lisboa
+
+- Deploy `24191167-b0c0-4b50-8482-55a1ce0b7af0`, versão indicada acima, ativo a 100%.
+- Nova execução independente da suite: 157 testes aprovados, zero falhas.
+- Comando autorizado consumido pelo cron. O boletim
+  `1cd1cf54-9b9e-48fe-ad29-e61689710e59` ficou arquivado como substituído.
+- Resultado real do ciclo: `no_eligible_ticket`, um jogo e uma seleção elegíveis.
+  A decisão usa `bigodes-quality-betano-v5`, com limites 75%/70%/15 pp/20%.
+- Comparação com a cópia anterior à publicação: nove snapshots de boletins e
+  66 snapshots de seleções preservados byte a byte. Os resultados dos restantes
+  boletins e seleções e o início do histórico público mantiveram-se.
+- Verificação da app: «Sem boletim em curso»; histórico com uma perdida,
+  uma substituída e zero em curso. O boletim arquivado não entra na taxa de acerto.
+
+Evidência verificável: `docs/evidence/bigodes-quality-v5/release.json` e
+`production/manifest.json`. A próxima janela normal continua às 08:00 de Lisboa.

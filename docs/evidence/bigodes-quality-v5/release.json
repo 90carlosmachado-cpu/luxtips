@@ -1,0 +1,291 @@
+{
+  "verifiedAt": "2026-11-16T09:06:13.293Z",
+  "runtimeCommit": "2aeb28b1728a6db27bfd7718148b92c0f31af0d7",
+  "runtimeTree": "543e3fba3fe0774eaa7cd770c7f123c8e7dc96bc",
+  "cloudflare": {
+    "version": "9ce582f6-1f4f-47f5-9b18-6b2dcb96fb75",
+    "deploymentId": "24191167-b0c0-4b50-8482-55a1ce0b7af0",
+    "deployedAt": "2026-11-16T08:58:38.206129Z",
+    "percentage": 100,
+    "moduleCount": 29,
+    "allModuleHashesMatchValidatedCode": true
+  },
+  "validation": {
+    "productionTests": 157,
+    "failures": 0,
+    "build": "Wrangler 4.151.3 deploy --dry-run passed",
+    "independentReview": "No publication blockers identified"
+  },
+  "operation": {
+    "verifiedAt": "2026-11-16T09:06:13.293Z",
+    "ticketCount": 9,
+    "legCount": 66,
+    "ticketSnapshotsPreserved": true,
+    "legSnapshotsPreserved": true,
+    "otherTicketsUnchanged": true,
+    "otherLegOutcomesUnchanged": true,
+    "historyResetUnchanged": true,
+    "manualCommandConsumed": true,
+    "activeTickets": 0,
+    "archivedTicket": {
+      "id": "1cd1cf54-9b9e-48fe-ad29-e61689710e59",
+      "created_at": 1794816059835,
+      "policy": "bigodds-exact-ev-betano-v4",
+      "status": "void",
+      "closed_at": 1794819897275,
+      "snapshotHash": "f2482b8cfe41fb4857b9d85ee67edba008d2be81d7a5031a9bab610ed6b3361c"
+    },
+    "archivedLegs": [
+      {
+        "fixtureId": 1528994,
+        "status": "void"
+      },
+      {
+        "fixtureId": 1528995,
+        "status": "void"
+      },
+      {
+        "fixtureId": 1528998,
+        "status": "void"
+      },
+      {
+        "fixtureId": 1528999,
+        "status": "void"
+      },
+      {
+        "fixtureId": 1545662,
+        "status": "void"
+      }
+    ],
+    "manualResult": {
+      "at": 1794819901757,
+      "requestId": "owner-authorized-bigodes-quality-v5-68aa8d23-eda6-43fc-b491-161a3e92db84",
+      "archived": "1cd1cf54-9b9e-48fe-ad29-e61689710e59",
+      "status": "no_eligible_ticket"
+    },
+    "lastSelection": {
+      "at": 1794819901599,
+      "cutoff": 1794819897275,
+      "decisionId": "bigodds:decision:50e772c1-f25f-465e-aabe-ad4b221960c3",
+      "status": "no_eligible_ticket",
+      "optimalityProved": true,
+      "independentGamesAssumed": true,
+      "probabilityCalibrationValidated": false,
+      "probabilityBasis": "supplied_probabilities",
+      "nodes": 1,
+      "fixtureCount": 1,
+      "candidateCount": 1,
+      "rejections": {
+        "unsupported_market": 54,
+        "below_leg_minimum": 116,
+        "negative_or_insufficient_leg_value": 9,
+        "analytical_direction": 36
+      },
+      "policy": {
+        "bookmaker": "Betano",
+        "minLegs": 5,
+        "maxLegs": 12,
+        "minOdd": 8,
+        "maxOdd": 15,
+        "minLegOdd": 1.2,
+        "minProbability": 0.75,
+        "minLegExpectedReturn": 0,
+        "minTicketExpectedReturn": 0.03,
+        "quoteMaxAge": 21600000,
+        "kickoffBuffer": 60000,
+        "disallowRepeatedTeams": true,
+        "requireLowerProbability": false,
+        "minJointProbability": 0.2,
+        "requireQualityEvidence": true,
+        "minMarketProbability": 0.7,
+        "maxModelMarketGap": 0.15,
+        "maxNodes": 1000000,
+        "markets": [
+          "1",
+          "2",
+          "1X",
+          "X2",
+          "O15",
+          "O25",
+          "O35",
+          "BY",
+          "BN"
+        ],
+        "id": "bigodes-quality-betano-v5",
+        "optimizer": "exact-branch-bound-quality-v2",
+        "source": "national-opponent-strength-or-club-xg-market50",
+        "reuseWithdrawn": true,
+        "days": 3,
+        "publicationHour": 8,
+        "prior": 2,
+        "halfLifeDays": 90,
+        "nationalPrior": 8,
+        "nationalHalfLifeDays": 365,
+        "xgWeight": 1,
+        "marketWeight": 0.5,
+        "minXgRoleWeighted": 2,
+        "minXgLeagueWeighted": 20,
+        "experimental": true
+      }
+    }
+  },
+  "browser": {
+    "verified": true,
+    "url": "https://luxtips.90carlosmachado.workers.dev/big-odds",
+    "current": "Sem boletim em curso",
+    "history": {
+      "won": 0,
+      "lost": 1,
+      "archived": 1,
+      "active": 0
+    },
+    "displayedUpdatedAt": "16/11, 09:05 · Lisboa"
+  },
+  "modules": [
+    {
+      "name": "telegram.mjs",
+      "bytes": 15746,
+      "sha256": "3cd6685abb394c5ffaa1e5dee8a7a1dc5aa6a1d6ab470627d0a864ac8a8b5a70"
+    },
+    {
+      "name": "ticket-presentation.mjs",
+      "bytes": 2243,
+      "sha256": "b234e504d17efe1bb4bbd76a251797b2e41ea3f180af68d329b1437ac8d29706"
+    },
+    {
+      "name": "bigodds-strength.mjs",
+      "bytes": 12711,
+      "sha256": "cbbff0b74a045e4df585a66d27a27b50a81cb7ba3fb1763eda6c9e2b52cceb57"
+    },
+    {
+      "name": "production-worker.mjs",
+      "bytes": 1183318,
+      "sha256": "e96afc75519594fe0acfc665fafb32170561a08b84885da5566b9ef34f58b31c"
+    },
+    {
+      "name": "football-list.mjs",
+      "bytes": 11367,
+      "sha256": "5193c6151a7e665e128c581ea55b44742621f4400d4b2489e843e9073c6dd130"
+    },
+    {
+      "name": "nations-league.mjs",
+      "bytes": 17673,
+      "sha256": "581239bb0d48ae79a4a29c6fdd3ce01c598ee41d01c443748a68f3f84b352e8e"
+    },
+    {
+      "name": "bigodds-quality.mjs",
+      "bytes": 2546,
+      "sha256": "8b0ea1011d52a06aed9ca30ea3dcdfa11565ef96e96b88f644c86e55793a5d3a"
+    },
+    {
+      "name": "quote-gate.mjs",
+      "bytes": 663,
+      "sha256": "682307648e3dfcda17fd5847fc991702ab9bd39276864be8cf3c44cc8dd8d263"
+    },
+    {
+      "name": "selection-events.mjs",
+      "bytes": 2638,
+      "sha256": "6e0e1707fb2693978f6b63c86db2f1a312a0707e94fa500110ce8344e5ffb2c4"
+    },
+    {
+      "name": "betano-prices.mjs",
+      "bytes": 3008,
+      "sha256": "e908372845448f716e0c0e7de0acbb786daba2bf2afb68bf06596fc566d2563f"
+    },
+    {
+      "name": "bigodds.mjs",
+      "bytes": 24308,
+      "sha256": "468c6dad118864ecfb79f5f032d4fef2f9ada413c87551611ebbf59aeb65c74c"
+    },
+    {
+      "name": "bigodds-model.mjs",
+      "bytes": 12419,
+      "sha256": "3438197dd0e3f09231eedcc5b7b98f2c046d9a3186f140f7d418cba948fb193c"
+    },
+    {
+      "name": "bigodds-optimizer.mjs",
+      "bytes": 9458,
+      "sha256": "6108165d47a1f17dbbfc4ddaeabc80117160341e0f61a22b9e59c68f2e122b99"
+    },
+    {
+      "name": "bigodds-view.mjs",
+      "bytes": 18258,
+      "sha256": "099aa14c82f8f84eb0b46dc74c7f35ae8a8202922ad0589ccf425e4b725382fe"
+    },
+    {
+      "name": "refresh-policy.mjs",
+      "bytes": 3302,
+      "sha256": "1c89ee55066283a00d04355e2823974a93ddb70353ac5e64b10b27127fefac8d"
+    },
+    {
+      "name": "daily-list.mjs",
+      "bytes": 3840,
+      "sha256": "4f85d2e079def2605e8d4cb3da2419927f6ec276ef991e81e00516f8222d1861"
+    },
+    {
+      "name": "list-presentation.mjs",
+      "bytes": 6472,
+      "sha256": "777bd7bc252bca4c15ea4204ab42a2279da1a48b5ec08f883c43396f67280266"
+    },
+    {
+      "name": "og-image.mjs",
+      "bytes": 103933,
+      "sha256": "3e8c548decf0c407c1b52cfa16592ed9477e540e9db9b97489ef9c62bf2edb3d"
+    },
+    {
+      "name": "pwa.mjs",
+      "bytes": 2308,
+      "sha256": "1173bc0f55f6fc18579062b93b2d020b662a9bb50397aa71e3666b420405bb0e"
+    },
+    {
+      "name": "telegram-brand.mjs",
+      "bytes": 45452,
+      "sha256": "95bdd929d1ce0b66b4f070a27e2ef19087443f1d7b3717d68325a11cb66fd9f5"
+    },
+    {
+      "name": "bigodes-brand.mjs",
+      "bytes": 2007,
+      "sha256": "f5e42d25748eb79325ffcd92ba2ec14efcd782110489776dfda778f1a3b58f13"
+    },
+    {
+      "name": "daily-ranking.mjs",
+      "bytes": 7869,
+      "sha256": "0cef5ee27550cd690bfa2cae93ac6d6cc78c8bdbf7467c919e8bd70dde9bcca0"
+    },
+    {
+      "name": "design-system.mjs",
+      "bytes": 17440,
+      "sha256": "595c9b0c1b48115ab88ed17c41278414a96e3f0d97a2165a938eb99bd6fa0803"
+    },
+    {
+      "name": "front-office.mjs",
+      "bytes": 19959,
+      "sha256": "6e753889269c7ac4a31033f6d7deed22609f6ff5c0c210b6e984760686fdbbfc"
+    },
+    {
+      "name": "integration.js",
+      "bytes": 26004,
+      "sha256": "0005297efd61fc6d8757580700c42badb97f12dc5a8325c10a32865e7ce95900"
+    },
+    {
+      "name": "assets.mjs",
+      "bytes": 73338,
+      "sha256": "52872ac5ccc71e31cd9e6432c1b87d755746f2c7e29c6cc3ae0160c030dbeca7"
+    },
+    {
+      "name": "combo-archive.mjs",
+      "bytes": 1525,
+      "sha256": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384"
+    },
+    {
+      "name": "crystal-brand.mjs",
+      "bytes": 1167,
+      "sha256": "d101096121c33b1631ea8796e2029bd2e2acd31a28b0da49d762a68cf9aa1775"
+    },
+    {
+      "name": "stable-dom.mjs",
+      "bytes": 2373,
+      "sha256": "b833d0bd2a57ff2ec87c88c732c5d053c2d04b8fa7d5cbb5999bd09425cbf7ca"
+    }
+  ]
+}
