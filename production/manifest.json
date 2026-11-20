@@ -1,17 +1,17 @@
 {
-  "version": "9ce582f6-1f4f-47f5-9b18-6b2dcb96fb75",
-  "retrievedAt": "2026-11-16T09:06:13.293Z",
+  "version": "9cf26958-ba8d-4e47-ab54-037ce2da0273",
+  "retrievedAt": "2026-11-20T17:29:35.187Z",
   "main": "integration.js",
-  "source": "Cloudflare GET Worker Script; 29 módulos comparados por SHA-256 com o código validado",
+  "source": "Cloudflare GET Worker Script após publicação v6; 29 módulos comparados por SHA-256 com o código validado",
   "modules": {
     "assets.mjs": "52872ac5ccc71e31cd9e6432c1b87d755746f2c7e29c6cc3ae0160c030dbeca7",
     "betano-prices.mjs": "e908372845448f716e0c0e7de0acbb786daba2bf2afb68bf06596fc566d2563f",
-    "bigodds-model.mjs": "3438197dd0e3f09231eedcc5b7b98f2c046d9a3186f140f7d418cba948fb193c",
-    "bigodds-optimizer.mjs": "6108165d47a1f17dbbfc4ddaeabc80117160341e0f61a22b9e59c68f2e122b99",
+    "bigodds-model.mjs": "a16939e9cf6affb854200cd590e67760bf53f735febbf9c6f27a487610a02e6f",
+    "bigodds-optimizer.mjs": "1eff1420687cc9786668bb0093ea6cf3b16ad6597df030f5e7cc9eeb0c70ae27",
     "bigodds-quality.mjs": "8b0ea1011d52a06aed9ca30ea3dcdfa11565ef96e96b88f644c86e55793a5d3a",
     "bigodds-strength.mjs": "cbbff0b74a045e4df585a66d27a27b50a81cb7ba3fb1763eda6c9e2b52cceb57",
     "bigodds-view.mjs": "099aa14c82f8f84eb0b46dc74c7f35ae8a8202922ad0589ccf425e4b725382fe",
-    "bigodds.mjs": "468c6dad118864ecfb79f5f032d4fef2f9ada413c87551611ebbf59aeb65c74c",
+    "bigodds.mjs": "449aacb95fccb423b15046762feb10920f6ded120ec1ed9b3af38108801312ca",
     "bigodes-brand.mjs": "f5e42d25748eb79325ffcd92ba2ec14efcd782110489776dfda778f1a3b58f13",
     "combo-archive.mjs": "2e972bbe912d55bfa10ad66ffa9c79e72ae5f4b873192406041ae9ccc0ec0384",
     "crystal-brand.mjs": "d101096121c33b1631ea8796e2029bd2e2acd31a28b0da49d762a68cf9aa1775",
@@ -35,6 +35,6 @@
     "ticket-presentation.mjs": "b234e504d17efe1bb4bbd76a251797b2e41ea3f180af68d329b1437ac8d29706"
   },
   "note": "Hashes dos 29 módulos ativos; sem dados D1 ou segredos.",
-  "previousVersion": "610ad941-f018-484c-8b6c-2a53ae59b0be",
-  "runtimeCommit": "2aeb28b1728a6db27bfd7718148b92c0f31af0d7"
+  "previousVersion": "9ce582f6-1f4f-47f5-9b18-6b2dcb96fb75",
+  "runtimeCommit": "1dfdd0a91d14cc568a33559e0eed3e8d31b8988e"
 }

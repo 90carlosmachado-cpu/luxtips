@@ -1,5 +1,14 @@
 # LuxTips
 
+## Alteração publicada em 20 de novembro de 2026
+
+Bigodes v6: odd total mínima 2 e mínimo de dois jogos, sem máximos fixos.
+Inclui o maior número de jogos compatível com os critérios de qualidade e,
+entre boletins com o mesmo número, prefere a maior probabilidade conjunta.
+Publicada às 17:29 de Lisboa, com migração D1 aplicada e histórico preservado.
+Versão ativa: `9cf26958-ba8d-4e47-ab54-037ce2da0273`.
+Ver [regras e validação da publicação](docs/bigodes-limits-v6.md).
+
 ## Alterações publicadas em 15 de novembro de 2026
 
 Publicado no Worker `luxtips`: navegação com Futebol e Bigodes,
