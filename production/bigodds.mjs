@@ -84,9 +84,11 @@ export async function settleBigOdds(db,now=Date.now()){
 export async function publishBigOdds(db,ticket,now=Date.now()){
  if(!ticket)return {status:'no_eligible_ticket'};
  if(ticket.bookmaker!=='Betano'||ticket.legs.some(l=>l.bookmaker!=='Betano'))return {status:'wrong_bookmaker'};
- if(!Number.isFinite(ticket.odd)||ticket.legs.length<5||ticket.legs.length>12||ticket.odd<8||ticket.odd>15+1e-9)throw Error('invalid_bigodds_ticket');
+ if(!Number.isFinite(ticket.odd)||ticket.legs.length<BIGODDS_POLICY.minLegs||
+    BIGODDS_POLICY.maxLegs!==null&&ticket.legs.length>BIGODDS_POLICY.maxLegs||ticket.odd<BIGODDS_POLICY.minOdd||
+    BIGODDS_POLICY.maxOdd!==null&&ticket.odd>BIGODDS_POLICY.maxOdd+1e-9)throw Error('invalid_bigodds_ticket');
  const odds=ticket.legs.reduce((p,l)=>p*l.odd,1);
- if(Math.abs(odds-ticket.odd)>1e-8||new Set(ticket.legs.map(l=>l.fixtureId)).size!==ticket.legs.length)throw Error('invalid_bigodds_legs');
+ if(!Number.isFinite(odds)||odds<BIGODDS_POLICY.minOdd||Math.abs(odds-ticket.odd)>1e-8||new Set(ticket.legs.map(l=>l.fixtureId)).size!==ticket.legs.length)throw Error('invalid_bigodds_legs');
  if(ticket.legs.some(l=>!BIGODDS_POLICY.markets.includes(l.market)||l.bookmaker!==ticket.bookmaker||l.estimated||l.odd<BIGODDS_POLICY.minLegOdd||!(l.quoteAt>now-BIGODDS_POLICY.quoteMaxAge&&l.quoteAt<=l.observedAt&&l.observedAt<=now&&l.kickoff>now+60000)))return {status:'inputs_expired'};
  const selectionProbabilities=ticket.legs.map(l=>l.selectionProbability??l.probability);
  if(ticket.legs.some((l,i)=>!Number.isFinite(l.odd)||l.estimated!==false||!Number.isFinite(l.probability)||l.probability<=0||l.probability>1||!Number.isFinite(selectionProbabilities[i])||selectionProbabilities[i]<=0||selectionProbabilities[i]>l.probability))return {status:'invalid_probability_or_price'};
@@ -97,16 +99,20 @@ export async function publishBigOdds(db,ticket,now=Date.now()){
  if(jointProbability<BIGODDS_POLICY.minJointProbability-1e-12)return {status:'joint_probability_below_minimum'};
  if(ticket.legs.some((l,i)=>selectionProbabilities[i]*l.odd<1+BIGODDS_POLICY.minLegExpectedReturn-1e-12)||expectedNetPerUnit<BIGODDS_POLICY.minTicketExpectedReturn-1e-12)return {status:'insufficient_expected_value'};
  const id=crypto.randomUUID(),data={id,createdAt:now,policy:BIGODDS_POLICY,bookmaker:ticket.bookmaker,odd:ticket.odd,legs:ticket.legs,jointProbability,expectedNetPerUnit,optimization:ticket.optimization??null};
- const matches=ticket.legs.map(()=>'(f.id=? AND f.kickoff=? AND json_extract(f.data,\'$.home\')=? AND json_extract(f.data,\'$.away\')=?)').join(' OR ');
- const args=ticket.legs.flatMap(l=>[l.fixtureId,l.kickoff,l.home,l.away]);
+ // Keep the parameter count fixed when a ticket contains more than twelve games.
+ const identities=JSON.stringify(ticket.legs.map(l=>[l.fixtureId,l.kickoff,l.home,l.away]));
  const insert=db.prepare(`INSERT INTO bigodds_tickets(id,created_at,policy,status,odd,bookmaker,data)
  SELECT ?,?,?,'active',?,?,? WHERE NOT EXISTS(SELECT 1 FROM bigodds_tickets WHERE status='active')
- AND (SELECT COUNT(*) FROM fixtures f WHERE (${matches}) AND f.finished=0 AND f.kickoff>?
+ AND (SELECT COUNT(*) FROM fixtures f JOIN json_each(?) candidate
+ ON f.id=json_extract(candidate.value,'$[0]') AND f.kickoff=json_extract(candidate.value,'$[1]')
+ AND json_extract(f.data,'$.home')=json_extract(candidate.value,'$[2]') AND json_extract(f.data,'$.away')=json_extract(candidate.value,'$[3]')
+ WHERE f.finished=0 AND f.kickoff>?
  AND json_extract(f.data,'$.status')='NS' AND NOT EXISTS(SELECT 1 FROM results r WHERE r.fixture_id=f.id)
- AND NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.fixture_id=f.id AND NOT EXISTS(SELECT 1 FROM openfoot_state a WHERE a.key='bigodds:archive:'||l.ticket_id AND json_extract(a.data,'$.status')='replaced')))=?`).bind(id,now,BIGODDS_POLICY.id,ticket.odd,ticket.bookmaker,JSON.stringify(data),...args,now+60000,ticket.legs.length);
- const statements=[insert,...ticket.legs.map(l=>db.prepare(`INSERT INTO bigodds_ticket_legs(fixture_id,ticket_id,kickoff,snapshot)
- SELECT ?,?,?,? WHERE EXISTS(SELECT 1 FROM bigodds_tickets WHERE id=?)`).bind(l.fixtureId,id,l.kickoff,JSON.stringify(l),id))];
- const result=await db.batch(statements);
+ AND NOT EXISTS(SELECT 1 FROM bigodds_all_legs l WHERE l.fixture_id=f.id AND NOT EXISTS(SELECT 1 FROM openfoot_state a WHERE a.key='bigodds:archive:'||l.ticket_id AND json_extract(a.data,'$.status')='replaced')))=?`).bind(id,now,BIGODDS_POLICY.id,ticket.odd,ticket.bookmaker,JSON.stringify(data),identities,now+60000,ticket.legs.length);
+ const insertLegs=db.prepare(`INSERT INTO bigodds_ticket_legs(fixture_id,ticket_id,kickoff,snapshot)
+ SELECT json_extract(l.value,'$.fixtureId'),t.id,json_extract(l.value,'$.kickoff'),l.value
+ FROM bigodds_tickets t,json_each(t.data,'$.legs') l WHERE t.id=?`).bind(id);
+ const result=await db.batch([insert,insertLegs]);
  return result[0].meta.changes?{status:'published',id,legs:ticket.legs.length,odd:ticket.odd}:{status:'blocked_or_inputs_changed'};
 }
 // Private operational command: only an authenticated D1 administrator can
@@ -239,7 +245,7 @@ export async function bigOddsFeed(db,cursor=null,now=Date.now()){
  const assemble=async r=>{
   const original=JSON.parse(r.data),legs=await db.prepare('SELECT fixture_id,status,settled_at,result FROM bigodds_all_legs WHERE ticket_id=?').bind(r.id).all();
   const outcomes=new Map(legs.results.map(l=>[l.fixture_id,l]));
-  const schedules=original.legs.length?await db.prepare('SELECT id,kickoff FROM fixtures WHERE id IN ('+original.legs.map(()=>'?').join(',')+')').bind(...original.legs.map(l=>l.fixtureId)).all():{results:[]};
+  const schedules=original.legs.length?await db.prepare('SELECT id,kickoff FROM fixtures WHERE id IN (SELECT value FROM json_each(?))').bind(JSON.stringify(original.legs.map(l=>l.fixtureId))).all():{results:[]};
   const actual=new Map(schedules.results.map(f=>[f.id,f.kickoff]));
   return withTicketBetano(db,{...original,status:r.status,archived:archiveMap.has(r.id),archiveReason:archiveMap.get(r.id)?.reason??null,closedAt:r.closed_at,legs:original.legs.map(l=>{const o=outcomes.get(l.fixtureId);return {...l,currentKickoff:actual.get(l.fixtureId)??l.kickoff,rescheduled:actual.has(l.fixtureId)&&actual.get(l.fixtureId)!==l.kickoff,status:o?.status||'pending',settledAt:o?.settled_at??null,result:o?.result?JSON.parse(o.result):null};})},now);
  };

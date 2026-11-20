@@ -4,6 +4,8 @@
  * probabilities and cross-fixture independence; it is not a win guarantee.
  */
 import {legQualityFailure} from './bigodds-quality.mjs';
+// Keep standalone research defaults reproducible; runtime supplies BIGODDS_POLICY.
+// An explicit null maximum means unbounded, including in the serialized result.
 export const DEFAULT_POLICY = Object.freeze({
   bookmaker: 'Betano', minLegs: 5, maxLegs: 12,
   minOdd: 8, maxOdd: 15, minLegOdd: 1.2, minProbability: 0.5,
@@ -13,6 +15,7 @@ export const DEFAULT_POLICY = Object.freeze({
   minJointProbability: 0, requireQualityEvidence: false,
   minMarketProbability: 0, maxModelMarketGap: 1,
   maxNodes: 1000000,
+  objective: 'max_probability',
   markets: ['1','2','1X','X2','O15','O25','O35','BY','BN'],
 });
 const EPS = 1e-12;
@@ -21,14 +24,16 @@ const key = leg => `${leg.fixtureId}:${leg.market}`;
 
 function validatePolicy(policy, now) {
   if (!finite(now) || now < 0) throw new TypeError('Invalid analysis cutoff');
-  if (!Number.isInteger(policy.minLegs) || !Number.isInteger(policy.maxLegs)
-      || policy.minLegs < 1 || policy.maxLegs < policy.minLegs
-      || policy.maxLegs > 12 || !finite(policy.minOdd) || !finite(policy.maxOdd)
-      || policy.minOdd <= 1 || policy.maxOdd < policy.minOdd
+  if (!Number.isSafeInteger(policy.minLegs) || policy.minLegs < 1
+      || policy.maxLegs !== null && (!Number.isSafeInteger(policy.maxLegs)
+        || policy.maxLegs < policy.minLegs)
+      || !finite(policy.minOdd) || policy.minOdd <= 1
+      || policy.maxOdd !== null && (!finite(policy.maxOdd) || policy.maxOdd < policy.minOdd)
       || !finite(policy.minLegOdd) || policy.minLegOdd <= 1
       || !finite(policy.minProbability) || policy.minProbability <= 0
       || policy.minProbability > 1 || !Number.isInteger(policy.maxNodes)
-      || policy.maxNodes < 1 || !Array.isArray(policy.markets)) {
+      || policy.maxNodes < 1 || !Array.isArray(policy.markets)
+      || !['max_probability','max_legs_then_probability'].includes(policy.objective)) {
     throw new TypeError('Invalid optimizer policy');
   }
   for (const k of ['quoteMaxAge','kickoffBuffer']) {
@@ -55,6 +60,7 @@ export function optimizeBigOdds(candidates, options = {}) {
   const {now, ...overrides} = options;
   const policy = {...DEFAULT_POLICY, ...overrides};
   validatePolicy(policy, now);
+  const maximizeLegs = policy.objective === 'max_legs_then_probability';
   const rejections = {}, latest = new Map();
   const reject = reason => { rejections[reason] = (rejections[reason] || 0) + 1; };
   for (const leg of candidates) {
@@ -120,31 +126,57 @@ export function optimizeBigOdds(candidates, options = {}) {
       || a[0].fixtureId-b[0].fixtureId);
   const maxOdds = groups.map(g=>Math.max(...g.map(l=>l.odd)));
   const bestProb = groups.map(g=>g[0].selectionProbability);
+  const maxLegs = Math.min(policy.maxLegs ?? groups.length, groups.length);
+  const minJointLP = policy.minJointProbability > EPS
+    ? Math.log(policy.minJointProbability-EPS) : -Infinity;
   let best = null, nodes = 0, limited = false;
   const chosen = [], teams = new Set();
-  const better = x => !best || x.logProbability > best.logProbability+EPS
-    || Math.abs(x.logProbability-best.logProbability)<=EPS &&
+  const better = x => {
+    if (!best) return true;
+    if (maximizeLegs && x.legs.length !== best.legs.length) return x.legs.length > best.legs.length;
+    return x.logProbability > best.logProbability+EPS
+      || Math.abs(x.logProbability-best.logProbability)<=EPS &&
       (x.legs.length < best.legs.length || x.legs.length === best.legs.length &&
        (x.odd < best.odd-EPS || Math.abs(x.odd-best.odd)<=EPS &&
         x.legs.map(key).sort().join('|') < best.legs.map(key).sort().join('|')));
+  };
   function visit(index, odd, lp, pointLP) {
     if (limited) return;
     if (++nodes > policy.maxNodes) { limited = true; return; }
-    const n = chosen.length, slots = policy.maxLegs-n, remaining = groups.length-index;
-    if (odd > policy.maxOdd+EPS || n+remaining < policy.minLegs) return;
-    if (best && lp < best.logProbability-EPS) return;
+    const n = chosen.length, slots = maxLegs-n, remaining = groups.length-index;
+    if (!finite(odd) || policy.maxOdd !== null && odd > policy.maxOdd+EPS
+        || n+remaining < policy.minLegs) return;
+    if (!maximizeLegs && best && lp < best.logProbability-EPS) return;
     const joint = Math.exp(lp);
     // Adding legs cannot improve the joint probability. Fail before chasing odds.
     if (joint < policy.minJointProbability-EPS) return;
-    if (n >= policy.minLegs && odd >= policy.minOdd-EPS
+    if (maximizeLegs) {
+      // Optimistic cardinality bound: best remaining probability per fixture,
+      // ignoring team conflicts and prices. Ignoring constraints can only raise it.
+      let upperCount = n, optimisticLP = lp;
+      for (let i=index; i<groups.length && upperCount<maxLegs; i++) {
+        optimisticLP += Math.log(bestProb[i]);
+        if (optimisticLP < minJointLP) break;
+        upperCount++;
+      }
+      if (upperCount < policy.minLegs || best && upperCount < best.legs.length) return;
+      // Probability is a tie-breaker only when no larger ticket can be reached.
+      if (best && upperCount === best.legs.length) {
+        const needed = best.legs.length-n;
+        const bestLP = bestProb.slice(index,index+needed).reduce((s,p)=>s+Math.log(p),lp);
+        if (bestLP < best.logProbability-EPS) return;
+      }
+    }
+    // Match the exact storage/publication minimum; do not round a subminimum price up.
+    if (n >= policy.minLegs && odd >= policy.minOdd
         && (policy.minTicketExpectedReturn === null
             || joint*odd >= 1+policy.minTicketExpectedReturn-EPS)) {
       const candidate = {bookmaker:policy.bookmaker, odd, logProbability:lp,
         probability:joint, pointProbability:Math.exp(pointLP),
         expectedNetPerUnit:joint*odd-1, legs:[...chosen]};
       if (better(candidate)) best = candidate;
-      // Every additional leg has p<=1; it cannot improve this solution.
-      return;
+      // The cardinality objective must continue beyond the first eligible ticket.
+      if (!maximizeLegs) return;
     }
     if (!slots || !remaining) return;
     const possibleOdds = maxOdds.slice(index).sort((a,b)=>b-a).slice(0,slots);
@@ -152,7 +184,7 @@ export function optimizeBigOdds(candidates, options = {}) {
     const need = Math.max(0,policy.minLegs-n);
     const optimisticLP = bestProb.slice(index).sort((a,b)=>b-a).slice(0,need)
       .reduce((s,p)=>s+Math.log(p),lp);
-    if (best && optimisticLP < best.logProbability-EPS) return;
+    if (!maximizeLegs && best && optimisticLP < best.logProbability-EPS) return;
     for (const leg of groups[index]) {
       if (policy.disallowRepeatedTeams && (teams.has(leg.home)||teams.has(leg.away))) continue;
       chosen.push(leg);

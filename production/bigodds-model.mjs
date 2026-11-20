@@ -3,7 +3,8 @@ import {fitNationalStrength,predictNationalStrength,NATIONAL_STRENGTH_LEAGUES} f
 import {BIGODES_QUALITY_VERSION} from './bigodds-quality.mjs';
 // Research candidate goals4: role-specific goals, prior 4, half-life 180 days.
 // No results from the target game and no market odds enter the probability model.
-export const BIGODDS_POLICY=Object.freeze({id:'bigodes-quality-betano-v5',optimizer:'exact-branch-bound-quality-v2',minLegExpectedReturn:0,minTicketExpectedReturn:.03,minJointProbability:.20,requireQualityEvidence:true,minMarketProbability:.70,maxModelMarketGap:.15,disallowRepeatedTeams:true,maxNodes:1000000,bookmaker:'Betano',source:'national-opponent-strength-or-club-xg-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:5,maxLegs:12,minOdd:8,maxOdd:15,minLegOdd:1.2,minProbability:.75,quoteMaxAge:21600000,prior:2,halfLifeDays:90,nationalPrior:8,nationalHalfLifeDays:365,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
+// Explicit null maxima mean no business cap and round-trip unchanged through JSON.
+export const BIGODDS_POLICY=Object.freeze({id:'bigodes-quality-betano-v6',optimizer:'exact-branch-bound-quality-v3',objective:'max_legs_then_probability',minLegExpectedReturn:0,minTicketExpectedReturn:.03,minJointProbability:.20,requireQualityEvidence:true,minMarketProbability:.70,maxModelMarketGap:.15,disallowRepeatedTeams:true,maxNodes:1000000,bookmaker:'Betano',source:'national-opponent-strength-or-club-xg-market50',reuseWithdrawn:true,days:3,publicationHour:8,minLegs:2,maxLegs:null,minOdd:2,maxOdd:null,minLegOdd:1.2,minProbability:.75,quoteMaxAge:21600000,prior:2,halfLifeDays:90,nationalPrior:8,nationalHalfLifeDays:365,xgWeight:1,marketWeight:.5,minXgRoleWeighted:2,minXgLeagueWeighted:20,markets:['1','2','1X','X2','O15','O25','O35','BY','BN'],experimental:true});
 const DAY=86400000,DECAY=180*DAY/Math.LN2;
 export function goalModel(history,now){
  const leagues=new Map(),teams=new Map();
@@ -152,7 +153,7 @@ export function analyzeTicketExact(candidates,now=Date.now()){
  const result=optimizeBigOdds(eligible,{...BIGODDS_POLICY,now});
  if(directionRejected)result.rejections.analytical_direction=directionRejected;
  if(result.status!=='optimal')result.ticket=null;
- if(result.ticket)result.ticket.optimization={algorithm:BIGODDS_POLICY.optimizer,optimalityProved:true,
+ if(result.ticket)result.ticket.optimization={algorithm:BIGODDS_POLICY.optimizer,objective:BIGODDS_POLICY.objective,optimalityProved:true,
   independentGamesAssumed:true,probabilityCalibrationValidated:false,nodes:result.nodes,
   candidateCount:result.candidateCount,fixtureCount:result.fixtureCount,qualityGatesApplied:true,
   minJointProbability:BIGODDS_POLICY.minJointProbability};

@@ -12,13 +12,14 @@ import {legState,ticketProgress} from '../ticket-presentation.mjs';
 
 const NOW=Date.parse('2026-11-16T08:00:00Z'),DAY=86400000;
 const fixture=id=>({id,home:id*2,away:id*2+1,league:39,ts:NOW+DAY,homeName:'H'+id,awayName:'A'+id});
-const legs=()=>Array.from({length:8},(_,i)=>qualityLeg(fixture(i+1),NOW));
+const legs=(count=3)=>Array.from({length:count},(_,i)=>qualityLeg(fixture(i+1),NOW));
+const ticket=all=>({bookmaker:'Betano',odd:all.reduce((odd,l)=>odd*l.odd,1),legs:all});
 const noWrites={prepare(){throw new Error('rejected ticket must not reach storage');}};
 
-test('quality policy permits supported 8–15 tickets, and does not inflate calibrated confidence',()=>{
+test('quality policy admits the available games above odd 2 without inflating confidence',()=>{
  const a=analyzeTicketExact(legs(),NOW);
- assert.equal(a.status,'optimal');assert.equal(a.ticket.legs.length,8);
- assert.ok(a.ticket.odd>=8&&a.ticket.odd<=15);assert.ok(a.ticket.probability>=.20);
+ assert.equal(a.status,'optimal');assert.equal(a.ticket.legs.length,3);
+ assert.ok(a.ticket.odd>=2);assert.ok(a.ticket.probability>=.20);
  assert.equal(a.probabilityCalibrationValidated,false);
  assert.equal(a.ticket.optimization.independentGamesAssumed,true);
 });
@@ -44,25 +45,28 @@ test('quality failures are independently enforced before publisher writes',async
   const all=legs();mutate(all[0]);
   const a=analyzeTicketExact(all,NOW);
   assert.equal(a.status,'no_eligible_ticket',reason);assert.ok(a.rejections[reason]>=1,reason);
-  const r=await publishBigOdds(noWrites,{bookmaker:'Betano',odd:1.3**8,legs:all},NOW);
+  const r=await publishBigOdds(noWrites,ticket(all),NOW);
   assert.equal(r.status,'quality_rejected',reason);assert.equal(r.reason,reason);
  }
 });
 
-test('minimum leg probability and minimum joint probability reject attractive returns',async()=>{
+test('probability floors reject weak legs and retain the largest valid subset of a long ticket',async()=>{
  const low=legs();low[0].probability=.74;low[0].modelProbability=.73;
- assert.equal((await publishBigOdds(noWrites,{bookmaker:'Betano',odd:1.3**8,legs:low},NOW)).status,'probability_below_minimum');
- const all=legs().map(l=>({...l,probability:.80,modelProbability:.85}));
+ assert.equal((await publishBigOdds(noWrites,ticket(low),NOW)).status,'probability_below_minimum');
+ const all=legs(8).map(l=>({...l,probability:.80,modelProbability:.85}));
  assert.ok(.80*1.3>1); // Every leg has a positive estimated EV.
- assert.equal(analyzeTicketExact(all,NOW).status,'no_eligible_ticket');
- assert.equal((await publishBigOdds(noWrites,{bookmaker:'Betano',odd:1.3**8,legs:all},NOW)).status,'joint_probability_below_minimum');
+ const selected=analyzeTicketExact(all,NOW);
+ assert.equal(selected.status,'optimal');assert.equal(selected.ticket.legs.length,7);
+ assert.ok(selected.ticket.probability>=.20);
+ assert.equal((await publishBigOdds(noWrites,ticket(all),NOW)).status,'joint_probability_below_minimum');
 });
 
 test('raising odds never substitutes for quality, even if more legs can reach the target',()=>{
- const all=legs().concat(legs().slice(0,4).map((l,i)=>({...l,fixtureId:100+i,home:1000+i*2,away:1001+i*2})));
- all.forEach(l=>{l.probability=.75;l.modelProbability=.75;l.marketProbability=.75;});
- assert.equal(analyzeTicketExact(all,NOW).ticket,null);
- const lower=optimizeBigOdds(all,{...BIGODDS_POLICY,minJointProbability:0,minLegExpectedReturn:null,minTicketExpectedReturn:null,now:NOW});
+ const all=legs(12).map(l=>({...l,probability:.80,modelProbability:.85}));
+ // Isolate the joint floor with a deliberately long ticket; runtime can choose fewer legs.
+ const policy={...BIGODDS_POLICY,minLegs:8,now:NOW};
+ assert.equal(optimizeBigOdds(all,policy).ticket,null);
+ const lower=optimizeBigOdds(all,{...policy,minJointProbability:0});
  assert.equal(lower.status,'optimal');assert.ok(lower.ticket.probability<.20);
 });
 
@@ -99,19 +103,21 @@ test('exact optimizer with quality floor agrees with independent enumeration',()
  let seed=74139;
  const random=()=>((seed=(1664525*seed+1013904223)>>>0)/2**32);
  for(let run=0;run<40;run++){
-  const all=legs().map(l=>{
+  const all=legs(8).map(l=>{
    const market=.70+random()*.12,model=Math.min(.99,market+random()*.15),p=(market+model)/2;
    return {...l,odd:1.2+random()*.3,probability:p,marketProbability:market,modelProbability:model};
   });
   const valid=all.filter(l=>l.probability>=.75&&l.probability*l.odd>=1-1e-12);
-  let best=0;
+  let best={count:0,probability:0};
   for(let mask=0;mask<2**valid.length;mask++){
    const chosen=valid.filter((_,i)=>mask&(1<<i));
    const p=chosen.reduce((v,l)=>v*l.probability,1),odd=chosen.reduce((v,l)=>v*l.odd,1);
-   if(chosen.length>=5&&odd>=8-1e-12&&odd<=15+1e-12&&p>=.2-1e-12&&p*odd>=1.03-1e-12)best=Math.max(best,p);
+   if(chosen.length>=2&&odd>=2&&p>=.2-1e-12&&p*odd>=1.03-1e-12&&
+      (chosen.length>best.count||chosen.length===best.count&&p>best.probability))best={count:chosen.length,probability:p};
   }
   const answer=analyzeTicketExact(all,NOW);
-  assert.ok(Math.abs((answer.ticket?.probability??0)-best)<1e-10,'enumeration run '+run);
+  assert.equal(answer.ticket?.legs.length??0,best.count,'enumeration count '+run);
+  assert.ok(Math.abs((answer.ticket?.probability??0)-best.probability)<1e-10,'enumeration probability '+run);
  }
 });
 

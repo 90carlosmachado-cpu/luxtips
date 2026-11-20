@@ -14,6 +14,7 @@ function setup(){
  const db=testDatabase();db.sql.exec('ALTER TABLE fixtures ADD COLUMN updated_at INTEGER NOT NULL DEFAULT 0; CREATE TABLE openfoot_match_details(source_id TEXT,fixture_id INTEGER,league INTEGER,kickoff INTEGER,observed_at INTEGER,data TEXT); CREATE TABLE results(fixture_id INTEGER PRIMARY KEY,hg INTEGER,ag INTEGER,settled_at INTEGER); CREATE TABLE openfoot_market_quotes(fixture_id INTEGER,kickoff INTEGER,bookmaker TEXT,market TEXT,selection TEXT,odd REAL,provider_at INTEGER,observed_at INTEGER);');
  db.sql.exec(readFileSync(new URL('../../migrations/0010_bigodds.sql',import.meta.url),'utf8'));
  db.sql.exec(readFileSync(new URL('../../migrations/0011_bigodds_withdrawn_reuse.sql',import.meta.url),'utf8'));
+ db.sql.exec('BEGIN');try{db.sql.exec(readFileSync(new URL('../../migrations/0012_bigodds_flexible_limits.sql',import.meta.url),'utf8'));db.sql.exec('COMMIT');}catch(error){db.sql.exec('ROLLBACK');throw error;}
  const fixture=id=>({id,league:39,ts:NOW+DAY+id*1000,home:id,away:10000+id,homeName:'Casa '+id,awayName:'Fora '+id,competition:'Liga',status:'NS',finished:false,hg:null,ag:null});
  const store=f=>db.sql.prepare('INSERT OR REPLACE INTO fixtures(id,league,kickoff,finished,data,updated_at) VALUES(?,?,?,?,?,?)').run(f.id,f.league,f.ts,Number(f.finished),JSON.stringify(f),f.updatedAt??(f.finished?f.ts+7200000:NOW-1000));
  const ticket=(offset=0)=>{
